@@ -4,8 +4,6 @@
     <title>Forgetting</title>
     <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/jspsych.js"></script>
     <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
-    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
-    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-canvas-keyboard-response.js"></script>
     <link href="C:/Repositories/forgetting-task/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
   <style>
   </style>
@@ -16,10 +14,10 @@
   var timeline = [];
   
   // Flanker stimuli
-  var congruent_left = "<span style='font-size: 80px;'>< < < < <</span>"
-  var congruent_right = "<span style='font-size: 80px;'>> > > > ></span>"
-  var incongruent_left = "<span style='font-size: 80px;'>< < > < <</span>"
-  var incongruent_right = "<span style='font-size: 80px;'>> > < > ></span>"
+  var congruent_left = "<span style='font-size: 48px;'><<<<<</span>"
+  var congruent_right = "<span style='font-size: 48px;'>>>>>></span>"
+  var incongruent_left = "<span style='font-size: 48px;'><<><<</span>"
+  var incongruent_right = "<span style='font-size: 48px;'>>><>></span>"
     
   var flanker_stimuli = [
     {stimulus: congruent_left},
@@ -35,6 +33,8 @@
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: jsPsych.NO_KEYS,
   trial_duration: 1000,
+  trial_duration: function(){
+    return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]}
 }
 
 
@@ -51,6 +51,7 @@
   timeline: [fixation, present_flanker],
   timeline_variables: flanker_stimuli,
   randomize_order: true,
+  repetitions: 13,
 };
 
 timeline.push(test_procedure);
