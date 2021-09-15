@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Forgetting</title>
+    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/jspsych.js"></script>
+    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="C:/Repositories/forgetting-task/jspsych-6.3.1/plugins/jspsych-canvas-keyboard-response.js"></script>
+    <link href="C:/Repositories/forgetting-task/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+  <style>
+  </style>
+  </head>
+  <body></body>
+  <script>
+  
+  var timeline = [];
+  
+  // Flanker stimuli
+  var congruent_left = "<span style='font-size: 80px;'>< < < < <</span>"
+  var congruent_right = "<span style='font-size: 80px;'>> > > > ></span>"
+  var incongruent_left = "<span style='font-size: 80px;'>< < > < <</span>"
+  var incongruent_right = "<span style='font-size: 80px;'>> > < > ></span>"
+    
+  var flanker_stimuli = [
+    {stimulus: congruent_left},
+    {stimulus: congruent_right},
+    {stimulus: incongruent_left},
+    {stimulus: incongruent_right}
+  ]
+  
+  
+  // Fixation cross
+  var fixation = {
+  type: 'html-keyboard-response',
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 1000,
+}
+
+
+  // Presentation of flanker stimuli
+  var present_flanker = {
+    type: "html-keyboard-response",
+    stimulus: jsPsych.timelineVariable('stimulus'),
+    choices: ['ArrowLeft', 'ArrowRight'],
+    trial_duration: 2000
+}
+  
+  
+  var test_procedure = {
+  timeline: [fixation, present_flanker],
+  timeline_variables: flanker_stimuli,
+  randomize_order: true,
+};
+
+timeline.push(test_procedure);
+       
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    jsPsych.data.displayData();
+  }
+});
+
+  </script>
+</html>
