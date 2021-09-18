@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Change Detection Task</title>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/jspsych.js"></script>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
+    <link href="C:/Repositories/attention_pilot/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+  <style>
+  </style>
+  </head>
+  <body></body>
+  <script>
+
+  //blue, green, red, pink, yellow, purple, lightblue, orange
+  var color_set = ["#0070C0", "#00B050", "#BB0703", "#E836D3", "#FFC000", "#904090", "#33E2EB", "#ED7D31"];
+  
+  
+  // Randomly sample six colors from the full set for the current memory items
+  var memory_set_colors = jsPsych.randomization.sampleWithoutReplacement(color_set, 8);
+
+
+  // Fixation cross
+  var fixation_cross = {
+    obj_type: 'cross',
+    line_length: 25,
+    startX: 0,
+    startY: 0,
+    show_start_time: 0,
+    origin_center: true
+  }
+  
+  
+  // Memory stimuli
+  var circle1 = {
+    obj_type: "circle",
+    startX: 0,
+    startY: -100,
+    radius: 20,
+    line_color: memory_set_colors[0],
+    fill_color: memory_set_colors[0],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  var circle2 = {
+    obj_type: "circle",
+    startX: -100,
+    startY: -50,
+    radius: 20,
+    line_color: memory_set_colors[1],
+    fill_color: memory_set_colors[1],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  var circle3 = {
+    obj_type: "circle",
+    startX: 100,
+    startY: -50,
+    radius: 20,
+    line_color: memory_set_colors[2],
+    fill_color: memory_set_colors[2],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  var circle4 = {
+    obj_type: "circle",
+    startX: -100,
+    startY: 50,
+    radius: 20,
+    line_color: memory_set_colors[3],
+    fill_color: memory_set_colors[3],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  var circle5 = {
+    obj_type: "circle",
+    startX: 100,
+    startY: 50,
+    radius: 20,
+    line_color: memory_set_colors[4],
+    fill_color: memory_set_colors[4],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  var circle6 = {
+    obj_type: "circle",
+    startX: 0,
+    startY: 100,
+    radius: 20,
+    line_color: memory_set_colors[5],
+    fill_color: memory_set_colors[5],
+    show_start_time: 1000,
+    origin_center: true
+  }
+  
+  // Visual masks to cover up the circles after the initial memory phase
+  var mask1 = {
+    obj_type: "rect",
+    startX: 0,
+    startY: -100,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+  var mask2 = {
+    obj_type: "rect",
+    startX: -100,
+    startY: -50,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+  var mask3 = {
+    obj_type: "rect",
+    startX: 100,
+    startY: -50,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+    var mask4 = {
+    obj_type: "rect",
+    startX: -100,
+    startY: 50,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+    var mask5 = {
+    obj_type: "rect",
+    startX: 100,
+    startY: 50,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+    var mask6 = {
+    obj_type: "rect",
+    startX: 0,
+    startY: 100,
+    width: 150,
+    height: 150,
+    line_color: '#ffffff',
+    fill_color: '#ffffff',
+    show_start_time: 2000,
+    show_end_time: 2500,
+    origin_center: true
+  }
+  
+  
+  var circle_to_change = jsPsych.randomization.sampleWithoutReplacement(["circle1", "circle2", "circle3", "circle4", "circle5", "circle6"], 1)[0];
+  
+  // Conditional statements to determine where the changed circle should be presented (i.e., which circle has to be changed?)
+  if (circle_to_change == "circle1") {
+    var change_startx = 0
+    var change_starty = -100
+  } else if (circle_to_change == "circle2") {
+    var change_startx = -100
+    var change_starty = -50
+  } else if (circle_to_change == "circle3") {
+    var change_startx = 100
+    var change_starty = -50
+  } else if (circle_to_change == "circle4") {
+    var change_startx = -100
+    var change_starty = 50
+  } else if (circle_to_change == "circle5") {
+    var change_startx = 100
+    var change_starty = 50
+  } else {
+    var change_startX = 0
+    var change_starty = 100
+  }
+  
+  // Settings of the changing circle
+  changed_circle = {
+    obj_type: "circle",
+    startX: change_startx,
+    startY: change_starty,
+    radius: 20,
+    line_color: memory_set_colors[6],
+    fill_color: memory_set_colors[6],
+    show_start_time: 2500,
+    origin_center: true
+  
+  }
+  
+  
+  
+    
+  
+
+  // Single trial setup  
+  var trial = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [fixation_cross, 
+        circle1, 
+        circle2, 
+        circle3, 
+        circle4, 
+        circle5, 
+        circle6,
+        mask1,
+        mask2,
+        mask3,
+        mask4,
+        mask5,
+        mask6,
+        changed_circle],
+          choices: ["z", "/"],
+          response_start_time: 2500,
+          trial_duration: 5000,
+          canvas_width: 1000,
+          canvas_height: 800,
+          background_color: '#ffffff',
+      },
+      ]
+  }
+  
+  
+  jsPsych.init({
+    timeline: [trial]
+  });
+
+
+
+  </script>
+</html>
