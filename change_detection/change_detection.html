@@ -14,11 +14,18 @@
 
   //blue, green, red, pink, yellow, purple, lightblue, orange
   var color_set = ["#0070C0", "#00B050", "#BB0703", "#E836D3", "#FFC000", "#904090", "#33E2EB", "#ED7D31"];
-  
+  var n_trials = 50
   
   // Randomly sample six colors from the full set for the current memory items
-  var memory_set_colors = jsPsych.randomization.sampleWithoutReplacement(color_set, 8);
+  //var memory_set_colors = jsPsych.randomization.sampleWithoutReplacement(color_set, 8);
+  var memory_set = [];
 
+  for (var i = 0; i < (n_trials-1); i++) {
+    memory_set[i] = jsPsych.randomization.sampleWithoutReplacement(color_set, 8);
+  }
+  
+  
+  
 
   // Fixation cross
   var fixation_cross = {
@@ -37,8 +44,8 @@
     startX: 0,
     startY: -100,
     radius: 20,
-    line_color: memory_set_colors[0],
-    fill_color: memory_set_colors[0],
+    line_color: jsPsych.timelineVariable('stim1'),
+    fill_color: jsPsych.timelineVariable('stim1'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -48,8 +55,8 @@
     startX: -100,
     startY: -50,
     radius: 20,
-    line_color: memory_set_colors[1],
-    fill_color: memory_set_colors[1],
+    line_color: jsPsych.timelineVariable('stim2'),
+    fill_color: jsPsych.timelineVariable('stim2'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -59,8 +66,8 @@
     startX: 100,
     startY: -50,
     radius: 20,
-    line_color: memory_set_colors[2],
-    fill_color: memory_set_colors[2],
+    line_color: jsPsych.timelineVariable('stim3'),
+    fill_color: jsPsych.timelineVariable('stim3'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -70,8 +77,8 @@
     startX: -100,
     startY: 50,
     radius: 20,
-    line_color: memory_set_colors[3],
-    fill_color: memory_set_colors[3],
+    line_color: jsPsych.timelineVariable('stim4'),
+    fill_color: jsPsych.timelineVariable('stim4'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -81,8 +88,8 @@
     startX: 100,
     startY: 50,
     radius: 20,
-    line_color: memory_set_colors[4],
-    fill_color: memory_set_colors[4],
+    line_color: jsPsych.timelineVariable('stim5'),
+    fill_color: jsPsych.timelineVariable('stim5'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -92,8 +99,8 @@
     startX: 0,
     startY: 100,
     radius: 20,
-    line_color: memory_set_colors[5],
-    fill_color: memory_set_colors[5],
+    line_color: jsPsych.timelineVariable('stim6'),
+    fill_color: jsPsych.timelineVariable('stim6'),
     show_start_time: 1000,
     origin_center: true
   }
@@ -177,38 +184,44 @@
     origin_center: true
   }
   
+  // For change trials: Randomly draw the circle to be changed and set 
+  var change_circle_x = []
+  var change_circle_y = []
+  var circle_to_change = []
   
-  var circle_to_change = jsPsych.randomization.sampleWithoutReplacement(["circle1", "circle2", "circle3", "circle4", "circle5", "circle6"], 1)[0];
-  
-  // Conditional statements to determine where the changed circle should be presented (i.e., which circle has to be changed?)
-  if (circle_to_change == "circle1") {
-    var change_startx = 0
-    var change_starty = -100
-  } else if (circle_to_change == "circle2") {
-    var change_startx = -100
-    var change_starty = -50
-  } else if (circle_to_change == "circle3") {
-    var change_startx = 100
-    var change_starty = -50
-  } else if (circle_to_change == "circle4") {
-    var change_startx = -100
-    var change_starty = 50
-  } else if (circle_to_change == "circle5") {
-    var change_startx = 100
-    var change_starty = 50
-  } else {
-    var change_startX = 0
-    var change_starty = 100
+  for (var i = 0; i < ((n_trials/2)-1); i++) {
+    circle_to_change[i] = jsPsych.randomization.sampleWithoutReplacement(['circle1', 'circle2', 'circle3', 'circle4', 'circle5', 'circle6'], 1)[0]
+    
+    // Conditional statements to determine where the changed circle should be presented (i.e., which circle has to be changed?)    
+    if (circle_to_change[i] == "circle1") {
+      change_circle_x[i] = 0
+      change_circle_y[i] = -100
+    } else if (circle_to_change == "circle2") {
+      change_circle_x[i] = -100
+      change_circle_y[i] = -50
+    } else if (circle_to_change == "circle3") {
+      change_circle_x[i] = 100
+      change_circle_y[i] = -50
+    } else if (circle_to_change == "circle4") {
+      change_circle_x[i] = -100
+      change_circle_y[i] = 50
+    } else if (circle_to_change == "circle5") {
+      change_circle_x[i] = 100
+      change_circle_y[i] = 50
+    } else {
+      change_circle_x[i] = 0
+      change_circle_y[i] = 100
+    }
   }
   
   // Settings of the changing circle
   changed_circle = {
     obj_type: "circle",
-    startX: change_startx,
-    startY: change_starty,
+    startX: jsPsych.timelineVariable('change_x'),
+    startY: jsPsych.timelineVariable('change_y'),
     radius: 20,
-    line_color: memory_set_colors[6],
-    fill_color: memory_set_colors[6],
+    line_color: jsPsych.timelineVariable('change_color'),
+    fill_color: jsPsych.timelineVariable('change_color'),
     show_start_time: 2500,
     origin_center: true
   
@@ -224,7 +237,8 @@
     timeline: [
       {
         type: 'psychophysics',
-        stimuli: [fixation_cross, 
+        stimuli: [
+        fixation_cross, 
         circle1, 
         circle2, 
         circle3, 
@@ -245,6 +259,48 @@
           canvas_height: 800,
           background_color: '#ffffff',
       },
+      ],
+      timeline_variables: [
+        {change_x: 0, change_y: 0, trial_type: "same", 
+          stim1: memory_set[0][0], stim2: memory_set[0][1], stim3: memory_set[0][2], stim4: memory_set[0][3], stim5: memory_set[0][4], stim6: memory_set[0][5], change_color: "#00000000"},
+        {change_x: change_circle_x[0], change_y: change_circle_y[0], type: "different", 
+          stim1: memory_set[1][0], stim2: memory_set[1][1], stim3: memory_set[1][2], stim4: memory_set[1][3], stim5: memory_set[1][4], stim6: memory_set[1][5], change_color: memory_set[1][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[2][0], stim2: memory_set[2][1], stim3: memory_set[2][2], stim4: memory_set[2][3], stim5: memory_set[2][4], stim6: memory_set[2][5], change_color: "#00000000"},
+        {change_x: change_circle_x[1], change_y: change_circle_y[1], type: "different", 
+          stim1: memory_set[3][0], stim2: memory_set[3][1], stim3: memory_set[3][2], stim4: memory_set[3][3], stim5: memory_set[3][4], stim6: memory_set[3][5], change_color: memory_set[3][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[4][0], stim2: memory_set[4][1], stim3: memory_set[4][2], stim4: memory_set[4][3], stim5: memory_set[4][4], stim6: memory_set[4][5], change_color: "#00000000"},
+        {change_x: change_circle_x[2], change_y: change_circle_y[2], type: "different", 
+          stim1: memory_set[5][0], stim1: memory_set[5][1], stim3: memory_set[5][2], stim4: memory_set[5][3], stim5: memory_set[5][4], stim6: memory_set[5][5], change_color: memory_set[5][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[6][0], stim2: memory_set[6][1], stim3: memory_set[6][2], stim4: memory_set[6][3], stim5: memory_set[6][4], stim6: memory_set[6][5], change_color: "#00000000"},
+        {change_x: change_circle_x[3], change_y: change_circle_y[3], type: "different", 
+          stim1: memory_set[7][0], stim2: memory_set[7][1], stim3: memory_set[7][2], stim4: memory_set[7][3], stim5: memory_set[7][4], stim6: memory_set[7][5], change_color: memory_set[7][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[8][0], stim2: memory_set[8][1], stim3: memory_set[8][2], stim4: memory_set[8][3], stim5: memory_set[8][4], stim6: memory_set[8][5], change_color: "#00000000"},
+        {change_x: change_circle_x[4], change_y: change_circle_y[4], type: "different", 
+          stim1: memory_set[9][0], stim2: memory_set[9][1], stim3: memory_set[9][2], stim4: memory_set[9][3], stim5: memory_set[9][4], stim6: memory_set[9][5], change_color: memory_set[9][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[10][0], stim2: memory_set[10][1], stim3: memory_set[10][2], stim4: memory_set[10][3], stim5: memory_set[10][4], stim6: memory_set[10][5], change_color: "#00000000"},
+        {change_x: change_circle_x[5], change_y: change_circle_y[5], type: "different", 
+          stim1: memory_set[11][0], stim2: memory_set[11][1], stim3: memory_set[11][2], stim4: memory_set[11][3], stim5: memory_set[11][4], stim6: memory_set[11][5], change_color: memory_set[11][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[12][0], stim2: memory_set[12][1], stim3: memory_set[12][2], stim4: memory_set[12][3], stim5: memory_set[12][4], stim6: memory_set[12][5], change_color: "#00000000"},
+        {change_x: change_circle_x[6], change_y: change_circle_y[6], type: "different", 
+          stim1: memory_set[13][0], stim2: memory_set[13][1], stim3: memory_set[13][2], stim4: memory_set[13][3], stim5: memory_set[13][4], stim6: memory_set[13][5], change_color: memory_set[13][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[14][0], stim2: memory_set[14][1], stim3: memory_set[14][2], stim4: memory_set[14][3], stim5: memory_set[14][4], stim6: memory_set[14][5], change_color: "#00000000"},
+        {change_x: change_circle_x[7], change_y: change_circle_y[7], type: "different", 
+          stim1: memory_set[15][0], stim2: memory_set[15][1], stim3: memory_set[15][2], stim4: memory_set[15][3], stim5: memory_set[15][4], stim6: memory_set[15][5], change_color: memory_set[15][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[16][0], stim2: memory_set[16][1], stim3: memory_set[16][2], stim4: memory_set[16][3], stim5: memory_set[16][4], stim6: memory_set[16][5], change_color: "#00000000"},
+        {change_x: change_circle_x[8], change_y: change_circle_y[8], type: "different", 
+          stim1: memory_set[17][0], stim2: memory_set[17][1], stim3: memory_set[17][2], stim4: memory_set[17][3], stim5: memory_set[17][4], stim6: memory_set[17][5], change_color: memory_set[17][6]},
+        {change_x: 0, change_y: 0, type: "same", 
+          stim1: memory_set[18][0], stim2: memory_set[18][1], stim3: memory_set[18][2], stim4: memory_set[18][3], stim5: memory_set[18][4], stim6: memory_set[18][5], change_color: "#00000000"},
+        {change_x: change_circle_x[9], change_y: change_circle_y[9], type: "different", 
+          stim1: memory_set[19][0], stim2: memory_set[19][1], stim3: memory_set[19][2], stim4: memory_set[19][3], stim5: memory_set[19][4], stim6: memory_set[19][5], change_color: memory_set[19][6]},
       ]
   }
   
