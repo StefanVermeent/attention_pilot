@@ -21,7 +21,7 @@
     line_color: jsPsych.timelineVariable('stim1_color'),
     fill_color: jsPsych.timelineVariable('stim1_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+   // show_end_time: 3000,
     origin_center: true
   }
   
@@ -33,7 +33,7 @@
     line_color: jsPsych.timelineVariable('stim2_color'),
     fill_color: jsPsych.timelineVariable('stim2_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+  //  show_end_time: 3000,
     origin_center: true
   }
   
@@ -45,7 +45,7 @@
     line_color: jsPsych.timelineVariable('stim3_color'),
     fill_color: jsPsych.timelineVariable('stim3_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+  //  show_end_time: 3000,
     origin_center: true
   }
   
@@ -57,7 +57,7 @@
     line_color: jsPsych.timelineVariable('stim4_color'),
     fill_color: jsPsych.timelineVariable('stim4_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+  //  show_end_time: 3000,
     origin_center: true
   }
   
@@ -69,7 +69,7 @@
     line_color: jsPsych.timelineVariable('stim5_color'),
     fill_color: jsPsych.timelineVariable('stim5_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+  //  show_end_time: 3000,
     origin_center: true
   }
   
@@ -81,7 +81,7 @@
     line_color: jsPsych.timelineVariable('stim6_color'),
     fill_color: jsPsych.timelineVariable('stim6_color'),
     show_start_time: 1000,
-    show_end_time: 3000,
+  //  show_end_time: 3000,
     origin_center: true
   }
   
@@ -94,19 +94,19 @@
     line_color: jsPsych.timelineVariable('stim1_color'),
     fill_color: jsPsych.timelineVariable('stim1_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+   // show_end_time: 2500,
     origin_center: true
   }
   
   var test_circle2 = {
     obj_type: "circle",
     startX: jsPsych.timelineVariable("test_stim2_x"),
-    startY: jsPsych.timelineVariable("test_stim21_y"),
+    startY: jsPsych.timelineVariable("test_stim2_y"),
     radius: 20,
     line_color: jsPsych.timelineVariable('stim2_color'),
     fill_color: jsPsych.timelineVariable('stim2_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+  //  show_end_time: 2500,
     origin_center: true
   }
   
@@ -118,7 +118,7 @@
     line_color: jsPsych.timelineVariable('stim3_color'),
     fill_color: jsPsych.timelineVariable('stim3_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+   // show_end_time: 2500,
     origin_center: true
   }
   
@@ -130,7 +130,7 @@
     line_color: jsPsych.timelineVariable('stim4_color'),
     fill_color: jsPsych.timelineVariable('stim4_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+   // show_end_time: 2500,
     origin_center: true
   }
   
@@ -142,7 +142,7 @@
     line_color: jsPsych.timelineVariable('stim5_color'),
     fill_color: jsPsych.timelineVariable('stim5_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+  //  show_end_time: 2500,
     origin_center: true
   }
   
@@ -154,6 +154,6 @@
     line_color: jsPsych.timelineVariable('stim6_color'),
     fill_color: jsPsych.timelineVariable('stim6_color'),
     show_start_time: 2000,
-    show_end_time: 2500,
+  //  show_end_time: 2500,
     origin_center: true
   }
