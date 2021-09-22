@@ -14,16 +14,25 @@
   var timeline = [];
   
   // Flanker stimuli
-  var congruent_left = "<span style='font-size: 48px;'><<<<<</span>"
-  var congruent_right = "<span style='font-size: 48px;'>>>>>></span>"
-  var incongruent_left = "<span style='font-size: 48px;'><<><<</span>"
-  var incongruent_right = "<span style='font-size: 48px;'>>><>></span>"
+  var congruent_left_top = "<span style='font-size: 60px;position: fixed;top: 0px;'>&larr;&larr;&larr;&larr;&larr;</span>"
+  var congruent_right_top = "<span style='font-size: 60px;'>&rarr;&rarr;&rarr;&rarr;&rarr;</span>"
+  var incongruent_left_top = "<span style='font-size: 60px;'>&rarr;&rarr;&larr;&rarr;&rarr;</span>"
+  var incongruent_right_top = "<span style='font-size: 60px;'>&larr;&larr;&rarr;&larr;&larr;</span>"
+  
+  var congruent_left_bottom = "<span style='font-size: 60px;position: relative;top: 2px;'>&larr;&larr;&larr;&larr;&larr;</span>"
+  var congruent_right_bottom = "<span style='font-size: 60px;'>&rarr;&rarr;&rarr;&rarr;&rarr;</span>"
+  var incongruent_left_bottom = "<span style='font-size: 60px;'>&rarr;&rarr;&larr;&rarr;&rarr;</span>"
+  var incongruent_right_bottom = "<span style='font-size: 60px;'>&larr;&larr;&rarr;&larr;&larr;</span>"
     
   var flanker_stimuli = [
-    {stimulus: congruent_left},
-    {stimulus: congruent_right},
-    {stimulus: incongruent_left},
-    {stimulus: incongruent_right}
+    {stimulus: congruent_left_top},
+   // {stimulus: congruent_right_top},
+  //  {stimulus: incongruent_left_top},
+  //  {stimulus: incongruent_right_top},
+  //  {stimulus: congruent_left_bottom},
+  //  {stimulus: congruent_right_bottom},
+  //  {stimulus: incongruent_left_bottom},
+  //  {stimulus: incongruent_right_bottom},
   ]
   
   
@@ -32,7 +41,6 @@
   type: 'html-keyboard-response',
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: jsPsych.NO_KEYS,
-  trial_duration: 1000,
   trial_duration: function(){
     return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]}
 }
@@ -43,7 +51,7 @@
     type: "html-keyboard-response",
     stimulus: jsPsych.timelineVariable('stimulus'),
     choices: ['ArrowLeft', 'ArrowRight'],
-    trial_duration: 2000
+    trial_duration: 2500
 }
   
   

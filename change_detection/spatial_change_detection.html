@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Change Detection Task</title>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/jspsych.js"></script>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="C:/Repositories/attention_pilot/jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
+    <script src="C:/Repositories/attention_pilot/change_detection/0_spatial_change_settings.js"></script>
+    <script src="C:/Repositories/attention_pilot/change_detection/1_spatial_change_stimuli.js"></script>
+    <link href="C:/Repositories/attention_pilot/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+  <style>
+  </style>
+  </head>
+  <body></body>
+  <script>
+
+  
+//------------------------- Trial setup 
+
+  var trial = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation_cross, 
+        mem_circle1, 
+        mem_circle2, 
+        mem_circle3, 
+        mem_circle4, 
+        mem_circle5, 
+        mem_circle6,
+        test_circle1,
+        test_circle2,
+        test_circle3,
+        test_circle4,
+        test_circle5,
+        test_circle6,
+        ],
+          choices: ["z", "/"],
+          response_start_time: 2500,
+          trial_duration: 5000,
+          canvas_width: 1000,
+          canvas_height: 800,
+          background_color: '#ffffff',
+      },
+      ],
+      timeline_variables: [
+        {stim1_color: "#0070C0", stim2_color: "#00B050", stim3_color: "#BB0703",mem_stim4_color: "#E836D3", stim5_color: "#FFC000", stim6_color: "#904090",
+         mem_stim1_x: memory_set_coord_x[0][0], mem_stim2_x: memory_set_coord_x[0][1], mem_stim3_x: memory_set_coord_x[0][2], mem_stim4_x: memory_set_coord_x[0][3], mem_stim5_x: memory_set_coord_x[0][4], mem_stim6_x: memory_set_coord_x[0][5],
+         mem_stim1_y: memory_set_coord_y[0][0], mem_stim2_y: memory_set_coord_y[0][1], mem_stim3_y: memory_set_coord_y[0][2], mem_stim4_y: memory_set_coord_y[0][3], mem_stim5_y: memory_set_coord_y[0][4], mem_stim6_y: memory_set_coord_y[0][5],
+         test_stim1_x: test_set_coord_x[0][0], test_stim2_x: test_set_coord_x[0][1], test_stim3_x: test_set_coord_x[0][2], test_stim4_x: test_set_coord_x[0][3], test_stim5_x: test_set_coord_x[0][4], test_stim6_x: test_set_coord_x[0][5],
+         test_stim1_y: test_set_coord_y[0][0], test_stim2_y: test_set_coord_y[0][1], test_stim3_y: test_set_coord_y[0][2], test_stim4_y: test_set_coord_y[0][3], test_stim5_y: test_set_coord_y[0][4], test_stim6_y: test_set_coord_y[0][5],
+         trial_type: "same", }
+       
+      ]
+  }
+  
+  
+  jsPsych.init({
+    timeline: [trial]
+  });
+
+
+
+  </script>
+</html>
