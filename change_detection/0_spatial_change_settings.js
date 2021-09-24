@@ -2,7 +2,7 @@
   
   var color_set = ["#0070C0", "#00B050", "#BB0703", "#E836D3", "#FFC000", "#904090", "#33E2EB", "#ED7D31"]; // blue, green, red, pink, yellow, purple
   var n_trials = 50
-  var movement_px = 60 // Number of pixels of displacement of moving circle
+  var movement_px = 40 // Number of pixels of displacement of moving circle
   
   
   
@@ -23,21 +23,21 @@
   for (var i = 0; i < (n_trials-1); i++) {
     
     memory_set_coord_x[i] = [
-      jsPsych.randomization.sampleWithoutReplacement([-360, -340, -320, -300, -280, -260, -240, -220, -200, -180, -160, -140, -120, -100, -80, -60], 1)[0], // x-coordinate of first circle,
-      jsPsych.randomization.sampleWithoutReplacement([-360, -340, -320, -300, -280, -260, -240, -220, -200, -180, -160, -140, -120], 1)[0], // x-coordinate of second circle,
-      jsPsych.randomization.sampleWithoutReplacement([-360, -340, -320, -300, -280, -260, -240, -220, -200, -180, -160, -140, -120, -100, -80, -60], 1)[0], // x-coordinate of third circle,
-      jsPsych.randomization.sampleWithoutReplacement([360, 340, 320, 300, 280, 260, 240, 220, 200, 180, 160, 140, 120, 100, 80, 60], 1)[0], // x-coordinate of fourth circle,
-      jsPsych.randomization.sampleWithoutReplacement([360, 340, 320, 300, 280, 260, 240, 220, 200, 180, 160, 140, 120], 1)[0], // x-coordinate of fifth circle,
-      jsPsych.randomization.sampleWithoutReplacement([360, 340, 320, 300, 280, 260, 240, 220, 200, 180, 160, 140, 120, 100, 80, 60], 1)[0] // x-coordinate of sixth circle
+      jsPsych.randomization.sampleWithoutReplacement([-240, -220, -200, -180, -160, -140, -120, -100, -80, -60, -40], 1)[0], // x-coordinate of first circle,
+      jsPsych.randomization.sampleWithoutReplacement([-240, -220, -200, -180, -160, -140, -120, -100, -80], 1)[0], // x-coordinate of second circle,
+      jsPsych.randomization.sampleWithoutReplacement([-240, -220, -200, -180, -160, -140, -120, -100, -80, -60, -40], 1)[0], // x-coordinate of third circle,
+      jsPsych.randomization.sampleWithoutReplacement([40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240], 1)[0], // x-coordinate of fourth circle,
+      jsPsych.randomization.sampleWithoutReplacement([80, 100, 120, 140, 160, 180, 200, 220, 240], 1)[0], // x-coordinate of fifth circle,
+      jsPsych.randomization.sampleWithoutReplacement([40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240], 1)[0] // x-coordinate of sixth circle
     ]
     
     memory_set_coord_y[i] = [
-      jsPsych.randomization.sampleWithoutReplacement([-300, -280, -260, -240, -220, -200, -180], 1)[0], // y-coordinate of first circle,
-      jsPsych.randomization.sampleWithoutReplacement([-60, -40, -20, 0, 20, 40, 60], 1)[0], // y-coordinate of second circle,
-      jsPsych.randomization.sampleWithoutReplacement([180, 200, 220, 240, 260, 280, 300], 1)[0], // y-coordinate of third circle,
-      jsPsych.randomization.sampleWithoutReplacement([-300, -280, -260, -240, -220, -200, -180], 1)[0], // y-coordinate of fourth circle,
-      jsPsych.randomization.sampleWithoutReplacement([-60, -40, -20, 0, 20, 40, 60, 1], 1)[0], // y-coordinate of fifth circle,
-      jsPsych.randomization.sampleWithoutReplacement([-300, -280, -260, -240, -220, -200, -180], 1)[0] // y-coordinate of sixth circle
+      jsPsych.randomization.sampleWithoutReplacement([-200, -180, -160, -140, -120], 1)[0], // y-coordinate of first circle,
+      jsPsych.randomization.sampleWithoutReplacement([-40, -20, 0, 20, 40], 1)[0], // y-coordinate of second circle,
+      jsPsych.randomization.sampleWithoutReplacement([120, 140, 160, 180, 200], 1)[0], // y-coordinate of third circle,
+      jsPsych.randomization.sampleWithoutReplacement([-200, -180, -160, -140, -120], 1)[0], // y-coordinate of fourth circle,
+      jsPsych.randomization.sampleWithoutReplacement([-40, -20, 0, 20, 40], 1)[0], // y-coordinate of fifth circle,
+      jsPsych.randomization.sampleWithoutReplacement([-200, -180, -160, -140, -120], 1)[0] // y-coordinate of sixth circle
     ]
   }
   
@@ -54,13 +54,15 @@
     // Determine which circle is going to move
     circle_to_change[i] = jsPsych.randomization.sampleWithoutReplacement(['circle1', 'circle2', 'circle3', 'circle4', 'circle5', 'circle6'], 1)
     
-    // Randomly determine movement along the x-axis (minimal movement = 0px, maximal movement = 60px; either positive or negative)
-    change_circle_x = (Math.floor(Math.random() * 61)) * jsPsych.randomization.sampleWithoutReplacement([-1, 1], 1)[0]
+    // Randomly determine movement along the x-axis (minimal movement = 0px, maximal movement = 40px; either positive or negative)
+    change_circle_x = (Math.floor(Math.random() * (movement_px+1))) * jsPsych.randomization.sampleWithoutReplacement([-1, 1], 1)[0]
+    
+    console.log(change_circle_x)
     
     // Given movement across x-axis and total movement, solve for y 
     change_circle_y = Math.sqrt((movement_px ** 2) - (change_circle_x ** 2)) * jsPsych.randomization.sampleWithoutReplacement([-1, 1], 1)[0]
   
-    
+    console.log(change_circle_y)
     // Change the x/y coordinates of the moving circle and keep all other coordinates the same as in the memory set
     
     // ** X-coordinate
