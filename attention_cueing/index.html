@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attention cueing</title>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+  <style>
+  </style>
+  </head>
+  <body></body>
+  <script>
+  
+  var timeline = []
+
+//------------------------- Symmetry Images
+  var fixation_grid    = "<img src='img/empty_grid.png' width='40%'>";
+  var cue_neutral      = "<img src='img/cue_neutral.png' width='40%'>";
+  var cue_topleft      = "<img src='img/cue_topleft.png' width='40%'>";
+  var cue_middleleft   = "<img src='img/cue_middleleft.png' width='40%'>";;
+  var cue_bottomleft   = "<img src='img/cue_bottomleft.png' width='40%'>";;
+  var cue_bottommiddle = "<img src='img/cue_bottommiddle.png' width='40%'>";;
+  var cue_bottomright  = "<img src='img/cue_bottomright.png' width='40%'>";;
+  var cue_middleright  = "<img src='img/cue_middleright.png' width='40%'>";;
+  var cue_topright     = "<img src='img/cue_topright.png' width='40%'>";;
+  var cue_topmiddle    = "<img src='img/cue_topmiddle.png' width='40%'>";;
+  
+  var leftarrow_topleft      = "<img src='img/leftarrow_topleft.png' width='40%'>";
+  var leftarrow_middleleft   = "<img src='img/leftarrow_middleleft.png' width='40%'>";
+  var leftarrow_bottomleft   = "<img src='img/leftarrow_bottomleft.png' width='40%'>";
+  var leftarrow_bottommiddle = "<img src='img/leftarrow_bottommiddle.png' width='40%'>";
+  var leftarrow_bottomright  = "<img src='img/leftarrow_bottomright.png' width='40%'>";
+  var leftarrow_middleright  = "<img src='img/leftarrow_middleright.png' width='40%'>";
+  var leftarrow_topright     = "<img src='img/leftarrow_topright.png' width='40%'>";
+  var leftarrow_topmiddle    = "<img src='img/leftarrow_topmiddle.png' width='40%'>";
+  
+  var rightarrow_topleft      = "<img src='img/rightarrow_topleft.png' width='40%'>";
+  var rightarrow_middleleft   = "<img src='img/rightarrow_middleleft.png' width='40%'>";
+  var rightarrow_bottomleft   = "<img src='img/rightarrow_bottomleft.png' width='40%'>";
+  var rightarrow_bottommiddle = "<img src='img/rightarrow_bottommiddle.png' width='40%'>";
+  var rightarrow_bottomright  = "<img src='img/rightarrow_bottomright.png' width='40%'>";
+  var rightarrow_middleright  = "<img src='img/rightarrow_middleright.png' width='40%'>";
+  var rightarrow_topright     = "<img src='img/rightarrow_topright.png' width='40%'>";
+  var rightarrow_topmiddle    = "<img src='img/rightarrow_topmiddle.png' width='40%'>";
+  
+
+  var fixation = {
+    type: 'html-keyboard-response',
+    stimulus: fixation_grid,
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 1000
+  }
+  
+  var cue_presentation = {
+    type: 'html-keyboard-response',
+    stimulus: jsPsych.timelineVariable('cue'),
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 250
+  }
+  
+  var target_presentation = {
+    type: 'html-keyboard-response',
+    stimulus: jsPsych.timelineVariable('target'),
+    choices: ['ArrowLeft', 'ArrowRight'],
+    trial_duration: 3000
+  }
+  
+
+  var trial_procedure = {
+    timeline: [fixation, cue_presentation, target_presentation],
+    timeline_variables: [
+      // Cued left arrow trials
+      {cue: cue_topleft,      target: leftarrow_topleft},
+      {cue: cue_middleleft,   target: leftarrow_middleleft},
+      {cue: cue_bottomleft,   target: leftarrow_bottomleft},
+      {cue: cue_bottommiddle, target: leftarrow_bottommiddle},
+      {cue: cue_bottomright,  target: leftarrow_bottomright},
+      {cue: cue_middleright,  target: leftarrow_middleright},
+      {cue: cue_topright,     target: leftarrow_topright},
+      {cue: cue_topmiddle,    target: leftarrow_topmiddle},
+      // Cued right arrow trials
+      {cue: cue_topleft,      target: rightarrow_topleft},
+      {cue: cue_middleleft,   target: rightarrow_middleleft},
+      {cue: cue_bottomleft,   target: rightarrow_bottomleft},
+      {cue: cue_bottommiddle, target: rightarrow_bottommiddle},
+      {cue: cue_bottomright,  target: rightarrow_bottomright},
+      {cue: cue_middleright,  target: rightarrow_middleright},
+      {cue: cue_topright,     target: rightarrow_topright},
+      {cue: cue_topmiddle,    target: rightarrow_topmiddle},
+      // Uncued left arrow trials
+      {cue: cue_neutral,       target: leftarrow_topleft},
+      {cue: cue_neutral,       target: leftarrow_middleleft},
+      {cue: cue_neutral,       target: leftarrow_bottomleft},
+      {cue: cue_neutral,       target: leftarrow_bottommiddle},
+      {cue: cue_neutral,       target: leftarrow_bottomright},
+      {cue: cue_neutral,       target: leftarrow_middleright},
+      {cue: cue_neutral,       target: leftarrow_topright},
+      {cue: cue_neutral,       target: leftarrow_topmiddle},
+      // Uncued right arrow trials
+      {cue: cue_neutral,       target: rightarrow_topleft},
+      {cue: cue_neutral,       target: rightarrow_middleleft},
+      {cue: cue_neutral,       target: rightarrow_bottomleft},
+      {cue: cue_neutral,       target: rightarrow_bottommiddle},
+      {cue: cue_neutral,       target: rightarrow_bottomright},
+      {cue: cue_neutral,       target: rightarrow_middleright},
+      {cue: cue_neutral,       target: rightarrow_topright},
+      {cue: cue_neutral,       target: rightarrow_topmiddle},
+    ],
+    randomize_order: true,
+    repetitions: 3
+  }
+  
+  timeline.push(trial_procedure)
+  
+  jsPsych.init({
+    timeline: timeline
+  })
+  
+  </script>
+</html>

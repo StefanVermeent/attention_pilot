@@ -11,6 +11,45 @@
   <body></body>
   <script>
   
+  // Function to make PRL stimuli in 4 quadrants
+var location_stim = function(up, down){
+  if(up === null){
+     up = "<div class = 'blank up'></div>";
+  } else{
+     up = "<div class = 'up'>" + up +  "</div>";
+  }
+  if(down === null){
+     down = "<div class = 'blank down'></div>";
+  } else{
+     down = "<div class='down'>" + down +  "</div>";
+  }
+  var html = "<style>" +
+               "div{text-align: center;}" +
+               //"img{object-fit: scale-down; height: 100%; width: 100%;}" +
+               ".blank{border: 1px dashed;}" +
+               ".pressed{background: rgba(0,0,0,0.25);}" +
+               ".selected{border: 3px solid red;}" +
+               ".prl_grid{justify-content: center; display: grid; grid-template: 120px 120px 120px 70px / 160px 160px 160px; grid-gap: 10px;}" +
+               ".key_grid{justify-content: center; display: grid; grid-template: 40px 40px / 40px 40px 40px; grid-gap: 5px;}" +
+             "</style>";
+  html +=   up;
+  html +=   "<div></div>";
+  
+  html +=   down;
+  html +=   "<div></div>";
+  html +=   "<div></div>";                      // row 4
+                "<div class = 'up'><&larr;&larr;&larr;&larr;&larr;></div>" +
+                "<div></div>" +
+                "<div class = 'down'  > <&larr;&larr;&larr;&larr;&larr;> </div>" +
+            "</div>";
+  html +=   "<div></div>";
+  html += "</div>";
+
+  return(html);
+};
+
+  
+  
   var timeline = [];
   
   // Flanker stimuli
