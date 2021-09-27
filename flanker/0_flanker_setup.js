@@ -54,6 +54,9 @@ var location_stim = function(up, down){
   choices: jsPsych.NO_KEYS,
   trial_duration: function(){
     return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]},
+  data: {
+    variable: 'fixation'
+  }
 }
 
 var cursor_off = {

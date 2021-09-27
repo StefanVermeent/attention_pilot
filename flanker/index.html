@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flanker Task</title>
+    <title>Flanker Game</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
@@ -24,6 +24,7 @@
     choices: ['ArrowLeft', 'ArrowRight'],
     trial_duration: 2000,
     data: {
+      variable: 'main_task',
       task: 'response',
       location: jsPsych.timelineVariable('location'),
       stimtype: jsPsych.timelineVariable('stimtype'),

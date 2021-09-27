@@ -60,6 +60,7 @@ var flanker_practice = {
     stimulus: jsPsych.timelineVariable('practice_stim'),
     choices: ['ArrowLeft', 'ArrowRight'],
     data: {
+      variable: 'practice',
       task: 'response',
       location: jsPsych.timelineVariable('location'),
       stimtype: jsPsych.timelineVariable('stimtype')
@@ -84,6 +85,9 @@ var feedback = {
     }
   },
   trial_duration: 2000,
+  data: {
+    variable: 'feedback'
+  }
 }
 
 var practice_procedure = {

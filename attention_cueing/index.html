@@ -1,70 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Attention cueing</title>
+    <title>Arrow Detection Game</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="0_attention_cueing_setup.js"></script>
+    <script src="1_attention_cueing_instructions.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
   <style>
   </style>
   </head>
   <body></body>
   <script>
-  
-  var timeline = []
-
-//------------------------- Symmetry Images
-  var fixation_grid    = "<img src='img/empty_grid.png' width='40%'>";
-  var cue_neutral      = "<img src='img/cue_neutral.png' width='40%'>";
-  var cue_topleft      = "<img src='img/cue_topleft.png' width='40%'>";
-  var cue_middleleft   = "<img src='img/cue_middleleft.png' width='40%'>";
-  var cue_bottomleft   = "<img src='img/cue_bottomleft.png' width='40%'>";
-  var cue_bottommiddle = "<img src='img/cue_bottommiddle.png' width='40%'>";
-  var cue_bottomright  = "<img src='img/cue_bottomright.png' width='40%'>";
-  var cue_middleright  = "<img src='img/cue_middleright.png' width='40%'>";
-  var cue_topright     = "<img src='img/cue_topright.png' width='40%'>";
-  var cue_topmiddle    = "<img src='img/cue_topmiddle.png' width='40%'>";
-  
-  var leftarrow_topleft      = "<img src='img/leftarrow_topleft.png' width='40%'>";
-  var leftarrow_middleleft   = "<img src='img/leftarrow_middleleft.png' width='40%'>";
-  var leftarrow_bottomleft   = "<img src='img/leftarrow_bottomleft.png' width='40%'>";
-  var leftarrow_bottommiddle = "<img src='img/leftarrow_bottommiddle.png' width='40%'>";
-  var leftarrow_bottomright  = "<img src='img/leftarrow_bottomright.png' width='40%'>";
-  var leftarrow_middleright  = "<img src='img/leftarrow_middleright.png' width='40%'>";
-  var leftarrow_topright     = "<img src='img/leftarrow_topright.png' width='40%'>";
-  var leftarrow_topmiddle    = "<img src='img/leftarrow_topmiddle.png' width='40%'>";
-  
-  var rightarrow_topleft      = "<img src='img/rightarrow_topleft.png' width='40%'>";
-  var rightarrow_middleleft   = "<img src='img/rightarrow_middleleft.png' width='40%'>";
-  var rightarrow_bottomleft   = "<img src='img/rightarrow_bottomleft.png' width='40%'>";
-  var rightarrow_bottommiddle = "<img src='img/rightarrow_bottommiddle.png' width='40%'>";
-  var rightarrow_bottomright  = "<img src='img/rightarrow_bottomright.png' width='40%'>";
-  var rightarrow_middleright  = "<img src='img/rightarrow_middleright.png' width='40%'>";
-  var rightarrow_topright     = "<img src='img/rightarrow_topright.png' width='40%'>";
-  var rightarrow_topmiddle    = "<img src='img/rightarrow_topmiddle.png' width='40%'>";
-  
-
-  var fixation = {
-    type: 'html-keyboard-response',
-    stimulus: fixation_grid,
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 1000
-  }
-  
-  var cue_presentation = {
-    type: 'html-keyboard-response',
-    stimulus: jsPsych.timelineVariable('cue'),
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 250
-  }
-  
-  var target_presentation = {
-    type: 'html-keyboard-response',
-    stimulus: jsPsych.timelineVariable('target'),
-    choices: ['ArrowLeft', 'ArrowRight'],
-    trial_duration: 3000
-  }
-  
 
   var trial_procedure = {
     timeline: [fixation, cue_presentation, target_presentation],
