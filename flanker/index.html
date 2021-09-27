@@ -4,6 +4,10 @@
     <title>Flanker Task</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="0_flanker_setup.js"></script>
+    <script src="1_flanker_instructions.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
   <style>
 
@@ -11,25 +15,6 @@
   </head>
   <body></body>
   <script>
-  
-  
-  
-  var flanker_stimuli = [
-    {stimulus: congruent_left},
-    {stimulus: congruent_right},
-    {stimulus: incongruent_left},
-    {stimulus: incongruent_right},
-  ]
-  
-  // Fixation cross
-  var fixation = {
-  type: 'html-keyboard-response',
-  stimulus: '<div style="font-size:60px;">+</div>',
-  choices: jsPsych.NO_KEYS,
-  trial_duration: function(){
-    return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]},
-}
-
 
   // Presentation of flanker stimuli
   var present_flanker = {
@@ -58,7 +43,7 @@
     {location: 'bottom', stimtype: 'incongruent_right', stim: location_stim(up=null, down='&larr;&larr;&rarr;&larr;&larr;')},
   ],
   randomize_order: true,
-  repetitions: 1,
+  repetitions: 5,
 };
 
 timeline.push(test_procedure);
