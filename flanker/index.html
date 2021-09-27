@@ -6,6 +6,7 @@
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
     <script src="0_flanker_setup.js"></script>
     <script src="1_flanker_instructions.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
@@ -21,32 +22,42 @@
     type: "html-keyboard-response",
     stimulus: jsPsych.timelineVariable('stim'),
     choices: ['ArrowLeft', 'ArrowRight'],
-    trial_duration: 4000,
+    trial_duration: 2000,
     data: {
       task: 'response',
       location: jsPsych.timelineVariable('location'),
-      stimtype: jsPsych.timelineVariable('stimtype')
+      stimtype: jsPsych.timelineVariable('stimtype'),
+      correct_response: jsPsych.timelineVariable('correct_response')
+    },
+    on_finish: function(data) { {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
     }
-}
+    }
+  }
   
   
   var test_procedure = {
   timeline: [fixation, present_flanker],
   timeline_variables: [
-    {location: 'top',    stimtype: 'congruent_left',    stim: location_stim(up='&larr;&larr;&larr;&larr;&larr;', down=null)},
-    {location: 'top',    stimtype: 'congruent_right',   stim: location_stim(up='&rarr;&rarr;&rarr;&rarr;&rarr;', down=null)},
-    {location: 'top',    stimtype: 'incongruent_left',  stim: location_stim(up='&rarr;&rarr;&larr;&rarr;&rarr;', down=null)},
-    {location: 'top',    stimtype: 'incongruent_right', stim: location_stim(up='&larr;&larr;&rarr;&larr;&larr;', down=null)},
-    {location: 'bottom', stimtype: 'congruent_left',    stim: location_stim(up=null, down='&larr;&larr;&larr;&larr;&larr;')},
-    {location: 'bottom', stimtype: 'congruent_right',   stim: location_stim(up=null, down='&rarr;&rarr;&rarr;&rarr;&rarr;')},
-    {location: 'bottom', stimtype: 'incongruent_left',  stim: location_stim(up=null, down='&rarr;&rarr;&larr;&rarr;&rarr;')},
-    {location: 'bottom', stimtype: 'incongruent_right', stim: location_stim(up=null, down='&larr;&larr;&rarr;&larr;&larr;')},
+    {location: 'top',    correct_response: 'ArrowLeft', stimtype: 'congruent_left',    stim: location_stim(up='&larr;&larr;&larr;&larr;&larr;', down=null)},
+    {location: 'top',    correct_response: 'ArrowRight', stimtype: 'congruent_right',   stim: location_stim(up='&rarr;&rarr;&rarr;&rarr;&rarr;', down=null)},
+    {location: 'top',    correct_response: 'ArrowLeft', stimtype: 'incongruent_left',  stim: location_stim(up='&rarr;&rarr;&larr;&rarr;&rarr;', down=null)},
+    {location: 'top',    correct_response: 'ArrowRight', stimtype: 'incongruent_right', stim: location_stim(up='&larr;&larr;&rarr;&larr;&larr;', down=null)},
+    {location: 'bottom', correct_response: 'ArrowLeft', stimtype: 'congruent_left',    stim: location_stim(up=null, down='&larr;&larr;&larr;&larr;&larr;')},
+    {location: 'bottom', correct_response: 'ArrowRight', stimtype: 'congruent_right',   stim: location_stim(up=null, down='&rarr;&rarr;&rarr;&rarr;&rarr;')},
+    {location: 'bottom', correct_response: 'ArrowLeft', stimtype: 'incongruent_left',  stim: location_stim(up=null, down='&rarr;&rarr;&larr;&rarr;&rarr;')},
+    {location: 'bottom', correct_response: 'ArrowRight', stimtype: 'incongruent_right', stim: location_stim(up=null, down='&larr;&larr;&rarr;&larr;&larr;')},
   ],
   randomize_order: true,
-  repetitions: 5,
+  repetitions: 1,
 };
 
 timeline.push(test_procedure);
+timeline.push(cursor_on);
        
 jsPsych.init({
   timeline: timeline,

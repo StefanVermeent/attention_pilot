@@ -56,6 +56,20 @@ var location_stim = function(up, down){
     return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]},
 }
 
+var cursor_off = {
+    type: 'call-function',
+    func: function() {
+        document.body.style.cursor= "none";
+    }
+}
+
+var cursor_on = {
+    type: 'call-function',
+    func: function() {
+        document.body.style.cursor= "auto";
+    }
+}
+
   
 var timeline = []
 
