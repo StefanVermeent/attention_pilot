@@ -447,6 +447,28 @@ var change_practice_finish = {
 };
 
 
+var change_break = {
+  type: "html-button-response",
+  stimulus: "<div style = 'text-align: left;'>" +
+  "Nice work!<br><br>" +
+  "You are now halfway through the game.<br><br>" +
+  "If you need to, you can take a break to give your eyes some rest and regain your focus.<br><br>" +
+  "Take as long as you need!<br><br>" +
+  "Press 'continue' when you feel ready to continue with the second half of the trials.",
+  choices: ['Continue'],
+  data: {variable: "break", task: "change"}
+};
+
+var change_break_continue = {
+  type: "html-keyboard-response",
+  stimulus: "<div style = 'text-align: left;'>" +
+  "You will now start the second half of the trials<br><br>" +
+  "Press any key to continue!",
+  choices: jsPsych.ALL_KEYS,
+  data: {variable: "break", task: "change"}
+};
+
+
 var change_end = {
   type: "html-button-response",
   stimulus: 

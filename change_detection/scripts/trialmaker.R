@@ -11,8 +11,10 @@ n_trials = 50
 
 
 trials <- tibble(
-  type = str_c("type: '", c(rep('same', n_trials/2), rep('different', n_trials/2)), "'"),
-  correct_response = str_c("correct_response: '", c(rep("ArrowLeft", n_trials/2), rep("ArrowRight", n_trials/2)), "'"),
+  type = str_c("type: '", rep(c('same', 'different'), n_trials/2),"'"),
+  correct_response = str_c("correct_response: '", ifelse(type == "type: 'same'", "ArrowLeft", "ArrowRight"), "'"),
+  
+  #correct_response = str_c("correct_response: '", c(rep("ArrowLeft", n_trials/2), rep("ArrowRight", n_trials/2)), "'"),
   # X-coordinates of memory items
   mem_x1 = str_c("mem_stim1_x: ",
                  rep('mem_x', n_trials),
