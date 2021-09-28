@@ -1,6 +1,5 @@
 //------------------------- Global task settings  
   
-var color_set = ["#0070C0", "#00B050", "#BB0703", "#E836D3", "#FFC000", "#904090", "#33E2EB", "#ED7D31"]; // blue, green, red, pink, yellow, purple
 var n_trials = 50 // 8 practice trials and 50 test trials
 var movement_px = 40 // Number of pixels of displacement of moving circle
 var endtime_memory_set = 1800 // presentation of memory set starts at 1000 and ends at the time specified here

@@ -155,7 +155,18 @@ trials <- tibble(
   color3 = str_c("stim3_color: '", rep(c("#BB0703", "#E836D3", "#FFC000", "#0070C0", "#00B050"), times = ceiling(n_trials/5)), "'"),
   color4 = str_c("stim4_color: '", rep(c("#E836D3", "#FFC000", "#0070C0", "#00B050", "#BB0703"), times = ceiling(n_trials/5)), "'"),
   color5 = str_c("stim5_color: '", rep(c("#FFC000", "#0070C0", "#00B050", "#BB0703", "#E836D3"), times = ceiling(n_trials/5)), "'")
-  ) %>%
-  glue_data(
-    "{{{type}, {correct_response}, {mem_x1}, {mem_x2}, {mem_x3}, {mem_x4}, {mem_x5},\n{mem_y1}, {mem_y2}, {mem_y3}, {mem_y4}, {mem_y5},\n{test_x1}, {test_x2}, {test_x3}, {test_x4}, {test_x5},\n{test_y1}, {test_y2}, {test_y3}, {test_y4}, {test_y5},\n{color1}, {color2}, {color3}, {color4}, {color5}}},\n\n",
-    )
+  )
+
+
+
+# Create Javascript trial blocks ------------------------------------------
+
+trials_block1 <- glue_data(
+  trials[1:(n_trials/2),],
+  "{{{type}, {correct_response}, {mem_x1}, {mem_x2}, {mem_x3}, {mem_x4}, {mem_x5},\n{mem_y1}, {mem_y2}, {mem_y3}, {mem_y4}, {mem_y5},\n{test_x1}, {test_x2}, {test_x3}, {test_x4}, {test_x5},\n{test_y1}, {test_y2}, {test_y3}, {test_y4}, {test_y5},\n{color1}, {color2}, {color3}, {color4}, {color5}}},\n\n"
+)
+
+trials_block2 <- glue_data(
+  trials[(n_trials/2 + 1):n_trials,],
+  "{{{type}, {correct_response}, {mem_x1}, {mem_x2}, {mem_x3}, {mem_x4}, {mem_x5},\n{mem_y1}, {mem_y2}, {mem_y3}, {mem_y4}, {mem_y5},\n{test_x1}, {test_x2}, {test_x3}, {test_x4}, {test_x5},\n{test_y1}, {test_y2}, {test_y3}, {test_y4}, {test_y5},\n{color1}, {color2}, {color3}, {color4}, {color5}}},\n\n"
+)
