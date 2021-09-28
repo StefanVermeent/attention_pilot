@@ -4,9 +4,14 @@
     <title>Change Detection Task</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-resize.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
     <script src="0_spatial_change_setup.js"></script>
+    <script src="1_spatial_change_instructions.js"></script>
     <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
   <style>
   </style>
@@ -20,7 +25,7 @@
     item_width: 3 + 3/8,
     item_height: 2 + 1/8,
     prompt: "<p>For this game to work properly, it is important that we know the resolution of your screen.<br><br>" +
-    "Please search for a credit card and hold it up to the screen.<br>" +
+    "Please pick up a creditcard (or another card of similar size) and hold it up to the screen.<br>" +
     "Then, click and drag the lower right corner of the box until the box is the same size as the credit card when held up to the screen." +
     "</p>",
     button_label: ['Continue'],
@@ -34,6 +39,7 @@
       {
         type: 'psychophysics',
         stimuli: [
+        key_reminders,
         fixation_cross, 
         mem_circle1, 
         mem_circle2, 
@@ -47,7 +53,7 @@
         test_circle5,
         ],
           choices: ["ArrowLeft", "ArrowRight"],
-          response_start_time: 2500,
+          response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
           background_color: '#ffffff',
@@ -390,7 +396,29 @@ stim1_color: '#FFC000', stim2_color: '#0070C0', stim3_color: '#00B050', stim4_co
   
   
   jsPsych.init({
-    timeline: [trial],  
+    timeline: [
+      fullscreenmode,
+      change_welcome, 
+      resize_screen,
+      change_instructions1, 
+      change_instructions2, 
+      change_instructions3,
+      cursor_off, 
+      change_practice_start, 
+      change_practice1,
+      feedback,
+      change_practice2,
+      feedback,
+      change_practice3,
+      feedback,
+      change_practice4,
+      feedback,
+      change_practice5,
+      feedback,
+      change_practice_finish,
+      trial, 
+      cursor_on,
+      change_end],  
     on_finish: function() {
       jsPsych.data.displayData();
     }

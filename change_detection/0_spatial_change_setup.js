@@ -1,10 +1,10 @@
 //------------------------- Global task settings  
   
 var color_set = ["#0070C0", "#00B050", "#BB0703", "#E836D3", "#FFC000", "#904090", "#33E2EB", "#ED7D31"]; // blue, green, red, pink, yellow, purple
-var n_trials = 50
-var movement_px = 60 // Number of pixels of displacement of moving circle
-var time_memory_set = 20000
-var interstim_interval = 500
+var n_trials = 50 // 8 practice trials and 50 test trials
+var movement_px = 40 // Number of pixels of displacement of moving circle
+var endtime_memory_set = 1800 // presentation of memory set starts at 1000 and ends at the time specified here
+var interstim_interval = 500 // time between memory set and test set
   
   
   
@@ -113,6 +113,27 @@ for (var i = 0; i < (n_trials); i++) {
 
 //------------------------- Stimulus objects
 
+var fullscreenmode = {
+  type: 'fullscreen',
+  fullscreen_mode: true
+};
+
+var cursor_off = {
+    type: 'call-function',
+    func: function() {
+        document.body.style.cursor= "none";
+    }
+}
+
+var cursor_on = {
+    type: 'call-function',
+    func: function() {
+        document.body.style.cursor= "auto";
+    }
+}
+
+
+
 // Fixation cross
 var fixation_cross = {
   obj_type: 'cross',
@@ -133,7 +154,7 @@ var mem_circle1 = {
   line_color: jsPsych.timelineVariable('stim1_color'),
   fill_color: jsPsych.timelineVariable('stim1_color'),
   show_start_time: 1000,
-  show_end_time: 3000,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -145,7 +166,7 @@ var mem_circle2 = {
   line_color: jsPsych.timelineVariable('stim2_color'),
   fill_color: jsPsych.timelineVariable('stim2_color'),
   show_start_time: 1000,
-  show_end_time: 3000,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -157,7 +178,7 @@ var mem_circle3 = {
   line_color: jsPsych.timelineVariable('stim3_color'),
   fill_color: jsPsych.timelineVariable('stim3_color'),
   show_start_time: 1000,
-  show_end_time: 3000,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -169,7 +190,7 @@ var mem_circle4 = {
   line_color: jsPsych.timelineVariable('stim4_color'),
   fill_color: jsPsych.timelineVariable('stim4_color'),
   show_start_time: 1000,
-  show_end_time: 3000,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -181,7 +202,7 @@ var mem_circle5 = {
   line_color: jsPsych.timelineVariable('stim5_color'),
   fill_color: jsPsych.timelineVariable('stim5_color'),
   show_start_time: 1000,
-  show_end_time: 3000,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -193,7 +214,7 @@ var test_circle1 = {
   radius: 15,
   line_color: jsPsych.timelineVariable('stim1_color'),
   fill_color: jsPsych.timelineVariable('stim1_color'),
-  show_start_time: 3500,
+  show_start_time: endtime_memory_set + interstim_interval,
   origin_center: true
 }
   
@@ -204,7 +225,7 @@ var test_circle2 = {
   radius: 15,
   line_color: jsPsych.timelineVariable('stim2_color'),
   fill_color: jsPsych.timelineVariable('stim2_color'),
-  show_start_time: 3500,
+  show_start_time: endtime_memory_set + interstim_interval,
   origin_center: true
 }
   
@@ -215,7 +236,7 @@ var test_circle3 = {
   radius: 15,
   line_color: jsPsych.timelineVariable('stim3_color'),
   fill_color: jsPsych.timelineVariable('stim3_color'),
-  show_start_time: 3500,
+  show_start_time: endtime_memory_set + interstim_interval,
   origin_center: true
 }
   
@@ -226,7 +247,7 @@ var test_circle4 = {
   radius: 15,
   line_color: jsPsych.timelineVariable('stim4_color'),
   fill_color: jsPsych.timelineVariable('stim4_color'),
-  show_start_time: 3500,
+  show_start_time: endtime_memory_set + interstim_interval,
   origin_center: true
 }
   
@@ -237,7 +258,16 @@ var test_circle5 = {
   radius: 15,
   line_color: jsPsych.timelineVariable('stim5_color'),
   fill_color: jsPsych.timelineVariable('stim5_color'),
-  show_start_time: 3500,
+  show_start_time: endtime_memory_set + interstim_interval,
+  origin_center: true
+}
+
+var key_reminders = {
+  obj_type: "text",
+  font: "15px 'Arial'",
+  startY: 280,
+  startX: 0,
+  content: "SAME                                               DIFFERENT",
   origin_center: true
 }
 

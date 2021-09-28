@@ -34,7 +34,7 @@ var flanker_instructions = {
   key_backward: -1,
   button_label_next: "continue",
   button_label_previous: "go back",
-  data: {variable: "instructions", task: "abs_updating"}
+  data: {variable: "instructions", task: "flanker"}
 };
 
 timeline.push(flanker_instructions)
