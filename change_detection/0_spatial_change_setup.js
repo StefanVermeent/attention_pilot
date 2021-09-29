@@ -7,14 +7,7 @@ var interstim_interval = 500 // time between memory set and test set
   
   
   
-//------------------------- Stimulus color and locations  
-  
-// Randomly sample six colors from the full set for the current memory items
-var memory_set_colors = [];
-
-for (var i = 0; i < (n_trials); i++) {
-  memory_set_colors[i] = jsPsych.randomization.sampleWithoutReplacement(color_set, 8);
-}
+//------------------------- Stimulus locations  
   
   
 // Randomly determine the location of each circle within a pre-specified area to prevent overlap
