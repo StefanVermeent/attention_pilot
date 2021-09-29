@@ -1,4 +1,3 @@
-
 //------------------------- Variables to hide cursor during trials
 var cursor_off = {
     type: 'call-function',
@@ -14,67 +13,68 @@ var cursor_on = {
     }
 }
 
-//------------------------- Symmetry Images
-var fixation_grid    = "<img src='img/empty_grid.png' width='40%'>";
-var cue_neutral      = "<img src='img/cue_neutral.png' width='40%'>";
-var cue_topleft      = "<img src='img/cue_topleft.png' width='40%'>";
-var cue_middleleft   = "<img src='img/cue_middleleft.png' width='40%'>";
-var cue_bottomleft   = "<img src='img/cue_bottomleft.png' width='40%'>";
-var cue_bottommiddle = "<img src='img/cue_bottommiddle.png' width='40%'>";
-var cue_bottomright  = "<img src='img/cue_bottomright.png' width='40%'>";
-var cue_middleright  = "<img src='img/cue_middleright.png' width='40%'>";
-var cue_topright     = "<img src='img/cue_topright.png' width='40%'>";
-var cue_topmiddle    = "<img src='img/cue_topmiddle.png' width='40%'>";
-  
-var leftarrow_topleft      = "<img src='img/leftarrow_topleft.png' width='40%'>";
-var leftarrow_middleleft   = "<img src='img/leftarrow_middleleft.png' width='40%'>";
-var leftarrow_bottomleft   = "<img src='img/leftarrow_bottomleft.png' width='40%'>";
-var leftarrow_bottommiddle = "<img src='img/leftarrow_bottommiddle.png' width='40%'>";
-var leftarrow_bottomright  = "<img src='img/leftarrow_bottomright.png' width='40%'>";
-var leftarrow_middleright  = "<img src='img/leftarrow_middleright.png' width='40%'>";
-var leftarrow_topright     = "<img src='img/leftarrow_topright.png' width='40%'>";
-var leftarrow_topmiddle    = "<img src='img/leftarrow_topmiddle.png' width='40%'>";
-  
-var rightarrow_topleft      = "<img src='img/rightarrow_topleft.png' width='40%'>";
-var rightarrow_middleleft   = "<img src='img/rightarrow_middleleft.png' width='40%'>";
-var rightarrow_bottomleft   = "<img src='img/rightarrow_bottomleft.png' width='40%'>";
-var rightarrow_bottommiddle = "<img src='img/rightarrow_bottommiddle.png' width='40%'>";
-var rightarrow_bottomright  = "<img src='img/rightarrow_bottomright.png' width='40%'>";
-var rightarrow_middleright  = "<img src='img/rightarrow_middleright.png' width='40%'>";
-var rightarrow_topright     = "<img src='img/rightarrow_topright.png' width='40%'>";
-var rightarrow_topmiddle    = "<img src='img/rightarrow_topmiddle.png' width='40%'>";
-  
-
-var fixation = {
-  type: 'html-keyboard-response',
-  stimulus: fixation_grid,
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 1000,
-  data: {variable: 'fixation'}
-}
-  
-var cue_presentation = {
-  type: 'html-keyboard-response',
-  stimulus: jsPsych.timelineVariable('cue'),
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 250,
-  data: {variable: 'cue'}
-}
-  
-var target_presentation = {
-  type: 'html-keyboard-response',
-  stimulus: jsPsych.timelineVariable('target'),
-  choices: ['ArrowLeft', 'ArrowRight'],
-  trial_duration: 3000,
-  data: {variable: 'target'}
-}
-
-
-//------------------------- Initiate timeline
-var timeline = []
-
-  timeline.push({
+var fullscreenmode = {
   type: 'fullscreen',
   fullscreen_mode: true
-});
-  
+}
+
+
+// Target and cue locations
+var location1_x = 0
+var location1_y = -400
+
+var location2_x = -282.8
+var location2_y = -282.8
+
+var location3_x = -400
+var location3_y = 0
+
+var location4_x = -282.8
+var location4_y = 282.8
+
+var location5_x = 0
+var location5_y = 400
+
+var location6_x = 282.8
+var location6_y = 282.8
+
+var location7_x = 400
+var location7_y = 0
+
+var location8_x = 0
+var location8_y = -400
+
+
+
+// Fixation cross
+var fixation = {
+  obj_type: 'cross',
+  line_length: 25,
+  startX: 0,
+  startY: 0,
+  show_start_time: 0,
+  origin_center: true
+}
+
+
+// Memory stimuli
+var cue = {
+  obj_type: "text",
+  content: "*",
+  font: "40px 'Arial'",
+  startX: jsPsych.timelineVariable('cue_x'),
+  startY: jsPsych.timelineVariable('cue_y'),
+  show_start_time: 1000,
+  show_end_time: 1250,
+  origin_center: true
+}
+
+var target = {
+  obj_type: "text",
+  content: jsPsych.timelineVariable('target'),
+  font: "30px 'Arial'",
+  startX: jsPsych.timelineVariable('target_x'),
+  startY: jsPsych.timelineVariable('target_y'),
+  show_start_time: 1250,
+  origin_center: true
+}

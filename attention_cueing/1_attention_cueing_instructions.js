@@ -12,7 +12,6 @@ var cueing_welcome = {
   data: {variable: 'welcome', task: "cueing"}
 };
 
-timeline.push(cueing_welcome)
 
 //-------------------- Instructions
 var cueing_instructions1 = {
@@ -33,8 +32,6 @@ var cueing_instructions1 = {
   button_label_previous: "go back",
   data: {variable: "instructions", task: "cueing"}
 };
-
-timeline.push(cueing_instructions1)
 
 
 var cueing_instructions2 = {
@@ -57,13 +54,8 @@ var cueing_instructions2 = {
   data: {variable: "instructions", task: "cueing"}
 };
 
-timeline.push(cueing_instructions2)
-
 
 //-------------------- Practice
-
-// Remove cursor during cueing trials
-timeline.push(cursor_off)
 
 var cueing_practice_start = {
   type: 'html-keyboard-response',
@@ -72,35 +64,217 @@ var cueing_practice_start = {
   data: {variable: "practice_start", task: "cueing"}
 };
 
-timeline.push(cueing_practice_start)
 
-
-var practice_cue_presentation = {
-  type: 'html-keyboard-response',
-  stimulus: jsPsych.timelineVariable('cue'),
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 250,
-  data: {variable: 'practice_cue', task: 'cueing'}
-}
-  
-var practice_target_presentation = {
-  type: 'html-keyboard-response',
-  stimulus: jsPsych.timelineVariable('target'),
-  choices: ['ArrowLeft', 'ArrowRight'],
-  trial_duration: 3000,
-  data: {
-    variable: 'practice_target', task: 'cueing',
-    cue: jsPsych.timelineVariable('cue'),
-    target: jsPsych.timelineVariable('target')
-  },
-    on_finish: function(data) {
+var cueing_practice1 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
         data.correct = true;
       } else {
         data.correct = false;
       }
-    }
-};
+    }, 
+      timeline_variables: [{type: 'cued', target: "<--", correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
+}
+
+var cueing_practice2 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'neutral', target: "-->", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
+}
+
+var cueing_practice3 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'cued', target: "-->", correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
+}
+
+var cueing_practice4 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'neutral', target: "<--", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y}],
+}
+
+var cueing_practice5 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'neutral', target: "-->", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y}],
+}
+
+var cueing_practice6 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'cued', target: "-->", correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
+}
+
+var cueing_practice7 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'cued', target: "<--", correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
+}
+
+var cueing_practice8 = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      on_finish: function(data) {
+      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
+        data.correct = true;
+      } else {
+        data.correct = false;
+      }
+    }, 
+      timeline_variables: [{type: 'neutral', target: "<--", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
+}
+
+
+
 
 var feedback = {
   type: 'html-keyboard-response',
@@ -116,27 +290,6 @@ var feedback = {
   data: {variable: 'feedback'}
 }
 
-var practice_procedure = {
-    timeline: [fixation, practice_cue_presentation, practice_target_presentation, feedback],
-    timeline_variables: [
-      // Cued left arrow trials
-      {cue: cue_topleft,      target: leftarrow_topleft,       correct_response: 'ArrowLeft'},
-      {cue: cue_middleright,  target: leftarrow_middleright,   correct_response: 'ArrowLeft'},
-      // Cued right arrow trials
-      {cue: cue_middleleft,   target: rightarrow_middleleft,   correct_response: 'ArrowRight'},
-      {cue: cue_topright,     target: rightarrow_topright,     correct_response: 'ArrowRight'},
-      // Uncued left arrow trials
-      {cue: cue_neutral,      target: leftarrow_bottommiddle,  correct_response: 'ArrowLeft'},
-      {cue: cue_neutral,      target: leftarrow_topmiddle,     correct_response: 'ArrowLeft'},
-      // Uncued right arrow trials
-      {cue: cue_neutral,      target: rightarrow_bottomleft,   correct_response: 'ArrowRight'},
-      {cue: cue_neutral,      target: rightarrow_bottomright,  correct_response: 'ArrowRight'},
-    ],
-    randomize_order: true,
-    repetitions: 1
-  }
-
-timeline.push(practice_procedure);
 
 
 // Finish Practice trials
@@ -152,5 +305,3 @@ var cueing_practice_finish = {
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "cueing"}
 };
-
-timeline.push(cueing_practice_finish)

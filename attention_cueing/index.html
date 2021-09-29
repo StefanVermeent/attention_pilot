@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Arrow Detection Game</title>
+    <title>Arrow Detection Task</title>
     <script src="jspsych-6.3.1/jspsych.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-resize.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
@@ -16,55 +19,103 @@
   <body></body>
   <script>
 
-  var trial_procedure = {
-    timeline: [fixation, cue_presentation, target_presentation],
-    timeline_variables: [
-      // Cued left arrow trials
-      {cue: cue_topleft,      target: leftarrow_topleft},
-      {cue: cue_middleleft,   target: leftarrow_middleleft},
-      {cue: cue_bottomleft,   target: leftarrow_bottomleft},
-      {cue: cue_bottommiddle, target: leftarrow_bottommiddle},
-      {cue: cue_bottomright,  target: leftarrow_bottomright},
-      {cue: cue_middleright,  target: leftarrow_middleright},
-      {cue: cue_topright,     target: leftarrow_topright},
-      {cue: cue_topmiddle,    target: leftarrow_topmiddle},
-      // Cued right arrow trials
-      {cue: cue_topleft,      target: rightarrow_topleft},
-      {cue: cue_middleleft,   target: rightarrow_middleleft},
-      {cue: cue_bottomleft,   target: rightarrow_bottomleft},
-      {cue: cue_bottommiddle, target: rightarrow_bottommiddle},
-      {cue: cue_bottomright,  target: rightarrow_bottomright},
-      {cue: cue_middleright,  target: rightarrow_middleright},
-      {cue: cue_topright,     target: rightarrow_topright},
-      {cue: cue_topmiddle,    target: rightarrow_topmiddle},
-      // Uncued left arrow trials
-      {cue: cue_neutral,       target: leftarrow_topleft},
-      {cue: cue_neutral,       target: leftarrow_middleleft},
-      {cue: cue_neutral,       target: leftarrow_bottomleft},
-      {cue: cue_neutral,       target: leftarrow_bottommiddle},
-      {cue: cue_neutral,       target: leftarrow_bottomright},
-      {cue: cue_neutral,       target: leftarrow_middleright},
-      {cue: cue_neutral,       target: leftarrow_topright},
-      {cue: cue_neutral,       target: leftarrow_topmiddle},
-      // Uncued right arrow trials
-      {cue: cue_neutral,       target: rightarrow_topleft},
-      {cue: cue_neutral,       target: rightarrow_middleleft},
-      {cue: cue_neutral,       target: rightarrow_bottomleft},
-      {cue: cue_neutral,       target: rightarrow_bottommiddle},
-      {cue: cue_neutral,       target: rightarrow_bottomright},
-      {cue: cue_neutral,       target: rightarrow_middleright},
-      {cue: cue_neutral,       target: rightarrow_topright},
-      {cue: cue_neutral,       target: rightarrow_topmiddle},
-    ],
-    randomize_order: true,
-    repetitions: 3
-  }
+
+
+
+var trial = {
+    timeline: [
+      {
+        type: 'psychophysics',
+        stimuli: [
+        fixation,
+        cue,
+        target,
+        ],
+          choices: ["ArrowLeft", "ArrowRight"],
+          response_start_time: 1250,
+          canvas_width: 900,
+          canvas_height: 900,
+          background_color: '#ffffff',
+      },
+      ],
+      timeline_variables: [
+        // Neutral trials - left-pointing arrows
+        {type: 'neutral', target: "<--", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location2_x, target_y: location2_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location3_x, target_y: location3_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location5_x, target_y: location5_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location7_x, target_y: location7_y},
+        {type: 'neutral', target: '<--', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y},
+        
+        // Neutral trials - right-pointing arrows
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location2_x, target_y: location2_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location3_x, target_y: location3_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location5_x, target_y: location5_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location7_x, target_y: location7_y},
+        {type: 'neutral', target: '-->', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y},
+        
+        // Cued trials - left-pointing arrows
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location1_x, cue_y: location1_y, target_x: location1_x, target_y: location1_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location4_x, cue_y: location4_y, target_x: location4_x, target_y: location4_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location6_x, cue_y: location6_y, target_x: location6_x, target_y: location6_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y},
+        {type: 'cued', target: '<--', correct_response: 'ArrowLeft', cue_x: location8_x, cue_y: location8_y, target_x: location8_x, target_y: location8_y},
+        
+        // Cued trials - right-pointing arrows
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location1_x, cue_y: location1_y, target_x: location1_x, target_y: location1_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location4_x, cue_y: location4_y, target_x: location4_x, target_y: location4_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location6_x, cue_y: location6_y, target_x: location6_x, target_y: location6_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y},
+        {type: 'cued', target: '-->', correct_response: 'ArrowRight', cue_x: location8_x, cue_y: location8_y, target_x: location8_x, target_y: location8_y},
+        ],
+        randomize_order: true
+}
+
+
+ jsPsych.init({
+    timeline: [
+      fullscreenmode,
+      cueing_welcome,
+      cueing_instructions1,
+      cueing_instructions2,
+      cursor_off,
+      cueing_practice_start,
+      cueing_practice2,
+      feedback,
+      cueing_practice1,
+      feedback,
+      cueing_practice3,
+      feedback,
+      cueing_practice4,
+      feedback,
+      cueing_practice5,
+      feedback,
+      cueing_practice6,
+      feedback,
+      cueing_practice7,
+      feedback,
+      cueing_practice8,
+      feedback,
+      cueing_practice_finish,
+      trial,
+      cursor_on
+      ],  
+    on_finish: function() {
+      jsPsych.data.displayData();
+    }
+  });
   
-  timeline.push(trial_procedure)
   
-  jsPsych.init({
-    timeline: timeline
-  })
-  
-  </script>
+    </script>
 </html>
