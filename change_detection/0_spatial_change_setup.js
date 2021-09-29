@@ -2,7 +2,7 @@
   
 var n_trials = 50 // 8 practice trials and 50 test trials
 var movement_px = 40 // Number of pixels of displacement of moving circle
-var endtime_memory_set = 1800 // presentation of memory set starts at 1000 and ends at the time specified here
+var endtime_memory_set = 2000 // presentation of memory set starts at 1000 and ends at the time specified here
 var interstim_interval = 500 // time between memory set and test set
   
   
