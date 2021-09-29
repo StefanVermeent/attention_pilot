@@ -19,9 +19,9 @@ var cueing_instructions1 = {
   pages: [
     "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
       "You will be playing the <strong>Arrow Detection</strong> game.<br><br>" + 
-      "In this game, a left arrow (&larr;) or right arrow (&rarr;) will be presented in one of nine locations around the center of the screen.<br>" +
+      "In this game, a left arrow (<) or right arrow (>) will be presented in one of nine locations around the center of the screen.<br>" +
       "Your job is to indicate the direction of the arrow.<br>" +
-      "If the arrow points left, press the (&larr;) arrow. If the arrow points right, press the (&rarr;) arrow.<br><br><br>" +
+      "If the arrow points left, press the (&larr;) arrow on your keyboard. If the arrow points right, press the (&rarr;) arrow.<br><br><br>" +
       "Click the 'continue' button for the next page of instructions.</p>"
   ],
   show_clickable_nav: true,
@@ -88,7 +88,7 @@ var cueing_practice1 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: "<--", correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
+      timeline_variables: [{type: 'cued', target: '<', correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
 }
 
 var cueing_practice2 = {
@@ -114,7 +114,7 @@ var cueing_practice2 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "-->", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
+      timeline_variables: [{type: 'neutral', target: ">", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
 }
 
 var cueing_practice3 = {
@@ -140,7 +140,7 @@ var cueing_practice3 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: "-->", correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
+      timeline_variables: [{type: 'cued', target: ">", correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
 }
 
 var cueing_practice4 = {
@@ -166,7 +166,7 @@ var cueing_practice4 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "<--", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y}],
+      timeline_variables: [{type: 'neutral', target: "<", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y}],
 }
 
 var cueing_practice5 = {
@@ -192,7 +192,7 @@ var cueing_practice5 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "-->", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y}],
+      timeline_variables: [{type: 'neutral', target: ">", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y}],
 }
 
 var cueing_practice6 = {
@@ -218,7 +218,7 @@ var cueing_practice6 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: "-->", correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
+      timeline_variables: [{type: 'cued', target: ">", correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
 }
 
 var cueing_practice7 = {
@@ -244,7 +244,7 @@ var cueing_practice7 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: "<--", correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
+      timeline_variables: [{type: 'cued', target: "<", correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
 }
 
 var cueing_practice8 = {
@@ -270,7 +270,7 @@ var cueing_practice8 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "<--", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
+      timeline_variables: [{type: 'neutral', target: "<", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
 }
 
 
