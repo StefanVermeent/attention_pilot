@@ -1,0 +1,12 @@
+---
+title: "preregistration_analyses"
+author: "Stefan Vermeent"
+date: "9/29/2021"
+output: pdf_document
+---
+
+
+```{r libraries, include=FALSE}
+library(tidyverse)
+```
+
