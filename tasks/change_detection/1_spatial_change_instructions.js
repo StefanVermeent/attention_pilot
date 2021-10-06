@@ -153,11 +153,11 @@ var change_practice1 = {
       }
     },      
       timeline_variables: [
-       {type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[25][0], mem_stim2_x: mem_x[25][1], mem_stim3_x: mem_x[25][2], mem_stim4_x: mem_x[25][3], mem_stim5_x: mem_x[25][4],
+{type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[25][0], mem_stim2_x: mem_x[25][1], mem_stim3_x: mem_x[25][2], mem_stim4_x: mem_x[25][3], mem_stim5_x: mem_x[25][4],
 mem_stim1_y: mem_y[25][0], mem_stim2_y: mem_y[25][1], mem_stim3_y: mem_y[25][2], mem_stim4_y: mem_y[25][3], mem_stim5_y: mem_y[25][4],
-test_stim1_x: test_x[25][0], test_stim2_x: test_x[25][1], test_stim3_x: test_x[25][2], test_stim4_x: test_x[25][3], test_stim5_x: test_x[25][4],
-test_stim1_y: test_y[25][0], test_stim2_y: test_y[25][1], test_stim3_y: test_y[25][2], test_stim4_y: test_y[25][3], test_stim5_y: test_y[25][4],
-stim1_color: '#0070C0', stim2_color: '#00B050', stim3_color: '#BB0703', stim4_color: '#E836D3', stim5_color: '#FFC000'},
+test_stim1_x: test_x[25][0], test_stim2_x: mem_x[25][1], test_stim3_x: mem_x[25][2], test_stim4_x: mem_x[25][3], test_stim5_x: mem_x[25][4],
+test_stim1_y: test_y[25][0], test_stim2_y: mem_y[25][1], test_stim3_y: mem_y[25][2], test_stim4_y: mem_y[25][3], test_stim5_y: mem_y[25][4],
+stim1_color: '#D40E0E', stim2_color: '#4D0063', stim3_color: '#0457A0', stim4_color: '#25D9E4', stim5_color: '#FBF250'},
 ]
 }
 
@@ -218,11 +218,11 @@ var change_practice2 = {
       }
     },      
       timeline_variables: [
-       {type: 'same', correct_response: 'ArrowLeft', mem_stim1_x: mem_x[0][0], mem_stim2_x: mem_x[0][1], mem_stim3_x: mem_x[0][2], mem_stim4_x: mem_x[0][3], mem_stim5_x: mem_x[0][4],
-mem_stim1_y: mem_y[0][0], mem_stim2_y: mem_y[0][1], mem_stim3_y: mem_y[0][2], mem_stim4_y: mem_y[0][3], mem_stim5_y: mem_y[0][4],
-test_stim1_x: mem_x[0][0], test_stim2_x: mem_x[0][1], test_stim3_x: mem_x[0][2], test_stim4_x: mem_x[0][3], test_stim5_x: mem_x[0][4],
-test_stim1_y: mem_y[0][0], test_stim2_y: mem_y[0][1], test_stim3_y: mem_y[0][2], test_stim4_y: mem_y[0][3], test_stim5_y: mem_y[0][4],
-stim1_color: '#0070C0', stim2_color: '#00B050', stim3_color: '#BB0703', stim4_color: '#E836D3', stim5_color: '#FFC000'},
+{type: 'same', correct_response: 'ArrowLeft', mem_stim1_x: mem_x[18][0], mem_stim2_x: mem_x[18][1], mem_stim3_x: mem_x[18][2], mem_stim4_x: mem_x[18][3], mem_stim5_x: mem_x[18][4],
+mem_stim1_y: mem_y[18][0], mem_stim2_y: mem_y[18][1], mem_stim3_y: mem_y[18][2], mem_stim4_y: mem_y[18][3], mem_stim5_y: mem_y[18][4],
+test_stim1_x: mem_x[18][0], test_stim2_x: mem_x[18][1], test_stim3_x: mem_x[18][2], test_stim4_x: mem_x[18][3], test_stim5_x: mem_x[18][4],
+test_stim1_y: mem_y[18][0], test_stim2_y: mem_y[18][1], test_stim3_y: mem_y[18][2], test_stim4_y: mem_y[18][3], test_stim5_y: mem_y[18][4],
+stim1_color: '#0457A0', stim2_color: '#FBF250', stim3_color: '#D40E0E', stim4_color: '#25D9E4', stim5_color: '#4D0063'},
 ]
 }
 
@@ -286,11 +286,11 @@ var change_practice3 = {
       }
     },      
       timeline_variables: [
-       {type: 'same', correct_response: 'ArrowLeft', mem_stim1_x: mem_x[1][0], mem_stim2_x: mem_x[1][1], mem_stim3_x: mem_x[1][2], mem_stim4_x: mem_x[1][3], mem_stim5_x: mem_x[1][4],
-mem_stim1_y: mem_y[1][0], mem_stim2_y: mem_y[1][1], mem_stim3_y: mem_y[1][2], mem_stim4_y: mem_y[1][3], mem_stim5_y: mem_y[1][4],
-test_stim1_x: mem_x[1][0], test_stim2_x: mem_x[1][1], test_stim3_x: mem_x[1][2], test_stim4_x: mem_x[1][3], test_stim5_x: mem_x[1][4],
-test_stim1_y: mem_y[1][0], test_stim2_y: mem_y[1][1], test_stim3_y: mem_y[1][2], test_stim4_y: mem_y[1][3], test_stim5_y: mem_y[1][4],
-stim1_color: '#00B050', stim2_color: '#BB0703', stim3_color: '#E836D3', stim4_color: '#FFC000', stim5_color: '#0070C0'},
+{type: 'same', correct_response: 'ArrowLeft', mem_stim1_x: mem_x[44][0], mem_stim2_x: mem_x[44][1], mem_stim3_x: mem_x[44][2], mem_stim4_x: mem_x[44][3], mem_stim5_x: mem_x[44][4],
+mem_stim1_y: mem_y[44][0], mem_stim2_y: mem_y[44][1], mem_stim3_y: mem_y[44][2], mem_stim4_y: mem_y[44][3], mem_stim5_y: mem_y[44][4],
+test_stim1_x: mem_x[44][0], test_stim2_x: mem_x[44][1], test_stim3_x: mem_x[44][2], test_stim4_x: mem_x[44][3], test_stim5_x: mem_x[44][4],
+test_stim1_y: mem_y[44][0], test_stim2_y: mem_y[44][1], test_stim3_y: mem_y[44][2], test_stim4_y: mem_y[44][3], test_stim5_y: mem_y[44][4],
+stim1_color: '#FBF250', stim2_color: '#0457A0', stim3_color: '#D40E0E', stim4_color: '#25D9E4', stim5_color: '#4D0063'},
 ]
 }
 
@@ -354,11 +354,11 @@ var change_practice4 = {
       }
     },      
       timeline_variables: [
-       {type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[26][0], mem_stim2_x: mem_x[26][1], mem_stim3_x: mem_x[26][2], mem_stim4_x: mem_x[26][3], mem_stim5_x: mem_x[26][4],
-mem_stim1_y: mem_y[26][0], mem_stim2_y: mem_y[26][1], mem_stim3_y: mem_y[26][2], mem_stim4_y: mem_y[26][3], mem_stim5_y: mem_y[26][4],
-test_stim1_x: test_x[26][0], test_stim2_x: test_x[26][1], test_stim3_x: test_x[26][2], test_stim4_x: test_x[26][3], test_stim5_x: test_x[26][4],
-test_stim1_y: test_y[26][0], test_stim2_y: test_y[26][1], test_stim3_y: test_y[26][2], test_stim4_y: test_y[26][3], test_stim5_y: test_y[26][4],
-stim1_color: '#00B050', stim2_color: '#BB0703', stim3_color: '#E836D3', stim4_color: '#FFC000', stim5_color: '#0070C0'},
+{type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[49][0], mem_stim2_x: mem_x[49][1], mem_stim3_x: mem_x[49][2], mem_stim4_x: mem_x[49][3], mem_stim5_x: mem_x[49][4],
+mem_stim1_y: mem_y[49][0], mem_stim2_y: mem_y[49][1], mem_stim3_y: mem_y[49][2], mem_stim4_y: mem_y[49][3], mem_stim5_y: mem_y[49][4],
+test_stim1_x: mem_x[49][0], test_stim2_x: mem_x[49][1], test_stim3_x: mem_x[49][2], test_stim4_x: mem_x[49][3], test_stim5_x: test_x[49][4],
+test_stim1_y: mem_y[49][0], test_stim2_y: mem_y[49][1], test_stim3_y: mem_y[49][2], test_stim4_y: mem_y[49][3], test_stim5_y: test_y[49][4],
+stim1_color: '#25D9E4', stim2_color: '#0457A0', stim3_color: '#D40E0E', stim4_color: '#FBF250', stim5_color: '#4D0063'},
 ]
 }
 
@@ -422,11 +422,11 @@ var change_practice5 = {
       }
     },      
       timeline_variables: [
-       {type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[27][0], mem_stim2_x: mem_x[27][1], mem_stim3_x: mem_x[27][2], mem_stim4_x: mem_x[27][3], mem_stim5_x: mem_x[27][4],
-mem_stim1_y: mem_y[27][0], mem_stim2_y: mem_y[27][1], mem_stim3_y: mem_y[27][2], mem_stim4_y: mem_y[27][3], mem_stim5_y: mem_y[27][4],
-test_stim1_x: test_x[27][0], test_stim2_x: test_x[27][1], test_stim3_x: test_x[27][2], test_stim4_x: test_x[27][3], test_stim5_x: test_x[27][4],
-test_stim1_y: test_y[27][0], test_stim2_y: test_y[27][1], test_stim3_y: test_y[27][2], test_stim4_y: test_y[27][3], test_stim5_y: test_y[27][4],
-stim1_color: '#BB0703', stim2_color: '#E836D3', stim3_color: '#FFC000', stim4_color: '#0070C0', stim5_color: '#00B050'},
+{type: 'different', correct_response: 'ArrowRight', mem_stim1_x: mem_x[43][0], mem_stim2_x: mem_x[43][1], mem_stim3_x: mem_x[43][2], mem_stim4_x: mem_x[43][3], mem_stim5_x: mem_x[43][4],
+mem_stim1_y: mem_y[43][0], mem_stim2_y: mem_y[43][1], mem_stim3_y: mem_y[43][2], mem_stim4_y: mem_y[43][3], mem_stim5_y: mem_y[43][4],
+test_stim1_x: mem_x[43][0], test_stim2_x: mem_x[43][1], test_stim3_x: mem_x[43][2], test_stim4_x: test_x[43][3], test_stim5_x: mem_x[43][4],
+test_stim1_y: mem_y[43][0], test_stim2_y: mem_y[43][1], test_stim3_y: mem_y[43][2], test_stim4_y: test_y[43][3], test_stim5_y: mem_y[43][4],
+stim1_color: '#0457A0', stim2_color: '#FBF250', stim3_color: '#D40E0E', stim4_color: '#25D9E4', stim5_color: '#4D0063'},
 ]
 }
 

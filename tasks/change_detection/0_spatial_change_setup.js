@@ -61,46 +61,21 @@ for (var i = 0; i < (n_trials); i++) {
   test_y[i] = [null, null, null, null, null]
     
   // ** X-coordinate
-  if(circle_to_change[i] == "circle1") {
+  
     test_x[i][0] = mem_x[i][0] + change_circle_x
     test_y[i][0] = mem_y[i][0] + change_circle_y
-  } else {
-    test_x[i][0] = mem_x[i][0]
-    test_y[i][0] = mem_y[i][0]
-  }
 
-  if(circle_to_change[i] == "circle2") {
     test_x[i][1] = mem_x[i][1] + change_circle_x
     test_y[i][1] = mem_y[i][1] + change_circle_y
-  } else {
-    test_x[i][1] = mem_x[i][1]
-    test_y[i][1] = mem_y[i][1]
-  }
       
-  if(circle_to_change[i] == "circle3") {
     test_x[i][2] = mem_x[i][2] + change_circle_x
     test_y[i][2] = mem_y[i][2] + change_circle_y
-  } else {
-    test_x[i][2] = mem_x[i][2]
-    test_y[i][2] = mem_y[i][2]
-  }
 
-  if(circle_to_change[i] == "circle4") {
     test_x[i][3] = mem_x[i][3] + change_circle_x
     test_y[i][3] = mem_y[i][3] + change_circle_y
-  } else {
-    test_x[i][3] = mem_x[i][3]
-    test_y[i][3] = mem_y[i][3]
-  }
-  
-  if(circle_to_change[i] == "circle5") {
+
     test_x[i][4] = mem_x[i][4] + change_circle_x
     test_y[i][4] = mem_y[i][4] + change_circle_y
-  } else {
-    test_x[i][4] = mem_x[i][4]
-    test_y[i][4] = mem_y[i][4]
-  }
-      
 } 
 
 //------------------------- Stimulus objects
@@ -146,7 +121,7 @@ var mem_circle1 = {
   line_color: jsPsych.timelineVariable('stim1_color'),
   fill_color: jsPsych.timelineVariable('stim1_color'),
   show_start_time: 1000,
-  show_end_time: endtime_memory_set,
+  show_end_time: 100000,//endtime_memory_set,
   origin_center: true
 }
   
@@ -158,7 +133,7 @@ var mem_circle2 = {
   line_color: jsPsych.timelineVariable('stim2_color'),
   fill_color: jsPsych.timelineVariable('stim2_color'),
   show_start_time: 1000,
-  show_end_time: endtime_memory_set,
+  show_end_time: 100000,//endtime_memory_set,
   origin_center: true
 }
   
@@ -170,7 +145,7 @@ var mem_circle3 = {
   line_color: jsPsych.timelineVariable('stim3_color'),
   fill_color: jsPsych.timelineVariable('stim3_color'),
   show_start_time: 1000,
-  show_end_time: endtime_memory_set,
+  show_end_time: 100000,//endtime_memory_set,
   origin_center: true
 }
   
@@ -182,7 +157,7 @@ var mem_circle4 = {
   line_color: jsPsych.timelineVariable('stim4_color'),
   fill_color: jsPsych.timelineVariable('stim4_color'),
   show_start_time: 1000,
-  show_end_time: endtime_memory_set,
+  show_end_time: 100000,//endtime_memory_set,
   origin_center: true
 }
   
@@ -194,7 +169,7 @@ var mem_circle5 = {
   line_color: jsPsych.timelineVariable('stim5_color'),
   fill_color: jsPsych.timelineVariable('stim5_color'),
   show_start_time: 1000,
-  show_end_time: endtime_memory_set,
+  show_end_time: 100000,//endtime_memory_set,
   origin_center: true
 }
   
