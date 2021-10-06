@@ -34,11 +34,19 @@
 # Libraries ---------------------------------------------------------------
 
 library(tidyverse)
+library(magrittr)
 library(ggpubr)
 library(furrr)
+library(parallel)
 library(RWiener)
 library(here)
 library(data.table)
+library(faux)
+library(lme4)
+library(lmerTest)
+library(broom.mixed)
+
+cores <- parallel::detectCores()
 
 source(here('scripts', 'custom_functions', 'functions_power.R'))
 
@@ -79,11 +87,11 @@ pwalk(DDM_data[c("trials", "boundary_sep", "tau", "beta", "drift_rate", "id")], 
 
 
 
-# Read Recovered DDM Parameters -------------------------------------------
+# Read In Recovered DDM Parameters -------------------------------------------
 
 DDM_data_recovered <- bind_rows(
-  read_table(here('data', '0_simulation', 'ddm_pars_ks.lst')),
-  read_table(here('data', '0_simulation', 'ddm_pars_ml.lst'))
+  read.table(here('data', '0_simulation', 'ddm_pars_ks.lst'), header = TRUE),
+  read.table(here('data', '0_simulation', 'ddm_pars_ml.lst'), header = TRUE)
 ) %>%
   rename(id = dataset) %>%
   # Join simulated DDM parameters
@@ -109,7 +117,7 @@ DDM_data_recovered <- bind_rows(
 
 ## Drift Rate
 DDM_driftrate_recovery_cor_plot <- DDM_data_recovered %>%
-  ggplot(aes(`Simulated Drift Rate`, `Recovered Drift Rate`, color = factor(trials))) +
+  ggplot(aes(`Simulated Drift Rate`, `Recovered Drift Rate`, color = `Recovered Boundary Separation`)) +
   geom_point() +
   geom_smooth(method="lm") +
   facet_grid(method~trials, scales = "free") +
@@ -124,14 +132,14 @@ ggsave(plot = DDM_driftrate_recovery_cor_plot, filename = here("plots", "0_simul
 
 ## Boundary separation
 DDM_boundary_recovery_cor_plot <- DDM_data_recovered %>%
-  ggplot(aes(`Simulated Boundary Separation`, `Recovered Boundary Separation`, color = factor(trials))) +
+  ggplot(aes(`Simulated Boundary Separation`, `Recovered Boundary Separation`, color = `Recovered Drift Rate`)) +
   geom_point() +
   geom_smooth(method="lm") +
   facet_grid(method~trials, scales = "free") +
   stat_cor(method="pearson") +
   labs(
     title = "Correlation Between Simulated and Recovered Boundary Separation Under Varying # of Trials",
-    color = "Nr. Of Trials"
+    color = "Drift Rate"
   )
 
 ggsave(plot = DDM_boundary_recovery_cor_plot, filename = here("plots", "0_simulation_boundary_recovery_cor.png"), width = 15, height = 8)
@@ -185,28 +193,145 @@ ggsave(plot = DDM_boundary_recovery_error_plot, filename = here("plots", "0_simu
 
 
 
-# Data parameters ---------------------------------------------------------
 
-generate_design <- function(n_participants, n_conditions, n_trials, condition_labels = list("neutral", "cued")){
+# Simulate data for power analysis ----------------------------------------
+
+
+
+# Means and SDs of DDM parameter in each condition
+DDM_mean_con <- 1.9 
+DDM_sd_con <- 0.4
+DDM_mean_exp <- 1.5
+DDM_sd_exp <- 0.4
+
+control_beta <- 0.1 # Beta coefficient for the control condition - effect of adversity
+experiment_beta <- -0.3 # Beta coefficient for the experimental condition - effect of adversity
+
+
+
+
+# Grid containing the simulation parameters to loop over
+simulation_grid <- expand_grid(
+  n_subjects = c(300, 400, 500, 600),
+  DDM_recovery_correlation = c(.60, .75, .80, .85, .90, .95),
+  n_sim = 1:500
+)
+
+# Use multiple cores for simulation
+plan(multisession, workers = cores - 2)
+
+# Loop over simulation grid to simulate random sets across parameter space
+simulation_data <- 
+  simulation_grid %>%
+  future_pmap(.f = function(n_subjects, DDM_recovery_correlation, n_sim) {
+    
+    # Simulate data
+    df_power <- expand_grid(
+      subject = 1:n_subjects,
+      n_sim = n_sim, 
+      r = DDM_recovery_correlation
+    ) %>%
+      mutate(
+        intercept = rnorm(n(), mean = 0, sd = 3),
+        adversity = rnorm(n(), mean = 0, sd = 1),
+        # These are the "true" underlying DDM parameters
+        DDM_con_sim = intercept + (control_beta * adversity) + rnorm(n(), 0, 2),
+        DDM_exp_sim = intercept + (experiment_beta * adversity) + rnorm(n(), 0, 2),
+        # Convert DDM parameters to raw scale
+        DDM_control = DDM_mean_con + (DDM_con_sim * DDM_sd_con),
+        DDM_experiment = DDM_mean_exp + (DDM_exp_sim * DDM_sd_exp)
+      ) %>%
+      select(-c(DDM_con_sim, DDM_exp_sim)) %>%
+      pivot_longer(c(DDM_control, DDM_experiment), names_to = "condition", values_to = "DDM_simulated") 
+    
+    
+    recovered_parameters <- bind_rows(
+      df_power %>% 
+        filter(condition == "DDM_control") %>%
+        select(subject, n_sim, condition, DDM_simulated) %>%
+        mutate(DDM_recov = faux::rnorm_pre(x = DDM_simulated, mu = DDM_mean_con, sd = DDM_sd_con, r = DDM_recovery_correlation)),
+      df_power %>% 
+        filter(condition == "DDM_experiment") %>%
+        select(subject, n_sim, condition, DDM_simulated) %>%
+        mutate(DDM_recov = faux::rnorm_pre(x = DDM_simulated, mu = DDM_mean_exp, sd = DDM_sd_exp, r = DDM_recovery_correlation))
+    )
   
-  design_matrix <- expand.grid(
-    participant = 1:n_participants, 
-    condition = 1:n_conditions, 
-    trials = 1:n_trials) # here we create the data-frame
+  df_power %<>% left_join(recovered_parameters) %>%
+    mutate(condition = ifelse(condition == "DDM_control", -1, 1))
+  },
+  .options = furrr_options(seed = TRUE)
+  )
+
+
+
+
+# Power analysis ----------------------------------------------------------
+
+tic()
+power_results <- simulation_data %>%
+  future_map(function(x) {
+    
+    # DV = "true" DDM parameter value
+    fit_true <- suppressMessages(lmerTest::lmer(data = x, DDM_simulated ~ condition*adversity + (1|subject)))
+    p_main_effect_true <- coef(summary(fit_true))['adversity', 'Pr(>|t|)']
+    p_interaction_true <- coef(summary(fit_true))['condition:adversity', 'Pr(>|t|)']
+    
+    message('start')
+    # DV = "recovered" DDM parameter value
+    fit_recov <- lmerTest::lmer(data = x, DDM_recov ~ condition*adversity + (1|subject))
+    p_main_effect_recov <- coef(summary(fit_recov))['adversity', 'Pr(>|t|)']
+    p_interaction_recov <- coef(summary(fit_recov))['condition:adversity', 'Pr(>|t|)']
+    
+    message('middle')
+    
+    results <- list(
+      n_subject = nrow(x)/2,
+      n_sim = x$n_sim[1],
+      r = x$r[1],
+      p_main_effect_true = p_main_effect_true,
+      p_interaction_true = p_interaction_true,
+      p_main_effect_recov = p_main_effect_recov,
+      p_interaction_recov = p_interaction_recov
+    )
+    
+    message('end')
+    
+    results
+  })
+toc()
+
+
+power_results_df <- bind_rows(power_results) %>%
+  group_by(n_subject, r) %>%
+  summarise(
+    `True Main Effect` = (sum(p_main_effect_true < .05) / n()) * 100,
+    `Recovered Main Effect` = (sum(p_main_effect_recov < .05) / n()) * 100,
+    `True Interaction` = (sum(p_interaction_true < .05) / n()) * 100,
+    `Recovered Interaction` = (sum(p_interaction_recov < .05) / n()) * 100,   
+  ) %>%
+  pivot_longer(-c(n_subject, r), names_to = "effect", values_to = "power")
+
+ggplot(power_results_df, aes(factor(n_subject), power)) +
+  geom_point() +
+  facet_grid(r~effect) +
+  geom_hline(yintercept = c(80, 90, 95))
   
-  design_matrix$condition <- ifelse(design_matrix$condition == 1, condition_labels[[1]], condition_labels[[2]])
-  design_matrix$trials <- paste0(design_matrix$condition, "_", design_matrix$trials) 
   
-  return(design_matrix) # return the data-frame
-}
 
-# Cueing
 
-### Adversity * Condition (congruent vs incongruent)
+  
+  
+  
+    
+  
+  
 
-df_cueing <- generate_design(n_participants = 10, n_condition = 2, n_trials = 32) 
 
-df_cueing$condition_f <- factor(df_cueing$condition)
-contr.sum(df_cueing$condition_f)
+
+
+
+
+
+
 
 

@@ -32,5 +32,9 @@ getBiCop <- function(n, rho, mar.fun=rnorm, x = NULL, ...) {
   # induce correlation (does not change X1)
   df <- X %*% C
   
+  ## if desired: check results
+  #all.equal(X1,X[,1])
+  #cor(X)
+  
   return(df)
 }
