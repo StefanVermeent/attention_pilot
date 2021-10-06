@@ -197,17 +197,13 @@ ggsave(plot = DDM_boundary_recovery_error_plot, filename = here("plots", "0_simu
 # Simulate data for power analysis ----------------------------------------
 
 
-
-# Means and SDs of DDM parameter in each condition
-DDM_mean_con <- 1.9 
-DDM_sd_con <- 0.4
-DDM_mean_exp <- 1.5
-DDM_sd_exp <- 0.4
-
-control_beta <- 0.1 # Beta coefficient for the control condition - effect of adversity
-experiment_beta <- -0.3 # Beta coefficient for the experimental condition - effect of adversity
-
-
+# Simulation parameters
+intercept = 1.5        # Intercept
+b1_cond = 0.5        # Fixed effect of condition
+b2_adversity = -0.3   # Fixed effect of adversity
+b3_interaction = 0.1 # Fixed effect of interaction
+intercept_sd = 2     # Random intercept SD for subjects
+sigma_sd = 2.2       # Error SD
 
 
 # Grid containing the simulation parameters to loop over
@@ -215,7 +211,7 @@ simulation_grid <- expand_grid(
   n_subjects = c(300, 400, 500, 600),
   DDM_recovery_correlation = c(.60, .75, .80, .85, .90, .95),
   n_sim = 1:500
-)
+) 
 
 # Use multiple cores for simulation
 plan(multisession, workers = cores - 2)
@@ -225,39 +221,19 @@ simulation_data <-
   simulation_grid %>%
   future_pmap(.f = function(n_subjects, DDM_recovery_correlation, n_sim) {
     
-    # Simulate data
-    df_power <- expand_grid(
-      subject = 1:n_subjects,
-      n_sim = n_sim, 
-      r = DDM_recovery_correlation
-    ) %>%
+    data <- add_random(subjects = n_subjects) %>%
+      add_within("subjects", condition = c("cued", "neutral")) %>%
+      add_ranef("subjects", intercept_s = intercept_sd) %>%
+      add_ranef(sigma = sigma_sd) %>%
+      add_contrast("condition", "sum", colnames = "condition_sum") %>%
       mutate(
-        intercept = rnorm(n(), mean = 0, sd = 3),
-        adversity = rnorm(n(), mean = 0, sd = 1),
-        # These are the "true" underlying DDM parameters
-        DDM_con_sim = intercept + (control_beta * adversity) + rnorm(n(), 0, 2),
-        DDM_exp_sim = intercept + (experiment_beta * adversity) + rnorm(n(), 0, 2),
-        # Convert DDM parameters to raw scale
-        DDM_control = DDM_mean_con + (DDM_con_sim * DDM_sd_con),
-        DDM_experiment = DDM_mean_exp + (DDM_exp_sim * DDM_sd_exp)
-      ) %>%
-      select(-c(DDM_con_sim, DDM_exp_sim)) %>%
-      pivot_longer(c(DDM_control, DDM_experiment), names_to = "condition", values_to = "DDM_simulated") 
+        adversity = rnorm(n(), 0, 1),
+        drift_rate_true = intercept + intercept_s + (b1_cond * condition_sum) + (b2_adversity * adversity) + (b3_interaction*condition_sum*adversity) + sigma,
+        drift_rate_recov = rnorm_pre(drift_rate_true, mu = mean(drift_rate_true), sd = sd(drift_rate_true), r = DDM_recovery_correlation, empirical = TRUE),
+        n_sim = n_sim,
+        r = DDM_recovery_correlation
+      )
     
-    
-    recovered_parameters <- bind_rows(
-      df_power %>% 
-        filter(condition == "DDM_control") %>%
-        select(subject, n_sim, condition, DDM_simulated) %>%
-        mutate(DDM_recov = faux::rnorm_pre(x = DDM_simulated, mu = DDM_mean_con, sd = DDM_sd_con, r = DDM_recovery_correlation)),
-      df_power %>% 
-        filter(condition == "DDM_experiment") %>%
-        select(subject, n_sim, condition, DDM_simulated) %>%
-        mutate(DDM_recov = faux::rnorm_pre(x = DDM_simulated, mu = DDM_mean_exp, sd = DDM_sd_exp, r = DDM_recovery_correlation))
-    )
-  
-  df_power %<>% left_join(recovered_parameters) %>%
-    mutate(condition = ifelse(condition == "DDM_control", -1, 1))
   },
   .options = furrr_options(seed = TRUE)
   )
@@ -265,24 +241,26 @@ simulation_data <-
 
 
 
+
 # Power analysis ----------------------------------------------------------
+plan(multisession, workers = cores - 2)
 
 tic()
 power_results <- simulation_data %>%
   future_map(function(x) {
     
     # DV = "true" DDM parameter value
-    fit_true <- suppressMessages(lmerTest::lmer(data = x, DDM_simulated ~ condition*adversity + (1|subject)))
+    fit_true <- suppressMessages(lmerTest::lmer(data = x, drift_rate_true ~ condition_sum*adversity + (1|subjects)))
     p_main_effect_true <- coef(summary(fit_true))['adversity', 'Pr(>|t|)']
-    p_interaction_true <- coef(summary(fit_true))['condition:adversity', 'Pr(>|t|)']
+    p_interaction_true <- coef(summary(fit_true))['condition_sum:adversity', 'Pr(>|t|)']
     
-    message('start')
+  
     # DV = "recovered" DDM parameter value
-    fit_recov <- lmerTest::lmer(data = x, DDM_recov ~ condition*adversity + (1|subject))
+    fit_recov <- lmerTest::lmer(data = x, drift_rate_recov ~ condition_sum*adversity + (1|subjects))
     p_main_effect_recov <- coef(summary(fit_recov))['adversity', 'Pr(>|t|)']
-    p_interaction_recov <- coef(summary(fit_recov))['condition:adversity', 'Pr(>|t|)']
+    p_interaction_recov <- coef(summary(fit_recov))['condition_sum:adversity', 'Pr(>|t|)']
     
-    message('middle')
+
     
     results <- list(
       n_subject = nrow(x)/2,
@@ -294,7 +272,7 @@ power_results <- simulation_data %>%
       p_interaction_recov = p_interaction_recov
     )
     
-    message('end')
+
     
     results
   })
@@ -311,12 +289,16 @@ power_results_df <- bind_rows(power_results) %>%
   ) %>%
   pivot_longer(-c(n_subject, r), names_to = "effect", values_to = "power")
 
-ggplot(power_results_df, aes(factor(n_subject), power)) +
-  geom_point() +
-  facet_grid(r~effect) +
-  geom_hline(yintercept = c(80, 90, 95))
-  
-  
+
+ggplot(power_results_df, aes(factor(n_subject), factor(r), fill = power)) +
+  geom_tile() +
+  geom_text(aes(label = power)) +
+  facet_wrap(~effect) +
+  labs(
+    x = "Sample Size",
+    y = "Correlation of Recovered DDM parameter",
+    
+  )
 
 
   
