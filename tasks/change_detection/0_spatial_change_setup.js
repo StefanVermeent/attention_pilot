@@ -121,7 +121,7 @@ var mem_circle1 = {
   line_color: jsPsych.timelineVariable('stim1_color'),
   fill_color: jsPsych.timelineVariable('stim1_color'),
   show_start_time: 1000,
-  show_end_time: 100000,//endtime_memory_set,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -133,7 +133,7 @@ var mem_circle2 = {
   line_color: jsPsych.timelineVariable('stim2_color'),
   fill_color: jsPsych.timelineVariable('stim2_color'),
   show_start_time: 1000,
-  show_end_time: 100000,//endtime_memory_set,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -145,7 +145,7 @@ var mem_circle3 = {
   line_color: jsPsych.timelineVariable('stim3_color'),
   fill_color: jsPsych.timelineVariable('stim3_color'),
   show_start_time: 1000,
-  show_end_time: 100000,//endtime_memory_set,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -157,7 +157,7 @@ var mem_circle4 = {
   line_color: jsPsych.timelineVariable('stim4_color'),
   fill_color: jsPsych.timelineVariable('stim4_color'),
   show_start_time: 1000,
-  show_end_time: 100000,//endtime_memory_set,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   
@@ -169,7 +169,7 @@ var mem_circle5 = {
   line_color: jsPsych.timelineVariable('stim5_color'),
   fill_color: jsPsych.timelineVariable('stim5_color'),
   show_start_time: 1000,
-  show_end_time: 100000,//endtime_memory_set,
+  show_end_time: endtime_memory_set,
   origin_center: true
 }
   

@@ -118,7 +118,7 @@ var change_practice1 = {
           response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
-          background_color: '#ffffff',
+          background_color: '#8E8C8C',
       },
       ],
       data: {
@@ -183,7 +183,7 @@ var change_practice2 = {
           response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
-          background_color: '#ffffff',
+          background_color: '#8E8C8C',
       },
       ],
       data: {
@@ -251,7 +251,7 @@ var change_practice3 = {
           response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
-          background_color: '#ffffff',
+          background_color: '#8E8C8C',
       },
       ],
       data: {
@@ -319,7 +319,7 @@ var change_practice4 = {
           response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
-          background_color: '#ffffff',
+          background_color: '#8E8C8C',
       },
       ],
       data: {
@@ -387,7 +387,7 @@ var change_practice5 = {
           response_start_time: endtime_memory_set + interstim_interval,
           canvas_width: 800,
           canvas_height: 800,
-          background_color: '#ffffff',
+          background_color: '#8E8C8C',
       },
       ],
       data: {
