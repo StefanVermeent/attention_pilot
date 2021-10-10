@@ -83,7 +83,7 @@ var flanker_feedback = {
 }
 
 var flanker_practice_procedure = {
-  timeline: [fixation, flanker_practice, feedback],
+  timeline: [flanker_fixation, flanker_practice, flanker_feedback],
   timeline_variables: [
     {location: 'top',    correct_response: 'ArrowLeft',  stimtype: 'congruent_left',    practice_stim: location_stim(up='&larr;&larr;&larr;&larr;&larr;', down=null)},
     {location: 'top',    correct_response: 'ArrowRight', stimtype: 'congruent_right',   practice_stim: location_stim(up='&rarr;&rarr;&rarr;&rarr;&rarr;', down=null)},
