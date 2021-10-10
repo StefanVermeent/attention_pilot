@@ -18,51 +18,21 @@
   <script>
 
   // Presentation of flanker stimuli
-  var present_flanker = {
-    type: "html-keyboard-response",
-    stimulus: jsPsych.timelineVariable('stim'),
-    choices: ['ArrowLeft', 'ArrowRight'],
-    trial_duration: 2000,
-    data: {
-      variable: 'main_task',
-      task: 'response',
-      location: jsPsych.timelineVariable('location'),
-      stimtype: jsPsych.timelineVariable('stimtype'),
-      correct_response: jsPsych.timelineVariable('correct_response')
-    },
-    on_finish: function(data) { {
-      if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
-        data.correct = true;
-      } else {
-        data.correct = false;
-      }
-    }
-    }
-  }
-  
-  
-  var test_procedure = {
-  timeline: [fixation, present_flanker],
-  timeline_variables: [
-    {location: 'top',    correct_response: 'ArrowLeft', stimtype: 'congruent_left',    stim: location_stim(up='&larr;&larr;&larr;&larr;&larr;', down=null)},
-    {location: 'top',    correct_response: 'ArrowRight', stimtype: 'congruent_right',   stim: location_stim(up='&rarr;&rarr;&rarr;&rarr;&rarr;', down=null)},
-    {location: 'top',    correct_response: 'ArrowLeft', stimtype: 'incongruent_left',  stim: location_stim(up='&rarr;&rarr;&larr;&rarr;&rarr;', down=null)},
-    {location: 'top',    correct_response: 'ArrowRight', stimtype: 'incongruent_right', stim: location_stim(up='&larr;&larr;&rarr;&larr;&larr;', down=null)},
-    {location: 'bottom', correct_response: 'ArrowLeft', stimtype: 'congruent_left',    stim: location_stim(up=null, down='&larr;&larr;&larr;&larr;&larr;')},
-    {location: 'bottom', correct_response: 'ArrowRight', stimtype: 'congruent_right',   stim: location_stim(up=null, down='&rarr;&rarr;&rarr;&rarr;&rarr;')},
-    {location: 'bottom', correct_response: 'ArrowLeft', stimtype: 'incongruent_left',  stim: location_stim(up=null, down='&rarr;&rarr;&larr;&rarr;&rarr;')},
-    {location: 'bottom', correct_response: 'ArrowRight', stimtype: 'incongruent_right', stim: location_stim(up=null, down='&larr;&larr;&rarr;&larr;&larr;')},
-  ],
-  randomize_order: true,
-  repetitions: 8,
-};
-
-timeline.push(test_procedure);
-timeline.push(cursor_on);
        
-jsPsych.init({
-  timeline: timeline,
-  on_finish: function() {
+  jsPsych.init({
+    timeline: [
+      resize_screen,
+      fullscreen_mode,
+      flanker_welcome,
+      flanker_instructions,
+      cursor_off,
+      flanker_practice_start,
+      flanker_practice_procedure,
+      flanker_practice_finish,
+      flanker_test_procedure, 
+      cursor_on,
+    ],
+    on_finish: function() {
     jsPsych.data.displayData();
   }
 });

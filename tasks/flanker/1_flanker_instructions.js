@@ -12,8 +12,6 @@ var flanker_welcome = {
   data: {variable: 'welcome', task: "flanker"}
 };
 
-timeline.push(flanker_welcome)
-
 //-------------------- Instructions
 var flanker_instructions = {
   type: 'instructions',
@@ -37,13 +35,9 @@ var flanker_instructions = {
   data: {variable: "instructions", task: "flanker"}
 };
 
-timeline.push(flanker_instructions)
 
 
 //-------------------- Practice
-
-// Remove cursor during flanker trials
-timeline.push(cursor_off)
 
 var flanker_practice_start = {
   type: 'html-keyboard-response',
@@ -51,8 +45,6 @@ var flanker_practice_start = {
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "flanker"}
 };
-
-timeline.push(flanker_practice_start)
 
 
 var flanker_practice = {
@@ -74,7 +66,7 @@ var flanker_practice = {
     }
 };
 
-var feedback = {
+var flanker_feedback = {
   type: 'html-keyboard-response',
   stimulus: function(){
     var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
@@ -90,7 +82,7 @@ var feedback = {
   }
 }
 
-var practice_procedure = {
+var flanker_practice_procedure = {
   timeline: [fixation, flanker_practice, feedback],
   timeline_variables: [
     {location: 'top',    correct_response: 'ArrowLeft',  stimtype: 'congruent_left',    practice_stim: location_stim(up='&larr;&larr;&larr;&larr;&larr;', down=null)},
@@ -106,7 +98,6 @@ var practice_procedure = {
   repetitions: 1,
 };
 
-timeline.push(practice_procedure);
 
 
 // Finish Practice trials
@@ -124,4 +115,12 @@ var flanker_practice_finish = {
   data: {variable: "practice_finish", task: "flanker"}
 };
 
-timeline.push(flanker_practice_finish)
+var flanker_end = {
+  type: "html-button-response",
+  stimulus: 
+  "Great job!<br><br>" +
+  "You are now finished playing the <strong>Flanker</strong> game.<br><br>" +
+  "Click 'finish' to continue.<br><br>",
+  choices: ['Finish'],
+  data: {variable: "end", task: "change"}
+};

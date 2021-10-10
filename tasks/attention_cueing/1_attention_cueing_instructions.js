@@ -305,3 +305,13 @@ var cueing_practice_finish = {
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "cueing"}
 };
+
+var cueing_end = {
+  type: "html-button-response",
+  stimulus: 
+  "Great job!<br><br>" +
+  "You are now finished playing the <strong>Arrow Detection</strong> game.<br><br>" +
+  "Click 'finish' to continue.<br><br>",
+  choices: ['Finish'],
+  data: {variable: "end", task: "change"}
+};

@@ -1,0 +1,385 @@
+n_subject,r,sigma,effect,power
+300,0.6,0.5,True Main Effect,93.60000000000001
+300,0.6,0.5,Recovered Main Effect,11.799999999999999
+300,0.6,0.5,True Interaction,91.60000000000001
+300,0.6,0.5,Recovered Interaction,15.8
+300,0.6,1,True Main Effect,44.800000000000004
+300,0.6,1,Recovered Main Effect,10.2
+300,0.6,1,True Interaction,42.8
+300,0.6,1,Recovered Interaction,12.2
+300,0.6,1.5,True Main Effect,26.6
+300,0.6,1.5,Recovered Main Effect,9.2
+300,0.6,1.5,True Interaction,23.599999999999998
+300,0.6,1.5,Recovered Interaction,9
+300,0.6,2,True Main Effect,18.2
+300,0.6,2,Recovered Main Effect,9.2
+300,0.6,2,True Interaction,15.2
+300,0.6,2,Recovered Interaction,8.4
+300,0.75,0.5,True Main Effect,92.80000000000001
+300,0.75,0.5,Recovered Main Effect,17
+300,0.75,0.5,True Interaction,93.60000000000001
+300,0.75,0.5,Recovered Interaction,17.599999999999998
+300,0.75,1,True Main Effect,44
+300,0.75,1,Recovered Main Effect,13
+300,0.75,1,True Interaction,42
+300,0.75,1,Recovered Interaction,15.2
+300,0.75,1.5,True Main Effect,21.8
+300,0.75,1.5,Recovered Main Effect,9.8
+300,0.75,1.5,True Interaction,25.8
+300,0.75,1.5,Recovered Interaction,11.799999999999999
+300,0.75,2,True Main Effect,17.2
+300,0.75,2,Recovered Main Effect,11.4
+300,0.75,2,True Interaction,16.2
+300,0.75,2,Recovered Interaction,9.4
+300,0.8,0.5,True Main Effect,94.8
+300,0.8,0.5,Recovered Main Effect,17
+300,0.8,0.5,True Interaction,93.2
+300,0.8,0.5,Recovered Interaction,20
+300,0.8,1,True Main Effect,36.4
+300,0.8,1,Recovered Main Effect,14.6
+300,0.8,1,True Interaction,46.400000000000006
+300,0.8,1,Recovered Interaction,18.2
+300,0.8,1.5,True Main Effect,24
+300,0.8,1.5,Recovered Main Effect,15.4
+300,0.8,1.5,True Interaction,24.2
+300,0.8,1.5,Recovered Interaction,14.399999999999999
+300,0.8,2,True Main Effect,14.2
+300,0.8,2,Recovered Main Effect,8.799999999999999
+300,0.8,2,True Interaction,16.400000000000002
+300,0.8,2,Recovered Interaction,12.6
+300,0.85,0.5,True Main Effect,94.6
+300,0.85,0.5,Recovered Main Effect,26.6
+300,0.85,0.5,True Interaction,93.60000000000001
+300,0.85,0.5,Recovered Interaction,24.6
+300,0.85,1,True Main Effect,43.6
+300,0.85,1,Recovered Main Effect,20.599999999999998
+300,0.85,1,True Interaction,44.4
+300,0.85,1,Recovered Interaction,19
+300,0.85,1.5,True Main Effect,22.400000000000002
+300,0.85,1.5,Recovered Main Effect,15.2
+300,0.85,1.5,True Interaction,27
+300,0.85,1.5,Recovered Interaction,16.2
+300,0.85,2,True Main Effect,17.4
+300,0.85,2,Recovered Main Effect,14.2
+300,0.85,2,True Interaction,18.6
+300,0.85,2,Recovered Interaction,13
+300,0.9,0.5,True Main Effect,95.8
+300,0.9,0.5,Recovered Main Effect,39.2
+300,0.9,0.5,True Interaction,92.80000000000001
+300,0.9,0.5,Recovered Interaction,38.800000000000004
+300,0.9,1,True Main Effect,45.6
+300,0.9,1,Recovered Main Effect,28.999999999999996
+300,0.9,1,True Interaction,42.199999999999996
+300,0.9,1,Recovered Interaction,26.8
+300,0.9,1.5,True Main Effect,25.8
+300,0.9,1.5,Recovered Main Effect,16
+300,0.9,1.5,True Interaction,26.400000000000002
+300,0.9,1.5,Recovered Interaction,17
+300,0.9,2,True Main Effect,18.4
+300,0.9,2,Recovered Main Effect,15
+300,0.9,2,True Interaction,18.2
+300,0.9,2,Recovered Interaction,12.6
+300,0.95,0.5,True Main Effect,93.8
+300,0.95,0.5,Recovered Main Effect,58.8
+300,0.95,0.5,True Interaction,93.4
+300,0.95,0.5,Recovered Interaction,52.800000000000004
+300,0.95,1,True Main Effect,43
+300,0.95,1,Recovered Main Effect,32
+300,0.95,1,True Interaction,46.2
+300,0.95,1,Recovered Interaction,34.2
+300,0.95,1.5,True Main Effect,25.6
+300,0.95,1.5,Recovered Main Effect,19.8
+300,0.95,1.5,True Interaction,25.4
+300,0.95,1.5,Recovered Interaction,19.6
+300,0.95,2,True Main Effect,17.2
+300,0.95,2,Recovered Main Effect,15.4
+300,0.95,2,True Interaction,12.2
+300,0.95,2,Recovered Interaction,12.4
+400,0.6,0.5,True Main Effect,98.2
+400,0.6,0.5,Recovered Main Effect,13.600000000000001
+400,0.6,0.5,True Interaction,97
+400,0.6,0.5,Recovered Interaction,13.200000000000001
+400,0.6,1,True Main Effect,55.800000000000004
+400,0.6,1,Recovered Main Effect,15.2
+400,0.6,1,True Interaction,55.2
+400,0.6,1,Recovered Interaction,12.8
+400,0.6,1.5,True Main Effect,36.8
+400,0.6,1.5,Recovered Main Effect,12.6
+400,0.6,1.5,True Interaction,29.799999999999997
+400,0.6,1.5,Recovered Interaction,9.2
+400,0.6,2,True Main Effect,21.2
+400,0.6,2,Recovered Main Effect,9.2
+400,0.6,2,True Interaction,21.4
+400,0.6,2,Recovered Interaction,8.200000000000001
+400,0.75,0.5,True Main Effect,97.8
+400,0.75,0.5,Recovered Main Effect,20.200000000000003
+400,0.75,0.5,True Interaction,97.39999999999999
+400,0.75,0.5,Recovered Interaction,24.8
+400,0.75,1,True Main Effect,52.800000000000004
+400,0.75,1,Recovered Main Effect,17.8
+400,0.75,1,True Interaction,53
+400,0.75,1,Recovered Interaction,14.799999999999999
+400,0.75,1.5,True Main Effect,31.4
+400,0.75,1.5,Recovered Main Effect,16.8
+400,0.75,1.5,True Interaction,30
+400,0.75,1.5,Recovered Interaction,16
+400,0.75,2,True Main Effect,22.8
+400,0.75,2,Recovered Main Effect,13.8
+400,0.75,2,True Interaction,21.8
+400,0.75,2,Recovered Interaction,13
+400,0.8,0.5,True Main Effect,99
+400,0.8,0.5,Recovered Main Effect,27.6
+400,0.8,0.5,True Interaction,99
+400,0.8,0.5,Recovered Interaction,27.400000000000002
+400,0.8,1,True Main Effect,56.39999999999999
+400,0.8,1,Recovered Main Effect,24.4
+400,0.8,1,True Interaction,53.800000000000004
+400,0.8,1,Recovered Interaction,18.8
+400,0.8,1.5,True Main Effect,29.799999999999997
+400,0.8,1.5,Recovered Main Effect,16
+400,0.8,1.5,True Interaction,34.4
+400,0.8,1.5,Recovered Interaction,15.8
+400,0.8,2,True Main Effect,19.400000000000002
+400,0.8,2,Recovered Main Effect,11.4
+400,0.8,2,True Interaction,25.4
+400,0.8,2,Recovered Interaction,15.4
+400,0.85,0.5,True Main Effect,98.4
+400,0.85,0.5,Recovered Main Effect,34.4
+400,0.85,0.5,True Interaction,98
+400,0.85,0.5,Recovered Interaction,36.4
+400,0.85,1,True Main Effect,54.6
+400,0.85,1,Recovered Main Effect,25.2
+400,0.85,1,True Interaction,56.00000000000001
+400,0.85,1,Recovered Interaction,25.2
+400,0.85,1.5,True Main Effect,27.6
+400,0.85,1.5,Recovered Main Effect,18.2
+400,0.85,1.5,True Interaction,32.4
+400,0.85,1.5,Recovered Interaction,17
+400,0.85,2,True Main Effect,18.8
+400,0.85,2,Recovered Main Effect,17
+400,0.85,2,True Interaction,17.599999999999998
+400,0.85,2,Recovered Interaction,11.799999999999999
+400,0.9,0.5,True Main Effect,98.8
+400,0.9,0.5,Recovered Main Effect,48.8
+400,0.9,0.5,True Interaction,98.4
+400,0.9,0.5,Recovered Interaction,46
+400,0.9,1,True Main Effect,58.4
+400,0.9,1,Recovered Main Effect,36.6
+400,0.9,1,True Interaction,57.4
+400,0.9,1,Recovered Interaction,29.799999999999997
+400,0.9,1.5,True Main Effect,29.4
+400,0.9,1.5,Recovered Main Effect,20.4
+400,0.9,1.5,True Interaction,33.800000000000004
+400,0.9,1.5,Recovered Interaction,22.6
+400,0.9,2,True Main Effect,19.2
+400,0.9,2,Recovered Main Effect,15.2
+400,0.9,2,True Interaction,21.8
+400,0.9,2,Recovered Interaction,15.2
+400,0.95,0.5,True Main Effect,97.6
+400,0.95,0.5,Recovered Main Effect,67.80000000000001
+400,0.95,0.5,True Interaction,97.6
+400,0.95,0.5,Recovered Interaction,71.2
+400,0.95,1,True Main Effect,56.599999999999994
+400,0.95,1,Recovered Main Effect,43.8
+400,0.95,1,True Interaction,52.2
+400,0.95,1,Recovered Interaction,39.6
+400,0.95,1.5,True Main Effect,33.4
+400,0.95,1.5,Recovered Main Effect,29.2
+400,0.95,1.5,True Interaction,29.4
+400,0.95,1.5,Recovered Interaction,24
+400,0.95,2,True Main Effect,17.599999999999998
+400,0.95,2,Recovered Main Effect,15.6
+400,0.95,2,True Interaction,21.8
+400,0.95,2,Recovered Interaction,20
+500,0.6,0.5,True Main Effect,99.6
+500,0.6,0.5,Recovered Main Effect,14.2
+500,0.6,0.5,True Interaction,99
+500,0.6,0.5,Recovered Interaction,13
+500,0.6,1,True Main Effect,67
+500,0.6,1,Recovered Main Effect,12.2
+500,0.6,1,True Interaction,65.2
+500,0.6,1,Recovered Interaction,12.4
+500,0.6,1.5,True Main Effect,37.2
+500,0.6,1.5,Recovered Main Effect,11
+500,0.6,1.5,True Interaction,38.4
+500,0.6,1.5,Recovered Interaction,11.600000000000001
+500,0.6,2,True Main Effect,26
+500,0.6,2,Recovered Main Effect,11.4
+500,0.6,2,True Interaction,31.4
+500,0.6,2,Recovered Interaction,11.600000000000001
+500,0.75,0.5,True Main Effect,99.6
+500,0.75,0.5,Recovered Main Effect,26.6
+500,0.75,0.5,True Interaction,99.6
+500,0.75,0.5,Recovered Interaction,24
+500,0.75,1,True Main Effect,65.4
+500,0.75,1,Recovered Main Effect,21.4
+500,0.75,1,True Interaction,66.60000000000001
+500,0.75,1,Recovered Interaction,23.400000000000002
+500,0.75,1.5,True Main Effect,37.6
+500,0.75,1.5,Recovered Main Effect,17.599999999999998
+500,0.75,1.5,True Interaction,37.6
+500,0.75,1.5,Recovered Interaction,18.4
+500,0.75,2,True Main Effect,24.4
+500,0.75,2,Recovered Main Effect,15.8
+500,0.75,2,True Interaction,24.2
+500,0.75,2,Recovered Interaction,11.799999999999999
+500,0.8,0.5,True Main Effect,99.2
+500,0.8,0.5,Recovered Main Effect,33.6
+500,0.8,0.5,True Interaction,99.8
+500,0.8,0.5,Recovered Interaction,31.6
+500,0.8,1,True Main Effect,63.2
+500,0.8,1,Recovered Main Effect,24.4
+500,0.8,1,True Interaction,65.4
+500,0.8,1,Recovered Interaction,26.8
+500,0.8,1.5,True Main Effect,36.4
+500,0.8,1.5,Recovered Main Effect,18.4
+500,0.8,1.5,True Interaction,36.6
+500,0.8,1.5,Recovered Interaction,23.200000000000003
+500,0.8,2,True Main Effect,25.6
+500,0.8,2,Recovered Main Effect,16.2
+500,0.8,2,True Interaction,24.6
+500,0.8,2,Recovered Interaction,17.4
+500,0.85,0.5,True Main Effect,99.2
+500,0.85,0.5,Recovered Main Effect,37.2
+500,0.85,0.5,True Interaction,99.8
+500,0.85,0.5,Recovered Interaction,45.6
+500,0.85,1,True Main Effect,65.8
+500,0.85,1,Recovered Main Effect,34.8
+500,0.85,1,True Interaction,66.8
+500,0.85,1,Recovered Interaction,32.2
+500,0.85,1.5,True Main Effect,35.6
+500,0.85,1.5,Recovered Main Effect,21.8
+500,0.85,1.5,True Interaction,42
+500,0.85,1.5,Recovered Interaction,23.400000000000002
+500,0.85,2,True Main Effect,28.4
+500,0.85,2,Recovered Main Effect,18.6
+500,0.85,2,True Interaction,26.8
+500,0.85,2,Recovered Interaction,17.2
+500,0.9,0.5,True Main Effect,99.6
+500,0.9,0.5,Recovered Main Effect,58.599999999999994
+500,0.9,0.5,True Interaction,99.4
+500,0.9,0.5,Recovered Interaction,54.400000000000006
+500,0.9,1,True Main Effect,67
+500,0.9,1,Recovered Main Effect,39.800000000000004
+500,0.9,1,True Interaction,64.2
+500,0.9,1,Recovered Interaction,40
+500,0.9,1.5,True Main Effect,37.8
+500,0.9,1.5,Recovered Main Effect,25.4
+500,0.9,1.5,True Interaction,41.8
+500,0.9,1.5,Recovered Interaction,29.799999999999997
+500,0.9,2,True Main Effect,25
+500,0.9,2,Recovered Main Effect,18.2
+500,0.9,2,True Interaction,25
+500,0.9,2,Recovered Interaction,18.8
+500,0.95,0.5,True Main Effect,99.8
+500,0.95,0.5,Recovered Main Effect,77
+500,0.95,0.5,True Interaction,99
+500,0.95,0.5,Recovered Interaction,76
+500,0.95,1,True Main Effect,63.6
+500,0.95,1,Recovered Main Effect,46
+500,0.95,1,True Interaction,61.199999999999996
+500,0.95,1,Recovered Interaction,47.8
+500,0.95,1.5,True Main Effect,38.800000000000004
+500,0.95,1.5,Recovered Main Effect,32.4
+500,0.95,1.5,True Interaction,38.2
+500,0.95,1.5,Recovered Interaction,31.8
+500,0.95,2,True Main Effect,21.6
+500,0.95,2,Recovered Main Effect,20.200000000000003
+500,0.95,2,True Interaction,25.8
+500,0.95,2,Recovered Interaction,22.2
+600,0.6,0.5,True Main Effect,100
+600,0.6,0.5,Recovered Main Effect,20
+600,0.6,0.5,True Interaction,100
+600,0.6,0.5,Recovered Interaction,18.8
+600,0.6,1,True Main Effect,71.6
+600,0.6,1,Recovered Main Effect,17.4
+600,0.6,1,True Interaction,73.2
+600,0.6,1,Recovered Interaction,18.4
+600,0.6,1.5,True Main Effect,44
+600,0.6,1.5,Recovered Main Effect,15.4
+600,0.6,1.5,True Interaction,42.199999999999996
+600,0.6,1.5,Recovered Interaction,12.4
+600,0.6,2,True Main Effect,27
+600,0.6,2,Recovered Main Effect,10.2
+600,0.6,2,True Interaction,26.8
+600,0.6,2,Recovered Interaction,12.2
+600,0.75,0.5,True Main Effect,100
+600,0.75,0.5,Recovered Main Effect,32.2
+600,0.75,0.5,True Interaction,99.8
+600,0.75,0.5,Recovered Interaction,30.2
+600,0.75,1,True Main Effect,71.39999999999999
+600,0.75,1,Recovered Main Effect,22.6
+600,0.75,1,True Interaction,71.8
+600,0.75,1,Recovered Interaction,23
+600,0.75,1.5,True Main Effect,41.8
+600,0.75,1.5,Recovered Main Effect,16.2
+600,0.75,1.5,True Interaction,39.800000000000004
+600,0.75,1.5,Recovered Interaction,20.200000000000003
+600,0.75,2,True Main Effect,30.4
+600,0.75,2,Recovered Main Effect,17.599999999999998
+600,0.75,2,True Interaction,29.4
+600,0.75,2,Recovered Interaction,16.2
+600,0.8,0.5,True Main Effect,99.8
+600,0.8,0.5,Recovered Main Effect,37.6
+600,0.8,0.5,True Interaction,99.8
+600,0.8,0.5,Recovered Interaction,38.800000000000004
+600,0.8,1,True Main Effect,72
+600,0.8,1,Recovered Main Effect,26.8
+600,0.8,1,True Interaction,71.6
+600,0.8,1,Recovered Interaction,28.999999999999996
+600,0.8,1.5,True Main Effect,44.800000000000004
+600,0.8,1.5,Recovered Main Effect,23.599999999999998
+600,0.8,1.5,True Interaction,37.8
+600,0.8,1.5,Recovered Interaction,22.8
+600,0.8,2,True Main Effect,25.4
+600,0.8,2,Recovered Main Effect,13.4
+600,0.8,2,True Interaction,29.4
+600,0.8,2,Recovered Interaction,17.599999999999998
+600,0.85,0.5,True Main Effect,100
+600,0.85,0.5,Recovered Main Effect,50.8
+600,0.85,0.5,True Interaction,100
+600,0.85,0.5,Recovered Interaction,53
+600,0.85,1,True Main Effect,73.8
+600,0.85,1,Recovered Main Effect,32
+600,0.85,1,True Interaction,74
+600,0.85,1,Recovered Interaction,36.6
+600,0.85,1.5,True Main Effect,42
+600,0.85,1.5,Recovered Main Effect,29.599999999999998
+600,0.85,1.5,True Interaction,43.6
+600,0.85,1.5,Recovered Interaction,29.2
+600,0.85,2,True Main Effect,29.4
+600,0.85,2,Recovered Main Effect,16.400000000000002
+600,0.85,2,True Interaction,28.599999999999998
+600,0.85,2,Recovered Interaction,18.8
+600,0.9,0.5,True Main Effect,99.8
+600,0.9,0.5,Recovered Main Effect,64.8
+600,0.9,0.5,True Interaction,99.8
+600,0.9,0.5,Recovered Interaction,61.4
+600,0.9,1,True Main Effect,73.2
+600,0.9,1,Recovered Main Effect,42.199999999999996
+600,0.9,1,True Interaction,72
+600,0.9,1,Recovered Interaction,41.8
+600,0.9,1.5,True Main Effect,45.800000000000004
+600,0.9,1.5,Recovered Main Effect,30.8
+600,0.9,1.5,True Interaction,45
+600,0.9,1.5,Recovered Interaction,32.6
+600,0.9,2,True Main Effect,28.599999999999998
+600,0.9,2,Recovered Main Effect,23
+600,0.9,2,True Interaction,29.4
+600,0.9,2,Recovered Interaction,26
+600,0.95,0.5,True Main Effect,100
+600,0.95,0.5,Recovered Main Effect,87.2
+600,0.95,0.5,True Interaction,100
+600,0.95,0.5,Recovered Interaction,84.6
+600,0.95,1,True Main Effect,71.6
+600,0.95,1,Recovered Main Effect,62.8
+600,0.95,1,True Interaction,74
+600,0.95,1,Recovered Interaction,55.400000000000006
+600,0.95,1.5,True Main Effect,44
+600,0.95,1.5,Recovered Main Effect,33.6
+600,0.95,1.5,True Interaction,41
+600,0.95,1.5,Recovered Interaction,35
+600,0.95,2,True Main Effect,29.799999999999997
+600,0.95,2,Recovered Main Effect,23.799999999999997
+600,0.95,2,True Interaction,29.799999999999997
+600,0.95,2,Recovered Interaction,25.6

@@ -45,6 +45,7 @@ library(faux)
 library(lme4)
 library(lmerTest)
 library(broom.mixed)
+library(tictoc)
 
 cores <- parallel::detectCores()
 
@@ -198,18 +199,19 @@ ggsave(plot = DDM_boundary_recovery_error_plot, filename = here("plots", "0_simu
 
 
 # Simulation parameters
-intercept = 1.5        # Intercept
-b1_cond = 0.5        # Fixed effect of condition
-b2_adversity = -0.3   # Fixed effect of adversity
+intercept = 0      # Intercept
+b1_cond = 0.1        # Fixed effect of condition
+b2_adversity = 0.1   # Fixed effect of adversity
 b3_interaction = 0.1 # Fixed effect of interaction
 intercept_sd = 2     # Random intercept SD for subjects
-sigma_sd = 2.2       # Error SD
+#sigma_sd = 2.2       # Error SD
 
 
 # Grid containing the simulation parameters to loop over
 simulation_grid <- expand_grid(
   n_subjects = c(300, 400, 500, 600),
   DDM_recovery_correlation = c(.60, .75, .80, .85, .90, .95),
+  sigma_sd = c(0.2, 0.5, 1, 1.5, 2),
   n_sim = 1:500
 ) 
 
@@ -219,7 +221,7 @@ plan(multisession, workers = cores - 2)
 # Loop over simulation grid to simulate random sets across parameter space
 simulation_data <- 
   simulation_grid %>%
-  future_pmap(.f = function(n_subjects, DDM_recovery_correlation, n_sim) {
+  future_pmap(.f = function(n_subjects, DDM_recovery_correlation, sigma_sd, n_sim) {
     
     data <- add_random(subjects = n_subjects) %>%
       add_within("subjects", condition = c("cued", "neutral")) %>%
@@ -231,7 +233,8 @@ simulation_data <-
         drift_rate_true = intercept + intercept_s + (b1_cond * condition_sum) + (b2_adversity * adversity) + (b3_interaction*condition_sum*adversity) + sigma,
         drift_rate_recov = rnorm_pre(drift_rate_true, mu = mean(drift_rate_true), sd = sd(drift_rate_true), r = DDM_recovery_correlation, empirical = TRUE),
         n_sim = n_sim,
-        r = DDM_recovery_correlation
+        r = DDM_recovery_correlation,
+        sigma_sim = sigma_sd
       )
     
   },
@@ -266,6 +269,7 @@ power_results <- simulation_data %>%
       n_subject = nrow(x)/2,
       n_sim = x$n_sim[1],
       r = x$r[1],
+      sigma = x$sigma_sim[1],
       p_main_effect_true = p_main_effect_true,
       p_interaction_true = p_interaction_true,
       p_main_effect_recov = p_main_effect_recov,
@@ -279,28 +283,32 @@ power_results <- simulation_data %>%
 toc()
 
 
-power_results_df <- bind_rows(power_results) %>%
-  group_by(n_subject, r) %>%
+power_results_df <- bind_rows(power_results)
+
+write_csv(power_results_df, "power_results_df_lowsigma")
+
+power_results_df %<>%
+  group_by(n_subject, r, sigma) %>%
   summarise(
     `True Main Effect` = (sum(p_main_effect_true < .05) / n()) * 100,
     `Recovered Main Effect` = (sum(p_main_effect_recov < .05) / n()) * 100,
     `True Interaction` = (sum(p_interaction_true < .05) / n()) * 100,
     `Recovered Interaction` = (sum(p_interaction_recov < .05) / n()) * 100,   
   ) %>%
-  pivot_longer(-c(n_subject, r), names_to = "effect", values_to = "power")
+  ungroup() %>%
+  pivot_longer(-c(n_subject, r, sigma), names_to = "effect", values_to = "power")
 
 
-ggplot(power_results_df, aes(factor(n_subject), factor(r), fill = power)) +
+power_plot <- ggplot(power_results_df, aes(factor(n_subject), factor(r), fill = power)) +
   geom_tile() +
   geom_text(aes(label = power)) +
-  facet_wrap(~effect) +
+  facet_grid(sigma~effect) +
   labs(
     x = "Sample Size",
     y = "Correlation of Recovered DDM parameter",
-    
   )
 
-
+ggsave(power_plot, file = here("plots", "power_plot3.png"), width = 15, height = 15)
   
   
   

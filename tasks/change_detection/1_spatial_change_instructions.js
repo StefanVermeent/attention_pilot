@@ -102,7 +102,7 @@ var change_practice1 = {
         type: 'psychophysics',
         stimuli: [
         key_reminders,
-        fixation_cross, 
+        change_fixation_cross, 
         mem_circle1, 
         mem_circle2, 
         mem_circle3, 
@@ -167,7 +167,7 @@ var change_practice2 = {
         type: 'psychophysics',
         stimuli: [
         key_reminders,
-        fixation_cross, 
+        change_fixation_cross, 
         mem_circle1, 
         mem_circle2, 
         mem_circle3, 
@@ -235,7 +235,7 @@ var change_practice3 = {
         type: 'psychophysics',
         stimuli: [
         key_reminders,
-        fixation_cross, 
+        change_fixation_cross, 
         mem_circle1, 
         mem_circle2, 
         mem_circle3, 
@@ -303,7 +303,7 @@ var change_practice4 = {
         type: 'psychophysics',
         stimuli: [
         key_reminders,
-        fixation_cross, 
+        change_fixation_cross, 
         mem_circle1, 
         mem_circle2, 
         mem_circle3, 
@@ -371,7 +371,7 @@ var change_practice5 = {
         type: 'psychophysics',
         stimuli: [
         key_reminders,
-        fixation_cross, 
+        change_fixation_cross, 
         mem_circle1, 
         mem_circle2, 
         mem_circle3, 

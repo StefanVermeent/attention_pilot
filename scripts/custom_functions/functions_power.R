@@ -38,3 +38,20 @@ getBiCop <- function(n, rho, mar.fun=rnorm, x = NULL, ...) {
   
   return(df)
 }
+
+
+calculate_sigma = function(low_adversity_sd, high_adversity_sd, correlation) {
+  
+  sigma <- matrix(c(low_adversity_sd^2, low_adversity_sd*high_adversity_sd*correlation, low_adversity_sd*high_adversity_sd*correlation, high_adversity_sd^2), ncol = 2) # define variance-covariance matrix
+  
+}
+
+sigma_grid <- expand_grid(
+  low_adversity_sd = c(0.5, 1, 1.5, 2),
+  high_adversity_sd = c(0.5, 1, 1.5, 2),
+  correlation = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7)
+)
+
+values_of_sigma <- sigma_grid %>%
+  pmap(calculate_sigma)
+
