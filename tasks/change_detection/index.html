@@ -4,6 +4,18 @@
     <title>Change Detection Task</title>
     <script src="../jspsych-6.3.1/jspsych.js"></script>
     <script src="../global_variables.js"></script>
+    
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-resize.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    
+    <script src="change_detection/0_spatial_change_setup.js"></script>
+    <script src="change_detection/1_spatial_change_instructions.js"></script>
+    <script src="change_detection/2_spatial_change_procedure.js"></script>
   <style>
   </style>
   </head>
@@ -14,8 +26,8 @@
   jsPsych.init({
     timeline: [
       fullscreenmode,
-      change_welcome, 
       resize_screen,
+      change_welcome, 
       change_instructions1, 
       change_instructions2, 
       change_instructions3,
