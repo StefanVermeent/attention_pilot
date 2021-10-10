@@ -66,21 +66,6 @@ var flanker_practice = {
     }
 };
 
-var flanker_feedback = {
-  type: 'html-keyboard-response',
-  stimulus: function(){
-    var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-    if(last_trial_correct){
-      return "<p style = 'color:green;font-size:40px'>Correct!</p>"; // the parameter value has to be returned from the function
-    } else {
-      return "<p style = 'color:red;font-size:40px'>Incorrect!</p>"; // the parameter value has to be returned from the function
-    }
-  },
-  trial_duration: 2000,
-  data: {
-    variable: 'feedback'
-  }
-}
 
 var flanker_practice_procedure = {
   timeline: [flanker_fixation, flanker_practice, flanker_feedback],
