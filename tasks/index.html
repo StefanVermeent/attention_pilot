@@ -111,21 +111,20 @@ var test_order4 = [flanker, attention_cueing, change_detection]
 var test_order5 = [attention_cueing, change_detection, flanker]
 var test_order6 = [attention_cueing, flanker, change_detection]
 
+counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2, test_order3, test_order4, test_order5, test_order6], 1)[0]
 
-// Randomly pick counterbalancing condition
-var counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2, test_order3, test_order4, test_order5, test_order6], 1)[0]
+// Specify full experiment timeline, including counterbalancing of tasks
+// Flatten the object so that it consists of a single array containing the full experiment (i.e., get rid of nesting)
+var full_experiment_timeline = [
+  fullscreenmode,
+  resize_screen, 
+  counterbalance,
+  cognitive_tasks_end
+  ].flat(2)
 
-console.log(counterbalance)
 
 jsPsych.init({
-  timeline: [
-    fullscreenmode,
-    resize_screen,
-    counterbalance[0][0],
-    counterbalance[0][1],
-    counterbalance[0][2],
-    cognitive_tasks_end
-  ],
+  timeline: full_experiment_timeline,
   data: {
     task_order: counterbalance 
   }
