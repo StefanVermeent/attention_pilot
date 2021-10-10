@@ -9,6 +9,7 @@ var change_welcome = {
   key_forward: -1,
   key_backward: -1,
   button_label_next: "continue",
+  button_label_previous: "go back",
   data: {variable: 'welcome', task: "change"}
 };
 
