@@ -79,7 +79,17 @@ var cueing_practice1 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
-      },
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       ],
       on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
@@ -105,6 +115,17 @@ var cueing_practice2 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -131,6 +152,17 @@ var cueing_practice3 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -157,6 +189,17 @@ var cueing_practice4 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -183,6 +226,17 @@ var cueing_practice5 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -209,6 +263,17 @@ var cueing_practice6 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -235,6 +300,17 @@ var cueing_practice7 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -261,6 +337,17 @@ var cueing_practice8 = {
           canvas_width: 900,
           canvas_height: 900,
           background_color: '#ffffff',
+          data: {
+            variable: 'practice',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
       },
       ],
       on_finish: function(data) {
@@ -295,5 +382,5 @@ var cueing_end = {
   "You are now finished playing the <strong>Arrow Detection</strong> game.<br><br>" +
   "Click 'finish' to continue.<br><br>",
   choices: ['Finish'],
-  data: {variable: "end", task: "change"}
+  data: {variable: "end", task: "cueing"}
 };

@@ -81,22 +81,6 @@ var change_practice_start = {
 
 //-------------------- Practice trials
 
-var feedback = {
-  type: 'html-keyboard-response',
-  stimulus: function(){
-    var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-    if(last_trial_correct){
-      return "<p style = 'color:green;font-size:40px'>Correct!</p>"; // the parameter value has to be returned from the function
-    } else {
-      return "<p style = 'color:red;font-size:40px'>Incorrect!</p>"; // the parameter value has to be returned from the function
-    }
-  },
-  trial_duration: 2000,
-  data: {
-    variable: 'feedback'
-  }
-}
-
 var change_practice1 = {
     timeline: [
       {
@@ -144,6 +128,12 @@ var change_practice1 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
         correct_response: jsPsych.timelineVariable('correct_response')
     },
     on_finish: function(data) {
@@ -209,6 +199,12 @@ var change_practice2 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
         correct_response: jsPsych.timelineVariable('correct_response')
     },
     on_finish: function(data) {
@@ -277,6 +273,12 @@ var change_practice3 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
         correct_response: jsPsych.timelineVariable('correct_response')
     },
     on_finish: function(data) {
@@ -345,6 +347,12 @@ var change_practice4 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
         correct_response: jsPsych.timelineVariable('correct_response')
     },
     on_finish: function(data) {
@@ -413,6 +421,12 @@ var change_practice5 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
         correct_response: jsPsych.timelineVariable('correct_response')
     },
     on_finish: function(data) {

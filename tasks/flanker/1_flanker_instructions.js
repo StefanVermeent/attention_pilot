@@ -53,7 +53,7 @@ var flanker_practice = {
     choices: ['ArrowLeft', 'ArrowRight'],
     data: {
       variable: 'practice',
-      task: 'response',
+      task: 'flanker',
       location: jsPsych.timelineVariable('location'),
       stimtype: jsPsych.timelineVariable('stimtype')
     },
@@ -107,5 +107,5 @@ var flanker_end = {
   "You are now finished playing the <strong>Flanker</strong> game.<br><br>" +
   "Click 'finish' to continue.<br><br>",
   choices: ['Finish'],
-  data: {variable: "end", task: "change"}
+  data: {variable: "end", task: "flanker"}
 };

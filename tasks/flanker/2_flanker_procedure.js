@@ -4,8 +4,8 @@ var flanker_present_arrows = {
   choices: ['ArrowLeft', 'ArrowRight'],
   trial_duration: 2000,
   data: {
-    variable: 'main_task',
-    task: 'response',
+    variable: 'flanker_test',
+    task: 'flanker',
     location: jsPsych.timelineVariable('location'),
     stimtype: jsPsych.timelineVariable('stimtype'),
     correct_response: jsPsych.timelineVariable('correct_response')

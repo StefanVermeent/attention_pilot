@@ -80,27 +80,6 @@ for (var i = 0; i < (n_trials); i++) {
 
 //------------------------- Stimulus objects
 
-//var fullscreenmode = {
-//  type: 'fullscreen',
-//  fullscreen_mode: true
-//};
-
-//var cursor_off = {
-//    type: 'call-function',
-//    func: function() {
-//        document.body.style.cursor= "none";
-//    }
-//}
-
-//var cursor_on = {
-//    type: 'call-function',
-//    func: function() {
-//        document.body.style.cursor= "auto";
-//    }
-//}
-
-
-
 // Fixation cross
 var change_fixation_cross = {
   obj_type: 'cross',

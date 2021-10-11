@@ -9,9 +9,20 @@ var cueing_trial = {
       ],
       choices: ["ArrowLeft", "ArrowRight"],
       response_start_time: 1250,
-      canvas_width: 900,
-      canvas_height: 900,
+      canvas_width: 800,
+      canvas_height: 800,
       background_color: '#ffffff',
+          data: {
+            variable: 'test',
+            task: 'cueing',
+            condition: jsPsych.timelineVariable('type'),
+            target: jsPsych.timelineVariable('target'),
+            cue_x: jsPsych.timelineVariable('cue_x'),
+            cue_y: jsPsych.timelineVariable('cue_y'),
+            target_x: jsPsych.timelineVariable('target_x'),
+            target_y: jsPsych.timelineVariable('target_y'),
+            correct_response: jsPsych.timelineVariable('correct_response')
+          },
     },
   ],
   on_finish: function(data) {
