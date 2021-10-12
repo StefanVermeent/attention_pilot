@@ -58,27 +58,5 @@ var location_stim = function(up, down){
     variable: 'fixation'
   }
 }
-
-var cursor_off = {
-    type: 'call-function',
-    func: function() {
-        document.body.style.cursor= "none";
-    }
-}
-
-var cursor_on = {
-    type: 'call-function',
-    func: function() {
-        document.body.style.cursor= "auto";
-    }
-}
-
-  
-var timeline = []
-
-  timeline.push({
-  type: 'fullscreen',
-  fullscreen_mode: true
-});
   
 
