@@ -127,7 +127,11 @@ jsPsych.init({
   timeline: full_experiment_timeline,
   data: {
     task_order: counterbalance 
-  }
+  },
+  on_interaction_data_update: function(data) {
+    console.log(JSON.stringify(data))
+  },
+});
 })
 
   </script>

@@ -219,23 +219,43 @@ plan(multisession, workers = cores - 2)
 
 # Loop over simulation grid to simulate random sets across parameter space
 simulation_data <- 
-  simulation_grid %>%
+  simulation_grid[1:10,] %>%
   future_pmap(.f = function(n_subjects, DDM_recovery_correlation, sigma_sd, fixed_effect, n_sim) {
     
-    data <- add_random(subjects = n_subjects) %>%
+    data_mixed <- add_random(subjects = n_subjects) %>%
       add_within("subjects", condition = c("cued", "neutral")) %>%
       add_ranef("subjects", intercept_s = intercept_sd) %>%
       add_ranef(sigma = sigma_sd) %>%
       add_contrast("condition", "sum", colnames = "condition_sum") %>%
       mutate(
         adversity = rnorm(n(), 0, 1),
-        drift_rate_true = intercept + intercept_s + (fixed_effect * condition_sum) + (fixed_effect * adversity) + (fixed_effect*condition_sum*adversity) + sigma,
+        drift_rate_true = intercept + intercept_s + (fixed_effect * condition_sum) + (fixed_effect * adversity) + (fixed_effect*condition_sum*adversity) + sigma
+        ) %>%
+      group_by(condition_sum) %>%
+      mutate(
         drift_rate_recov = rnorm_pre(drift_rate_true, mu = mean(drift_rate_true), sd = sd(drift_rate_true), r = DDM_recovery_correlation, empirical = TRUE),
         n_sim = n_sim,
         r = DDM_recovery_correlation,
         sigma_sim = sigma_sd,
         fixed_effect = fixed_effect
       )
+    
+    data_linear <- tibble(
+      subjects = 1:n_subjects,
+      condition = 1
+    ) %>%
+      mutate(
+        adversity = rnorm(n(), 0, 1),
+        intercept = rnorm(n(), 0, 2),
+        sigma = rnorm(n(), 0, sigma_sd),
+        drift_rate_true = intercept + (fixed_effect * adversity) + sigma,
+        drift_rate_recov = rnorm_pre(drift_rate_true, mu = mean(drift_rate_true), sd = sd(drift_rate_true), r = DDM_recovery_correlation, empirical = TRUE),
+        n_sim = n_sim,
+        r = DDM_recovery_correlation,
+        sigma_sim = sigma_sd
+      )
+    
+    return(list(data_mixed, data_linear))
     
   },
   .options = furrr_options(seed = TRUE)
@@ -249,32 +269,54 @@ save(simulation_data, "simulation_data_highbeta.RData")
 plan(multisession, workers = cores - 2)
 
 tic()
-power_results <- simulation_data %>%
+power_results <- simulation_data[1:10] %>%
   future_map(function(x) {
     
+    # Mixed effects model: within subjects interaction and main effect of adversity
     # DV = "true" DDM parameter value
-    fit_true <- suppressMessages(lmerTest::lmer(data = x, drift_rate_true ~ condition_sum*adversity + (1|subjects)))
-    p_main_effect_true <- coef(summary(fit_true))['adversity', 'Pr(>|t|)']
-    p_interaction_true <- coef(summary(fit_true))['condition_sum:adversity', 'Pr(>|t|)']
+    p_mixed_true <- (suppressMessages(lmerTest::lmer(data = x[[1]], drift_rate_true ~ condition_sum*adversity + (1|subjects))) %>%
+                              summary() %>%
+                              coef() %>%
+                              as_tibble() %>%
+                              pull(`Pr(>|t|)`)
+    )
     
+    p_mixed_recov <- (suppressMessages(lmerTest::lmer(data = x[[1]], drift_rate_recov ~ condition_sum*adversity + (1|subjects))) %>%
+                              summary() %>%
+                              coef() %>%
+                              as_tibble() %>%
+                              pull(`Pr(>|t|)`)
+    )
+      
   
+    # Linear regression with main effect of adversity
+    # DV = "true" DDM parameter value
+    p_linear_main_effect_true <- (lm(data = x[[2]], drift_rate_true ~ adversity) %>% 
+                                     summary() %>% 
+                                     coef() %>% 
+                                     as_tibble %>% 
+                                     pull(`Pr(>|t|)`))[2]
+    
     # DV = "recovered" DDM parameter value
-    fit_recov <- lmerTest::lmer(data = x, drift_rate_recov ~ condition_sum*adversity + (1|subjects))
-    p_main_effect_recov <- coef(summary(fit_recov))['adversity', 'Pr(>|t|)']
-    p_interaction_recov <- coef(summary(fit_recov))['condition_sum:adversity', 'Pr(>|t|)']
-    
+    p_linear_main_effect_recov <- (lm(data = x[[2]], drift_rate_recov ~ adversity) %>% 
+                                     summary() %>% 
+                                     coef() %>% 
+                                     as_tibble %>% 
+                                     pull(`Pr(>|t|)`))[2]    
 
-    
+    # List of simulation parameters and relevant p-values
     results <- list(
-      n_subject = nrow(x)/2,
-      n_sim = x$n_sim[1],
-      r = x$r[1],
-      sigma = x$sigma_sim[1],
-      fixed_effect = x$fixed_effect[1],
-      p_main_effect_true = p_main_effect_true,
-      p_interaction_true = p_interaction_true,
-      p_main_effect_recov = p_main_effect_recov,
-      p_interaction_recov = p_interaction_recov
+      n_subject = nrow(x[[1]])/2,
+      n_sim = x[[1]]$n_sim[1],
+      r = x[[1]]$r[1],
+      sigma = x[[1]]$sigma_sim[1],
+      fixed_effect = x[[1]]$fixed_effect[1],
+      p_mixed_main_effect_true = p_mixed_true[3],
+      p_mixed_interaction_true = p_mixed_true[4],
+      p_mixed_main_effect_recov = p_mixed_recov[3],
+      p_mixed_interaction_recov = p_mixed_recov[4],
+      p_linear_main_effect_true = p_linear_main_effect_true,
+      p_linear_main_effect_recov = p_linear_main_effect_recov
     )
     
 
@@ -282,39 +324,77 @@ power_results <- simulation_data %>%
 toc()
 
 
-power_results_df <- bind_rows(power_results)
 
-write_csv(power_results_df, "power_results_df_larger_effect_size.csv")
+
+# Plot and Visualize Results ----------------------------------------------
+
+power_results_df <- bind_rows(power_results)
+write_csv(power_results_df, here("data", "0_simulation_results", str_c("power_results_beta_", fixed_effect, ".csv")))
+
 
 power_results_df %<>%
   group_by(n_subject, r, sigma) %>%
   summarise(
-    `True Main Effect` = (sum(p_main_effect_true < .05) / n()) * 100,
-    `Recovered Main Effect` = (sum(p_main_effect_recov < .05) / n()) * 100,
-    `True Interaction` = (sum(p_interaction_true < .05) / n()) * 100,
-    `Recovered Interaction` = (sum(p_interaction_recov < .05) / n()) * 100,   
+    mixed_true_main_power         = (sum(p_mixed_main_effect_true < .05) / n()) * 100,
+    mixed_recov_main_power        = (sum(p_mixed_main_effect_recov < .05) / n()) * 100,
+    mixed_true_interaction_power  = (sum(p_mixed_interaction_true < .05) / n()) * 100,
+    mixed_recov_interaction_power = (sum(p_mixed_interaction_recov < .05) / n()) * 100,  
+    
+    linear_true_main_power        = (sum(p_linear_main_effect_true < .05) / n()) * 100,
+    linear_recov_main_power       = (sum(p_linear_main_effect_recov < .05) / n()) * 100
   ) %>%
   ungroup() %>%
   pivot_longer(-c(n_subject, r, sigma), names_to = "effect", values_to = "power")
 
 
-power_plot <- ggplot(power_results_df, aes(factor(n_subject), factor(r), fill = power)) +
+# Mixed effects models (main effect + interaction)
+
+power_plot_mixed <- power_results_df %>%
+  filter(str_detect(effect, "^mixed")) %>%
+  mutate(
+    effect = case_when(
+      effect == "mixed_true_main_power" ~ "True Main Effect",
+      effect == "mixed_recov_main_power" ~ "Recovered Main Effect",
+      effect == "mixed_true_interaction_power" ~ "True Interaction",
+      effect == "mixed_recov_interaction_power" ~ "Recovered Interaction" 
+    )
+  ) %>%
+  ggplot(aes(factor(n_subject), factor(r), fill = power)) +
   geom_tile() +
   geom_text(aes(label = power)) +
   facet_grid(sigma~effect) +
+  theme_classic() +
   labs(
     x = "Sample Size",
     y = "Correlation of Recovered DDM parameter",
-    title = "Power analysis for DDM analysis",
-    subtitle = "Beta = 0.2"
+    title = "DDM Power Analysis for Mixed Effects Models",
+    subtitle = str_c("Beta = ", fixed_effect)
   )
 
-ggsave(power_plot, file = here("plots", "power_plot_medium_effect.png"), width = 15, height = 15)
+ggsave(power_plot_mixed, file = here("plots", str_c("power_plot_mixed_beta_", fixed_effect, ".png")), width = 20, height = 20)
   
   
-  
+# Linear models (main effect only)
     
-  
+power_plot_linear <- power_results_df %>%
+  filter(str_detect(effect, "^linear")) %>%
+  mutate(
+    effect = case_when(
+      effect == "linear_true_main_power" ~ "True Main Effect",
+      effect == "linear_recov_main_power" ~ "Recovered Main Effect",
+    )
+  ) %>%
+  ggplot(aes(factor(n_subject), factor(r), fill = power)) +
+  geom_tile() +
+  geom_text(aes(label = power)) +
+  facet_grid(sigma~effect) +
+  theme_classic() +
+  labs(
+    x = "Sample Size",
+    y = "Correlation of Recovered DDM parameter",
+    title = "DDM Power Analysis for Linear Models",
+    subtitle = str_c("Beta = ", fixed_effect)
+  )
   
 
 

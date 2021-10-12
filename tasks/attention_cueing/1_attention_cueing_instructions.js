@@ -90,6 +90,7 @@ var cueing_practice1 = {
             target_y: jsPsych.timelineVariable('target_y'),
             correct_response: jsPsych.timelineVariable('correct_response')
           },
+      }
       ],
       on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {

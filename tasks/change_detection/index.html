@@ -53,7 +53,10 @@
       change_break_continue,
       change_trial_block2,           // Second block of test trials
       cursor_on,
-      change_end],  
+      change_end], 
+    on_interaction_data_update: function(data) {
+      console.log(JSON.stringify(data))
+    },
     on_finish: function() {
       jsPsych.data.displayData();
     }
