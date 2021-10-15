@@ -21,28 +21,28 @@ var fullscreenmode = {
 
 // Target and cue locations
 var location1_x = 0
-var location1_y = -400
+var location1_y = -300
 
-var location2_x = -282.8
-var location2_y = -282.8
+var location2_x = -212.135
+var location2_y = -212.135
 
-var location3_x = -400
+var location3_x = -300
 var location3_y = 0
 
-var location4_x = -282.8
-var location4_y = 282.8
+var location4_x = -212.135
+var location4_y = 212.135
 
 var location5_x = 0
-var location5_y = 400
+var location5_y = 300
 
-var location6_x = 282.8
-var location6_y = 282.8
+var location6_x = 212.135
+var location6_y = 212.135
 
-var location7_x = 400
+var location7_x = 300
 var location7_y = 0
 
-var location8_x = 0
-var location8_y = -400
+var location8_x = 212.135
+var location8_y = -212.135
 
 
 
@@ -53,6 +53,7 @@ var fixation = {
   startX: 0,
   startY: 0,
   show_start_time: 0,
+  show_end_time: 1000,
   origin_center: true
 }
 
