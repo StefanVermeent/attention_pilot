@@ -99,7 +99,7 @@ var cueing_practice1 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: '<', correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
+      timeline_variables: [{type: 'cued', target: '\u2190', correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
 }
 
 var cueing_practice2 = {
@@ -136,7 +136,7 @@ var cueing_practice2 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: ">", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
+      timeline_variables: [{type: 'neutral', target: '\u2192', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
 }
 
 var cueing_practice3 = {
@@ -173,7 +173,7 @@ var cueing_practice3 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: ">", correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
+      timeline_variables: [{type: 'cued', target: '\u2192', correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
 }
 
 var cueing_practice4 = {
@@ -210,7 +210,7 @@ var cueing_practice4 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "<", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y}],
+      timeline_variables: [{type: 'neutral', target: '\u2190', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location4_x, target_y: location4_y}],
 }
 
 var cueing_practice5 = {
@@ -247,7 +247,7 @@ var cueing_practice5 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: ">", correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y}],
+      timeline_variables: [{type: 'neutral', target: '\u2192', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location1_x, target_y: location1_y}],
 }
 
 var cueing_practice6 = {
@@ -284,7 +284,7 @@ var cueing_practice6 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: ">", correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
+      timeline_variables: [{type: 'cued', target: '\u2192', correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
 }
 
 var cueing_practice7 = {
@@ -321,7 +321,7 @@ var cueing_practice7 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'cued', target: "<", correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
+      timeline_variables: [{type: 'cued', target: '\u2190', correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
 }
 
 var cueing_practice8 = {
@@ -358,7 +358,7 @@ var cueing_practice8 = {
         data.correct = false;
       }
     }, 
-      timeline_variables: [{type: 'neutral', target: "<", correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
+      timeline_variables: [{type: 'neutral', target: '\u2190', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
 }
 
 
