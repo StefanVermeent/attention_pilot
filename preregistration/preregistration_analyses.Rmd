@@ -1,8 +1,29 @@
 ---
-title: "preregistration_analyses"
-author: "Stefan Vermeent"
-date: "9/29/2021"
-output: pdf_document
+bibliography: references.bib
+csl: apa.csl
+output:
+  pdf_document: default
+  officedown::rdocx_document:
+    reference_docx: reference-doc.docx
+    page_margins:
+      bottom: 1
+      top: 1
+      right: 1
+      left: 1
+      header: 0.5
+      footer: 0
+      gutter: 0
+    plots:
+      align: center
+      caption:
+        style: Image Caption
+        pre: 'Figure '
+        sep: '. '
+    tables:
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: '. '
 ---
 
 
@@ -10,3 +31,40 @@ output: pdf_document
 library(tidyverse)
 ```
 
+
+# Methods {#methods}
+
+# Participants {#participants}
+
+Participants will be XXX US-based individuals between the ages of 18 and 30. We decided for this age cut-off to limit the effect of healthy age-related cognitive decline on speeded cognitive tasks, which becomes more pronounced after age 30 (@salthouse_selective_2010).
+
+# Procedure {#procedure}
+
+
+## Measures {#measures}
+
+This is the measures section.
+
+### Attention tasks {#tasks}
+
+This is the section featuring all the attention tasks.
+
+### Questionnaires {#questionnaires}
+
+This is the section featuring all the questionnaires.
+
+## Data analyses {#analyses}
+
+lorem ipsum
+
+### preprocessing {#preprocessing}
+
+lorem ipsum
+
+### Reaction Times {#rt}
+
+lorem ipsum
+
+### Drift Diffusion Models {#ddm}
+
+lorem ipsum
