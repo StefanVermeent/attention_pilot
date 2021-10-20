@@ -12,17 +12,33 @@ var cueing_welcome = {
   data: {variable: 'welcome', task: "cueing"}
 };
 
-
 //-------------------- Instructions
 var cueing_instructions1 = {
   type: 'instructions',
   pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-      "You will be playing the <strong>Arrow Detection</strong> game.<br><br>" + 
-      "In this game, a left arrow (<) or right arrow (>) will be presented in one of nine locations around the center of the screen.<br>" +
-      "Your job is to indicate the direction of the arrow.<br>" +
-      "If the arrow points left, press the (&larr;) arrow on your keyboard. If the arrow points right, press the (&rarr;) arrow.<br><br><br>" +
-      "Click the 'continue' button for the next page of instructions.</p>"
+    "<p style = 'text-align: center;'>" + 
+      "In this game, an arrow will appear somewhere on the screen.<br><br>" +
+      "Your job is to figure out in which direction the arrow is pointing.<br><br><br>",
+      
+    "<p style = 'text-align: center;'>" + 
+      "Each round has three parts.<br><br><br>" +
+      "<img width = 600 src = 'img/instructions1.png'></img><br><br>",
+    
+    "<p style = 'text-align: center;'>" +   
+      "Sometimes the * will appear in the middle.<br><br>" +
+      "Other times it will appear <strong>in the same place as the arrow.</strong><br><br><br>" +
+      "<img width = 490 src = 'img/instructions2.png'></img><br><br><br>",
+      
+    "<p style = 'text-align: center;'>" + 
+      "When the arrow appears, press the arrow key that matches its direction.<br><br>" +
+      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
+      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
+      "For example, you would press the left key for the arrow below.<br><br><br>" + 
+      "<img width = 160 src = 'img/instructions3.png'></img><br><br><br>",
+      
+   "<p style = 'text-align: center;'>" +    
+      "Click the 'continue' button to practice the<br><strong>Arrow Detection</strong> game.",
+      
   ],
   show_clickable_nav: true,
   allow_backward: true,

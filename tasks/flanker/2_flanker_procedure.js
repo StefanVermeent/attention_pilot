@@ -18,7 +18,7 @@ var flanker_present_arrows = {
     }
   }
   }
-}
+};
 
 
 var flanker_test_procedure = {

@@ -64,7 +64,8 @@
 // Task Flow of Flanker Task
   var flanker = [
     flanker_welcome,
-    flanker_instructions,
+    flanker_instructions1,
+    flanker_instructions2,
     cursor_off,
     flanker_practice_start,
     flanker_practice_procedure,
@@ -103,13 +104,36 @@
     cueing_end
   ]
 
-// All possible task orders
-var test_order1 = [change_detection, flanker, attention_cueing]
-var test_order2 = [change_detection, attention_cueing, flanker]
-var test_order3 = [flanker, change_detection, attention_cueing]
-var test_order4 = [flanker, attention_cueing, change_detection]
-var test_order5 = [attention_cueing, change_detection, flanker]
-var test_order6 = [attention_cueing, flanker, change_detection]
+// Specify all possible test orders. Includes function to save counterbalancing code to data when test order is randomly chosen below.
+var test_order1 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
+  change_detection, flanker, attention_cueing
+]
+
+var test_order2 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 2})}},
+  change_detection, attention_cueing, flanker
+]
+
+var test_order3 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 3})}},
+  flanker, change_detection, attention_cueing
+]
+
+var test_order4 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 4})}},
+  flanker, attention_cueing, change_detection
+]
+
+var test_order5 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 5})}},
+  attention_cueing, change_detection, flanker
+]
+
+var test_order6 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 6})}},
+  attention_cueing, flanker, change_detection
+]
 
 counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2, test_order3, test_order4, test_order5, test_order6], 1)[0]
 

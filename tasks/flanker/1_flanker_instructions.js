@@ -2,7 +2,7 @@
 var flanker_welcome = {
   type: 'instructions',
   pages: [
-    "Welcome to the <b>Flanker</b> game!"
+    "Welcome to the <b>Arrow</b> game!"
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -16,15 +16,33 @@ var flanker_welcome = {
 var flanker_instructions = {
   type: 'instructions',
   pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-      "You will be playing the <strong>Flanker</strong> game.<br><br>" + 
-      "In this game you will see groups of five arrows pointing left or right (e.g., &larr;&larr;&larr;&larr;&larr;, or &rarr;&rarr;&rarr;&rarr;&rarr;).<br>" +
-      "Your job is to indicate the direction of the <strong>central</strong> arrow, while ignoring the others.<br><br>" +
-      "On some rounds, the surrounding arrows will point in the same direction as the central arrow. On other rounds, they will point in the opposite direction.<br><br>" +
-      "If the central arrow points left, press the (&larr;) arrow. If the central arrow points right, press the (&rarr;) arrow.<br><br>" +
-      "Please try to respond as quickly and accurately as possible.<br><br>"+
+    "<p style = 'text-align: center;'>"+ 
+      "In this game, you will see five arrows like the ones below.<br><br><br>" +
+      "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>" +
+      "Your job is to figure out which direction the <strong>central arrow</strong> is pointing.<br><br><br>",
       
-      "Click the 'continue' button to practice the <strong>Flanker</strong> game.<br></p>"
+     "<p style = 'text-align: center;'>"+ 
+      "Sometimes all the arrows point in the <strong>same</strong> direction.<br><br><br>" +
+      "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>",
+      
+     "<p style = 'text-align: center;'>"+ 
+      "Other times the arrows point in the <strong>different</strong> direction.<br><br><br>" +
+      "<div style = 'font-size: 30px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>",  
+      
+      "<p style = 'text-align: center;'>"+ 
+      "You should <i>always</i> focus on the <strong>central arrow</strong> and ignore the others.<br><br>" +
+      
+      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
+      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
+      
+      "<div> For example, the central arrow below points right<br>" +
+      "so you would press the left key.<br><br>" +
+      "<div style = 'font-size: 30px'>&rarr;&rarr;&larr;&rarr;&rarr;</div></div></p><br><br><br>",
+      
+     "<p style = 'text-align: center;'>"+ 
+      "Try to respond as quickly and accurately as possible.<br><br>" +
+      "Click the 'continue' button to practice the<br>" +
+      "<strong>Flanker</strong> game<br><br><br>"        
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -34,8 +52,6 @@ var flanker_instructions = {
   button_label_previous: "go back",
   data: {variable: "instructions", task: "flanker"}
 };
-
-
 
 //-------------------- Practice
 
