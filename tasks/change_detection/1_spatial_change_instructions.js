@@ -19,16 +19,16 @@ var change_instructions = {
   pages: [
     "<p style = 'text-align: center;'>" + 
       "Each round has three parts.<br><br><br>" +
-      "<img width = 600 src = 'img/instructions1.png'></img><br><br>",
+      "<img width = 600 src = '../img/change_instructions1.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Sometimes all the circles will be in the SAME locations as before.<br><br><br>" +
-      "<img width = 600 src = 'img/instructions2.png'></img><br><br>",
+      "<img width = 600 src = '../img/change_instructions2.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Other times <strong>one circle</strong> will be in a DIFFERENT <strong>location</strong>.<br><br>" + 
       "For example, the yellow circle below changed locations.<br><br>" +
-      "<img width = 600 src = 'img/instructions3.png'></img><br><br>",
+      "<img width = 600 src = '../img/change_instructions3.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Your job is to figure out if the circles are the SAME or DIFFERENT.<br><br>" +
@@ -38,7 +38,7 @@ var change_instructions = {
     "<p style = 'text-align: center;'>" +
       "The words 'SAME' and 'DIFFERENT' will be on the bottom<br>" +
       "of the screen to remind you.<br><br><br>" +
-      "<img width = 190 src = 'img/instructions4.png'></img><br><br>",
+      "<img width = 190 src = '../img/change_instructions4.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" +
       "Click the 'continue' button to practice the<br><strong>Change Detection</strong> game.",

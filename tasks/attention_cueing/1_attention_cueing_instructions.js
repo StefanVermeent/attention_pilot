@@ -22,19 +22,19 @@ var cueing_instructions = {
       
     "<p style = 'text-align: center;'>" + 
       "Each round has three parts.<br><br><br>" +
-      "<img width = 600 src = 'img/instructions1.png'></img><br><br>",
+      "<img width = 600 src = 'img/cueing_instructions1.png'></img><br><br>",
     
     "<p style = 'text-align: center;'>" +   
       "Sometimes the * will appear in the middle.<br><br>" +
       "Other times it will appear <strong>in the same place as the arrow.</strong><br><br><br>" +
-      "<img width = 490 src = 'img/instructions2.png'></img><br><br><br>",
+      "<img width = 490 src = 'img/cueing_instructions2.png'></img><br><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "When the arrow appears, press the arrow key that matches its direction.<br><br>" +
       "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
       "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
       "For example, you would press the left key for the arrow below.<br><br><br>" + 
-      "<img width = 160 src = 'img/instructions3.png'></img><br><br><br>",
+      "<img width = 160 src = 'img/cueing_instructions3.png'></img><br><br><br>",
       
    "<p style = 'text-align: center;'>" +    
       "Click the 'continue' button to practice the<br><strong>Arrow Detection</strong> game.",
