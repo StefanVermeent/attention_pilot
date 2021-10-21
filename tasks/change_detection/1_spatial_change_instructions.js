@@ -14,53 +14,34 @@ var change_welcome = {
 };
 
 //-------------------- Instructions
-var change_instructions1 = {
+var change_instructions = {
   type: 'instructions',
   pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-      "You will be playing the <strong>Change Detection</strong> game.<br><br>" + 
-      "In this game you will see a set of five colored circles, scattered randomly around the center of the screen.<br><br>" +
-      "The circles are presented for one second, then briefly disappear from the screen, and then reappear again.<br><br>" +
-      "On some trials, one of the circles has moved to another location after reappearing. On other trials, all circles are still in the same location.<br><br>" +
-      "Click 'continue' for further instructions</p>"
-  ],
-  show_clickable_nav: true,
-  allow_backward: true,
-  key_forward: -1,
-  key_backward: -1,
-  button_label_next: "continue",
-  button_label_previous: "go back",
-  data: {variable: "instructions", task: "change"}
-};
-
-
-var change_instructions2 = {
-  type: 'instructions',
-  pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-      "Your job is to indicate whether there has been a change in location, or whether all circles are still in the same location.<br><br>" +
-      "If you think the circle locations are still <strong>the same</strong>, press the (&larr;) arrow on your keyboard.<br>" +
-      "If you think one of the circles has <strong>changed</strong> location, press the (&rarr;) arrow on your keyboard.<br><br>" +
-      "Click 'continue' for further instructions</p>"
-  ],
-  show_clickable_nav: true,
-  allow_backward: true,
-  key_forward: -1,
-  key_backward: -1,
-  button_label_next: "continue",
-  button_label_previous: "go back",
-  data: {variable: "instructions", task: "change"}
-};
-
-var change_instructions3 = {
-  type: 'instructions',
-  pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-      "While memorizing the five circles, please try to keep your eyes fixated on the '+' presented at the center of the screen.<br><br>" +
-      "To help you remember the correct keys for <strong>SAME</strong> (&larr;) and <strong>DIFFERENT</strong> (&rarr;) trials, the word 'SAME' is always presented on the lower-left side of the screen, " +
-      "and 'DIFFERENT' on the lower-right side of the screen<br><br>" +
-      "Please try to respond as quickly and accurately as possible.<br><br>"+
-      "Click the 'continue' button to practice the <strong>Change Detection</strong> game.<br></p>"
+    "<p style = 'text-align: center;'>" + 
+      "Each round has three parts.<br><br><br>" +
+      "<img width = 600 src = 'img/instructions1.png'></img><br><br>",
+      
+    "<p style = 'text-align: center;'>" + 
+      "Sometimes all the circles will be in the SAME locations as before.<br><br><br>" +
+      "<img width = 600 src = 'img/instructions2.png'></img><br><br>",
+      
+    "<p style = 'text-align: center;'>" + 
+      "Other times <strong>one circle</strong> will be in a DIFFERENT <strong>location</strong>.<br><br>" + 
+      "For example, the yellow circle below changed locations.<br><br>" +
+      "<img width = 600 src = 'img/instructions3.png'></img><br><br>",
+      
+    "<p style = 'text-align: center;'>" + 
+      "Your job is to figure out if the circles are the SAME or DIFFERENT.<br><br>" +
+      "<div style = 'float: left;'>If they are the SAME<br>press the LEFT (<) key.</div>" +
+      "<div style = 'float: right;'>If they are DIFFERENT<br>press the RIGHT (>) key.</div><br><br><br><br>",
+      
+    "<p style = 'text-align: center;'>" +
+      "The words 'SAME' and 'DIFFERENT' will be on the bottom<br>" +
+      "of the screen to remind you.<br><br><br>" +
+      "<img width = 190 src = 'img/instructions4.png'></img><br><br>",
+      
+    "<p style = 'text-align: center;'>" +
+      "Click the 'continue' button to practice the<br><strong>Change Detection</strong> game.",
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -73,7 +54,10 @@ var change_instructions3 = {
 
 var change_practice_start = {
   type: 'html-keyboard-response',
-  stimulus: "You are about to start the practice round.<br><br><strong>Press any key when you are ready!</strong><br><br>",
+  stimulus:    "<p style = 'text-align: center;'>" +
+      "You are about to start the <strong>Change Detection</strong> game.<br><br>" +
+      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "When you are ready, press any key to start the practice round.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "change"}
 };

@@ -13,7 +13,7 @@ var cueing_welcome = {
 };
 
 //-------------------- Instructions
-var cueing_instructions1 = {
+var cueing_instructions = {
   type: 'instructions',
   pages: [
     "<p style = 'text-align: center;'>" + 
@@ -50,32 +50,14 @@ var cueing_instructions1 = {
 };
 
 
-var cueing_instructions2 = {
-  type: 'instructions',
-  pages: [
-    "<p style = 'text-align: left; padding: 0 20% 0 20%;'>"+ 
-    "Before the arrow is presented, you will briefly see an '*' on the screen." +
-    "Sometimes the '*' appears in the same location as where the arrow will appear.<br>" +
-    "Other times, the '*' appears in the center of the screen and does not predict the location of the arrow<br><br>" +
-    "Regardless of the location of the '*', your job is to indicate the direction of the arrow using the &larr; and &rarr; keys on your keyboard.<br><br>" +
-    "Please try to respond as fast and accurate as possible.<br><br><br>" +
-    "Click the 'continue' button to practice the <strong>Arrow Detection</strong> game.<br></p>"
-  ],
-  show_clickable_nav: true,
-  allow_backward: true,
-  key_forward: -1,
-  key_backward: -1,
-  button_label_next: "continue",
-  button_label_previous: "go back",
-  data: {variable: "instructions", task: "cueing"}
-};
-
-
 //-------------------- Practice
 
 var cueing_practice_start = {
   type: 'html-keyboard-response',
-  stimulus: "You are about to start the practice round.<br><br><strong>Press any key when you are ready!</strong><br><br>",
+  stimulus:    "<p style = 'text-align: center;'>" +
+      "You are about to start the <strong>Arrow Detection</strong> game.<br><br>" +
+      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "When you are ready, press any key to start the practice round.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "cueing"}
 };

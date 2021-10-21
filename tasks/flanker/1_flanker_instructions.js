@@ -57,7 +57,10 @@ var flanker_instructions = {
 
 var flanker_practice_start = {
   type: 'html-keyboard-response',
-  stimulus: "You are about to start the practice round.<br><br><strong>Press any key when you are ready!</strong><br><br>",
+  stimulus:    "<p style = 'text-align: center;'>" +
+      "You are about to start the <strong>Flanker</strong> game.<br><br>" +
+      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "When you are ready, press any key to start the practice round.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "flanker"}
 };
