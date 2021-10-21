@@ -363,13 +363,11 @@ var cueing_practice8 = {
 // Finish Practice trials
 var cueing_practice_finish = {
   type: "html-keyboard-response",
-  stimulus: "<div style = 'text-align: left;'>" +
+  stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
-  "You are now finished practicing the <strong>Arrow Detection</strong> game.<br><br>" +
-  "Next, you will play the actual game.<br><br>" +
-  "Remember to indicate the direction of the arrow as fast and accurate as possible.<br><br>" +
+  "You will now play the actual <strong>Arrow Detection</strong> game.<br><br>" +
   "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
-  "Press any key to begin! <br><br></div>",
+  "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "cueing"}
 };

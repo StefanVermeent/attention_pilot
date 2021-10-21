@@ -2,7 +2,7 @@
 var flanker_welcome = {
   type: 'instructions',
   pages: [
-    "Welcome to the <b>Arrow</b> game!"
+    "Welcome to the <b>Flanker</b> game!"
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -35,7 +35,7 @@ var flanker_instructions = {
       "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
       "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
       
-      "<div> For example, the central arrow below points right<br>" +
+      "<div> For example, the central arrow below points left<br>" +
       "so you would press the left key.<br><br>" +
       "<div style = 'font-size: 30px'>&rarr;&rarr;&larr;&rarr;&rarr;</div></div></p><br><br><br>",
       
@@ -107,14 +107,11 @@ var flanker_practice_procedure = {
 // Finish Practice trials
 var flanker_practice_finish = {
   type: "html-keyboard-response",
-  stimulus: "<div style = 'text-align: left;'>" +
+  stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
-  "You are now finished practicing the <strong>Flanker</strong> game.<br><br>" +
-  "Next, you will play the actual game.<br><br>" +
-  "In the real game, you will only have 2 seconds to respond.<br>" +
-  "Remember to respond only to the direction of the <strong>central</strong> arrow.<br><br>" +
+  "You will now play the actual <strong>Flanker</strong> game.<br><br>" +
   "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
-  "Press any key to begin! <br><br></div>",
+  "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "flanker"}
 };

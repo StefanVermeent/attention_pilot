@@ -434,13 +434,11 @@ stim1_color: '#0457A0', stim2_color: '#FBF250', stim3_color: '#D40E0E', stim4_co
 
 var change_practice_finish = {
   type: "html-keyboard-response",
-  stimulus: "<div style = 'text-align: left;'>" +
+  stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
-  "You are now finished practicing the <strong>Change Detection</strong> game.<br><br>" +
-  "Next, you will play the actual game.<br><br>" +
-  "Remember to focus on the central '+'. Press (&larr;) when a circle has changed, and press (&rarr;) when all circles are in the same position.<br><br>" +
+  "You will now play the actual <strong>Change Detection</strong> game.<br><br>" +
   "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
-  "Press any key to begin! <br><br></div>",
+  "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "change"}
 };
@@ -448,20 +446,20 @@ var change_practice_finish = {
 
 var change_break = {
   type: "html-button-response",
-  stimulus: "<div style = 'text-align: left;'>" +
-  "Nice work!<br><br>" +
+  stimulus: "<p style = 'text-align: center;'>" +
+  "Nice work!<br><br><br>" +
   "You are now halfway through the game.<br><br>" +
   "If you need to, you can take a break to give your eyes some rest and regain your focus.<br><br>" +
   "Take as long as you need!<br><br>" +
-  "Press 'continue' when you feel ready to continue with the second half of the trials.",
+  "Press 'continue' when you feel ready to continue with the second half of the game.",
   choices: ['Continue'],
   data: {variable: "break", task: "change"}
 };
 
 var change_break_continue = {
   type: "html-keyboard-response",
-  stimulus: "<div style = 'text-align: left;'>" +
-  "You will now start the second half of the trials<br><br>" +
+  stimulus: "<p style = 'text-align: center;'>" +
+  "You will now start the second half of the game<br><br>" +
   "Press any key to continue!",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "break", task: "change"}

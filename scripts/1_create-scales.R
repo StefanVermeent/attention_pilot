@@ -7,7 +7,7 @@ library(jsonlite)
 source("scripts/functions-create_codebook.R")
 
 # Data --------------------------------------------------------------------
-att_data <- 
+pilot_data <- 
   fetch_survey(
     surveyID = "SV_2tsChV0wnzp0LH0", 
     verbose  = T,
@@ -23,28 +23,60 @@ att_data <-
 
 # meta data ---------------------------------------------------------------
 vars01_meta <- 
-  aut_data %>% 
+  pilot_data %>% 
   rename(
     meta_duration = `duration (in seconds)`,
     meta_start    = startdate,
     meta_end      = enddate,
     meta_recorded = recordeddate,
     meta_finished = finished,
-    meta_captcha  = q_recaptchascore
+    meta_captcha  = q_recaptchascore,
   ) %>% 
-  select(id,starts_with("meta_"))
+  select(id, starts_with("meta_"))
 
-# Unpredictability --------------------------------------------------------
-vars02_unp <- 
-  aut_data %>% 
-  select(id,starts_with("unp")) %>% 
+
+# Current state -----------------------------------------------------------
+
+vars02_state <- 
+  pilot_data %>%
+  select(id, starts_with('stai_s'), sick, meal, hungry, sleep, rested) %>%
   mutate(
-    unp_mean    = across(matches("unp\\d\\d")) %>% rowMeans(., na.rm = T),
-    unp_missing = across(matches("unp\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T)
+    stai_s_mean = across(matches("stai_s")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1,1,1,-1,1,-1,-1,1,1,1,-1,-1,1,1,-1,-1), items = ., mini = 1, maxi = 4) %>% rowMeans(., na.rm = T), 
   )
 
+# Unpredictability --------------------------------------------------------
+vars03_unp <- 
+  pilot_data %>% 
+  select(id,starts_with(c("chaos", "unp", "quic"))) %>% 
+  mutate(
+    unp_mean                 = across(matches("unp\\d\\d")) %>% rowMeans(., na.rm = T),
+    unp_missing              = across(matches("unp\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    chaos_mean               = across(matches("chaos")) %>% psych::reverse.code(keys = c(-1,-1,1,-1,1,1,-1,1,1,1,1,-1,1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    chaos_missing            = across(matches("chaos")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    quic_total_sum           = across(matches("quic")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_total_missing       = across(matches("quic")) %>% is.na() %>% rowSums(., na.rm = T),    
+    
+    quic_monitoring_sum      = across(matches("quic_monitoring")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_monitoring_missing  = across(matches("quic_monitoring")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    quic_par_predict_sum     = across(matches("quic_par_predict")) %>% psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_par_predict_missing = across(matches("quic_par_predict")) %>% is.na() %>% rowSums(., na.rm = T),
+     
+    quic_par_env_sum         = across(matches("quic_par_env")) %>% psych::reverse.code(keys = c(1,1,1,1,-1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_par_env_missing     = across(matches("quic_par_env")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    quic_phys_env_sum        = across(matches("quic_phys_env")) %>% psych::reverse.code(keys = c(1,1,1,1-1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_phys_env_missing    = across(matches("quic_phys_env")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    quic_safety_sum          = across(matches("quic_safety")) %>% rowMeans(., na.rm = T),
+    quic_safety_missing      = across(matches("quic_safety")) %>% is.na() %>% rowSums(., na.rm = T)
+  )
+
+
 # SES ---------------------------------------------------------------------
-vars03_ses <- 
+vars04_ses <- 
   aut_data %>% 
   select(id,matches("ses\\d\\d")) %>% 
   mutate(
