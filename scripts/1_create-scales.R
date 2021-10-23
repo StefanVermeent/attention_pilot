@@ -41,7 +41,7 @@ vars02_state <-
   pilot_data %>%
   select(id, starts_with('stai_s'), sick, meal, hungry, sleep, rested) %>%
   mutate(
-    stai_s_mean = across(matches("stai_s")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1,1,1,-1,1,-1,-1,1,1,1,-1,-1,1,1,-1,-1), items = ., mini = 1, maxi = 4) %>% rowMeans(., na.rm = T), 
+    stai_s_mean = across(matches("stai_s")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1,1,1,-1,1,-1,-1,1,1,1,-1,-1,1,1,-1,-1), items = ., mini = 1, maxi = 4) %>% rowSums(., na.rm = T)
   )
 
 # Unpredictability --------------------------------------------------------
@@ -55,53 +55,27 @@ vars03_unp <-
     chaos_mean               = across(matches("chaos")) %>% psych::reverse.code(keys = c(-1,-1,1,-1,1,1,-1,1,1,1,1,-1,1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
     chaos_missing            = across(matches("chaos")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_total_sum           = across(matches("quic")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_total_sum           = across(matches("quic")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowMeans(., na.rm = T),
     quic_total_missing       = across(matches("quic")) %>% is.na() %>% rowSums(., na.rm = T),    
     
-    quic_monitoring_sum      = across(matches("quic_monitoring")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_monitoring_sum      = across(matches("quic_monitoring")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1), items = ., mini = 0, maxi = 1) %>% rowMeans(., na.rm = T),
     quic_monitoring_missing  = across(matches("quic_monitoring")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_par_predict_sum     = across(matches("quic_par_predict")) %>% psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_par_predict_sum     = across(matches("quic_par_predict")) %>% psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,1,1,1), items = ., mini = 0, maxi = 1) %>% rowMean(., na.rm = T),
     quic_par_predict_missing = across(matches("quic_par_predict")) %>% is.na() %>% rowSums(., na.rm = T),
      
-    quic_par_env_sum         = across(matches("quic_par_env")) %>% psych::reverse.code(keys = c(1,1,1,1,-1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_par_env_sum         = across(matches("quic_par_env")) %>% psych::reverse.code(keys = c(1,1,1,1,-1,1,1), items = ., mini = 0, maxi = 1) %>% rowMeans(., na.rm = T),
     quic_par_env_missing     = across(matches("quic_par_env")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_phys_env_sum        = across(matches("quic_phys_env")) %>% psych::reverse.code(keys = c(1,1,1,1-1,1,1), items = ., mini = 0, maxi = 1) %>% rowSums(., na.rm = T),
+    quic_phys_env_sum        = across(matches("quic_phys_env")) %>% psych::reverse.code(keys = c(1,1,1,1-1,1,1), items = ., mini = 0, maxi = 1) %>% rowMeans(., na.rm = T),
     quic_phys_env_missing    = across(matches("quic_phys_env")) %>% is.na() %>% rowSums(., na.rm = T),
     
     quic_safety_sum          = across(matches("quic_safety")) %>% rowMeans(., na.rm = T),
     quic_safety_missing      = across(matches("quic_safety")) %>% is.na() %>% rowSums(., na.rm = T)
-  )
-
-
-# SES ---------------------------------------------------------------------
-vars04_ses <- 
-  aut_data %>% 
-  select(id,matches("ses\\d\\d")) %>% 
-  mutate(
-    ses_mean    = across(matches("ses\\d\\d$")) %>% psych::reverse.code(keys = c(1,1,1,1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
-    ses_missing = across(matches("ses\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
-  )
-
-# ACEs --------------------------------------------------------------------
-vars04_ctq <- 
-  aut_data %>% 
-  select(id,matches("ctq\\d\\d")) %>% 
-  mutate(
-    ctq_ea    = across(matches("ctq(03|08|14|18|25)")) %>% rowMeans(., na.rm = T),
-    ctq_pa    = across(matches("ctq(09|11|12|15|17)")) %>% rowMeans(., na.rm = T),
-    ctq_sa    = across(matches("ctq(20|21|23|24|27)")) %>% rowMeans(., na.rm = T),
-    ctq_en    = across(matches("ctq(05|07|13|19|28|02|26)")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
-    ctq_md    = across(matches("ctq(04|10|16|22)")) %>% rowMeans(., na.rm = T),
-    ctq_pn    = across(matches("ctq(01|04|06)")) %>% rowMeans(., na.rm = T),
-    ctq_total = across(matches("ctq(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28)$")) %>%
-      psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,-1,1,1,-1,1,1,-1,1,1,-1,1,1,1,1,1,1,-1,1,-1), items = ., mini = 1, maxi = 5) %>% 
-      rowMeans(., na.rm = T)
-  )
+  ) 
 
 # Violence ----------------------------------------------------------------
-vars05_vio <- 
+vars04_vio <- 
   aut_data %>% 
   select(id,matches("violence\\d\\d")) %>% 
   mutate(
@@ -109,53 +83,99 @@ vars05_vio <-
     violence_missing = across(matches("violence\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
   )
 
-# Resilience --------------------------------------------------------------
-vars06_res <- 
-  aut_data %>% 
-  select(id,matches("resilience\\d\\d")) %>% 
+# SES ---------------------------------------------------------------------
+vars05_ses <- 
+  pilot_data %>% 
+  select(id,matches("ses\\d\\d")) %>% 
   mutate(
-    resilience_mean    = across(matches("resilience\\d\\d$")) %>% rowMeans(., na.rm = T),
-    resilience_missing = across(matches("resilience\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
+    ses_mean    = across(matches("ses\\d\\d$")) %>% psych::reverse.code(keys = c(1,1,1,1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    ses_missing = across(matches("ses\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
   )
 
-# Family Psychopathology --------------------------------------------------
-vars07_fam <- 
-  aut_data %>% 
-  select(id, matches("fam_psych\\d\\d$")) %>% 
+
+# Temporal Orientation ----------------------------------------------------
+
+vars06_temp_orientation <- 
+  pilot_data %>% 
+  select(id,starts_with(c('impuls', 'fut_orient'))) %>% 
   mutate(
-    fam_pscyh_mean    = across(matches("fam_psych\\d\\d$")) %>% rowMeans(., na.rm = T),
-    fam_pscyh_missing = across(matches("fam_psych\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
+    impuls_mean    = across(matches("impuls")) %>% rowMeans(., na.rm = T),
+    impuls_missing = across(matches("impuls")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    #'Planning Ahead' Subscale
+    fos_pa_mean         = across(matches("fos(01|06|07|12|13)")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    fos_pa_missing      = across(matches("fos(01|06|07|12|13)")) %>% is.na() %>% rowSums(., na.rm = T),
+    # 'Time Perspective' subscale
+    fos_tp_mean         = across(matches("fos(02|05|08|11|14)")) %>% psych::reverse.code(keys = c(1,1,-1,-1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    fos_tp_missing      = across(matches("fos(02|05|08|11|14)")) %>% is.na() %>% rowSums(., na.rm = T),
+    # 'Anticipation of Future Consequences' subscale
+    fos_fc_mean         = across(matches("fos(03|04|09|10|15)")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    fos_fc_missing      = across(matches("fos(03|04|09|10|15)")) %>% is.na() %>% rowSums(., na.rm = T),
+    # 'Future Orientation Scale' (total of all items)
+    fos_fo_mean         = across(matches("fos(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15)")) %>% psych::reverse.code(keys = c(-1,1,-1,-1,1,-1,1,-1,1,1,-1,1,-1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    fos_fo_missing      = across(matches("fos(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15)")) %>% is.na() %>% rowSums(., na.rm = T),  
+  )
+
+
+# Depressive Symptoms -----------------------------------------------------
+
+vars08_dep <- 
+  pilot_data %>% 
+  select(id, matches("depression\\d\\d$")) %>% 
+  mutate(
+    depression_mean    = across(matches("depression\\d\\d$")) %>% psych::reverse.code(keys = c(1,1,1,-1,1,1,1,-1,1,1,1,-1,1,1,1,-1,1,1,1,1), items = ., mini = 1, maxi = 4) %>% rowMeans(., na.rm = T),
+    depression_missing = across(matches("depression\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
   )
 
 # Demographics ------------------------------------------------------------
-vars08_dems <- 
-  aut_data %>% 
-  select(id,starts_with("dems")) 
+vars09_dems <- 
+  pilot_data %>% 
+  select(id,starts_with("dems_ethnicity")) %>%
+  pivot_longer(-id, names_to = "option", values_to = "value") %>%
+  drop_na(value) %>%
+  mutate(
+    dems_ethnicity = case_when(
+      option == "dems_ethnicity_1" ~ "Asian or Asian American (e.g., Chinese, Japanese, and others)",
+      option == "dems_ethnicity_2" ~ "Black or African American",
+      option == "dems_ethnicity_3" ~ "Hispanic of Latino (e.g., Mexican American, Central American, and others)",
+      option == "dems_ethnicity_4" ~ "White, Caucasian, Anglo, European American",
+      option == "dems_ethnicity_5" ~ "Native American/Alaskan Native/indigenous",
+      option == "dems_ethnicity_6" ~ "Native Hawaiian or other Pacific Islander",
+      option == "dems_ethnicity_7" ~ "Filipino",
+      option == "dems_ethnicity_8" ~ "Middle Eastern",
+      option == "dems_ethnicity_9" ~ "Other",
+      option == "dems_ethnicity_9_text" ~ as.character(value),
+      option == "dems_ethnicity_10" ~ "Prefer not to say",
+    )
+  ) %>%
+  group_by(id) %>%
+  summarise(dems_ethnicity = str_c(dems_ethnicity, collapse = " & ")) %>%
+  mutate(dems_ethnicity_mixed = ifelse(str_detect(dems_ethnicity, "\\s&\\s"), 1, 0)) %>%
+  left_join(pilot_data %>% select(id, matches("dems_(age|sex|gender|born|english|class|edu|occupation|income|colorblind)"), weight, height, activity))
 
 # Attention ---------------------------------------------------------------
-vars09_att <- 
-  aut_data %>% 
+vars10_att <- 
+  pilot_data %>% 
   select(id,starts_with("att")) %>% 
-  rename(attention_getup = att_getup, attention_interrupted = att_interrupted) %>% 
   mutate(
-    attention_sum = (ifelse(attention1 == 1, 0, 1) + ifelse(attention2 == 4, 0, 1))
+    attention_sum = (ifelse(att_check01 == 5, 0, 1) + ifelse(att_check02 == 2, 0, 1))
   )
 
 # Admin -------------------------------------------------------------------
-vars10_admin <- 
-  aut_data %>% 
+vars11_admin <- 
+  pilot_data %>% 
   select(ends_with("id"))
 
 # Creativity --------------------------------------------------------------
 ## Raw AUT ----
-vars11_aut_raw <- 
-  aut_data %>% 
-  select(id, aut_data) %>% 
-  filter(str_detect(aut_data, "^\\[\\{\"view_history")) %>% 
+vars11_tasks_raw <- 
+  pilot_data %>% 
+  select(id, tasks_data) %>% 
+  #filter(str_detect(tasks_data, "^\\[\\{\"view_history")) %>% 
   mutate(
-    aut = str_replace(aut_data,"\\.\\.\\.$","ETHAN") %>% stringi::stri_replace_last(regex = ",", "ETHAN") %>% str_replace("ETHAN.*ETHAN$",'\\}\\]'),
-    aut = str_replace(aut, "\\}\\}\\]$", "\\}\\]"),
-    aut = ifelse(!is.na(aut_data), map(aut, function(x) jsonlite::fromJSON(x)), NA)
+    #aut = str_replace(aut_data,"\\.\\.\\.$","ETHAN") %>% stringi::stri_replace_last(regex = ",", "ETHAN") %>% str_replace("ETHAN.*ETHAN$",'\\}\\]'),
+    #aut = str_replace(aut, "\\}\\}\\]$", "\\}\\]"),
+    tasks_data = ifelse(!is.na(pilot_data), map(tasks_data, function(x) jsonlite::fromJSON(x)), NA)
   ) %>% 
   select(id, aut) %>% 
   unnest(aut) %>% 
@@ -185,26 +205,8 @@ vars12_aut <-
   ungroup() %>% 
   select(id, finished, item, rt, rt_rolling, rt_max, response_order, response_raw, response) 
 
-## Deal with Ranks ----
-vars13_aut_ranks <- 
-  vars11_aut_raw %>%
-  filter(str_detect(variable, "rank")) %>% 
-  select(id, variable, choice, selected) %>% 
-  mutate(rank = case_when(selected == "first" ~ 1, selected == "second" ~ 2, selected == "third" ~ 3)) %>% 
-  filter(!is.na(rank)) %>% 
-  group_by(id, variable) %>% 
-  mutate(rank_count = 1:n()) %>% 
-  filter(rank_count >= max(rank_count) - 2) %>% 
-  mutate(item = str_remove_all(variable, "^aut_|_rank$")) %>% 
-  ungroup() %>% 
-  select(id, item, choice, rank)
 
-## Merge ranks ----
-vars14_prepped <- 
-  left_join(
-    vars12_aut,
-    vars13_aut_ranks, by = c("id" = "id","item" = "item","response" = "choice")
-  )
+
 
 # Cleaned Data ------------------------------------------------------------
 ## Self-report scales ----

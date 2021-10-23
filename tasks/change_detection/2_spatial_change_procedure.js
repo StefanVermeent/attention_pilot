@@ -25,6 +25,7 @@ var change_trial_block1 = {
       ],
       data: {
         variable: 'test_block1',
+        task: 'change',
         type: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -46,7 +47,12 @@ var change_trial_block1 = {
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
-        correct_response: jsPsych.timelineVariable('correct_response')
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
     },
     on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
@@ -238,6 +244,7 @@ stim1_color: '#0457A0', stim2_color: '#25D9E4', stim3_color: '#D40E0E', stim4_co
       ],
       data: {
         variable: 'test_block2',
+        task: 'change',
         type: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -259,7 +266,12 @@ stim1_color: '#0457A0', stim2_color: '#25D9E4', stim3_color: '#D40E0E', stim4_co
         test_stim3_y: jsPsych.timelineVariable('test_stim3_y'),
         test_stim4_y: jsPsych.timelineVariable('test_stim4_y'),
         test_stim5_y: jsPsych.timelineVariable('test_stim5_y'),
-        correct_response: jsPsych.timelineVariable('correct_response')
+        stim1_color: jsPsych.timelineVariable('stim1_color'),
+        stim2_color: jsPsych.timelineVariable('stim2_color'),
+        stim3_color: jsPsych.timelineVariable('stim3_color'),
+        stim4_color: jsPsych.timelineVariable('stim4_color'),
+        stim5_color: jsPsych.timelineVariable('stim5_color'),
+        stim6_color: jsPsych.timelineVariable('stim6_color'),
     },
     on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {

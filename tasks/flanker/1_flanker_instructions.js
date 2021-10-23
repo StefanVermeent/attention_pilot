@@ -19,30 +19,29 @@ var flanker_instructions = {
     "<p style = 'text-align: center;'>"+ 
       "In this game, you will see five arrows like the ones below.<br><br><br>" +
       "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>" +
-      "Your job is to figure out which direction the <strong>central arrow</strong> is pointing.<br><br><br>",
+      "Your job is to decide which way the <strong>middle arrow</strong> is pointing.<br><br><br>",
       
      "<p style = 'text-align: center;'>"+ 
-      "Sometimes all the arrows point in the <strong>same</strong> direction.<br><br><br>" +
+      "Sometimes, all the arrows point the <strong>same</strong> way.<br><br><br>" +
       "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>",
       
      "<p style = 'text-align: center;'>"+ 
-      "Other times the arrows point in the <strong>different</strong> direction.<br><br><br>" +
+      "Other times, the arrows point a <strong>different</strong> way.<br><br><br>" +
       "<div style = 'font-size: 30px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>",  
       
       "<p style = 'text-align: center;'>"+ 
-      "You should <i>always</i> focus on the <strong>central arrow</strong> and ignore the others.<br><br>" +
+      "You should <i>always</i> look at the <strong>middle arrow</strong> and ignore the others.<br><br>" +
       
       "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
       "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
       
-      "<div> For example, the central arrow below points left<br>" +
+      "In the example below, the middle arrow points left,<br>" +
       "so you would press the left key.<br><br>" +
-      "<div style = 'font-size: 30px'>&rarr;&rarr;&larr;&rarr;&rarr;</div></div></p><br><br><br>",
+      "<div style = 'font-size: 30px'>&rarr;&rarr;&larr;&rarr;&rarr;</div></p><br><br><br>",
       
      "<p style = 'text-align: center;'>"+ 
-      "Try to respond as quickly and accurately as possible.<br><br>" +
-      "Click the 'continue' button to practice the<br>" +
-      "<strong>Flanker</strong> game<br><br><br>"        
+      "Try to respond as fast and as correctly as possible.<br><br>" +
+      "Click 'continue' to practice this game<br><br><br>"        
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -58,9 +57,9 @@ var flanker_instructions = {
 var flanker_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
-      "You are about to start the <strong>Flanker</strong> game.<br><br>" +
+      "You will practice the game <strong>8 times</strong>.<br><br>" +
       "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
-      "When you are ready, press any key to start the practice round.",
+      "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "flanker"}
 };
@@ -109,7 +108,7 @@ var flanker_practice_finish = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
-  "You will now play the actual <strong>Flanker</strong> game.<br><br>" +
+  "You will now play the actual game.<br><br>" +
   "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,

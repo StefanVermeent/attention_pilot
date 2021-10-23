@@ -18,26 +18,26 @@ var cueing_instructions = {
   pages: [
     "<p style = 'text-align: center;'>" + 
       "In this game, an arrow will appear somewhere on the screen.<br><br>" +
-      "Your job is to figure out in which direction the arrow is pointing.<br><br><br>",
+      "Your job is to decide which way the arrow is pointing.<br><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Each round has three parts.<br><br><br>" +
       "<img width = 600 src = 'img/cueing_instructions1.png'></img><br><br>",
     
     "<p style = 'text-align: center;'>" +   
-      "Sometimes the * will appear in the middle.<br><br>" +
-      "Other times it will appear <strong>in the same place as the arrow.</strong><br><br><br>" +
+      "Sometimes, the * will appear in the middle of the screen.<br><br>" +
+      "Other times, it will appear <strong>in the same place as the arrow.</strong><br><br><br>" +
       "<img width = 490 src = 'img/cueing_instructions2.png'></img><br><br><br>",
       
     "<p style = 'text-align: center;'>" + 
-      "When the arrow appears, press the arrow key that matches its direction.<br><br>" +
+      "When the arrow appears, press the arrow key that matches the way it points.<br><br>" +
       "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
       "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
-      "For example, you would press the left key for the arrow below.<br><br><br>" + 
+      "In the example below, you would press the left key.<br><br><br>" + 
       "<img width = 160 src = 'img/cueing_instructions3.png'></img><br><br><br>",
       
    "<p style = 'text-align: center;'>" +    
-      "Click the 'continue' button to practice the<br><strong>Arrow Detection</strong> game.",
+      "Click 'continue' button to practice the game.",
       
   ],
   show_clickable_nav: true,
@@ -55,9 +55,9 @@ var cueing_instructions = {
 var cueing_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
-      "You are about to start the <strong>Arrow Detection</strong> game.<br><br>" +
+      "You will practice the game <strong>8 times</strong>.<br><br>" +
       "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
-      "When you are ready, press any key to start the practice round.",
+      "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "cueing"}
 };

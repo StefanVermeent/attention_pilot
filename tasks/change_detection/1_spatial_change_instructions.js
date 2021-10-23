@@ -22,26 +22,26 @@ var change_instructions = {
       "<img width = 600 src = '../img/change_instructions1.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
-      "Sometimes all the circles will be in the SAME locations as before.<br><br><br>" +
+      "Sometimes, all the circles will be in the SAME places as before.<br><br><br>" +
       "<img width = 600 src = '../img/change_instructions2.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
-      "Other times <strong>one circle</strong> will be in a DIFFERENT <strong>location</strong>.<br><br>" + 
-      "For example, the yellow circle below changed locations.<br><br>" +
+      "Other times, <strong>one circle</strong> will be in a DIFFERENT place.<br><br>" + 
+      "In the example below, the yellow circle changed places.<br><br>" +
       "<img width = 600 src = '../img/change_instructions3.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
-      "Your job is to figure out if the circles are the SAME or DIFFERENT.<br><br>" +
-      "<div style = 'float: left;'>If they are the SAME<br>press the LEFT (<) key.</div>" +
-      "<div style = 'float: right;'>If they are DIFFERENT<br>press the RIGHT (>) key.</div><br><br><br><br>",
+      "Your job is to figure out if the places of the circles are the SAME or DIFFERENT.<br><br>" +
+      "<div style = 'float: left;'>If the SAME<br>press the LEFT (<) key.</div>" +
+      "<div style = 'float: right;'>If DIFFERENT<br>press the RIGHT (>) key.</div><br><br><br><br>",
       
     "<p style = 'text-align: center;'>" +
-      "The words 'SAME' and 'DIFFERENT' will be on the bottom<br>" +
+      "The words 'SAME' and 'DIFFERENT' will always be at the bottom<br>" +
       "of the screen to remind you.<br><br><br>" +
       "<img width = 190 src = '../img/change_instructions4.png'></img><br><br>",
       
     "<p style = 'text-align: center;'>" +
-      "Click the 'continue' button to practice the<br><strong>Change Detection</strong> game.",
+      "Click 'continue' to practice this game.",
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -55,9 +55,9 @@ var change_instructions = {
 var change_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
-      "You are about to start the <strong>Change Detection</strong> game.<br><br>" +
+      "You will practice the game <strong>5 times</strong>.<br><br>" +
       "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
-      "When you are ready, press any key to start the practice round.",
+      "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "change"}
 };
@@ -436,7 +436,7 @@ var change_practice_finish = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
-  "You will now play the actual <strong>Change Detection</strong> game.<br><br>" +
+  "You will now play the actual game.<br><br>" +
   "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
@@ -449,7 +449,7 @@ var change_break = {
   stimulus: "<p style = 'text-align: center;'>" +
   "Nice work!<br><br><br>" +
   "You are now halfway through the game.<br><br>" +
-  "If you need to, you can take a break to give your eyes some rest and regain your focus.<br><br>" +
+  "If you need to, you can take a break to give your eyes some rest.<br><br>" +
   "Take as long as you need!<br><br>" +
   "Press 'continue' when you feel ready to continue with the second half of the game.",
   choices: ['Continue'],
@@ -459,8 +459,8 @@ var change_break = {
 var change_break_continue = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-  "You will now start the second half of the game<br><br>" +
-  "Press any key to continue!",
+  "You will now start the second half of the game.<br><br>" +
+  "Press any key to continue.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "break", task: "change"}
 };
