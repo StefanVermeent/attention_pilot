@@ -32,8 +32,8 @@ var change_instructions = {
       
     "<p style = 'text-align: center;'>" + 
       "Your job is to figure out if the places of the circles are the SAME or DIFFERENT.<br><br>" +
-      "<div style = 'float: left;'>If the SAME<br>press the LEFT (<) key.</div>" +
-      "<div style = 'float: right;'>If DIFFERENT<br>press the RIGHT (>) key.</div><br><br><br><br>",
+      "<div style = 'float: left;'>If the SAME<br>press the LEFT (&larr;) key.</div>" +
+      "<div style = 'float: right;'>If DIFFERENT<br>press the RIGHT (&rarr;) key.</div><br><br><br><br>",
       
     "<p style = 'text-align: center;'>" +
       "The words 'SAME' and 'DIFFERENT' will always be at the bottom<br>" +
@@ -56,7 +56,7 @@ var change_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
       "You will practice the game <strong>5 times</strong>.<br><br>" +
-      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "change"}
@@ -91,7 +91,9 @@ var change_practice1 = {
       },
       ],
       data: {
-        type: jsPsych.timelineVariable('type'),
+        variable: 'practice',
+        task: 'change',
+        condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),
@@ -162,7 +164,9 @@ var change_practice2 = {
       },
       ],
       data: {
-        type: jsPsych.timelineVariable('type'),
+        variable: 'practice',
+        task: 'change',
+        condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),
@@ -236,7 +240,9 @@ var change_practice3 = {
       },
       ],
       data: {
-        type: jsPsych.timelineVariable('type'),
+        variable: 'practice',
+        task: 'change',
+        condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),
@@ -310,7 +316,9 @@ var change_practice4 = {
       },
       ],
       data: {
-        type: jsPsych.timelineVariable('type'),
+        variable: 'practice',
+        task: 'change',
+        condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),
@@ -384,7 +392,9 @@ var change_practice5 = {
       },
       ],
       data: {
-        type: jsPsych.timelineVariable('type'),
+        variable: 'practice',
+        task: 'change',
+        condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),

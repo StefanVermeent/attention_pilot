@@ -32,8 +32,8 @@ var flanker_instructions = {
       "<p style = 'text-align: center;'>"+ 
       "You should <i>always</i> look at the <strong>middle arrow</strong> and ignore the others.<br><br>" +
       
-      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
-      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
+      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (&larr;) key.</div>" +
+      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (&rarr;) key.</div><br><br><br><br>" + 
       
       "In the example below, the middle arrow points left,<br>" +
       "so you would press the left key.<br><br>" +
@@ -58,7 +58,7 @@ var flanker_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
       "You will practice the game <strong>8 times</strong>.<br><br>" +
-      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "flanker"}

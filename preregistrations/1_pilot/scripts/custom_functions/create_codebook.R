@@ -47,9 +47,7 @@ create_codebook <- function (data) {
     message("---------The following variables have no value labels:---------\n", 
             paste(no_values %>% dplyr::pull(Variable), collapse = "\n"))
   }
-  
-  codebook %<>%
-    separate(col = Label, into = c("Preface", "Label"), sep = "-")
-  
+  codebook
+      
   
 }

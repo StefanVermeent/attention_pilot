@@ -31,8 +31,8 @@ var cueing_instructions = {
       
     "<p style = 'text-align: center;'>" + 
       "When the arrow appears, press the arrow key that matches the way it points.<br><br>" +
-      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (<) key.</div>" +
-      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (>) key.</div><br><br><br><br>" + 
+      "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (&larr;) key.</div>" +
+      "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (&rarr;) key.</div><br><br><br><br>" + 
       "In the example below, you would press the left key.<br><br><br>" + 
       "<img width = 160 src = 'img/cueing_instructions3.png'></img><br><br><br>",
       
@@ -56,7 +56,7 @@ var cueing_practice_start = {
   type: 'html-keyboard-response',
   stimulus:    "<p style = 'text-align: center;'>" +
       "You will practice the game <strong>8 times</strong>.<br><br>" +
-      "Place your fingers on the left (<) and right (>) arrow keys.<br><br>" +
+      "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_start", task: "cueing"}

@@ -248,7 +248,7 @@ simulation_data <-
         adversity = rnorm(n(), 0, 1),
         intercept = rnorm(n(), 0, 2),
         sigma = rnorm(n(), 0, sigma_sd),
-        drift_rate_true = intercept + (fixed_effect * adversity) + sigma,
+        drift_rate_true = 0 + (fixed_effect * adversity) + sigma,
         drift_rate_recov = rnorm_pre(drift_rate_true, mu = mean(drift_rate_true), sd = sd(drift_rate_true), r = DDM_recovery_correlation, empirical = TRUE),
         n_sim = n_sim,
         r = DDM_recovery_correlation,

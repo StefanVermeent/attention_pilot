@@ -1,0 +1,417 @@
+---
+bibliography: references.bib
+csl: apa.csl
+output:
+  officedown::rdocx_document:
+    page_margins:
+      bottom: 1
+      footer: 0
+      gutter: 0
+      header: 0.5
+      left: 1
+      right: 1
+      top: 1
+    plots:
+      align: center
+      caption:
+        pre: 'Figure '
+        sep: '. '
+        style: Image Caption
+    reference_docx: reference-doc.docx
+    tables:
+      caption:
+        pre: 'Table '
+        sep: '. '
+        style: Table Caption
+  pdf_document: default
+  word_document: default
+keep_md: true
+---
+
+```{r setup, include=FALSE}
+
+# Load libraries
+library(tidyverse)
+library(officer)
+library(flextable)
+library(here)
+library(pwr)
+
+## Custom function to restart numbering at the start of each new chapter.
+new_chapter <- function(){
+  if(!exists("chapter_count")) chapter_count <<- 0 
+  chapter_count <<- chapter_count + 1
+  }
+
+# set up chunk options
+knitr::opts_chunk$set(
+  echo = F,
+  fig.align = "center",
+  fig.pos = "!t", 
+  out.extra = "",
+  fig.show = "asis",
+  message = FALSE,
+  warning = FALSE
+)
+
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
+
+
+# Source necessary objects
+codebook = read_csv(here("data", "1_pilot_data", "clean", "pilot_self_report_codebook.csv"))
+pilot_self_report = read_csv(here("data", "1_pilot_data", "clean", "pilot_self_report.csv"))
+```
+
+*NOTE: This document serves as a time-stamped Preregistration of the pilot study. For each study/data collection, we will complete one preregistration. Each preregistration is written as a dynamic document in manuscript form. After data collection, the preregistration document will be extended to incorporate the analyses results and discussion. For each study/data collection, the document will go through a couple of milestones: 1) Preregistration; 2) Potential deviations from the preregistration; 3) Final manuscript. Each of these milestones will be time-stamped and tagged on [Github](https://github.com/StefanVermeent/attention_pilot) for easy referencing.*
+
+\linebreak
+
+# Introduction
+
+Experiencing childhood adversity can have detrimental effects on cognitive outcomes [@hackman_2010; @ursache_2016]. However, the hidden talents approach suggests that people living in adversity might develop specific skills that help them navigate harsh and unpredictable environments. For example, recent work shows that growing up in stressful environments can enhance working memory updating, at least under certain conditions [@young_2018]. However, the cognitive mechanisms responsible for lowered (impairments) and improved (enhancements) performance on various tests remain poorly understood. Some studies suggest that specific types of adversity lead to specific abilities independent of the current context [@fields_2021]. Others only find enhancement effects when testing conditions are made more ecologically relevant [@young_2018, submitted for publication]. 
+
+Further progress depends on addressing two related questions: First, to what extent are patterns of impairment and enhancement independent? Cognitive processes that are typically targeted in hidden talents studies (e.g., working memory, task-switching) are complex processes that share many of the same more basic processes [@conway_2021, @kovacs_2019; @verbruggen_2014]. This overlap means that impairment and enhancement patterns across tasks could be driven by the same underlying process. Second, which *cognitive* mechanisms are responsible for performance differences? Performance measures such as reaction times (RTs) or error rates are coarse indicators of performance. RTs on cognitive tasks are thought to reflect a number of sequentially unfolding processes. When the effect of adversity exposure on cognitive performance is measured by looking at RTs, enhancements or impairments might be driven by any of these subprocesses. Formal cognitive models such as the Drift Diffusion Model [DDM; @ratcliff_2008; @ratcliff_2015] might provide inside into the exact processes that are impaired or enhanced by adversity. In this pilot study, we leverage the DDM to better understand the processes involved in performance differences.
+
+The DDM accounts for the fundamental cognitive processes underlying relatively simple, binary decision-making processes (2-AFC). The model assumes that the decision-making process constitutes a noisy information accumulation process that continues until one of two decision boundaries (corresponding to the response options) is reached. As soon as the accumulation process reaches a decision boundary, the process terminates and a motor response is initiated (e.g, pressing a a key on the keyboard). The DDM accounts for the full pattern of correct RTs, incorrect RTs, and proportion of errors. In doing so, it recovers four parameters that map onto distinct cognitive processes ([@voss_2004]; see Figure XXX). The accumulation process is modeled as a drift rate (*v*), reflecting basic cognitive speed/speed of information uptake. large values of *v* reflect more efficient processing (faster and more accurate). The starting point (*z*) reflects the starting position of the accumulation process relative to the two decision boundaries. Unless people are biased to favor one response over the other (e.g., due to a skewed reward structure), (*z*) is usually fixed to be equidistant from both decision boundaries (*a*). larger values of *a* indicate that the boundaries are further removed from each other, leading to more conservative responses (slower but more accurate) while smaller values of *a* reflect more liberal responses (faster but less accurate). Thus, *a* reflects the speed-accuracy trade-off made by an indidual. The fourth and final parameter is the non-decision time (*Ter*), which includes processes that are not related to the decision process (e.g., initial stimulus encoding and initiating the motor response).
+
+The current study aims to address these questions using an incremental preregistration approach. In the current preregistered pilot study, we measured various forms of adversity with a focus on unpredictability on different time scales. In addition, Participants completed three attention tasks that differed in the extent to which they would favor or punish a broad, externally focused attention style. We applied the DDM to the RT and accuracy data to decompose performance. If people from adversity develop specialized attention skills, this should be reflected in DDM parameters. First and foremost, more attention on the relevant stimuli should be reflected in a higher drift rate *v*. Second, enhanced initial detection of peripheral stimuli should be reflected in a lower non-decision time (*Ter*) since this would allow the decision process to initiate sooner in time. Beyond attention skills, people from adversity might have a smaller boundary separation *a*, reflecting more impulsive responses.   
+
+# Hypotheses
+
+Our primary hypotheses were as follows:
+
+1) People with more exposure to violence and environmental unpredictability during childhood will show enhanced or equal performance compared to people from safe environments on tasks that require quickly detecting peripheral stimuli and detecting subtle changes (i.e., the Cued Attention Task and Change Detection Task). This effect is explained by at least one of two DDM parameters: the speed of information uptake *v* and non-decision time *Ter*.
+
+2) People with more exposure to violence and environmental unpredictability during childhood will perform worse on tasks that require ignoring distracting peripheral stimuli (i.e., the Flanker Task). This effect is at least partly explained by a wider initial attentional focus, (operationalized through the attentional width parameter of a special adaptation of the original DDM; see [data analyses](#ddm_plan) for more details).
+
+In addition, the pilot study had a number of secondary aims: First, we investigated whether the link between measures of adversity and attention would be contingent on the timescale of the adversity items. More specifically, we explored whether stable attention styles might be better predicted by items of momentary unpredictability (e.g., "things were often chaotic in my house") than by items of temporally extended unpredictability ("At least one of my parents changed jobs frequently"). Second, we conducted exploratory correlation analyses between measures of adversity, attention, and measures of temporal orientation (i.e., impulsivity and future orientation). Third, we explored whether potential effects of adversity on task performance might be moderated by current anxiety. Fourth, we explored effects of hunger and sleep deprivation on performance. Finally, we explored the extent to which our retrospective measures of adversity correlate with current depressive symptoms, which might reflect a retrospective negativity bias driven by current psychopathological symptoms [@nivison_2021].
+
+# Methods {#methods}
+
+## Participants {#participants}
+
+Participants were 450 US-based individuals between the ages of 18 and 30 (*M* = `r #TBD`, *SD* = `r #TBD`). We decided for this age cut-off to limit the effect of healthy age-related cognitive decline on speeded cognitive tasks, which becomes more pronounced after age 30 [@salthouse_2010]. Recruitment took place through Prolific. Participants were eligible for for the study if they were between 18 and 30 years old, if they were currently residing in the United States, if they did not have a history of brain injury, and if they had normal or corrected-to-normal eyesight.
+
+The sample size was determined based on a power analysis for detecting a standardized effect of 0.1 and 90% power. [preregistered power analysis](https://osf.io/gfpnr/))).
+[TO BE FILLED IN]
+
+
+## Exclusion criteria {#exclusion}
+
+We applied several exclusion criteria prior to analyzing the data. First, we excluded participants with incomplete data on any of the attention tasks (*N* = `r #TBD `). Second, we analyzed responses to the attention checks and reversed coded items in the questionnaire part of the experiment. We excluded participants if they missed both attention check items or if they had suspicious response patterns (e.g., consistently endorsing high response options even when some items were reversed coded) (*N* = `r #TBD `). 
+
+In addition, we screened the reaction times on each of the three attention tasks. For the Drift Diffusion analyses, it is important that each response is generated by a process of active information accumulation (i.e., a diffusion process, as opposed to guessing). To this end, trials with reaction times < 250ms or longer than 3500ms [@ratcliff_2015] were excluded from the analyses (*N* = `r #TBD `). Participants with more than 10 removed trials were excluded from the analyses (N = `r #TBD `).  
+
+The exclusion criteria listed above are our best *a-priori* guesses. We expect to develop new criteria empirically after collecting the data. 
+
+## Procedure {#procedure}
+
+The experiment was completed on the participants' own laptop or desktop computer and consisted of four parts: consent, attention task battery, questionnaire battery, brief demographics form, and final checks and the opportunity to give feedback on the experiment. [something on ethical approval].
+
+After providing consent, participants started with the three attention tasks. They were asked to complete the attention tasks in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. The order of the tasks was counterbalanced between subjects. At the onset of the first task, the experiment went into full-screen mode to limit distractions from other programs or browser tabs. The size of the task stimuli was controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. Participants were asked to hold a creditcard (or similarly sized card) up against the screen and to increase the size of a blue rectangle on the screen until it matched the size of the creditcard. The stimulus display for each task was resized so that 100 pixels corresponded to 1 inch for all participants. After successfully resizing the screen, participants completed all three tasks. Whenever participants had to respond by use of their keyboard, the cursor was hidden from the screen to minimize distractions. Code for the three tasks can be found on [Github](https://github.com/StefanVermeent/attention_pilot/tree/main/tasks). 
+
+After completing the attention tasks, participants completed the questionnaire battery in the following fixed order: 1) Current state (state anxiety and separate questions relating to specific states); 2) Childhood adversity (perceived unpredictability, perceived socio-economic status, exposure to violence and physical fights, household chaos); 3) Temporal orientation (impulsivity, future orientation); 4) Depressive symptoms.
+
+Finally, the demographics questions asked about the participant's age, weight, height, physical activity, sex at birth, gender, ethnicity, social class (current and during childhood), education level (one's own as well as parents' education level), occupation, and household income. At the end of the experiment, we asked participants if they ever got up or were interrupted during the study, and how noisy their environment was during the attention tasks.
+
+
+
+
+## Measures {#measures}
+
+The attention tasks were programmed in JsPsych version 3.6.1 [@deLeeuw_2015]. 
+
+### Cued Attention Task {#cued_attention}
+
+The cued attention task was an adaptation of the Posner task [@posner_1980] which measures basic spatial attention speed. On each trial, a left- or right-pointing arrow is presented in one of eight random locations at a distance of 300 pixels from the center of the screen (see Figure 1B). Participants had to indicate the direction of the arrow by pressing either the left- or right arrow key on their keyboard. On 50% of the trials, the arrow was preceded by a cue ("\*") in the exact same location (i.e., cued trials). On the other 50% of the trials, the cue ("\*") was presented at the center of the screen (i.e., neutral trials). Thus, on the cued trials, the location of the cue deterministically predicted the location of the arrow, whereas on the neutral trials the arrow always appeared in a different location.
+
+Each trial started with a fixation cross presented at the center of the screen for 1000ms. Then, the cue was presented for 250ms either at the center of the screen or in the location where the arrow would appear next. Finally, the arrow was presented 250ms after the onset of the cue and shown until a response was given. The cued attention task began with eight practice trials (four cued and four neutral trials) in which participants received performance feedback after each trial (either "Correct!" printed in green or "Incorrect!" printed in red). After finishing the practice round, participants completed a single test block consisting of a total of 64 trials (two repetitions of all parameter combinations: arrow location (top center vs. top left vs. center left vs. bottom left vs. bottom center vs. bottom right vs. center right vs. top right) X arrow direction (left vs. right) X condition (cued vs. neutral)). The main performance measures are RTs and accuracy for each condition.
+
+
+### Flanker task {#flanker}
+
+The Flanker Task measures selective attention and response inhibition. On each trial of the Flanker task [@eriksen_1974], participants were presented with a set of five arrows pointing either left or right. Their job was to indicate the direction of the central arrow while ignoring the flanking arrows to the left and right (see Figure 1A). On 50% of the trials, the flanking arrows pointed in the same direction as the central arrow (i.e., congruent trials), and on the other 50% of the trials they pointed in the opposite direction (i.e., incongruent trials). The arrows were randomly presented in the top-half or bottom-half of the screen. This was done to prevent participants from rigidly fixating on the center of the screen, which would reduce the interfering effect of the flanking arrows.
+
+Each trial started with a fixation cross presented at the center of the screen. After a delay of 1000ms, the arrows are presented either in the top- or bottom-half of the screen. Participants were given 2000ms to indicate the direction of the center arrow. The Flanker task began with eight practice trials in which participants received performance feedback after each trial (either "Correct!" printed in green or "Incorrect!" printed in red). After finishing the practice round, participants completed a single test block consisting of a total of 64 trials (eight repetitions of all parameter combinations: arrow location (top vs. bottom) X central arrow direction (left vs. right) X condition: (congruent vs. incongruent)). Participants did not receive performance feedback during the test block. The main performance measures are RTs and accuracy for each condition.
+
+### Change detection task {#change}
+
+The Change Detection Task measures the ability to detect subtle spatial changes. On each trial of the change detection task, participants were presented with five colored circles against a grey background, each with a radius of 15 pixels (see Figure 1C). Each circle was located in a random location within a pre-specified area of 50 by 50 pixels to prevent overlap. Participants had 1000ms to memorize the locations of the five circles around the fixation cross. After 1000ms, the circles briefly disappeared for 500ms and then reappeared again. On 50% of the trials, one of the circles had moved to another location with a fixed displacement of 40 pixels in a 360 degree direction. On the other 50% of the trials, all circles were still in the same location as the initial memory display. Participants have to indicate whether they thought one of the circles changed location (by pressing the left-arrow key) or whether they thought all circles were still in the same location (by pressing the right-arrow key). Note that the only potential difference between the memory and probe display was the displacement of **one** circle; the remaining circles were always in the same place and circles never changed color within a trial.
+
+The change detection task started with five practice trials in which participants received performance feedback after each trial (either "Correct!" printed in green or "Incorrect!" printed in red). After finishing the practice round, participants completed two test blocks consisting of 25 trials each (50 trials in total). The design was fully counterbalanced so that on each "movement" trial, each of the five circles changes five times per block for each of the five colors. Participants did not receive performance feedback during the two test blocks. The main performance measures are RTs and accuracy across all trials.
+
+### Current state {#state}
+
+We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S; @spielberger_1999]. The STAI-S contains 20 short items measuring current anxiety (e.g., "I feel tense"; See [Table S1](#appendix) for an overview of all items). Participants rated each item on a scale of 1 (not at all) to 4 (very much so). An overall state anxiety variable was computed by averaging across the 20 items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). 
+
+We computed an overall sleep deprivation composite by standardizing and averaging across the two sleep-related items (*M* = `r #TBD `, *SD* = `r #TBD `). The first hunger item (i.e., "have you eaten a full meal today?") was recoded as half a standard-deviation above or below the mean (standardized). People who had not eaten a full meal were coded as -0.5, and those who had eaten a full meal were coded as 0.5. A hunger composite was calculated by averaging the recoded meal item and the hunger item (*M* = `r #TBD `, *SD* = `r #TBD `).
+
+### Violence exposure {#violence}
+
+Violence exposure was measured using the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] and two items assessing exposure to physical fights before age 13. The NVS contains seven items measuring perceived exposure to violence before age 13 (e.g., "Crime was common in the neighborhood where I grew up"; See [Table S2](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true). The physical fighting items assessed the number of times participants witnessed fights before age 13: "Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?" Answers to both items ranged from 1 (0 times) to 8 (12 or more times). The items of the NVS were averaged together (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). Similarly, we averaged the scores on the two fighting items together. Finally, we created a perceived violence exposure composite by standardizing the NVS and fighting composites and averaging them together (*r* = `r #TBD `).
+
+### Unpredictability {#unpred}
+
+Perceived unpredictability before age 13 was measured using two different scales: A scale of perceived childhood unpredictability used in previous research [@mittal_2015; @young_2018] and an adaptation of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019]. The perceived childhood unpredictability scale contained eight items measuring perceived unpredictability before age 13 (e.g, "My family life was generally inconsistent and unpredictable from day-to-day"; See [Table S2](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true).
+
+We included the QUIC because it captures several dimensions of environmental and household unpredictability with a better (but not perfect) distinction between items capturing more short-term unpredictability (i.e., on the level of seconds to minutes) and more long-term unpredictability (i.e., on the level of days to months). Note that the scale of perceived childhood unpredictability combines items on a short-term scale (e.g., item 1) with items measured on a long-term scale (e.g., item 3) which might have different effects on the development of specific attention styles. 
+
+The QUIC consists of 38 items across five subscales: 1) Parental monitoring and involvement, 2) Parental predictability, 3) Parental environment, 4) Physical environment, and 5) Safety and security (See [Table S4](#appendix) for an overview of all items). We made two changes to the original scale as described in @glynn_2019: First, while the original QUIC items refer to perceived unpredictability either before age 12 or age 18, we adapted all items to refer to participants' experiences before age 13. This was done to reduce cognitive load from having to mentally switch timescales between items and different scales and because the youngest eligible participants were 18 years old. Second, all items were rated on a scale of 1 (never true) to 5 (very often true) instead of the original yes/no answer format. This change was also implemented to reduce cognitive load by keeping the answer options the same between scales.
+
+We computed several unpredictability variables to be able to assess how they would relate to the dependent variables as well as to each other: 1) overall perceived unpredictability variable containing all eight items of the perceived unpredictability scale (*M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `); 2) an overal QUIC variable by averaging all 38 items (*M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `); 3) five separate QUIC subscales by averaging their sub-items (Parental monitoring and involvement: *M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `; Parental predictability: *M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `; Parental environment: *M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `; Physical environment: *M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `; Safety and security: *M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `).
+
+### Household chaos {#chaos}
+
+We assessed household chaos before age 13 using an adaptation of the Confusion, Hubbub, and Order Scale [CHAOS; @matheny_1995]. The CHAOS consists of 15 items measuring the level of chaos in the household (e.g., "No matter how hard we tried, we always seemed to be running late"; See [Table S5](#appendix) for an overview of all items). We made two changes to the original scale as described in @matheny_1995: First, all items were converted from the present tense to the past tense, and were endorsed as applying to partipants' life before age 13. Second, all items were rated on a scale of 1 (never true) to 5 (very often true) instead of the original yes/no answer format. This change was also implemented to reduce cognitive load by keeping the answer options the same between scales. An overall household chaos variable was computed by averaging the 15 items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+### Poverty exposure {#ses}
+
+Participants' perceived level of resource scarcity before age 13 was measured using 7 items (e.g., "Your family had enough money to afford the kind of **home** you all needed"; See [Table S6](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true). Scores for the first six items were reversed so that higher scores indicated more perceived resource scarcity. The items were averaged together to create a composite scale (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+In addition, we measured several indicators of objective SES before age 13. First, participants separately indicated the highest education of their mother and father on an 8-point scale: 'some high school', 'GED', 'high school diploma', 'some college but no college degree', associate's  degree', 'bachelor's degree', 'master's  degree', or 'doctoral or lab degree'. The mother and father education level were averaged to create an overall parental education composite (*M* = `r #TBD `, *SD* = `r #TBD `).
+
+In addition, participants indicated their family's household income before age 13 on a 6-point scale: 'less than \$ 25k/year', '\$25k - \$49k/year, '\$50 - \$74k/year', '\$75 - \$99k/year', '\$100 - \$149k/year', 'more than \$150k/year'. Scores were reversed so that higher scores indicated higher levels of poverty.
+
+We created a composite score of poverty exposure before age 13 by averaging together the standardized scores of perceived level of resource scarcity, overall parental education, and household income.
+
+
+
+### Impulsivity {#impulsivity}
+
+We assessed impulsivity with the Motor Impulsivity subscale of the [Barrett Impulsivity Scale (BIS; short form); @patton_1995; @spinella_2007]. The Motor Impulsivity subscale of the BIS (short form) consists of five items (e.g., "I do things without thinking"; See [Table S7](#appendix) for an overview of all items). We did not include the Non-planning subscale because it overlapped substantially with the Future Orientation Scale described below. In addition, we did not include the Attention impulsivity subscale because it included items which we deemed to be mostly irrelevant for our target population (e.g., "I 'squirm' at plays or lectures"). We changed the original 4-point rating scale (rarely/never to almost always) to a 5-point rating scale ranging from 1 (never true) to 5 (very often true).
+
+An overall impulsivity variable was computed by averaging the 5 items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). 
+
+### Future Orientation {#future_orientation}
+
+We assessed future orientation with an adapted version of the Future Orientation Scale [FOS; @steinberg_2009]. The original scale consists of 15 sets of opposing items separated by "BUT" (e.g., "Some people like to plan things out one step at a time BUT other people like to jump right into things without planning them out beforehand"). Participants first choose the item that best matches their general preference, and then indicate whether the statement is "really true" or "somewhat true". We adapted this format in a couple of ways: First, we converted the two statements per item to a single statement by picking the statements in the original right-hand column. Second, we adapted the 15 statements from a third-person to a first-person format. These changes were made in an attempt to reduce the cognitive load of the items. We worried that people with less formal education or who were sitting in a noisier environment would struggle with the length of the original items. In addition, item 8 of the original scale ("[...] other people would rather spend their money right away on something fun than save it for a rainy day") was changed to "I'd rather spend money right away than save it for a rainy day" (i.e., dropping the phrase "on something fun") to make it more general with regard to the thing that money is spent on. For people from adversity, spending money right now instead of saving it for the future might often be born out of necessity (e.g., having just enough food for food and shelter; being in debt) instead of a failure to delay gratification. See [Table S8](#appendix) for an overview of all adapted items). Finally, the rating scale was adapted from the original 4-point scale (ranging from really true for the left-hand statement to really true for the right-hand statement) to a 5-point scale ranging from 1 (never true) to 5 (very often true).
+
+An overall future orientation variable was computed by averaging the 15 items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). In addition, we calculated subscales for "Planning ahead" (items 1, 6, 7, 12 and 13), "Time Perspective" (items 2, 5, 8, 11 and 14) and "Anticipation of Future Consequences" (items 3, 4, 9, 10 and 15).
+
+### Depressive symptoms {#depression}
+
+We assessed depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD; @radloff_1977]. The scale consists of 20 items (e.g., "I do things without thinking"; See [Table S9](#appendix) for an overview of all items). Participants rate each item on a scale of 1 (rarely or none of the time (less than 1 day)) to 4 (most or all of the time (5-7 days)). 
+
+An overall depression variable was computed by averaging the 20 items (*M* = `rr #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+## Primary data analyses {#analysis_plan}
+
+### Reaction Times {#rt_plan}
+
+For the Cued Attention Task and Flanker Task, average reaction times per participant were calculated separately for each condition (cued/neutral trials and incongruent/congruent trials, respectively). For the change detection task, we calculated an average reaction time across all trials. If necessary for meeting model assumptions, reaction times were log-transformed. We only planned on performing analyses on the proportion of errors if the average error rate was at least 5% of trials. Note that the DDM analysis described below provides a full breakdown of performance both in terms of reaction times and accuracy. For the Cued Attention Task and Flanker Task, we performed a set of linear mixed effects analyses to test adversity X condition interactions on mean RTs and accuracy (if possible). All models included a random intercept for participants. For the Change Detection Task, we performed linear regression to test the main effect of adversity on mean RTs and accuracy (if possible). Across separate models, adversity was operationalized as the composite measures of violence exposure, SES, perceived childhood unpredictability, household chaos, and the QUIC subscales (unless they correlated >.80, in which case QUIC subscales were merged together). Significant interaction effects were unpacked using simple slopes analysis.
+
+### Drift Diffusion Model {#ddm_plan}
+
+DDM models were fit separately to the data of each participant. 
+(see also our power simulations on [Github](https://github.com/StefanVermeent/attention_pilot/tree/main/scripts), which indicated that recovered drift rate and boundary separation parameters generally correlated highly (*r* = .80-.95) with the true data-generating parameters even with 30 trials).
+
+The DDM was fit separately to the data of each participant. For the data of the Change Detection Task and the Cued Attention Task, the DDM was fit using Fast-dm [@voss_2007]. We used Maximum Likelihood estimation as it has been shown to provide reliable estimates with relatively few trials [@lerche_2017]; (see also our power simulations on [Github](https://github.com/StefanVermeent/attention_pilot/tree/main/scripts), which indicated that recovered drift rate and boundary separation parameters generally correlated highly (*r* = .80-.95) with the true data-generating parameters even with 30 trials). *a*, *v* and *Ter* were freely estimated and *z* was fixed to 0.5 (the midpoint, indicating no response bias). In addition, all inter-trial variability parameters were fixed to 0 to increase model parsimony. For the Cued Attention Task, the DDM was fit separately to data of the two conditions (cued vs neutral). For the Change Detection task, we had no *a-priori* expectations about performance differences between the change and no-change trials. Prior to fitting the DDM models, we ran paired-sample t-tests on the RTs and proportion of errors. If either model showed significant mean differences, the DDM was fit separately to data of the change and no-change trials. If there were no differences, the DDM models were fit to all trials simultaneously.
+
+The DDM analysis of the Flanker task was done using an adaptation of the standard DDM that was specifically developed to account for Flanker data: The Spotlight Drift Diffusion Model [SDDM; @grange_2016; @white_2018a; @white_2018b, @white_2011]. The standard DDM model assumes a stable drift rate over time within trials (i.e., the rate of information accumulation does not change over time). However, on the Flanker Task, reaction time patterns indicate that the drift rate increases over time, thus violating the basic assumption of the standard DDM [@white_2011]. The SDDM explains this pattern by assuming that attention on the Flanker task works like a spotlight that starts relatively broad, and then gradually narrows down to the central arrow over time. Each arrow provides perceptual input *p*. If the flanking arrows are congruent, all flankers take a positive value for *p*; if the flanking arrows are incongruent, they take a negative value for *p* while the central arrow takes a positive value. The drift rate (*v*) at each time point is the function of the strength of perceptual input *p* multiplied by the amount of attention focused on each arrow. 
+
+Attention is operationalized by two additional parameters: the initial width of the attentional spotlight (*SD~a~*) and the shrinking rate of the attentional spotlight (*rd*). The attentional spotlight is assumed to be normally distributed over the arrows, with relatively more attention paid to the arrows at the center and relatively less attention paid to the peripheral arrows. Over time, this normal distribution (*SD~a~*) narrows down to the central arrow at the rate specified by *rd*, thereby gradually decreasing the interfering effect of the flanking arrows. Note that the SDDM is based on a combined analysis of congruent and incongruent trials. See Figure 1B for a visualization of the SDDM.
+
+Previous research has shown that it is not useful to interpret both *SD~a~* and *rd* since they trade-off against each other [i.e., a wide initial spotlight combined with a large shrinking rate leads to similar patterns as a narrow initial spotlight combined with a low shrinking rate; @white_2018a; @white_2011]. Most previous studies have fixed *SD~a~* and only estimated *rd*, or calculated a *SD~a~*/*rd* ratio, which serves as a measure of interference. However, our primary interest lies in the initial width of the attentional spotlight, which we hypothesize to be wider for people from harsh and unpredictable environments compared to people from safe and predictable environments. In this pilot study, we fitted several SDDM models either estimating both attention parameters or fixing *rd* to see how it affected model fit (more details below). Model fit was done using the `flankr` package in R [@grange_2016].
+
+DDM parameters *v*, *a* and *Ter* (as well as *p*, *SD~a~* and *SD~a~*/*rd* for the Flanker Task) were used as dependent variables in the analyses for each attention task. For the Flanker Task and Change Detection Task, DDM parameters were submitted to a series of linear regression models with adversity as the independent variable. For the Cued Attention Task, DDM parameters were submitted to linear mixed effects models to test for adversity X condition interactions. All models included a random intercept for participants. Independent adversity variables were identical to the RT/accuracy analyses. Significant interaction effects were unpacked using simple slopes analysis.
+
+\pagebreak
+
+# References {#refs}
+
+<div id="refs"></div>
+
+\pagebreak
+
+# Appendix
+
+Go back to [Methods](#state)
+
+```{r supp_table1, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the State-Trait Anxiety Inventory (state subscale; STAI-S)"}
+codebook %>%
+  filter(str_detect(Variable, "stai_s(\\d\\d|_\\d\\d)")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,10,11,15,16,19,20), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#violence)
+
+```{r tableS2, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the Neighborhood Violence Scale (NVS)"}
+codebook %>%
+  filter(str_detect(Variable, "violence\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,3), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS3, tab.id="tableS3", tab.cap.style="Table Caption", tab.cap="Items of the Perceived Childhood Unpredictability scale"}
+codebook %>%
+  filter(str_detect(Variable, "unp\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS4, tab.id="tableS4", tab.cap.style="Table Caption", tab.cap="Items of the Questionnaire of Unpredictability in Childhood (QUIC)"}
+codebook %>%
+  filter(str_detect(Variable, "quic\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Parental monitoring and involvement") %>%
+  add_row(.after = 10, "Label" = "Parental predictability") %>%
+  add_row(.after = 23, "Label" = "Parental environment") %>%
+  add_row(.after = 31, "Label" = "Physical environment") %>%
+  add_row(.after = 39, "Label" = "Safety and security") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,3,4,5,6,7,8,9,11,14,16,26,33), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,11,24,32,40)) %>%
+  bold(i = c(1,11,24,32,40)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#chaos)
+
+```{r tableS5, tab.id="tableS5", tab.cap.style="Table Caption", tab.cap="Items of the Confusion, Hubbub, and Order Scale (CHAOS)"}
+codebook %>%
+  filter(str_detect(Variable, "chaos\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,7,12,14,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#ses)
+
+```{r tableS6, tab.id="tableS6", tab.cap.style="Table Caption", tab.cap="Items of the perceived resource scarcity scale"}
+codebook %>%
+  filter(str_detect(Variable, "ses\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(!Item %in% c(7), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak 
+
+Go back to [Methods](#impulsivity)
+
+```{r tableS7, tab.id="tableS7", tab.cap.style="Table Caption", tab.cap="Items of the Barrett Impulsivity Scale (BIS) - motor impulsivity subscale"}
+codebook %>%
+  filter(str_detect(Variable, "impuls\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#future_orientation)
+
+```{r tableS8, tab.id="tableS8", tab.cap.style="Table Caption", tab.cap="Items of the Future Orientation Scale (FOS)"}
+codebook %>%
+  filter(str_detect(Variable, "fos\\d\\d")) %>% 
+  slice(match(c("fos01","fos06","fos07","fos12","fos13", "fos02","fos05","fos08","fos11","fos14", "fos03","fos04","fos09","fos10","fos15"), Variable)) %>%
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Planning ahead") %>%
+  add_row(.after = 6, "Label" = "Time perspective") %>%
+  add_row(.after = 12, "Label" = "Anticipation of future consequences") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,9,11,12,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,7,13)) %>%
+  bold(i = c(1,7,13)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#depression)
+
+```{r tableS9, tab.id="tableS9", tab.cap.style="Table Caption", tab.cap="Items of the Epidemiologic Studies Depression Scale (CESD)"}
+codebook %>%
+  filter(str_detect(Variable, "depression\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(4,8,12,16), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```

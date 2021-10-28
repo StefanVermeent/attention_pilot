@@ -26,7 +26,8 @@ var change_trial_block1 = {
       data: {
         variable: 'test_block1',
         task: 'change',
-        type: jsPsych.timelineVariable('type'),
+        condition: jsPsych.timelineVariable('type'),
+        correct_response: jsPsych.timelineVariable('correct_response'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),
@@ -245,7 +246,8 @@ stim1_color: '#0457A0', stim2_color: '#25D9E4', stim3_color: '#D40E0E', stim4_co
       data: {
         variable: 'test_block2',
         task: 'change',
-        type: jsPsych.timelineVariable('type'),
+        condition: jsPsych.timelineVariable('type'),
+        correct_response: jsPsych.timelineVariable('correct_response'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
         mem_stim3_x: jsPsych.timelineVariable('mem_stim3_x'),

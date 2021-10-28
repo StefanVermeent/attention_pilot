@@ -12,7 +12,9 @@ var resize_screen = {
   "Then, click and drag the lower right corner of the box until the box is the same size as the credit card when held up to the screen." +
   "</p>",
   button_label: ['Continue'],
-  pixels_per_unit: 100
+  pixels_per_unit: 100,
+  data: {
+    task: 'resize',
 };
 
 var fullscreenmode = {

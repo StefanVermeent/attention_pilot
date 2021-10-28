@@ -52,8 +52,7 @@ var location_stim = function(up, down){
   type: 'html-keyboard-response',
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: jsPsych.NO_KEYS,
-  trial_duration: function(){
-    return jsPsych.randomization.sampleWithoutReplacement([800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200], 1)[0]},
+  trial_duration: 1000,
   data: {
     variable: 'fixation'
   }
