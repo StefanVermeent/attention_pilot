@@ -68,13 +68,9 @@ set_flextable_defaults(
 
 
 # Source necessary objects
-codebook = read_csv(here("data", "1_pilot_data", "clean", "pilot_self_report_codebook.csv"))
-pilot_self_report = read_csv(here("data", "1_pilot_data", "clean", "pilot_self_report.csv"))
+codebook <- read_csv(here("data", "1_pilot", "pilot_self_report_codebook.csv"))
+pilot_self_report = read_csv(here("data", "1_pilot", "pilot_self_report.csv"))
 ```
-
-*NOTE: This document serves as a time-stamped Preregistration of the pilot study. For each study/data collection, we will complete one preregistration. Each preregistration is written as a dynamic document in manuscript form. After data collection, the preregistration document will be extended to incorporate the analyses results and discussion. For each study/data collection, the document will go through a couple of milestones: 1) Preregistration; 2) Potential deviations from the preregistration; 3) Final manuscript. Each of these milestones will be time-stamped and tagged on [Github](https://github.com/StefanVermeent/attention_pilot) for easy referencing.*
-
-\linebreak
 
 # Introduction
 
@@ -118,7 +114,7 @@ The exclusion criteria listed above are our best *a-priori* guesses. We expect t
 
 The experiment was completed on the participants' own laptop or desktop computer and consisted of four parts: consent, attention task battery, questionnaire battery, brief demographics form, and final checks and the opportunity to give feedback on the experiment. [something on ethical approval].
 
-After providing consent, participants started with the three attention tasks. They were asked to complete the attention tasks in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. The order of the tasks was counterbalanced between subjects. At the onset of the first task, the experiment went into full-screen mode to limit distractions from other programs or browser tabs. The size of the task stimuli was controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. Participants were asked to hold a creditcard (or similarly sized card) up against the screen and to increase the size of a blue rectangle on the screen until it matched the size of the creditcard. The stimulus display for each task was resized so that 100 pixels corresponded to 1 inch for all participants. After successfully resizing the screen, participants completed all three tasks. Whenever participants had to respond by use of their keyboard, the cursor was hidden from the screen to minimize distractions. Code for the three tasks can be found on [Github](https://github.com/StefanVermeent/attention_pilot/tree/main/tasks). 
+After providing consent, participants started with the three attention tasks. They were asked to complete the attention tasks in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. The order of the tasks was counterbalanced between subjects. At the onset of the first task, the experiment went into full-screen mode to limit distractions from other programs or browser tabs. The size of the task stimuli was controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. Participants were asked to hold a creditcard (or similarly sized card) up against the screen and to increase the size of a blue rectangle on the screen until it matched the size of the creditcard. The stimulus display for each task was resized so that 100 pixels corresponded to 1 inch for all participants. After successfully resizing the screen, participants completed all three tasks. Whenever participants had to respond by use of their keyboard, the cursor was hidden from the screen to minimize distractions. Code for the three tasks can be found on [Github](https://github.com/StefanVermeent/attention_project/tree/main/tasks). 
 
 After completing the attention tasks, participants completed the questionnaire battery in the following fixed order: 1) Current state (state anxiety and separate questions relating to specific states); 2) Childhood adversity (perceived unpredictability, perceived socio-economic status, exposure to violence and physical fights, household chaos); 3) Temporal orientation (impulsivity, future orientation); 4) Depressive symptoms.
 
