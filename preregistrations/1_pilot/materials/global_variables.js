@@ -15,12 +15,12 @@ var resize_screen = {
   pixels_per_unit: 100,
   data: {
     task: 'resize',
-};
+}
 
 var fullscreenmode = {
   type: 'fullscreen',
   fullscreen_mode: true
-};
+}
 
 // Remove cursor during cognitive tasks
 var cursor_off = {
@@ -68,4 +68,4 @@ var cognitive_tasks_end = {
   "Click the button below to start the second part of the experiment.<br><br>",
   choices: ['Continue to part 2'],
   data: {variable: "end", task: "end_global"}
-};
+}
