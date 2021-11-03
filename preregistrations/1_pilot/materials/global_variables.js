@@ -15,7 +15,7 @@ var resize_screen = {
   pixels_per_unit: 100,
   data: {
     task: 'resize',
-}
+}}
 
 var fullscreenmode = {
   type: 'fullscreen',
