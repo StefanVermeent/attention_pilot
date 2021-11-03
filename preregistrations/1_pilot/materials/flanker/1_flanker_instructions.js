@@ -109,7 +109,7 @@ var flanker_practice_finish = {
   stimulus: "<p style = 'text-align: center;'>" +
   "Great job!<br><br>" +
   "You will now play the actual game.<br><br>" +
-  "The game will last for about three minutes. From now on you will not receive feedback after each response.<br><br>" +
+  "The game will last for about two minutes. From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
   data: {variable: "practice_finish", task: "flanker"}
