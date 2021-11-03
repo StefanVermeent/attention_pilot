@@ -1,4 +1,4 @@
-generate_RTs <- function(trials, boundary_sep, tau, beta, drift_rate, id) { # alpha = boundary separation, tau = non-decision time, beta = starting point, delta = drift rate
+generate_RTs <- function(trials, boundary_sep, tau, beta, drift_rate, id, file_path) { # alpha = boundary separation, tau = non-decision time, beta = starting point, delta = drift rate
   
   set.seed(42)
   
@@ -11,7 +11,7 @@ generate_RTs <- function(trials, boundary_sep, tau, beta, drift_rate, id) { # al
       resp = ifelse(resp == "upper", 1, 0))
   
   
-  utils::write.table(RT_data, str_c(here("data", "0_simulation", id), ".dat"), row.names = FALSE, col.names = FALSE, sep = " ")
+  utils::write.table(RT_data, str_c(here("data", "1_pilot", "simulation"), id, ".dat"), row.names = FALSE, col.names = FALSE, sep = " ")
 
 }
 
