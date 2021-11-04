@@ -15,7 +15,7 @@ var change_welcome = {
   key_backward: -1,
   button_label_next: "continue",
   button_label_previous: "go back",
-  data: {variable: 'welcome', task: "change"}
+  data: {variable: 'welcome', task: "change_practice"}
 };
 
 //-------------------- Instructions
@@ -54,7 +54,7 @@ var change_instructions = {
   key_backward: -1,
   button_label_next: "continue",
   button_label_previous: "go back",
-  data: {variable: "instructions", task: "change"}
+  data: {variable: "instructions", task: "change_practice"}
 };
 
 var change_practice_start = {
@@ -64,7 +64,7 @@ var change_practice_start = {
       "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_start", task: "change"}
+  data: {variable: "practice_start", task: "change_practice"}
 };
 
 
@@ -97,7 +97,7 @@ var change_practice1 = {
       ],
       data: {
         variable: 'practice',
-        task: 'change',
+        task: 'change_practice',
         condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -170,7 +170,7 @@ var change_practice2 = {
       ],
       data: {
         variable: 'practice',
-        task: 'change',
+        task: 'change_practice',
         condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -246,7 +246,7 @@ var change_practice3 = {
       ],
       data: {
         variable: 'practice',
-        task: 'change',
+        task: 'change_practice',
         condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -322,7 +322,7 @@ var change_practice4 = {
       ],
       data: {
         variable: 'practice',
-        task: 'change',
+        task: 'change_practice',
         condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -398,7 +398,7 @@ var change_practice5 = {
       ],
       data: {
         variable: 'practice',
-        task: 'change',
+        task: 'change_practice',
         condition: jsPsych.timelineVariable('type'),
         mem_stim1_x: jsPsych.timelineVariable('mem_stim1_x'),
         mem_stim2_x: jsPsych.timelineVariable('mem_stim2_x'),
@@ -455,7 +455,7 @@ var change_practice_finish = {
   "The game will last for about three minutes with a break halfway through.<br>From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_finish", task: "change"}
+  data: {variable: "practice_finish", task: "change_practice"}
 };
 
 
@@ -468,7 +468,7 @@ var change_break = {
   "Take as long as you need!<br><br>" +
   "Press 'continue' when you feel ready to continue with the second half of the game.",
   choices: ['Continue'],
-  data: {variable: "break", task: "change"}
+  data: {variable: "break", task: "change_practice"}
 };
 
 var change_break_continue = {
@@ -477,7 +477,7 @@ var change_break_continue = {
   "You will now start the second half of the game.<br><br>" +
   "Press any key to continue.",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "break", task: "change"}
+  data: {variable: "break", task: "change_practice"}
 };
 
 
@@ -488,5 +488,5 @@ var change_end = {
   "You are now finished playing the <strong>Change Detection</strong> game.<br><br>" +
   "Click 'finish' to continue.<br><br>",
   choices: ['Finish'],
-  data: {variable: "end", task: "change"}
+  data: {variable: "end", task: "change_practice"}
 };

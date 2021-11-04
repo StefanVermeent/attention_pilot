@@ -150,13 +150,23 @@ jsPsych.init({
     task_order: counterbalance 
   },
   on_finish: function() {
-    tasks_start = jsPsych.startTime();
-    data_flanker = jsPsych.data.get().filter({task: 'flanker'});
-    data_cueing = jsPsych.data.get().filter({task: 'cueing'});
-    data_change = jsPsych.data.get().filter({task: 'change'});
-    data_resize = jsPsych.data.get().filter({task: 'resize'});
-    tasks_browser = jsPsych.data.getInteractionData().json();
-    window.parent.postMessage([tasks_start, data_flanker.json(), data_cueing.json(), data_change.json(), data_resize.json(), tasks_browser], "https://survey.uu.nl/jfe/form/SV_2tsChV0wnzp0LH0");
+    tasks_start          = jsPsych.startTime();
+    data_flanker         = jsPsych.data.get().filter({task: 'flanker'});
+    data_cueing          = jsPsych.data.get().filter({task: 'cueing'});
+    data_change_practice = jsPsych.data.get().filter({task: 'change_practice'});
+    data_change_block1   = jsPsych.data.get().filter({task: 'change_block1'});
+    data_change_block2   = jsPsych.data.get().filter({task: 'change_block2'});
+    data_resize          = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser        = jsPsych.data.getInteractionData().json();
+    window.parent.postMessage([
+      tasks_start, 
+      data_flanker.json(), 
+      data_cueing.json(), 
+      data_change_practice.json(), 
+      data_change_block1.json(),
+      data_change_block2.json(),
+      data_resize.json(), 
+      tasks_browser], "https://survey.uu.nl/jfe/form/SV_2tsChV0wnzp0LH0");
   }
 });
 
