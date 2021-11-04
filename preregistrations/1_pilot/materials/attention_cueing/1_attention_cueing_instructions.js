@@ -1,6 +1,7 @@
-var cueing_instruction_image1 = '../img/cueing_instructions1.png'
-var cueing_instruction_image2 = '../img/cueing_instructions2.png'
-var cueing_instruction_image3 = '../img/cueing_instructions3.png'
+var cueing_preload = {
+  type: "preload",
+  images: ['img/cueing_instructions1.png', 'img/cueing_instructions2.png', 'img/cueing_instructions3.png']
+};
 
 //-------------------- Welcome
 var cueing_welcome = {
@@ -13,7 +14,7 @@ var cueing_welcome = {
   key_forward: -1,
   key_backward: -1,
   button_label_next: "continue",
-  data: {variable: 'welcome', task: "cueing"}
+  data: {variable: 'welcome', task: "cueing_practice"}
 };
 
 //-------------------- Instructions
@@ -26,19 +27,19 @@ var cueing_instructions = {
       
     "<p style = 'text-align: center;'>" + 
       "Each round has three parts.<br><br><br>" +
-      "<img width = 600 src = " + cueing_instruction_image1 + "></img><br><br>",
+      "<img width = 600 src = img/cueing_instructions1.png></img><br><br>",
     
     "<p style = 'text-align: center;'>" +   
       "Sometimes, the * will appear in the middle of the screen.<br><br>" +
       "Other times, it will appear <strong>in the same place as the arrow.</strong><br><br><br>" +
-      "<img width = 490 src = " + cueing_instruction_image2 + "></img><br><br><br>",
+      "<img width = 490 src = img/cueing_instructions2.png></img><br><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "When the arrow appears, press the arrow key that matches the way it points.<br><br>" +
       "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (&larr;) key.</div>" +
       "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (&rarr;) key.</div><br><br><br><br>" + 
       "In the example below, you would press the left key.<br><br><br>" + 
-      "<img width = 160 src = " + cueing_instruction_image3 + "></img><br><br><br>",
+      "<img width = 160 src = img/cueing_instructions3.png></img><br><br><br>",
       
    "<p style = 'text-align: center;'>" +    
       "Click 'continue' button to practice the game.",
@@ -50,7 +51,7 @@ var cueing_instructions = {
   key_backward: -1,
   button_label_next: "continue",
   button_label_previous: "go back",
-  data: {variable: "instructions", task: "cueing"}
+  data: {variable: "instructions", task: "cueing_practice"}
 };
 
 
@@ -63,7 +64,7 @@ var cueing_practice_start = {
       "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_start", task: "cueing"}
+  data: {variable: "practice_start", task: "cueing_practice"}
 };
 
 
@@ -83,7 +84,7 @@ var cueing_practice1 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -102,7 +103,7 @@ var cueing_practice1 = {
       }
     }, 
       timeline_variables: [{type: 'cued', target: '\u2190', correct_response: 'ArrowLeft', cue_x: location2_x, cue_y: location2_y, target_x: location2_x, target_y: location2_y}],
-}
+};
 
 var cueing_practice2 = {
     timeline: [
@@ -120,7 +121,7 @@ var cueing_practice2 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -139,7 +140,7 @@ var cueing_practice2 = {
       }
     }, 
       timeline_variables: [{type: 'neutral', target: '\u2192', correct_response: 'ArrowRight', cue_x: 0, cue_y: 12, target_x: location8_x, target_y: location8_y}],
-}
+};
 
 var cueing_practice3 = {
     timeline: [
@@ -157,7 +158,7 @@ var cueing_practice3 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -176,7 +177,7 @@ var cueing_practice3 = {
       }
     }, 
       timeline_variables: [{type: 'cued', target: '\u2192', correct_response: 'ArrowRight', cue_x: location3_x, cue_y: location3_y, target_x: location3_x, target_y: location3_y}],
-}
+};
 
 var cueing_practice4 = {
     timeline: [
@@ -194,7 +195,7 @@ var cueing_practice4 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -231,7 +232,7 @@ var cueing_practice5 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -268,7 +269,7 @@ var cueing_practice6 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -287,7 +288,7 @@ var cueing_practice6 = {
       }
     }, 
       timeline_variables: [{type: 'cued', target: '\u2192', correct_response: 'ArrowRight', cue_x: location7_x, cue_y: location7_y, target_x: location7_x, target_y: location7_y}],
-}
+};
 
 var cueing_practice7 = {
     timeline: [
@@ -305,7 +306,7 @@ var cueing_practice7 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -324,7 +325,7 @@ var cueing_practice7 = {
       }
     }, 
       timeline_variables: [{type: 'cued', target: '\u2190', correct_response: 'ArrowLeft', cue_x: location5_x, cue_y: location5_y, target_x: location5_x, target_y: location5_y}],
-}
+};
 
 var cueing_practice8 = {
     timeline: [
@@ -342,7 +343,7 @@ var cueing_practice8 = {
           background_color: '#ffffff',
           data: {
             variable: 'practice',
-            task: 'cueing',
+            task: 'cueing_practice',
             condition: jsPsych.timelineVariable('type'),
             target: jsPsych.timelineVariable('target'),
             cue_x: jsPsych.timelineVariable('cue_x'),
@@ -361,7 +362,7 @@ var cueing_practice8 = {
       }
     }, 
       timeline_variables: [{type: 'neutral', target: '\u2190', correct_response: 'ArrowLeft', cue_x: 0, cue_y: 12, target_x: location6_x, target_y: location6_y}],
-}
+};
 
 
 // Finish Practice trials
@@ -373,7 +374,7 @@ var cueing_practice_finish = {
   "The game will last for about two minutes. From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_finish", task: "cueing"}
+  data: {variable: "practice_finish", task: "cueing_practice"}
 };
 
 var cueing_end = {

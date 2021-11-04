@@ -1,7 +1,7 @@
-var change_instruction_image1 = '../img/change_instructions1.png';
-var change_instruction_image2 = '../img/change_instructions2.png';
-var change_instruction_image3 = '../img/change_instructions3.png';
-var change_instruction_image4 = '../img/change_instructions4.png';
+var change_preload = {
+  type: "preload",
+  images: ['img/change_instructions1.png', 'img/change_instructions1.png', 'img/change_instructions1.png', 'img/change_instructions4.png']
+};
 
 //-------------------- Welcome
 var change_welcome = {
@@ -24,16 +24,16 @@ var change_instructions = {
   pages: [
     "<p style = 'text-align: center;'>" + 
       "Each round has three parts.<br><br><br>" +
-      "<img width = 600 src = " + change_instruction_image1 + "></img><br><br>",
+      "<img width = 600 src = img/change_instructions1.png></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Sometimes, all the circles will be in the SAME places as before.<br><br><br>" +
-      "<img width = 600 src = " + change_instruction_image2 + "></img><br><br>",
+      "<img width = 600 src = img/change_instructions2.png></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Other times, <strong>one circle</strong> will be in a DIFFERENT place.<br><br>" + 
       "In the example below, the yellow circle changed places.<br><br>" +
-      "<img width = 600 src = " + change_instruction_image3 + "></img><br><br>",
+      "<img width = 600 src = img/change_instructions3.png></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Your job is to figure out if the places of the circles are the SAME or DIFFERENT.<br><br>" +
@@ -43,7 +43,7 @@ var change_instructions = {
     "<p style = 'text-align: center;'>" +
       "The words 'SAME' and 'DIFFERENT' will always be at the bottom<br>" +
       "of the screen to remind you.<br><br><br>" +
-      "<img width = 190 src = " + change_instruction_image4 + "></img><br><br>",
+      "<img width = 190 src = img/change_instructions4.png></img><br><br>",
       
     "<p style = 'text-align: center;'>" +
       "Click 'continue' to practice this game.",

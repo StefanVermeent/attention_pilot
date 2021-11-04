@@ -15,12 +15,12 @@ var resize_screen = {
   pixels_per_unit: 100,
   data: {
     task: 'resize',
-}}
+}};
 
 var fullscreenmode = {
   type: 'fullscreen',
   fullscreen_mode: true
-}
+};
 
 // Remove cursor during cognitive tasks
 var cursor_off = {
@@ -28,7 +28,7 @@ var cursor_off = {
     func: function() {
         document.body.style.cursor= "none";
     }
-}
+};
 
 
 // Make cursor visible again in between cognitive tasks or when a button response is required.
@@ -37,7 +37,7 @@ var cursor_on = {
     func: function() {
         document.body.style.cursor= "auto";
     }
-}
+};
 
 
 // Task feedback during the practice trials.
@@ -56,7 +56,7 @@ var feedback = {
   data: {
     variable: 'feedback'
   }
-}
+};
 
 
 // End of Cognitive task part of the experiment.
