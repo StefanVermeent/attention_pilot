@@ -10,6 +10,7 @@
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     
     <script src="global_variables.js"></script>
     
@@ -34,6 +35,7 @@
 
   // Task Flow of Change Detection Task
   var change_detection = [
+    change_preload,
     change_welcome, 
     change_instructions, 
     cursor_off, 
@@ -74,6 +76,7 @@
 
 // Task Flow of Attention Cueing Task
   var attention_cueing = [
+    cueing_preload,
     cueing_welcome,
     cueing_instructions,
     cursor_off,
@@ -150,17 +153,21 @@ jsPsych.init({
     task_order: counterbalance 
   },
   on_finish: function() {
-    tasks_start          = jsPsych.startTime();
-    data_flanker         = jsPsych.data.get().filter({task: 'flanker'});
-    data_cueing          = jsPsych.data.get().filter({task: 'cueing'});
-    data_change_practice = jsPsych.data.get().filter({task: 'change_practice'});
-    data_change_block1   = jsPsych.data.get().filter({task: 'change_block1'});
-    data_change_block2   = jsPsych.data.get().filter({task: 'change_block2'});
-    data_resize          = jsPsych.data.get().filter({task: 'resize'});
-    tasks_browser        = jsPsych.data.getInteractionData().json();
+    tasks_start           = jsPsych.startTime();
+    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
+    data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
+    data_cueing_practice  = jsPsych.data.get().filter({task: 'cueing_practice'});
+    data_cueing           = jsPsych.data.get().filter({task: 'cueing'});
+    data_change_practice  = jsPsych.data.get().filter({task: 'change_practice'});
+    data_change_block1    = jsPsych.data.get().filter({task: 'change_block1'});
+    data_change_block2    = jsPsych.data.get().filter({task: 'change_block2'});
+    data_resize           = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser         = jsPsych.data.getInteractionData().json();
     window.parent.postMessage([
       tasks_start, 
+      data_flanker_practice.json(),
       data_flanker.json(), 
+      data_cueing_practice.json(),
       data_cueing.json(), 
       data_change_practice.json(), 
       data_change_block1.json(),
