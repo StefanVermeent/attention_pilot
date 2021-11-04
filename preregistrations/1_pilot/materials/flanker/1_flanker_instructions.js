@@ -9,7 +9,7 @@ var flanker_welcome = {
   key_forward: -1,
   key_backward: -1,
   button_label_next: "continue",
-  data: {variable: 'welcome', task: "flanker"}
+  data: {variable: 'welcome', task: "flanker_practice"}
 };
 
 //-------------------- Instructions
@@ -49,7 +49,7 @@ var flanker_instructions = {
   key_backward: -1,
   button_label_next: "continue",
   button_label_previous: "go back",
-  data: {variable: "instructions", task: "flanker"}
+  data: {variable: "instructions", task: "flanker_practice"}
 };
 
 //-------------------- Practice
@@ -61,7 +61,7 @@ var flanker_practice_start = {
       "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
       "When you are ready to practice, press any key to start.",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_start", task: "flanker"}
+  data: {variable: "practice_start", task: "flanker_practice"}
 };
 
 
@@ -71,7 +71,7 @@ var flanker_practice = {
     choices: ['ArrowLeft', 'ArrowRight'],
     data: {
       variable: 'practice',
-      task: 'flanker',
+      task: 'flanker_practice',
       location: jsPsych.timelineVariable('location'),
       stimtype: jsPsych.timelineVariable('stimtype')
     },
@@ -112,7 +112,7 @@ var flanker_practice_finish = {
   "The game will last for about two minutes. From now on you will not receive feedback after each response.<br><br>" +
   "Press any key to begin! <br><br>",
   choices: jsPsych.ALL_KEYS,
-  data: {variable: "practice_finish", task: "flanker"}
+  data: {variable: "practice_finish", task: "flanker_practice"}
 };
 
 var flanker_end = {
@@ -122,5 +122,5 @@ var flanker_end = {
   "You are now finished playing the <strong>Flanker</strong> game.<br><br>" +
   "Click 'finish' to continue.<br><br>",
   choices: ['Finish'],
-  data: {variable: "end", task: "flanker"}
+  data: {variable: "end", task: "flanker_practice"}
 };
