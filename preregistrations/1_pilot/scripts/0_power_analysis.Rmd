@@ -316,7 +316,7 @@ power_mixed %>%
 plan(multisession, workers = cores - 4)
 
 
-linear_df <- function(n_subjects, DDM_recovery_correlation, sigma_sd, fixed_effect, n_sim) {
+linear_df <- function(n_subjects, DDM_recovery_correlation, fixed_effect, n_sim) {
   faux_options(sep=".")
   data_linear <- sim_design(within = list(vars = c("drift_rate_true", "adversity")),
                             n = n_subjects,
@@ -340,7 +340,6 @@ tic()
 simulation_results_linear <- expand_grid(
   n_subjects = c(400, 450, 500, 550, 600, 800, 1000),
   DDM_recovery_correlation = c(.85),
-  sigma_sd = c(0.5, 1),
   fixed_effect =fixed_effect,
   n_sim = 1:500
 ) %>%
@@ -368,11 +367,11 @@ plan("sequential")
 ```{r}
 power_linear <- simulation_results_linear %>%
   unnest_wider(linear_model) %>%
-  group_by(n_subjects, DDM_recovery_correlation) %>%
+  group_by(n_subjects, fixed_effect) %>%
   # Calculate power
   summarise(
-    mixed_true_main_power         = (sum(p_mixed_main_true < .05) / n()) * 100,
-    mixed_recov_main_power        = (sum(p_mixed_main_recov < .05) / n()) * 100,
+    linear_true_main_power         = (sum(p_mixed_main_true < .05) / n()) * 100,
+    linear_recov_main_power        = (sum(p_mixed_main_recov < .05) / n()) * 100,
   ) %>%
   ungroup() %>%
   pivot_longer(ends_with("power"), names_to = "effect", values_to = "power")
@@ -384,11 +383,11 @@ power_linear <- simulation_results_linear %>%
 power_linear %>%
   mutate(
     effect = case_when(
-      effect == "mixed_true_main_power" ~ "True Main Effect",
-      effect == "mixed_recov_main_power" ~ "Recovered Main Effect",
+      effect == "linear_true_main_power" ~ "True Main Effect",
+      effect == "linear_recov_main_power" ~ "Recovered Main Effect",
     )
   ) %>%
-  ggplot(aes(factor(n_subjects), power, color=factor(DDM_recovery_correlation), group = factor(DDM_recovery_correlation))) +
+  ggplot(aes(factor(n_subjects), power, color=factor(fixed_effect), group = factor(fixed_effect))) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = c(80, 90)) +
@@ -400,7 +399,6 @@ power_linear %>%
     y = "Power",
     color = "DDM Recovery Correlation",
     title = "DDM Power Analysis for Linear Models",
-    subtitle = str_c("Beta = ", fixed_effect)
   )
 ```
 

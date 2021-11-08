@@ -5,7 +5,7 @@ library(jsonlite)
 library(here)
 
 # Functions ---------------------------------------------------------------
-source("scripts/custom_functions/create_codebook.R")
+source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "create_codebook.R"))
 
 # Data --------------------------------------------------------------------
 pilot_data <- 
@@ -62,20 +62,20 @@ vars03_unp <-
     
     quic_par_predict_mean    = across(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")) %>% psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T) %>% round(1),
     quic_par_predict_missing = across(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")) %>% is.na() %>% rowSums(., na.rm = T),
-     
-    quic_par_env_mean        = across(matches("quic(22|23|24|25|26|27|28)")) %>% psych::reverse.code(keys = c(1,1,1,1,-1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T) %>% round(1),
-    quic_par_env_missing     = across(matches("quic(22|23|24|25|26|27|28)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_phys_env_mean       = across(matches("quic(29|30|31|32|33|34|35)")) %>% psych::reverse.code(keys = c(1,1,1,1-1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T) %>% round(1),
-    quic_phys_env_missing    = across(matches("quic(29|30|31|32|33|34|35)")) %>% is.na() %>% rowSums(., na.rm = T),
+    quic_par_env_mean        = across(matches("quic(22|23|24|25|26|27)")) %>% psych::reverse.code(keys = c(-1,1,1,1,1,1), items = ., mini = 0, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_par_env_missing     = across(matches("quic(22|23|24|25|26|27)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_safety_mean         = across(matches("quic(36|37|38)")) %>% rowMeans(., na.rm = T),
-    quic_safety_missing      = across(matches("quic(36|37|38)")) %>% is.na() %>% rowSums(., na.rm = T),
+    quic_phys_env_mean       = across(matches("quic(28|29|30|31|32|33|34)")) %>% psych::reverse.code(keys = c(1,1,1,1-1,1,1), items = ., mini = 0, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_phys_env_missing    = across(matches("quic(28|29|30|31|32|33|34)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_total_mean          = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38)")) %>% 
-                               psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
+    quic_safety_mean         = across(matches("quic(35|36|37)")) %>% rowMeans(., na.rm = T),
+    quic_safety_missing      = across(matches("quic(35|36|37)")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    quic_total_mean          = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
+                               psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
                                rowMeans(., na.rm = T) %>% round(1),
-    quic_total_missing       = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38)")) %>% 
+    quic_total_missing       = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
                                is.na() %>% rowSums(., na.rm = T),    
   ) 
 
@@ -184,18 +184,19 @@ flanker_data <-
   drop_na(starts_with("data")) %>%
   mutate(data_flanker = map(data_flanker, jsonlite::fromJSON) ) %>%
   unnest(data_flanker) %>%
-  select(-c(view_history, internal_node_id, stimulus)) %>%
+  select(-c(internal_node_id, stimulus)) %>%
   filter(!variable %in% c('welcome', 'instructions', 'practice_start', 'practice', 'practice_finish', 'end')) %>%
   mutate(correct = ifelse(correct, 1, 0)) 
 
 change_data <- 
   pilot_data %>% 
-  select(id, data_change) %>% 
+  select(id, data_change_block1, data_change_block2) %>% 
   drop_na(starts_with("data")) %>%
-  mutate(data_change = map(data_change, jsonlite::fromJSON) ) %>%
+  mutate(across(c(data_change_block1, data_change_block2), ~map(., jsonlite::fromJSON))) %>%
+  mutate(data_change = map2(data_change_block1, data_change_block2, ~bind_rows(.x, .y))) %>%
   unnest(data_change) %>%
-  select(-c(view_history, trial_type, internal_node_id, stimulus, response_type, avg_frame_time, center_x, center_y, starts_with(c('test', 'stim', 'mem')))) %>%
-  filter(!variable %in% c(c("welcome", "instructions", "practice_start", "practice", "practice_finish", "break", "end"))) %>%
+  select(-data_change_block1, -data_change_block2) %>%
+  select(-c(trial_type, internal_node_id, response_type, avg_frame_time, center_x, center_y, starts_with(c('test', 'stim', 'mem')))) %>%
   mutate(correct = ifelse(correct, 1, 0)) 
 
 cueing_data <- 
@@ -204,14 +205,14 @@ cueing_data <-
   drop_na(starts_with("data")) %>%
   mutate(data_cueing = map(data_cueing, jsonlite::fromJSON)) %>%
   unnest(data_cueing) %>%
-  select(-c(view_history, trial_type, internal_node_id, stimulus, response_type, center_x, center_y, target, starts_with(c('cue', 'target')))) %>%
+  select(-c(trial_type, internal_node_id, stimulus, response_type, center_x, center_y, target, starts_with(c('cue', 'target')))) %>%
   filter(!variable %in% c("welcome", "instructions", "practice_start", "practice", "practice_finish", "break", "end")) %>%
   mutate(correct = ifelse(correct, 1, 0)) 
 
 # DDM datasets
 ddm_change <- change_data %>%
   select(id, correct, rt) %>%
-  mutate(rt = rt/1000)
+  mutate(rt = rt/1000) %>%
   write_csv(here("data", "1_pilot_data", "clean", "DDM_change.csv")) 
 
 ddm_cueing <- cueing_data %>%
@@ -245,7 +246,7 @@ pilot_self_report <-
 #aut_task <- vars14_prepped
 
 # Save Data ---------------------------------------------------------------
-save(pilot_self_report, file = here("data", "1_pilot_data", "clean", "pilot_online_data.Rdata"))
+save(pilot_self_report, file = here("data", "1_pilot", "pilot_online_data.Rdata"))
 
 # Write Data --------------------------------------------------------------
 codebook <- create_codebook(pilot_self_report) %>%
@@ -253,10 +254,7 @@ codebook <- create_codebook(pilot_self_report) %>%
                         str_replace_all(Label, pattern = "^(.*|.*\\n.*)\\s-\\s", replacement = ""),
                         'no'))
 
-write_csv(codebook, here("data", "1_pilot_data", "clean", "pilot_self_report_codebook.csv"))
-write_csv(pilot_self_report, here("data", "1_pilot_data", "clean", "pilot_self_report.csv"))
+write_csv(codebook, here("data", "1_pilot", "pilot_self_report_codebook.csv"))
+write_csv(pilot_self_report, here("data", "1_pilot", "pilot_self_report.csv"))
 
-write_csv(aut_task, "data/clean/aut-task.csv")
-write_csv(aut_task %>% filter(item == "fork"), "data/clean/aut-fork.csv")
-write_csv(aut_task %>% filter(item == "paperclip"), "data/clean/aut-paperclip.csv")
-write_csv(aut_task %>% filter(item == "towel"), "data/clean/aut-towel.csv")
+
