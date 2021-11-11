@@ -1,6 +1,6 @@
 var change_preload = {
   type: "preload",
-  images: ['img/change_instructions1.png', 'img/change_instructions1.png', 'img/change_instructions1.png', 'img/change_instructions4.png']
+  images: ['img/change_instructions1.png', 'img/change_instructions2.png', 'img/change_instructions3.png', 'img/change_instructions4.png']
 };
 
 //-------------------- Welcome
