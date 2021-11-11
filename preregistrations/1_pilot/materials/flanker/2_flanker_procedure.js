@@ -2,7 +2,6 @@ var flanker_present_arrows = {
   type: "html-keyboard-response",
   stimulus: jsPsych.timelineVariable('stim'),
   choices: ['ArrowLeft', 'ArrowRight'],
-  trial_duration: 2000,
   data: {
     variable: 'flanker_test',
     task: 'flanker',
