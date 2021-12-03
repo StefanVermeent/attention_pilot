@@ -58,6 +58,7 @@ cleaned_data <-
   full_join(browser_interactions_summary, by = "id") %>%
   # Remove participants who have no task data
   filter(!is.na(rt_change) | !is.na(rt_cueing_cued) | !is.na(rt_flanker_congruent)) %>%
+  # Reorder variables
   select(
     id, 
     starts_with("meta_"),
@@ -74,3 +75,5 @@ cleaned_data <-
     everything(),
     -starts_with("sd_")
   )
+
+save(cleaned_data, browser_interactions, file = here("data", "1_pilot", "2_combined_clean_data.Rdata"))
