@@ -13,7 +13,6 @@ load(here("data", "1_pilot", "0_self_report_raw.Rdata"))
 source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "functions_exclusions.R"))
 
 
-
 # Create exclusion variables ----------------------------------------------
 
 self_report_clean <- self_report %>%
@@ -58,6 +57,14 @@ self_report_clean %>%
 self_report_clean %<>%
   filter(if_all(starts_with("ex_narb"), ~ . == TRUE)) %>%
   select(-starts_with("ex_arb"))
+
+
+
+# Data fixes --------------------------------------------------------------
+
+self_report_clean %<>%
+  # Participant incorrectly indicated that they were colorblind
+  mutate(ifelse(id == "413", 1, 0)) 
 
 
 # Save data ---------------------------------------------------------------

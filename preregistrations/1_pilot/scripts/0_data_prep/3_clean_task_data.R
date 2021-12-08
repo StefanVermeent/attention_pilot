@@ -24,14 +24,17 @@ task_exclusions <- function(data, label) {
       ex_narb_rowcount         = n(),
       # Number of missing RTs per participant
       ex_narb_NA_trials        = ifelse(n() > 1, sum(is.na(rt)), NA), 
+      
+      ex_narb_log_outlier      = ifelse(scale(log(rt)) > 3.2, TRUE, FALSE),
       # Number of outliers (>3.2SD, based on log-transformed RTs) per subject
-      ex_narb_log_outliers     = ifelse(n() > 1, sum(scale(log(rt)) > 3.2), NA),
+      ex_narb_log_outliers_n   = ifelse(n() > 1, sum(scale(log(rt)) > 3.2), NA),
       # Number of trials with fast (<250 ms) or slow (>3500 ms) outliers
-      ex_narb_invalid_trials   = ifelse(n() > 1, sum(rt > 3500 | rt < 250, na.rm = TRUE), NA),
+      ex_narb_invalid_trial      = ifelse(rt < 3500 & rt > 250, FALSE, TRUE),
+      ex_narb_invalid_trials_n   = ifelse(n() > 1, sum(rt > 3500 | rt < 250, na.rm = TRUE), NA),
     ) %>%
     ungroup() %>%
     mutate(
-      # Exclude participants with more than 10 excluded trials or who did not complete the task
+      # Exclude participants with more than 10 excluded trials, who did not complete the task, or who performed at chance level
       "ex_narb_{label}_pass"   := ifelse(across(matches("ex_narb_(NA_trials|log_outliers|invalid_trials)")) %>% rowSums(., na.rm = TRUE) > 10 | 
                                         ex_narb_rowcount %in% c(1,2) |
                                         ex_narb_acc_below_cutoff == TRUE, 
@@ -61,18 +64,50 @@ ids_to_exclude <- c(
 )
 
 change_data_clean %<>%
+  # Remove invalid trials
+  filter(!ex_narb_log_outlier) %>%
+  filter(!ex_narb_invalid_trial) %>%
+  # Exclude participants who did not pass the quality checks
   filter(ex_narb_change_pass == TRUE) %>%
+  # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants based on their own feedback:
+  # 1. Participants who did tasks twice due to technical difficulties
+  filter(!id %in% c("291", "410")) %>%
+  # 2. Participants for whom all task windows were cut off
+  filter(!id %in% "302") %>%
   select(-starts_with("ex_narb"))
 
 cueing_data_clean %<>%
+  # Remove invalid trials
+  filter(!ex_narb_log_outlier) %>%
+  filter(!ex_narb_invalid_trial) %>%
+  # Exclude participants who did not pass the quality checks
   filter(ex_narb_cueing_pass == TRUE) %>%
+  # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants based on their own feedback:
+  # 1. Participants for whom task screen was too small for their window
+  filter(!id %in% c("30", "551", "296", "459")) %>%
+  # 2. Participants who did tasks twice due to technical difficulties
+  filter(!id %in% c("291", "410")) %>%
+  # 3. Participants for whom all task windows were cut off
+  filter(!id %in% "302") %>%
   select(-starts_with("ex_narb"))
 
 flanker_data_clean %<>%
+  # Remove invalid trials
+  filter(!ex_narb_log_outlier) %>%
+  filter(!ex_narb_invalid_trial) %>%
+  # Exclude participants who did not pass the quality checks
   filter(ex_narb_flanker_pass == TRUE) %>%
+  # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants based on their own feedback:
+  # 1. Participants who did tasks twice due to technical difficulties
+  filter(!id %in% c("291", "410")) %>%
+  # 2. Participants for whom all task windows were cut off
+  filter(!id %in% "302") %>%  
   select(-starts_with("ex_narb"))
 
 browser_interactions %<>%
@@ -82,11 +117,63 @@ resize_screen %<>%
   filter(!id %in% ids_to_exclude)
 
 
+
+# Compute average RTs and accuracy ----------------------------------------
+
+change_data_clean_average <- change_data_clean %>%
+  # Convert rts to seconds for DDM
+  mutate(rt = rt / 1000) %>%
+  group_by(id, correct) %>%
+  mutate(rt_change = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
+  group_by(id) %>%
+  summarise(
+    rt_change     = mean(rt_change, na.rm = T), 
+    acc_change    = (sum(correct) / n()),
+    rt_var_change = sd(rt, na.rm = TRUE)^2) %>%
+  ungroup() %>%
+  # Add nested column containing task data in long-form (for DDM)
+  mutate(change_data_long = map(id, function(x) {change_data_clean %>% filter(id == x)}))
+
+
+cueing_data_clean_average <- cueing_data_clean %>%
+  # Convert rts to seconds for DDM
+  mutate(rt = rt / 1000) %>%
+  group_by(id, condition, correct) %>%
+  mutate(rt_cueing = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
+  group_by(id, condition) %>%
+  summarise(
+    rt_cueing     = mean(rt_cueing, na.rm = T), 
+    acc_cueing    = (sum(correct) / n()),
+    rt_var_cueing = sd(rt, na.rm = T)^2
+    ) %>%
+  ungroup() %>%
+  pivot_wider(names_from = "condition", values_from = c("rt_cueing", "acc_cueing", "rt_var_cueing")) %>%
+  # Add nested column containing task data in long-form (for DDM)
+  mutate(cueing_data_long = map(id, function(x) {cueing_data_clean %>% filter(id == x)}))
+
+
+flanker_data_clean_average <- flanker_data_clean %>%
+  # Convert rts to seconds for DDM
+  mutate(rt = rt / 1000) %>%
+  group_by(id, congruency, correct) %>%
+  mutate(rt_flanker = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
+  group_by(id, congruency) %>%
+  summarise(
+    rt_flanker     = mean(rt_flanker, na.rm = T), 
+    acc_flanker    = (sum(correct) / n()),
+    rt_var_flanker = sd(rt, na.rm = T)^2
+  ) %>%
+  ungroup() %>%
+  pivot_wider(names_from = "congruency", values_from = c("rt_flanker", "acc_flanker", "rt_var_flanker")) %>%
+  # Add nested column containing task data in long-form (for DDM)
+  mutate(flanker_data_long = map(id, function(x) {flanker_data_clean %>% filter(id == x)}))
+
+
 # Write objects -----------------------------------------------------------
 
-save(change_data_clean, 
-     cueing_data_clean, 
-     flanker_data_clean, 
+save(change_data_clean_average, 
+     cueing_data_clean_average, 
+     flanker_data_clean_average, 
      browser_interactions, 
      browser_interactions_summary,
      resize_screen,
