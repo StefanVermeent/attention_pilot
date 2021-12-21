@@ -26,15 +26,6 @@ flanker_SDDM_setup <- flanker_data_clean_average %>%
   
 # Fit SSP Model -----------------------------------------------------------
 
-### fit the SSP model to individual data
-#fit_ssp_individual <- function(data){
-  
-
-  # data & model parameter preparation
-  
-  # get the list of subjects
-  #subjects <- unique(data$subject)
-  
 # set random seed so user can reproduce simulation outcome
 set.seed(42)
   
