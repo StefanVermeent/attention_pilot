@@ -25,7 +25,7 @@ task_exclusions <- function(data, label) {
       # Number of missing RTs per participant
       ex_narb_NA_trials        = ifelse(n() > 1, sum(is.na(rt)), NA), 
       
-      ex_narb_log_outlier      = ifelse(scale(log(rt)) > 3.2, TRUE, FALSE),
+      ex_narb_log_outlier      = ifelse(abs(scale(log(rt))) > 3.2, TRUE, FALSE),
       # Number of outliers (>3.2SD, based on log-transformed RTs) per subject
       ex_narb_log_outliers_n   = ifelse(n() > 1, sum(scale(log(rt)) > 3.2), NA),
       # Number of trials with fast (<250 ms) or slow (>3500 ms) outliers
@@ -45,13 +45,16 @@ task_exclusions <- function(data, label) {
 ## Add exclusion variables ----
 
 change_data_clean <- 
-  task_exclusions(change_data, "change")
+  task_exclusions(change_data, "change") %>%
+  left_join(browser_interactions_summary %>% select(id, event_during_change))
 
 cueing_data_clean <- 
-  task_exclusions(cueing_data, "cueing")
+  task_exclusions(cueing_data, "cueing") %>%
+  left_join(browser_interactions_summary %>% select(id, event_during_cueing))
 
 flanker_data_clean <- 
-  task_exclusions(flanker_data, "flanker")
+  task_exclusions(flanker_data, "flanker") %>%
+  left_join(browser_interactions_summary %>% select(id, event_during_flanker))
 
 
 # Apply exclusions --------------------------------------------------------
@@ -71,6 +74,8 @@ change_data_clean %<>%
   filter(ex_narb_change_pass == TRUE) %>%
   # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants with blur events during the task
+  filter(!event_during_change) %>%
   # Exclude participants based on their own feedback:
   # 1. Participants who did tasks twice due to technical difficulties
   filter(!id %in% c("291", "410")) %>%
@@ -86,6 +91,8 @@ cueing_data_clean %<>%
   filter(ex_narb_cueing_pass == TRUE) %>%
   # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants with blur events during the task
+  filter(!event_during_cueing) %>%
   # Exclude participants based on their own feedback:
   # 1. Participants for whom task screen was too small for their window
   filter(!id %in% c("30", "551", "296", "459")) %>%
@@ -103,11 +110,15 @@ flanker_data_clean %<>%
   filter(ex_narb_flanker_pass == TRUE) %>%
   # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
+  # Exclude participants with blur events during the task
+  filter(!event_during_flanker) %>%
   # Exclude participants based on their own feedback:
   # 1. Participants who did tasks twice due to technical difficulties
   filter(!id %in% c("291", "410")) %>%
   # 2. Participants for whom all task windows were cut off
   filter(!id %in% "302") %>%  
+  # Filter subject who responded with the left arrow on almost all (29 out of 32) of the incongruent trials
+  filter(!id %in% "318") %>%
   select(-starts_with("ex_narb"))
 
 browser_interactions %<>%
@@ -123,9 +134,9 @@ resize_screen %<>%
 change_data_clean_average <- change_data_clean %>%
   # Convert rts to seconds for DDM
   mutate(rt = rt / 1000) %>%
-  group_by(id, correct) %>%
+  group_by(id, correct, counterbalance) %>%
   mutate(rt_change = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
-  group_by(id) %>%
+  group_by(id, counterbalance) %>%
   summarise(
     rt_change     = mean(rt_change, na.rm = T), 
     acc_change    = (sum(correct) / n()),
@@ -138,9 +149,9 @@ change_data_clean_average <- change_data_clean %>%
 cueing_data_clean_average <- cueing_data_clean %>%
   # Convert rts to seconds for DDM
   mutate(rt = rt / 1000) %>%
-  group_by(id, condition, correct) %>%
+  group_by(id, condition, correct, counterbalance) %>%
   mutate(rt_cueing = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
-  group_by(id, condition) %>%
+  group_by(id, condition, counterbalance) %>%
   summarise(
     rt_cueing     = mean(rt_cueing, na.rm = T), 
     acc_cueing    = (sum(correct) / n()),
@@ -155,9 +166,9 @@ cueing_data_clean_average <- cueing_data_clean %>%
 flanker_data_clean_average <- flanker_data_clean %>%
   # Convert rts to seconds for DDM
   mutate(rt = rt / 1000) %>%
-  group_by(id, congruency, correct) %>%
+  group_by(id, congruency, correct, counterbalance) %>%
   mutate(rt_flanker = ifelse(correct, mean(rt, na.rm = T), NA)) %>%
-  group_by(id, congruency) %>%
+  group_by(id, congruency, counterbalance) %>%
   summarise(
     rt_flanker     = mean(rt_flanker, na.rm = T), 
     acc_flanker    = (sum(correct) / n()),

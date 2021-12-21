@@ -55,6 +55,10 @@ vars01_meta <-
   ) %>%
   separate(meta_resolution, into = c("meta_resolution_width", "meta_resolution_height"), sep = "x") %>%
   mutate(
+    meta_resolution_height = as.numeric(meta_resolution_height),
+    meta_resolution_width  = as.numeric(meta_resolution_width),
+    meta_resolution_ratio  = meta_resolution_width / meta_resolution_height) %>%
+  mutate(
     meta_task_duration        = timestamp_tasks - timestamp_consent,
     meta_state_duration       = timestamp_state - timestamp_tasks,
     meta_ace_duration         = timestamp_ace - timestamp_state,
@@ -120,10 +124,41 @@ vars03_unp <-
     quic_safety_missing      = across(matches("quic(35|36|37)")) %>% is.na() %>% rowSums(., na.rm = T),
     
     quic_total_mean          = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
-                               psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
-                               rowMeans(., na.rm = T),
+      psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
+      rowMeans(., na.rm = T),
     quic_total_missing       = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
-                               is.na() %>% rowSums(., na.rm = T),    
+      is.na() %>% rowSums(., na.rm = T),   
+    unp_moving_binned = case_when(
+      unp_moving == 0 ~ 0,
+      unp_moving %in% c(1,2) ~ 1,
+      unp_moving %in% c(3,4) ~ 2,
+      unp_moving %in% c(5,6) ~ 3,
+      unp_moving %in% c(7,8) ~ 4,
+      unp_moving %in% c(9,10) ~ 5,
+      unp_moving > 10 ~ 6,
+    ),
+    unp_partners_mother_binned = case_when(
+      unp_partners_mother == 0 ~ 0,
+      unp_partners_mother == 1 ~ 1,
+      unp_partners_mother == 2 ~ 2,
+      unp_partners_mother == 3 ~ 3,
+      unp_partners_mother == 4 ~ 4,
+      unp_partners_mother == 5 ~ 5,
+      unp_partners_mother >= 6 ~ 6,
+    ),
+    unp_partners_father_binned = case_when(
+      unp_partners_father == 0 ~ 0,
+      unp_partners_father == 1 ~ 1,
+      unp_partners_father == 2 ~ 2,
+      unp_partners_father == 3 ~ 3,
+      unp_partners_father == 4 ~ 4,
+      unp_partners_father == 5 ~ 5,
+      unp_partners_father >= 6 ~ 6,
+    ),
+    
+    unpredictability_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale,
+    unpredictability_obj       = across(c(unp_moving_binned, unp_partners_mother_binned, unp_partners_father_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
+    unpredictability_composite = across(c(unpredictability_subj, unpredictability_obj)) %>% rowMeans(., na.rm = T)
   ) %>%
   sjlabelled::var_labels(
     unp_mean              = "Perceived unpredictability",
