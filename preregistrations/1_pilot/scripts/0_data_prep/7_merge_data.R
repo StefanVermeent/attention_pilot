@@ -12,6 +12,7 @@ load(here("data", "1_pilot", "1_self_report_clean.Rdata"))
 load(here("data", "1_pilot", "1_task_data_clean.Rdata"))
 load(here("data", "1_pilot", "1_DDM_objects.Rdata"))
 load(here("data", "1_pilot", "1_EZDM_objects.Rdata"))
+load(here("data", "1_pilot", "1_SSP_objects.Rdata"))
 
 
 # Combine data ------------------------------------------------------------
@@ -28,6 +29,7 @@ cleaned_data <-
   left_join(change_EZDM_results, by = "id") %>%
   left_join(cueing_DDM_results_mod8, by = "id") %>%
   left_join(cueing_EZDM_results, by = "id") %>%
+  left_join(flanker_ssp_results, by = "id") %>%
   left_join(resize_screen, by = "id") %>%
   left_join(browser_interactions_summary, by = "id") %>%
   # Remove participants who have no task data
