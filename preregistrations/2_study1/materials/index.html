@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>tasks</title>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-psychophysics.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-resize_SV.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    
+    <script src="global_variables.js"></script>
+    
+    <script src="attention_cueing/0_attention_cueing_setup.js"></script>
+    <script src="attention_cueing/1_attention_cueing_instructions.js"></script>
+    <script src="attention_cueing/2_attention_cueing_procedure.js"></script>
+    
+    <script src="change_detection/0_spatial_change_setup.js"></script>
+    <script src="change_detection/1_spatial_change_instructions.js"></script>
+    <script src="change_detection/2_spatial_change_procedure.js"></script>
+    
+    <script src="flanker/0_flanker_setup.js"></script>
+    <script src="flanker/1_flanker_instructions.js"></script>
+    <script src="flanker/2_flanker_procedure.js"></script>
+    
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+  <style>
+  </style>
+  </head>
+  <body></body>
+  <script>
+
+  // Task Flow of Change Detection Task
+  var change_detection = [
+    change_preload,
+    change_welcome, 
+    change_instructions, 
+    cursor_off, 
+    change_practice_start, 
+    change_practice1,
+    feedback,
+    change_practice2,
+    feedback,
+    change_practice3,
+    feedback,
+    change_practice4,
+    feedback,
+    change_practice5,
+    feedback,
+    change_practice_finish,
+    change_trial_block1,           // First block of test trials
+    cursor_on,
+    change_break,
+    cursor_off,
+    change_break_continue,
+    change_trial_block2,           // Second block of test trials
+    cursor_on,
+    change_end,
+  ]
+
+// Task Flow of Flanker Task
+  var flanker = [
+    flanker_welcome,
+    flanker_instructions,
+    cursor_off,
+    flanker_practice_start,
+    flanker_practice_procedure,
+    flanker_practice_finish,
+    flanker_test_procedure, 
+    cursor_on,
+    flanker_end,
+  ]
+
+// Task Flow of Attention Cueing Task
+  var attention_cueing = [
+    cueing_preload,
+    cueing_welcome,
+    cueing_instructions,
+    cursor_off,
+    cueing_practice_start,
+    cueing_practice2,
+    feedback,
+    cueing_practice1,
+    feedback,
+    cueing_practice3,
+    feedback,
+    cueing_practice4,
+    feedback,
+    cueing_practice5,
+    feedback,
+    cueing_practice6,
+    feedback,
+    cueing_practice7,
+    feedback,
+    cueing_practice8,
+    feedback,
+    cueing_practice_finish,
+    cueing_trial,
+    cursor_on,
+    cueing_end
+  ]
+
+// Specify all possible test orders. Includes function to save counterbalancing code to data when test order is randomly chosen below.
+var test_order1 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
+  change_detection, flanker, attention_cueing
+]
+
+var test_order2 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 2})}},
+  change_detection, attention_cueing, flanker
+]
+
+var test_order3 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 3})}},
+  flanker, change_detection, attention_cueing
+]
+
+var test_order4 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 4})}},
+  flanker, attention_cueing, change_detection
+]
+
+var test_order5 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 5})}},
+  attention_cueing, change_detection, flanker
+]
+
+var test_order6 = [
+  {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 6})}},
+  attention_cueing, flanker, change_detection
+]
+
+counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2, test_order3, test_order4, test_order5, test_order6], 1)[0]
+
+// Specify full experiment timeline, including counterbalancing of tasks
+// Flatten the object so that it consists of a single array containing the full experiment (i.e., get rid of nesting)
+var full_experiment_timeline = [
+  fullscreenmode,
+  resize_screen, 
+  counterbalance,
+  cognitive_tasks_end
+  ].flat(2)
+
+
+// Initialize the full experiment
+jsPsych.init({
+  timeline: full_experiment_timeline,
+  data: {
+    task_order: counterbalance 
+  },
+  on_finish: function() {
+    tasks_start           = jsPsych.startTime();
+    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
+    data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
+    data_cueing_practice  = jsPsych.data.get().filter({task: 'cueing_practice'});
+    data_cueing           = jsPsych.data.get().filter({task: 'cueing'});
+    data_change_practice  = jsPsych.data.get().filter({task: 'change_practice'});
+    data_change_block1    = jsPsych.data.get().filter({task: 'change_block1'});
+    data_change_block2    = jsPsych.data.get().filter({task: 'change_block2'});
+    data_resize           = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser         = jsPsych.data.getInteractionData().json();
+    window.parent.postMessage([
+      tasks_start, 
+      data_flanker_practice.json(),
+      data_flanker.json(), 
+      data_cueing_practice.json(),
+      data_cueing.json(), 
+      data_change_practice.json(), 
+      data_change_block1.json(),
+      data_change_block2.json(),
+      data_resize.json(), 
+      tasks_browser], "https://survey.uu.nl/jfe/form/SV_2tsChV0wnzp0LH0");
+  }
+});
+
+  </script>
+</html>

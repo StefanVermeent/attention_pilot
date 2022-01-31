@@ -1,0 +1,37 @@
+---
+title: "preregistration"
+author: "Stefan Vermeent"
+date: "20-1-2022"
+output: html_document
+---
+
+[INTRODUCTION]
+
+
+
+# Methods
+
+## Participants
+
+## Materials
+
+## Procedure
+
+## Data analysis
+
+
+
+There is ample research to suggest that experiencing adversity early in life has a profound effect on the way in which people attend to information. Generally, the patterns point to an attention deficit, such that adversity-exposed people take longer to point their attention towards relevant information and are more susceptible to the influence of distracting or otherwise irrelevant information [@schibli_2017]. Attention-deficit/hyperactivity disorder (ADHD). However, instead of pointing to a general attention deficit, differences in performance on tasks requiring attention control might reflect different attentional strategies that developed to navigate dangerous and unpredictable environments [e.g., increased vigilance; @frankenhuis_2016]. Understanding the attention skills of people from adversity is important because attention control has been identified as one of the key mechanisms underlying performance on higher-level executive processes such as working memory capacity, which is related to a host of real-world academic and social outcomes [@draheim_2021].
+
+Hidden talents research makes the often implicit assumption that enhanced abilities might reflect an enhanced focus on the here-and-now [e.g., @ellis_2020; @frankenhuis_2016; @frankenhuis_2013]. For example, @frankenhuis_2016 argued that living in a harsh and unpredictable environment might require a stronger present-orientation (as opposed to being focused on the future) in order to deal with unpredictable threats and benefit from fleeting rewards. Empirical findings seem to point in the same direction. Enhanced performance on attention-shifting [@fields_2021; @mittal_2015] and working memory updating [@nweze_2020; @young_2018] have been explained in terms of an ability to track contextual changes, which is thought to help cope with changing information. 
+
+
+In the current study, we focus on the Flanker Task 
+
+
+
+
+
+
+
+One possibility that has yet to be empirically tested is that such effects are driven by a shared present and/or externally oriented attention mechanism. In this pilot study, we leverage the DDM to better understand the processes involved in performance differences, specifically by focusing on basic attention skills.
