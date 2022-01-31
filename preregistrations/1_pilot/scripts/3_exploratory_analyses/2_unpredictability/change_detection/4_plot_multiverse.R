@@ -1,0 +1,254 @@
+library(tidyverse)
+library(cowplot)
+library(here)
+library(magrittr)
+
+load(here("data", "1_pilot", "3_exploratory_analyses", "change_detection", "3_multiverse_extracted_effects.Rdata"))
+
+# ggplot2 theme -----------------------------------------------------------
+theme_set(
+  theme_bw() +
+    theme(
+      axis.line.y       = element_line(),
+      axis.text.y       = element_text(size = rel(.75)),
+      axis.title.y      = element_text(size = rel(1), margin = margin(1,0,0,0,"lines")),
+      axis.ticks.y      = element_line(),
+      axis.line.x       = element_blank(),
+      axis.text.x       = element_blank(),
+      axis.ticks.x      = element_blank(),
+      axis.title.x      = element_blank(),
+      panel.border      = element_blank(), 
+      panel.spacing.y   = unit(0.5, "lines"),
+      plot.margin       = margin(.25,.25,.25,.25,"lines"),
+      plot.background   = element_rect(color = NA),
+      plot.title        = element_text(size = rel(.85), hjust = 0, margin = margin(0,0,.5,0, "lines")),
+      plot.subtitle     = element_blank(),
+      panel.grid        = element_line(color = NA),
+      strip.background  = element_blank(), 
+      strip.placement   = "outside",
+      strip.text        = element_text(size = rel(.85), angle = 0)
+    )
+)
+
+pval_colors <- c("pos-sig" = "#006D77", "non" = "gray70")
+my_alphas <- c(.5, 1)
+#my_limits <- c(1,length(secondary_unp_change)/6+5)
+
+exploratory_effects_change %<>%
+  mutate(
+    dv = factor(dv, levels = c("RT", "RT (log)", "Accuracy", "Drift rate (v)", "Boundary separation (a)", "Non-decision time (t0)"))
+  )
+
+
+# specification curve -----------------------------------------------------
+spec_curves <- 
+  map(c("Fighting", "Violence", "CHAOS", "Subjective unpredictability", "Objective unpredictability", "Subjective SES", "Objective SES", "Poverty composite"),
+      function(iv) {
+  
+  map(c("Raw scores", "DDM"), function(dv){
+    
+    # Setup
+    iv_which <- iv
+    dv_which <- dv
+    
+    effs <- 
+      exploratory_effects_change %>% 
+      filter(dv_group == dv_which, iv == iv_which, mod_term_group == "Main Effect") %>% 
+      mutate(
+        mod_sig = ifelse(mod_sig != "non", "pos-sig", mod_sig)
+      )
+    
+    medians <- 
+      exploratory_effects_change %>% 
+      filter(dv_group == dv_which, iv == iv_which, mod_term_group == "Main Effect") %>% 
+      mutate(
+        mod_sig = ifelse(mod_sig != "non", "pos-sig", mod_sig)
+      )
+    
+    spec_grid_data <- 
+      effs %>% 
+      select(mod_term_label, dv, dv_group, starts_with("spec"), mod_p.value, mod_sig) %>% 
+      mutate(
+        mod_sig = ifelse(mod_sig != "non", "pos-sig", mod_sig)) %>% 
+      pivot_longer(cols = spec_dv_type:spec_exit_fullscreen, names_to = "spec_var", values_to = "spec_value") %>% 
+      ungroup()
+    
+    # Plots
+    eff_curve <- 
+      effs %>% 
+      ggplot(aes(y = mod_std_coefficient, x = spec_rank, color = mod_sig)) +
+      geom_ribbon(
+        aes(ymin = mod_ci_low, ymax = mod_ci_high, x = spec_rank),
+        fill = "gray90",
+        inherit.aes = F,
+        show.legend = F
+      ) +
+      geom_hline(aes(yintercept = 0), size = .5,linetype = "solid") +
+      geom_point(size = 1, shape = 19, show.legend = F) + 
+      geom_point(
+        data = medians,
+        aes(y = median_dbl, x = 31),
+        shape = 21,
+        size  = 2.5,
+        fill  = "white",
+        stroke = 1,
+        show.legend = F,
+        inherit.aes = F
+      ) +
+      geom_label(
+        data = medians,
+        aes(y = median_dbl, label = median_chr, x = 31),
+        nudge_y = .055,
+        size = 2.5,
+        show.legend = F,
+        inherit.aes = F
+      ) +
+      scale_x_continuous("Specification Rank") + 
+      scale_y_continuous(expression(beta)) +
+      scale_color_manual(values = pval_colors) +
+      scale_fill_manual(values = pval_colors) +
+      scale_alpha_manual(values = my_alphas) +
+      facet_wrap(~dv) +
+     # ggtitle("Effect Size Curve") +
+      theme(
+      #  strip.text   = element_blank(),
+        axis.title.y = element_text(angle = 0, vjust = .5,margin = margin(0,0.25,0,0, "lines"))
+      )
+    
+    sample_sizes <- 
+      effs %>% 
+      ggplot(aes(x = spec_rank, y = n, color = mod_sig)) +
+      geom_segment(aes(y = 0, yend = n, x = spec_rank, xend = spec_rank), show.legend = F) +
+      geom_point(size = .75, shape = 19, show.legend = F) + 
+     # scale_x_continuous(limits = my_limits) +
+      scale_y_continuous(expression(italic(N))) +
+      scale_color_manual(values = pval_colors) +
+      scale_alpha_manual(values = my_alphas) +
+      facet_wrap(~dv) +
+      ggtitle("Sample Sizes") +
+      theme(
+        strip.text   = element_blank(),
+        axis.text.y  = element_text(angle = 0),
+        axis.title.y = element_text(angle = 0, vjust = .5,margin = margin(0,0.25,0,0, "lines"))
+      )
+    
+    spec_grid <- 
+      spec_grid_data %>% 
+      ggplot(aes(x = spec_rank, y = spec_value, color = mod_sig)) +
+      geom_point(size = 4, shape = 73, show.legend = F) +
+      geom_text(
+        data = spec_grid_data %>% 
+          group_by(mod_term_label, spec_var, spec_value, dv) %>% 
+          summarize(
+            n_sig    = sum(mod_p.value < .05),
+            prop_sig = (sum(mod_p.value < .05)/n()),
+            prop_sig = ifelse(prop_sig %in% c(0,1), NA, round(prop_sig,2) %>% paste0() %>% str_remove("^0")),
+          ) %>%
+          group_by(dv) %>%
+          mutate(prop_sig = ifelse(is.na(prop_sig) & !all(is.na(prop_sig)), 0, prop_sig)) %>%
+          ungroup(),
+        aes(x = 15.5, y = spec_value, label = prop_sig), 
+        size = 2, 
+        nudge_x = 4,
+        show.legend = F,
+        inherit.aes = F
+      ) +
+      geom_vline(aes(xintercept = 15), show.legend = F) +
+      geom_segment(aes(y = 1, yend = 1, x = 15, xend = 14), inherit.aes = F, show.legend = F) +
+      geom_segment(aes(y = 2, yend = 2, x = 15, xend = 14), inherit.aes = F, show.legend = F) +
+    #  scale_x_continuous("",limits = my_limits) +
+      scale_y_discrete() +
+      scale_color_manual(values = pval_colors) +
+      scale_alpha_manual(values = my_alphas) +
+      facet_grid(spec_var~dv, scales = "free") +
+      ggtitle("Specifications") +
+      theme(
+        strip.text      = element_blank(),
+        panel.spacing.y = unit(0.1,"lines"), 
+        axis.text.y     = element_text(angle = 0, hjust = 1, vjust = .5, size = rel(.95)),
+        axis.title.y    = element_blank(),
+        axis.line.x     = element_line(),
+        axis.text.x     = element_text(size = rel(.75)),
+        axis.ticks.x    = element_line()#,
+       # axis.title.x    = element_text() 
+      )
+    
+    p_curve <- 
+      effs %>% 
+      ggplot(aes(x = mod_p.value)) +
+      geom_histogram(color = "black", size = .2) +
+      geom_vline(aes(xintercept = .05), linetype = "dashed") +
+      geom_text(
+        data = effs %>% group_by(dv) %>% summarize(p = unique(pval_prop), y = 30) %>% ungroup(),
+        aes(x = .3, label = p, y = y),
+        size = 2.25,
+        hjust = 0,
+        vjust = 1,
+        show.legend = F,
+        inherit.aes = F,
+      ) +
+      scale_x_continuous(expression(italic(p),"-",value), expand = c(0.05,.05)) +
+      scale_y_continuous("Freq", expand = c(0,.15)) +
+      scale_alpha_manual(values = my_alphas) +
+      facet_wrap(~dv) +
+      ggtitle("P-Curve") +
+      theme(
+        axis.line.x     = element_line(),
+        axis.text.x     = element_text(size = rel(.75)),
+        axis.ticks.x    = element_line(),
+        axis.title.x    = element_text(),
+        axis.title.y    = element_text(angle = 0, vjust = .5,margin = margin(0,0.25,0,0, "lines")),
+        legend.position = "none",
+        strip.text      = element_blank()
+      )
+    
+    list(
+      eff_curve    = eff_curve,
+      sample_sizes = sample_sizes,
+      spec_grid    = spec_grid,
+      p_curve      = p_curve
+    )
+  })
+})
+
+
+# Put them together -------------------------------------------------------
+fig1 <- 
+  ggdraw() +
+  draw_plot(
+    plot_grid(
+      spec_curves[[1]][[1]]$eff_curve,
+      spec_curves[[1]][[1]]$p_curve,
+      spec_curves[[1]][[1]]$sample_sizes,
+      spec_curves[[1]][[1]]$spec_grid,
+      nrow  = 4,
+      ncol  = 1, 
+      align = "v", 
+      axis  = "lr",
+      rel_heights = c(.3, .15, .15, .4)
+    ) +
+      #draw_plot_label(c("(faster)","(slower)"), x = 0.075, y = c(.95, .78), size = 8, vjust = 1, hjust = 0, fontface = "italic") +
+      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
+    x = 0, y = 0, width = 1, height = .95
+  ) + 
+  draw_label("Raw scores", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
+
+fig2 <- 
+  ggdraw() +
+  draw_plot(
+    plot_grid(
+      spec_curves[[1]][[2]]$eff_curve,
+      spec_curves[[1]][[2]]$p_curve,
+      spec_curves[[1]][[2]]$sample_sizes,
+      spec_curves[[1]][[2]]$spec_grid,
+      nrow  = 4,
+      ncol  = 1, 
+      align = "v", 
+      axis  = "lr",
+      rel_heights = c(.25, .15, .2, .4)
+    ) +
+      #draw_plot_label(c("(faster)","(slower)"), x = 0.075, y = c(.95, .78), size = 8, vjust = 1, hjust = 0, fontface = "italic") +
+      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
+    x = 0, y = 0, width = 1, height = .95
+  ) + 
+  draw_label("DDM", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
