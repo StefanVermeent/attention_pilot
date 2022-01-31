@@ -14,7 +14,7 @@ source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "funct
 
 # Planned exclusions ------------------------------------------------------
 
-task_exclusions <- function(data, label) {
+task_exclusions <- function(data, label, lower_rt_cutoff = 250, upper_rt_cutoff = 3500) {
   data %>%
     group_by(id) %>%
     mutate(
@@ -29,8 +29,15 @@ task_exclusions <- function(data, label) {
       # Number of outliers (>3.2SD, based on log-transformed RTs) per subject
       ex_narb_log_outliers_n   = ifelse(n() > 1, sum(scale(log(rt)) > 3.2), NA),
       # Number of trials with fast (<250 ms) or slow (>3500 ms) outliers
-      ex_narb_invalid_trial      = ifelse(rt < 3500 & rt > 250, FALSE, TRUE),
-      ex_narb_invalid_trials_n   = ifelse(n() > 1, sum(rt > 3500 | rt < 250, na.rm = TRUE), NA),
+      ex_narb_invalid_trial      = ifelse(rt < upper_rt_cutoff & rt > lower_rt_cutoff, FALSE, TRUE),
+      ex_narb_invalid_trials_n   = ifelse(n() > 1, sum(rt > upper_rt_cutoff | rt < lower_rt_cutoff, na.rm = TRUE), NA),
+      
+      ex_narb_invalid_trials_neutral_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "neutral", na.rm = TRUE), NA),
+      
+      ex_narb_invalid_trials_cued_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "cued", na.rm = TRUE), NA),
+      
+      
+      
     ) %>%
     ungroup() %>%
     mutate(
@@ -45,15 +52,15 @@ task_exclusions <- function(data, label) {
 ## Add exclusion variables ----
 
 change_data_clean <- 
-  task_exclusions(change_data, "change") %>%
+  task_exclusions(change_data, "change", lower_rt_cutoff = 250, upper_rt_cutoff = 3500) %>%
   left_join(browser_interactions_summary %>% select(id, event_during_change))
 
 cueing_data_clean <- 
-  task_exclusions(cueing_data, "cueing") %>%
+  task_exclusions(cueing_data, "cueing", lower_rt_cutoff = 250, upper_rt_cutoff = 1500) %>%
   left_join(browser_interactions_summary %>% select(id, event_during_cueing))
 
 flanker_data_clean <- 
-  task_exclusions(flanker_data, "flanker") %>%
+  task_exclusions(flanker_data, "flanker", lower_rt_cutoff = 250, upper_rt_cutoff = 3500) %>%
   left_join(browser_interactions_summary %>% select(id, event_during_flanker))
 
 
@@ -87,6 +94,8 @@ cueing_data_clean %<>%
   # Remove invalid trials
   filter(!ex_narb_log_outlier) %>%
   filter(!ex_narb_invalid_trial) %>%
+  # Additional (not preregistered) based on post-hoc analysis of data: set RT cutoff for cueing to 2000 ms.
+  filter(rt < 2000) %>%
   # Exclude participants who did not pass the quality checks
   filter(ex_narb_cueing_pass == TRUE) %>%
   # Exclude participants who did not complete all tasks
@@ -101,6 +110,7 @@ cueing_data_clean %<>%
   # 3. Participants for whom all task windows were cut off
   filter(!id %in% "302") %>%
   select(-starts_with("ex_narb"))
+
 
 flanker_data_clean %<>%
   # Remove invalid trials

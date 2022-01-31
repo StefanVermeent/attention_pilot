@@ -139,4 +139,26 @@ ssp_results <-
    rename(id = subject) %>%
    rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker")))
  
+ 
+# Plot model fit
+ 
+plot_flanker <- flanker_ssp_results %>%
+  filter(id %in% c("515", "555", "494", "564", "371", "5", "231", "230", "360", "279", "433", "50")) %>%
+   select(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) %>%
+   pmap(function(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) {
+     
+     list(
+       parameters = list(
+         bestParameters = c(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker),
+         g2 = g2_flanker,
+         bBIC = bbic_flanker),
+       data = flanker_SDDM_setup %>% unnest() %>% filter(subject == id)
+     )
+   }) 
+ 
+ 
+ map(plot_flanker, function(x) {
+   plotFitSSP(modelFit = x$parameters, data = x$data)
+ })
+ 
 save(flanker_ssp_results, file = here("data", "1_pilot", "1_SSP_objects.Rdata"))
