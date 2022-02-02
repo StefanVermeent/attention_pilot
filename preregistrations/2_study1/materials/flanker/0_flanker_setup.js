@@ -1,59 +1,34 @@
 //------------------------- Functions
 
-var set_arrows = function(angles, up, down){
+var set_arrows = function(angles, loc, flankers, target){
   
   var html = "<style>" +
               
              "divbottom{display:flex; justify-content: center; align-items: flex-end; height:600px}" +
              "divtop{display:flex; justify-content: center; align-items: flex-start; height:600px}" +
-             ".topflanker{font-size:40px;}" +
-             ".bottomflanker{font-size:40px;}" +
-  
-              ".outer_left {" +
-                "transform: rotate(" + angles[0] + ");" +
-                "-webkit-transform: rotate(" + angles[0] + ");" +
-                "};" +
-              ".inner_left {" +
-                "transform: rotate(" + angles[1] + ");" +
-                "-webkit-transform: rotate(" + angles[1] + ");" +
-                "};" +
-              ".target {" +
-                "transform: rotate(" + angles[2] + ");" +
-                "-webkit-transform: rotate(" + angles[2] + ");" +
-                "};" +
-              ".inner_right {" +
-                "transform: rotate(" + angles[3] + ");" +
-                "-webkit-transform: rotate(" + angles[3] + ");" +
-                "};" +
-              ".outer_right {" +
-                "transform: rotate(" + angles[4] + ");" +
-                "-webkit-transform: rotate(" + angles[4] + ");" +
-                "};" +
+           //  ".topflanker{font-size:40px;}" +
+           //  ".bottomflanker{font-size:40px;}" +
+             
               "</style>";
-
   
-  if(up === true) {
+  if(loc == 'up') {
     html += "<divtop>";
-    html += "<div class = 'topflanker'>";
-    html += "<p>";
-    html += "<i class = 'outer_left'>&larr;</i>"; 
-    html += "<i class = 'inner_left'>&larr;</i>";
-    html += "<i class = 'target'>&larr;</i>";
-    html += "<i class = 'inner_right'>&larr;</i>";
-    html += "<i class = 'outer_right'>&larr;</i>";
-    html += "</p></div></div>";
-  }          
-  
-  if(down === true) {
+    html += "<div style = 'display: grid; width: 100%; font-size:40px; grid: 150px / auto auto auto auto auto;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[0] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[1] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[2] + "deg);'><span>" + target + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[3] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>";
+  } else {
     html += "<divbottom>";
-    html += "<div class = 'bottomflanker'>";
-    html += "<p>";
-    html += "<i class = 'outer_left'>&larr;</i>"; 
-    html += "<i class = 'inner_left'>&larr;</i>";
-    html += "<i class = 'target'>&larr;</i>";
-    html += "<i class = 'inner_right'>&larr;</i>";
-    html += "<i class = 'outer_right'>&larr;</i>";
-    html += "</p></div></div>";
+    html += "<div style = 'display: grid; width: 100%; font-size:40px; grid: 150px / auto auto auto auto auto;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[0] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[1] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[2] + "deg);'><span>" + target + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[3] + "deg);'><span>" + flankers + "</span></div>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>"
   }   
   
   return html;
