@@ -27,7 +27,7 @@ exploratory_effects_unp_flanker <-
       )}) %>% 
   rename_with(tolower) %>% 
   filter(!str_detect(mod_term, "^sd__")) %>% 
-  group_by(mod_term, spec_dv_type) %>% 
+  group_by(mod_term, spec_dv_type, spec_iv_type) %>% 
   mutate(
     dv         = spec_dv_type,
     dv_group   = ifelse(dv %in% c("RT", "RT (log)"), "Raw scores", "DDM"),
@@ -35,7 +35,7 @@ exploratory_effects_unp_flanker <-
     spec_rank  = as.numeric(fct_reorder(as_factor(spec_number), mod_std_coefficient)),
     median_dbl = median(mod_std_coefficient),
     median_chr = median_dbl %>% round(2) %>% as.character,
-    pval_prop  = (sum(mod_p.value < .05)/(896/7)) * 100
+    pval_prop  = (sum(mod_p.value < .05)/n()) * 100
   ) %>% 
   ungroup() %>% 
   mutate(
@@ -69,67 +69,67 @@ exploratory_effects_medians <-
   distinct()
 
 # Interaction Data --------------------------------------------------------
-secondary_effects_points <- 
-  exploratory_flanker %>% 
-  map_df(function(multiverse){
-        specs <- multiverse$specifications %>% 
-          select(-spec_expr) %>% 
-          pivot_wider(names_from = "spec_var", values_from = "name") %>% 
-          rename_with(.cols = !spec_number, ~paste0("spec_",.x))
-        
-        bind_cols(multiverse$model_effects, n = multiverse$n, specs) %>% tibble()
-      }) %>% 
-  left_join(
-    secondary_effects_flanker %>% 
-      filter(str_detect(mod_term_label, "Interaction")) %>% 
-      select(spec_number, mod_sig)
-  ) %>%
-  mutate(
-    dv         = spec_dv_type,
-    dv_group   = ifelse(dv %in% c("RT", "RT (log)"), "Raw scores", "DDM"),
-    iv         = spec_iv_type
-  )
+# secondary_effects_points <- 
+#   exploratory_flanker %>% 
+#   map_df(function(multiverse){
+#         specs <- multiverse$specifications %>% 
+#           select(-spec_expr) %>% 
+#           pivot_wider(names_from = "spec_var", values_from = "name") %>% 
+#           rename_with(.cols = !spec_number, ~paste0("spec_",.x))
+#         
+#         bind_cols(multiverse$model_effects, n = multiverse$n, specs) %>% tibble()
+#       }) %>% 
+#   left_join(
+#     secondary_effects_flanker %>% 
+#       filter(str_detect(mod_term_label, "Interaction")) %>% 
+#       select(spec_number, mod_sig)
+#   ) %>%
+#   mutate(
+#     dv         = spec_dv_type,
+#     dv_group   = ifelse(dv %in% c("RT", "RT (log)"), "Raw scores", "DDM"),
+#     iv         = spec_iv_type
+#   )
 
-# Simple Slopes -----------------------------------------------------------
-secondary_simple_slopes <- 
-  exploratory_flanker %>% 
-  map_df(function(multiverse){
-    
-    dv = multiverse$specifications %>% filter(spec_var == "dv_type") %>% pull(spec_expr)
-    
-    if(dv %in% c("rt_raw", "rt_log")) {
-        specs <- 
-          multiverse$specifications %>% 
-          select(-spec_expr) %>% 
-          pivot_wider(names_from = "spec_var", values_from = "name") %>% 
-          rename_with(.cols = !spec_number, ~paste0("spec_",.x))
-        
-        bind_cols(
-          specs,
-          bind_rows(
-            multiverse$simple_slopes[[1]][[3]] %>% 
-              rename_with(~c("level","beta","beta_se","beta_lo","beta_hi","t_value","p_value")) %>% 
-              mutate(level = ifelse(level == -1, "congruent", "incongruent")), 
-            multiverse$simple_slopes[[2]][[3]] %>% 
-              rename_with(~c("level","beta","beta_se","beta_lo","beta_hi","t_value","p_value")) %>% 
-              mutate(level = ifelse(level == -1, "low", "high")),
-          )
-        )
-    } else {
-      specs <- multiverse$specifications
-    }
-      }) %>%
-  mutate(
-    dv         = spec_dv_type,
-    dv_group   = ifelse(dv %in% c("RT", "RT (log)"), "Raw scores", "DDM")
-  
-  )
+# # Simple Slopes -----------------------------------------------------------
+# exploratory_simple_slopes <- 
+#   exploratory_flanker %>% 
+#   map_df(function(multiverse){
+#     
+#     dv = multiverse$specifications %>% filter(spec_var == "dv_type") %>% pull(spec_expr)
+#     
+#     if(dv %in% c("rt_raw", "rt_log")) {
+#         specs <- 
+#           multiverse$specifications %>% 
+#           select(-spec_expr) %>% 
+#           pivot_wider(names_from = "spec_var", values_from = "name") %>% 
+#           rename_with(.cols = !spec_number, ~paste0("spec_",.x))
+#         
+#         bind_cols(
+#           specs,
+#           bind_rows(
+#             multiverse$simple_slopes[[1]][[3]] %>% 
+#               rename_with(~c("level","beta","beta_se","beta_lo","beta_hi","t_value","p_value")) %>% 
+#               mutate(level = ifelse(level == -1, "congruent", "incongruent")), 
+#             multiverse$simple_slopes[[2]][[3]] %>% 
+#               rename_with(~c("level","beta","beta_se","beta_lo","beta_hi","t_value","p_value")) %>% 
+#               mutate(level = ifelse(level == -1, "low", "high")),
+#           )
+#         )
+#     } else {
+#       specs <- multiverse$specifications
+#     }
+#       }) %>%
+#   mutate(
+#     dv         = spec_dv_type,
+#     dv_group   = ifelse(dv %in% c("RT", "RT (log)"), "Raw scores", "DDM")
+#   
+#   )
 
 # save data ---------------------------------------------------------------
 save(
-  secondary_effects_flanker,
-  secondary_effects_medians,
-  secondary_effects_points,
-  secondary_simple_slopes,
-  file = here("data", "1_pilot", "secondary_analyses", "flanker", "3_multiverse_extracted_effects.Rdata")
+  exploratory_effects_unp_flanker,
+  exploratory_effects_medians,
+  #exploratory_effects_points,
+ # exploratory_simple_slopes,
+  file = here("data", "1_pilot", "3_exploratory_analyses", "2_unpredictability", "flanker", "3_multiverse_extracted_effects.Rdata")
 )

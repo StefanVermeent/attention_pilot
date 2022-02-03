@@ -11,7 +11,7 @@ source(here("preregistrations", "1_pilot", "scripts", "3_exploratory_analyses", 
 multiverse_data <- cleaned_data %>%
   select(id, scale_factor, fullscreenenter, fullscreenexit, meta_captcha, attention_interrupt_sum, att_noise, unpredictability_composite,
          contains("flanker"), -flanker_data_long, -starts_with(c("rt_var", "acc_", "event_during")), -starts_with("start"),
-         chaos_mean, unpredictability_subj, unpredictability_obj) %>%
+         starts_with("efa")) %>%
   rename(flanker_congruent_rt_raw = rt_flanker_congruent, flanker_incongruent_rt_raw = rt_flanker_incongruent) %>%
   pivot_longer(starts_with("flanker"),
                names_to = c("condition", ".value"),
@@ -21,22 +21,22 @@ multiverse_data <- cleaned_data %>%
     condition            = ifelse(condition == "flanker_congruent_", "congruent", "incongruent"),
     condition_sum        = ifelse(condition == "congruent", -1, 1),
     rt_raw               = rt_raw * 1000,
-    rt_log               = log(rt_raw)
+    rt_log               = log(rt_raw),
+    flanker_interference = ifelse(rd_flanker > 0, sda_flanker / rd_flanker, NA)
   ) %>%
   # Center IVs
-  mutate(across(c(chaos_mean, unpredictability_subj, unpredictability_obj
-                  ), ~scale(., scale = F), .names = "{.col}_c"))
+  mutate(across(c(efa_daily_unp, efa_routine, efa_spatial_unp, efa_chaos_clutter, efa_social_unp), 
+                ~scale(., scale = F), .names = "{.col}_c"))
 
 # arbitrary decision grid -------------------------------------------------
 
 spec_grid <- 
   expand_grid(
-    dv_type         = c(0, 1, 2, 3, 4, 5, 6),
-    iv_type         = c(0, 1, 2),
+    dv_type         = c(0,1,2),
+    iv_type         = c(0,1,2,3,4),
     no_resize       = c(0,1),
     no_fullscreen   = c(0,1),
     exit_fullscreen = c(0,1),
-    captcha         = c(0,1),
     interrupted     = c(0,1),
     noise           = c(0,1),
     outliers        = c(0,1),
@@ -47,24 +47,20 @@ spec_grid <-
   left_join(
     tribble(
       ~spec_var,         ~spec_value, ~spec_expr,                                                      ~name,
-      "dv_type",         0,           "rt_raw",                                                        "RT",
-      "dv_type",         1,           "rt_log",                                                        "RT (log)",
-      "dv_type",         2,           "a_flanker",                                                     "Boundary separation (a)",
-      "dv_type",         3,           "t0_flanker",                                                    "Non-decision time (t0)",
-      "dv_type",         4,           "p_flanker",                                                     "Perceptual input (p)",
-      "dv_type",         5,           "sda_flanker",                                                   "Initial attentional width (sda)",
-      "dv_type",         6,           "rd_flanker",                                                    "Rate of spotlight shrinking (rd)",
-      "iv_type",         0,           "chaos_mean_c",                                                  "CHAOS",
-      "iv_type",         1,           "unpredictability_subj_c",                                       "Subjective unpredictability",
-      "iv_type",         2,           "unpredictability_obj_c",                                        "Objective unpredictability",
+      "dv_type",         0,           "p_flanker",                                                     "Perceptual input (p)",
+      "dv_type",         1,           "rd_flanker",                                                    "Rate of spotlight\nshrinking (rd)",
+      "dv_type",         2,           "flanker_interference",                                          "Interference\n(sda/rd)",
+      "iv_type",         0,           "efa_daily_unp",                                                 "EFA - daily",
+      "iv_type",         1,           "efa_routine",                                                   "EFA - routine",
+      "iv_type",         2,           "efa_spatial_unp",                                               "EFA - spatial",
+      "iv_type",         3,           "efa_chaos_clutter",                                             "EFA - clutter",
+      "iv_type",         4,           "efa_social_unp",                                                "EFA - social",
       "no_resize",       0,           "scale_factor > 0",                                              "All scalers",
       "no_resize",       1,           "round(scale_factor, 4) != '0.3081'",                            "Correct scalers Only",
       "no_fullscreen",   0,           "fullscreenenter %in% c(0,1)",                                   "Include no fullscr. enter",
       "no_fullscreen",   1,           "fullscreenenter == 1",                                          "Exclude no fullscr. enter",
       "exit_fullscreen", 0,           "fullscreenexit %in% c(0,1)",                                    "Include fullscr. exit",
       "exit_fullscreen", 1,           "fullscreenexit == 0",                                           "Exclude fullscr. exit",
-      "captcha",         0,           "meta_captcha > 0",                                              "All captcha scores",
-      "captcha",         1,           "meta_captcha > 0.4",                                            "Captcha score > 0.4",
       "interrupted",     0,           "attention_interrupt_sum %in% c(0,1,2)",                         "All interruptions",
       "interrupted",     1,           "attention_interrupt_sum < 1",                                   "No extreme interruptions",
       "noise",           0,           "att_noise %in% c(0,1,2,3,4)",                                   "All noise levels",
@@ -103,7 +99,6 @@ multi_data_list <-
         eval(parse(text = paste(spec_expressions$no_resize))), 
         eval(parse(text = paste(spec_expressions$no_fullscreen))), 
         eval(parse(text = paste(spec_expressions$exit_fullscreen))),
-        eval(parse(text = paste(spec_expressions$captcha))),
         eval(parse(text = paste(spec_expressions$interrupted))),
         eval(parse(text = paste(spec_expressions$noise))),
         eval(parse(text = paste0("scale(", spec_expressions$dv_type, ") ", spec_expressions$outliers)))
