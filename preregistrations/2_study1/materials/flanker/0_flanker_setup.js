@@ -1,39 +1,50 @@
 //------------------------- Functions
 
-var set_arrows = function(angles, loc, flankers, target){
+var set_arrows = function(angles, loc, flankers, target, size, padding){
   
   var html = "<style>" +
-              
              "divbottom{display:flex; justify-content: center; align-items: flex-end; height:600px}" +
              "divtop{display:flex; justify-content: center; align-items: flex-start; height:600px}" +
-           //  ".topflanker{font-size:40px;}" +
-           //  ".bottomflanker{font-size:40px;}" +
-             
               "</style>";
   
   if(loc == 'up') {
     html += "<divtop>";
-    html += "<div style = 'display: grid; width: 100%; font-size:40px; grid: 150px / auto auto auto auto auto;'>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[0] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[1] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[2] + "deg);'><span>" + target + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[3] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
-    html += "</div>";
   } else {
     html += "<divbottom>";
-    html += "<div style = 'display: grid; width: 100%; font-size:40px; grid: 150px / auto auto auto auto auto;'>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[0] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[1] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[2] + "deg);'><span>" + target + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[3] + "deg);'><span>" + flankers + "</span></div>";
-    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
-    html += "</div>"
-  }   
+  }
   
-  return html;
-                
-};
+  
+    // Global frame
+    html += "<div style = 'display: grid; width: 100%; font-size: " + size + "px; grid: 150px / auto auto auto auto auto;'>";
+    // Outer left flanker
+    html += "<div style = 'margin: auto; padding: 5px " + padding + "px;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[0] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>";
+    // Inner left flanker
+    html += "<div style = 'margin: auto; padding: 5px " + padding + "px;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[1] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>";
+    // Target
+    html += "<div style = 'margin: auto; padding: 5px " + padding + "px;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[2] + "deg);'><span>" + target + "</span></div>";
+    html += "</div>";
+    // Inner right target
+    html += "<div style = 'margin: auto; padding: 5px " + padding + "px;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[3] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>";
+    // Outer right target
+    html += "<div style = 'margin: auto; padding: 5px " + padding + "px;'>";
+    html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
+    html += "</div>";
+    html += "</div>";
+ 
+   
+   return html;
+  
+};   
+  
+  
+
 
 
 
