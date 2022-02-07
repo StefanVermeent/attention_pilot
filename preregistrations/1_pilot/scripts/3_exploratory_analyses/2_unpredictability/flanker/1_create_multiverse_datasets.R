@@ -9,12 +9,9 @@ source(here("preregistrations", "1_pilot", "scripts", "3_exploratory_analyses", 
 
 # Transfrom data to long format and prepare for analyses
 multiverse_data <- cleaned_data %>%
-  mutate(unp_quic = across(matches("unp\\d\\d|quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
-           psych::reverse.code(keys = c(1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
-           rowMeans(., na.rm = T)) %>%
   select(id, scale_factor, fullscreenenter, fullscreenexit, meta_captcha, attention_interrupt_sum, att_noise, unpredictability_composite,
          contains("flanker"), -flanker_data_long, -starts_with(c("rt_var", "acc_", "event_during")), -starts_with("start"),
-         starts_with("efa"), unp_quic, chaos_mean, unpredictability_obj) %>%
+         starts_with("efa")) %>%
   rename(flanker_congruent_rt_raw = rt_flanker_congruent, flanker_incongruent_rt_raw = rt_flanker_incongruent) %>%
   pivot_longer(starts_with("flanker"),
                names_to = c("condition", ".value"),
@@ -28,7 +25,7 @@ multiverse_data <- cleaned_data %>%
     flanker_interference = ifelse(rd_flanker > 0, sda_flanker / rd_flanker, NA)
   ) %>%
   # Center IVs
-  mutate(across(c(efa_daily_unp, efa_routine, efa_spatial_unp, efa_chaos_clutter, efa_social_unp, unp_quic, chaos_mean, unpredictability_obj), 
+  mutate(across(c(efa_daily_unp, efa_routine, efa_spatial_unp, efa_chaos_clutter, efa_social_unp), 
                 ~scale(., scale = F), .names = "{.col}_c"))
 
 # arbitrary decision grid -------------------------------------------------
@@ -36,7 +33,7 @@ multiverse_data <- cleaned_data %>%
 spec_grid <- 
   expand_grid(
     dv_type         = c(0,1,2),
-    iv_type         = c(0,1,2,3,4,5,6,7),
+    iv_type         = c(0,1,2,3,4),
     no_resize       = c(0,1),
     no_fullscreen   = c(0,1),
     exit_fullscreen = c(0,1),
@@ -53,14 +50,11 @@ spec_grid <-
       "dv_type",         0,           "p_flanker",                                                     "Perceptual input (p)",
       "dv_type",         1,           "rd_flanker",                                                    "Rate of spotlight\nshrinking (rd)",
       "dv_type",         2,           "flanker_interference",                                          "Interference\n(sda/rd)",
-      "iv_type",         0,           "efa_daily_unp_c",                                               "EFA - daily",
-      "iv_type",         1,           "efa_routine_c",                                                 "EFA - routine",
-      "iv_type",         2,           "efa_spatial_unp_c",                                             "EFA - spatial",
-      "iv_type",         3,           "efa_chaos_clutter_c",                                           "EFA - clutter",
-      "iv_type",         4,           "efa_social_unp_c",                                              "EFA - social",
-      "iv_type",         5,           "unp_quic_c",                                                    "Perc. + QUIC",
-      "iv_type",         6,           "chaos_mean_c",                                                  "CHAOS",
-      "iv_type",         7,           "unpredictability_obj_c",                                        "Obj. unpredictability",
+      "iv_type",         0,           "efa_daily_unp",                                                 "EFA - daily",
+      "iv_type",         1,           "efa_routine",                                                   "EFA - routine",
+      "iv_type",         2,           "efa_spatial_unp",                                               "EFA - spatial",
+      "iv_type",         3,           "efa_chaos_clutter",                                             "EFA - clutter",
+      "iv_type",         4,           "efa_social_unp",                                                "EFA - social",
       "no_resize",       0,           "scale_factor > 0",                                              "All scalers",
       "no_resize",       1,           "round(scale_factor, 4) != '0.3081'",                            "Correct scalers Only",
       "no_fullscreen",   0,           "fullscreenenter %in% c(0,1)",                                   "Include no fullscr. enter",

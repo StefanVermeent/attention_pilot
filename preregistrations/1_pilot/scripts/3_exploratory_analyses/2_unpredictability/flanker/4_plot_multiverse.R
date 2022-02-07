@@ -72,7 +72,7 @@ spec_curves_ssp <-
     
     # Plots
     eff_curve <- 
-      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social", "Perc. + QUIC", "CHAOS", "Obj. unpredictability"), function(x) {
+      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social" ), function(x) {
         effs %>% 
           filter(spec_iv_type == x) %>%
           ggplot(aes(y = mod_std_coefficient, x = spec_rank, color = mod_sig)) +
@@ -116,7 +116,7 @@ spec_curves_ssp <-
       
     
     sample_sizes <- 
-      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social", "Perc. + QUIC", "CHAOS", "Obj. unpredictability"), function(x) {
+      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social"), function(x) {
         effs %>% 
           filter(spec_iv_type == x) %>%
           ggplot(aes(x = spec_rank, y = n, color = mod_sig)) +
@@ -135,7 +135,7 @@ spec_curves_ssp <-
           )})
     
     spec_grid <- 
-      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social", "Perc. + QUIC", "CHAOS", "Obj. unpredictability"), function(x) {
+      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social"), function(x) {
         spec_grid_data %>% 
           filter(spec_iv_type == x) %>%
           ggplot(aes(x = spec_rank, y = spec_value, color = mod_sig)) +
@@ -178,7 +178,7 @@ spec_curves_ssp <-
           )})
         
     p_curve <- 
-      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social", "Perc. + QUIC", "CHAOS", "Obj. unpredictability"), function(x) {
+      map(c("EFA - daily", "EFA - routine", "EFA - spatial", "EFA - clutter", "EFA - social"), function(x) {
         effs %>% 
           filter(spec_iv_type == x) %>%
       ggplot(aes(x = mod_p.value)) +
@@ -317,67 +317,4 @@ fig5_social_unp <-
     x = 0, y = 0, width = 1, height = .95
   ) + 
   draw_label("EFA - social", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
-
-fig6_unp_quic <- 
-  ggdraw() +
-  draw_plot(
-    plot_grid(
-      spec_curves_ssp[[1]]$eff_curve[[6]],
-      spec_curves_ssp[[1]]$p_curve[[6]],
-      spec_curves_ssp[[1]]$sample_sizes[[6]],
-      spec_curves_ssp[[1]]$spec_grid[[6]],
-      nrow  =4,
-      ncol  = 1, 
-      align = "v", 
-      axis  = "lr",
-      rel_heights = c(.25, .15, .2, .4)
-    ) +
-      #draw_plot_label(c("(faster)","(slower)"), x = 0.075, y = c(.95, .78), size = 8, vjust = 1, hjust = 0, fontface = "italic") +
-      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
-    x = 0, y = 0, width = 1, height = .95
-  ) + 
-  draw_label("Perceived + QUIC", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
-
-
-fig7_chaos <- 
-  ggdraw() +
-  draw_plot(
-    plot_grid(
-      spec_curves_ssp[[1]]$eff_curve[[7]],
-      spec_curves_ssp[[1]]$p_curve[[7]],
-      spec_curves_ssp[[1]]$sample_sizes[[7]],
-      spec_curves_ssp[[1]]$spec_grid[[7]],
-      nrow  =4,
-      ncol  = 1, 
-      align = "v", 
-      axis  = "lr",
-      rel_heights = c(.25, .15, .2, .4)
-    ) +
-      #draw_plot_label(c("(faster)","(slower)"), x = 0.075, y = c(.95, .78), size = 8, vjust = 1, hjust = 0, fontface = "italic") +
-      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
-    x = 0, y = 0, width = 1, height = .95
-  ) + 
-  draw_label("CHAOS", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
-
-
-fig8_obj <- 
-  ggdraw() +
-  draw_plot(
-    plot_grid(
-      spec_curves_ssp[[1]]$eff_curve[[8]],
-      spec_curves_ssp[[1]]$p_curve[[8]],
-      spec_curves_ssp[[1]]$sample_sizes[[8]],
-      spec_curves_ssp[[1]]$spec_grid[[8]],
-      nrow  =4,
-      ncol  = 1, 
-      align = "v", 
-      axis  = "lr",
-      rel_heights = c(.25, .15, .2, .4)
-    ) +
-      #draw_plot_label(c("(faster)","(slower)"), x = 0.075, y = c(.95, .78), size = 8, vjust = 1, hjust = 0, fontface = "italic") +
-      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
-    x = 0, y = 0, width = 1, height = .95
-  ) + 
-  draw_label("Objective unpredictability", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
-
 
