@@ -1,0 +1,407 @@
+---
+title: "Drift Diffusion Model"
+bibliography: ../references.bib
+---
+
+```{r, echo=T, results='hide', message=F, warning=F} 
+library(tidyverse)
+library(here)
+library(RWiener)
+library(mvtnorm)
+library(flankr)
+
+source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "functions_exclusions.R"))
+
+change_data_clean <- read_csv(here("data", "1_pilot", "change_data_clean.csv")) 
+cueing_data_clean <- read_csv(here("data", "1_pilot", "cueing_data_clean.csv"))
+flanker_data_clean <- read_csv(here("data", "1_pilot", "flanker_data_clean.csv")) 
+```
+
+# Change Detection Task
+
+## Data Pre-treatment
+
+First, we check whether there is a significant difference between 'same' and 'different' conditions on the Change Detection Task.
+
+```{r}
+change_DDM_setup <- change_data_clean %>%
+  select(id, rt, correct, condition) %>%
+  mutate(rt = rt / 1000) 
+
+change_DDM_setup %>%
+  group_by(id, condition) %>%
+  summarise(mean_rt = mean(log(rt), na.rm=T)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = "condition", values_from = "mean_rt") %>%
+  do(broom::tidy(t.test(.$same, .$different, data=., paired=T)))
+```
+
+```{r}
+for (i in unique(change_DDM_setup$id)) {
+  # 1. Filter subject i and write individual data files to data folder
+  change_DDM_i <- change_DDM_setup %>%
+    filter(id == i) %>%
+    select(-id, -condition) %>%
+    write_delim(file = here("data", "1_pilot", "DDM", str_c("change_DDM_subject", i, ".dat")), col_names = FALSE)
+}
+
+# 2. Run DDM model
+path_to_files <- paste0("pushd ", here("data", "1_pilot", "DDM")) %>% str_replace_all(., pattern="/", replacement="\\\\")
+run_DDM <- " && fast-dm.exe change_ml.ctl"
+cmd <- paste0(path_to_files, run_DDM)
+
+shell(cmd)
+  
+# 3. Read results
+change_DDM_results <- read_delim(here("data", "1_pilot", "DDM", "ddm_results_change.lst"), delim = " ", trim_ws = TRUE) %>%
+  mutate(dataset = str_replace_all(dataset, "^change_DDM_subject", "") %>% as.numeric(),
+         task = "change") %>%
+  rename(id = dataset)
+  
+# 4. Remove data files from folder
+files_to_remove <- list.files(here("data", "1_pilot", "DDM"), pattern = ".dat$|.lst$", full.names=TRUE)
+file.remove(files_to_remove)
+
+change_DDM_results
+
+change_DDM_results %>%
+  pivot_longer(c(a,v,t0), names_to = "parameter", values_to = "value") %>%
+  ggplot(aes(value)) +
+  geom_histogram() +
+  theme_classic() +
+  facet_wrap(~parameter, scales = "free")
+```
+
+## Assessing Model Fit
+
+```{r}
+# Means
+mu_v     <- mean(change_DDM_results$v, na.rm=T)
+mu_a     <- mean(change_DDM_results$a, na.rm=T)
+mu_t0    <- mean(change_DDM_results$t0, na.rm=T)
+
+# SDs
+sd_v     <- sd(change_DDM_results$v, na.rm=T)
+sd_a     <- sd(change_DDM_results$a, na.rm=T)
+sd_t0    <- sd(change_DDM_results$t0, na.rm=T)  
+
+# Correlations
+cor_v_a  <- cor(change_DDM_results$v, change_DDM_results$a, use="complete.obs")
+cor_v_t0 <- cor(change_DDM_results$v, change_DDM_results$t0, use="complete.obs")
+cor_a_t0 <- cor(change_DDM_results$a, change_DDM_results$t0, use="complete.obs")
+
+# Variance-Covariance Matrix
+sigma <- matrix(c(sd_v^2, sd_v*sd_a*cor_v_a, sd_v*sd_t0*cor_v_t0,
+                  sd_a*sd_v*cor_v_a, sd_a^2, sd_a*sd_t0*cor_a_t0,
+                  sd_t0*sd_v*cor_v_t0, sd_t0*sd_a*cor_a_t0, sd_t0^2),
+                ncol=3)
+
+nsim <- 5000
+
+# Simulate DDM parameters based on empirical data
+sim_params <- rmvnorm(n=nsim, mean = c(mu_v, mu_a, mu_t0), sigma = sigma) %>%
+  as_tibble() %>%
+  rename(v=V1, a=V2, t0=V3) %>%
+  mutate(n=50, z = 0.5, row = 1:n()) %>%
+  select(n, a, t0, z, v, row) %>%
+  filter(a > 0 & t0 > 0)
+
+if(nrow(sim_params) < nsim) warning(paste0(nsim - nrow(sim_params < nsim), " simulated driftrates or non-decision times were smaller than 0 and have been dropped!"))
+```
+
+```{r echo = FALSE, results = FALSE}
+# Simulate and save RTs
+pmap(sim_params, function(n,a,t0,z,v, row) {
+  rwiener(n,a,t0,z,v) %>%
+    as_tibble() %>%
+    mutate(resp = ifelse(resp == "upper", 1, 0)) %>%
+    write_delim(file = here("data", "1_pilot", "DDM", str_c("par_sim", row, ".dat")), col_names = FALSE)
+  
+  
+})
+```
+
+```{r}
+# Run DDM model on simulated datasets
+path_to_files <- paste0("pushd ", here("data", "1_pilot", "DDM")) %>% str_replace_all(., pattern="/", replacement="\\\\")
+run_DDM <- " && fast-dm.exe change_ml.ctl"
+cmd <- paste0(path_to_files, run_DDM)
+
+shell(cmd)
+  
+# Read results
+fit_vector <- read_delim(here("data", "1_pilot", "DDM", "ddm_results_change.lst"), delim = " ", trim_ws = TRUE) %>%
+  select(fit) %>%
+  pull()
+
+# Remove data files from folder
+files_to_remove <- list.files(here("data", "1_pilot", "DDM"), pattern = ".dat$|.lst$", full.names=TRUE)
+file.remove(files_to_remove)
+
+# Determine the 5% quantile of the distribution of fit indices to use as critical value
+fit_critical_value <- quantile(fit_vector, .05)[[1]]
+```
+
+```{r}
+change_DDM_results %<>%
+  mutate(
+    fit_critical_value = fit_critical_value,
+    ex_change_bad_fit = ifelse(fit < fit_critical_value, TRUE, FALSE))
+
+```
+
+Using `r nsim` simulations, we found that the 5% quantile of the fit distribution corresponded to a critical value of `r round(fit_critical_value,2)`. Applying this critical value to the obtained fit statistics in the data of the Change Detection Task, we found that the data of `r sum(change_DDM_results$ex_change_bad_fit)` subjects fell below this cut-off.
+
+# Attention Cueing Task
+
+For the Attention Cueing Task, we have two conditions: the neutral condition and the cued condition. DDM parameters can be fixed across conditions or set to vary across conditions. It seems plausible that the manipulation across trials has an effect on the non-decision time. For the neutral trial, subjects are only able to make a saccade in the correct direction when the target is presented. Therefore, there is an offset in the time at which information can be accumulated relative the the cued trial. Second, the drift rate might be affected by the manipulation
+
+
+## Model 1. Fully independent: All parameters vary across conditions
+
+```{r}
+cueing_DDM_setup <- cueing_data_clean %>%
+  select(id, rt, correct, condition) %>%
+  mutate(rt = rt / 1000) 
+
+for (i in unique(cueing_DDM_setup$id)) {
+  # 1. Filter subject i and write individual data files to data folder
+  cueing_DDM_i <- cueing_DDM_setup %>%
+    filter(id == i) %>%
+    select(-id) %>%
+    write_delim(file = here("data", "1_pilot", "DDM", str_c("cueing_DDM_subject", i, ".dat")), col_names = FALSE)
+}
+  
+
+
+# 2. Run DDM model
+path_to_files <- paste0("pushd ", here("data", "1_pilot", "DDM")) %>% str_replace_all(., pattern="/", replacement="\\\\")
+run_DDM <- " && fast-dm.exe cueing_full_independent_ml.ctl"
+cmd <- paste0(path_to_files, run_DDM)
+
+shell(cmd)
+  
+# 3. Read results
+cueing_DDM_results1 <- read_delim(here("data", "1_pilot", "DDM", "ddm_results_cueing_full_independent.lst"), delim = " ", trim_ws = TRUE) %>%
+  mutate(dataset = str_replace_all(dataset, "^cueing_DDM_subject", "") %>% as.numeric(),
+         iteration  = "full_independent",
+         task = "cueing") %>%
+  rename(id = dataset) 
+  
+# 4. Remove data files from folder
+files_to_remove <- list.files(here("data", "1_pilot", "DDM"), pattern = ".dat$|.lst$", full.names=TRUE)
+file.remove(files_to_remove)
+```
+
+
+## Model 2. Boundary separation is fixed across conditions
+
+```{r}
+for (i in unique(cueing_DDM_setup$id)) {
+  # 1. Filter subject i and write individual data files to data folder
+  cueing_DDM_i <- cueing_DDM_setup %>%
+    filter(id == i) %>%
+    select(-id) %>%
+    write_delim(file = here("data", "1_pilot", "DDM", str_c("cueing_DDM_subject", i, ".dat")), col_names = FALSE)
+}
+  
+
+
+# 2. Run DDM model
+path_to_files <- paste0("pushd ", here("data", "1_pilot", "DDM")) %>% str_replace_all(., pattern="/", replacement="\\\\")
+run_DDM <- " && fast-dm.exe cueing_v_t0_independent_ml.ctl"
+cmd <- paste0(path_to_files, run_DDM)
+
+shell(cmd)
+  
+# 3. Read results
+cueing_DDM_results2 <- read_delim(here("data", "1_pilot", "DDM", "ddm_results_cueing_v_t0_independent.lst"), delim = " ", trim_ws = TRUE) %>%
+  mutate(dataset = str_replace_all(dataset, "^cueing_DDM_subject", "") %>% as.numeric(),
+         iteration = "a_independent",
+         task = "cueing",
+         a_neutral = a,
+         a_cued = a) %>%
+  rename(id = dataset) %>%
+  select(-a)
+  
+# 4. Remove data files from folder
+files_to_remove <- list.files(here("data", "1_pilot", "DDM"), pattern = ".dat$|.lst$", full.names=TRUE)
+file.remove(files_to_remove)
+
+cueing_DDM_results2
+
+save(change_DDM_results, cueing_DDM_results1, cueing_DDM_results2, file = here("data", "1_pilot", "DDM", "DDM_objects.RData"))
+```
+
+# Comparisons between models
+
+```{r}
+# T-test on boundary separation
+t.test(cueing_DDM_results1$a_cued, cueing_DDM_results1$a_neutral, paired = T)
+
+bind_rows(cueing_DDM_results1, cueing_DDM_results2) %>%
+  pivot_longer(ends_with(c("neutral", "cued")), names_to = "parameter", values_to = "value") %>%
+  select(id, iteration, parameter, value) %>%
+  pivot_wider(names_from = "iteration", values_from = "value") %>%
+  ggplot(aes(full_independent, a_independent)) +
+  geom_point() +
+  facet_wrap(~parameter, scales = "free") +
+  labs(
+    title = "Parameter comparison across model versions"
+  )
+
+bind_rows(cueing_DDM_results1, cueing_DDM_results2) %>%
+  select(id, iteration, fit) %>%
+  pivot_wider(names_from = "iteration", values_from = "fit") %>%
+  ggplot(aes(full_independent, a_independent)) +
+  geom_point() +
+  labs(
+    title = "Model fit comparison across model versions"
+  )
+
+
+cueing_DDM_results1 %>% select(v_cued, t0_cued, a_cued, v_neutral, t0_neutral, a_neutral) %>% cor %>% corrplot(method = "number")
+cueing_DDM_results2 %>% select(ends_with(c("cued", "neutral"))) %>% cor %>% corrplot(method = "number")
+
+```
+
+```{r}
+cueing_DDM_results1 %>%
+  pivot_longer(ends_with(c("neutral", "cued")), names_to = "parameter", values_to = "value") %>%
+  separate(parameter, c("parameter", "condition"), sep = "_") %>%
+  pivot_wider(names_from = "condition", values_from = "value") %>%
+  mutate(
+    parameter = case_when(
+      parameter == "v" ~ "Drift rate",
+      parameter == "t0" ~ "Non-decision time",
+      parameter == "a" ~ "Boundary separation"
+    )
+  ) %>%
+  ggplot(aes(neutral, cued)) +
+  geom_point() +
+  theme_classic() +
+  geom_abline(slope = 1, intercept = 0) +
+  facet_wrap(~parameter, scales = "free") +
+  labs(
+    title = "Model 1: Boundary separation varies across conditions"
+  )
+
+
+cueing_DDM_results2 %>%
+  pivot_longer(ends_with(c("neutral", "cued")), names_to = "parameter", values_to = "value") %>%
+  separate(parameter, c("parameter", "condition"), sep = "_") %>%
+  pivot_wider(names_from = "condition", values_from = "value") %>%
+  mutate(
+    parameter = case_when(
+      parameter == "v" ~ "Drift rate",
+      parameter == "t0" ~ "Non-decision time",
+      parameter == "a" ~ "Boundary separation"
+    )
+  ) %>%
+  ggplot(aes(neutral, cued)) +
+  geom_point() +
+  theme_classic() +
+  geom_abline(slope = 1, intercept = 0) +
+  facet_wrap(~parameter, scales = "free") +
+  labs(
+    title = "Model 2: Boundary separation is fixed across conditions"
+  )
+```
+## Assessing Model Fit
+
+We assess Model fit using Monte Carlo simulations based on the empirical data, as detailed in [@voss_2015].
+
+```{r}
+# Means
+mu_v_neut     <- mean(cueing_DDM_results2$v_neutral, na.rm=T)
+mu_a_neut     <- mean(cueing_DDM_results2$a_neutral, na.rm=T)
+mu_t0_neut    <- mean(cueing_DDM_results2$t0_neutral, na.rm=T)
+
+mu_v_cued        <- mean(cueing_DDM_results2$v_cued, na.rm=T)
+mu_a_cued        <- mean(cueing_DDM_results2$a_cued, na.rm=T)
+mu_t0_cued       <- mean(cueing_DDM_results2$t0_cued, na.rm=T)
+
+# Initiate Variance-Covariance Matrix
+sigma <- matrix(nrow = 6, ncol = 6, dimnames=list(c("sd_v_neutral", "sd_a_neutral", "sd_t0_neutral", "sd_v_cued", "sd_a_cued", "sd_t0_cued"),
+                                         c("sd_v_neutral", "sd_a_neutral", "sd_t0_neutral", "sd_v_cued", "sd_a_cued", "sd_t0_cued")))
+
+# Fill cells of Var-Covar matrix 
+for (col in 1:ncol(sigma)) {
+  for (row in 1:nrow(sigma)) {
+    
+    col_i = colnames(sigma)[col]
+    row_i = rownames(sigma)[row]
+    
+    # Variances
+    if(col_i == row_i) {
+      param <- str_replace(col_i, "^sd_", "")
+      
+      sigma[col_i, row_i] <- sd(cueing_DDM_results2[[param]], na.rm = T)^2
+    } else {
+      
+      # Covariances
+      param_col <- str_replace(col_i, "^sd_", "")
+      param_row <- str_replace(row_i, "^sd_", "")
+      
+      sd_col <- sd(cueing_DDM_results2[[param_col]], na.rm = T)
+      sd_row <- sd(cueing_DDM_results2[[param_row]], na.rm = T)
+      r      <- cor(cueing_DDM_results2[[param_col]], cueing_DDM_results2[[param_row]])
+      
+      sigma[col_i, row_i] <- sd_col * sd_row * r
+    }
+  }
+}
+
+nsim <- 5000
+
+# Simulate DDM parameters based on empirical data
+sim_params <- rmvnorm(n=nsim, mean = c(mu_v_neut, mu_a_neut, mu_t0_neut, mu_v_cued, mu_a_cued, mu_t0_cued), sigma = sigma) %>%
+  as_tibble() %>%
+  rename(v_neut=V1, a_neut=V2, t0_neut=V3, v_cued=V4, a_cued=V5, t0_cued=V6) %>%
+  mutate(n=64, z = 0.5, row = 1:n()) %>%
+  select(n, a_neut, t0_neut, z, v_neut, a_cued, t0_cued, z, v_cued, row) %>%
+  filter(across(starts_with(c("a_", "t0_")), ~ . > 0))
+
+if(nrow(sim_params) < nsim) warning(paste0(nsim - nrow(sim_params < nsim), " simulated driftrates or non-decision times were smaller than 0 and have been dropped!"))
+```
+
+```{r echo = FALSE, results = FALSE}
+# Simulate and save RTs
+pmap(sim_params[c("n", "a_neut", "t0_neut", "z", "v_neut", "row")], function(n,a_neut,t0_neut,z,v_neut, row) {
+  rwiener(n,a_neut,t0_neut,z,v_neut) %>%
+    as_tibble() %>%
+    mutate(resp = ifelse(resp == "upper", 1, 0)) #%>%
+    #write_delim(file = here("data", "1_pilot", "DDM", str_c("par_sim", row, ".dat")), col_names = FALSE)
+})
+
+
+```
+
+```{r}
+cueing_DDM_results2
+change_DDM_results
+```
+
+
+
+# Flanker Task
+
+```{r}
+flanker_DDM_setup <- flanker_data_clean %>%
+  select(subject=id, congruency, accuracy=correct, rt) %>%
+  mutate(rt = rt / 1000) 
+```
+
+
+```{r}
+flanker_fit <- fitSSP(flanker_DDM_setup)
+```
+
+
+
+```{r}
+#write_csv(change_DDM_results, here("data", "1_pilot", "DDM_results_change.csv"))
+#write_csv(flanker_DDM_results, here("data", "1_pilot", "DDM_results_flanker.csv"))
+#write_csv(cueing_DDM_results, here("data", "1_pilot", "DDM_results_cueing.csv"))
+```
+

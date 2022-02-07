@@ -1,0 +1,257 @@
+---
+title: "4_descriptives"
+author: "Stefan Vermeent"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r}
+library(tidyverse)
+library(psych)
+library(here)
+library(flextable)
+library(gt)
+require(esyr)
+
+source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "functions_exclusions.R"))
+
+change_data_clean_mean <- read_csv(here("data", "1_pilot", "change_data_clean_mean.csv")) 
+cueing_data_clean_mean <- read_csv(here("data", "1_pilot", "cueing_data_clean_mean.csv")) 
+flanker_data_clean_mean <- read_csv(here("data", "1_pilot", "flanker_data_clean_mean.csv")) 
+
+self_report_clean <- read_csv(here("data", "1_pilot", "self_report_clean.csv"))
+codebook <- read_csv(here("data", "1_pilot", "pilot_self_report_codebook.csv"))
+```
+
+# Self-report
+
+## Distributions
+
+```{r}
+create_plot <- function(data, variables, label) {
+  
+  data %>%
+    pivot_longer(all_of(variables), names_to = "Scale", values_to = "value") %>%
+    ggplot() +
+    geom_histogram(aes(value)) +
+    facet_wrap(~Scale, scales = "free") +
+    theme_classic() +
+    labs(
+      x = "Mean score",
+      y = "Frequency",
+      title = label
+    )
+  
+}
+
+create_plot(data = self_report_clean, variables = c("chaos_mean", "quic_monitoring_mean", "quic_par_predict_mean", "quic_par_env_mean", "quic_phys_env_mean", "quic_safety_mean", "quic_total_mean", "unp_mean", "unp_moving", "unp_partners_mother", "unp_partners_father", "unp_household_size"), label = "Unpredictability")
+
+
+create_plot(data = self_report_clean, variables = c("ses_subj_mean", "edu_parents_recoded", "income_past_recoded", "class_past_recoded", "poverty_composite"), label = "Poverty")
+```
+
+## Reliabilities
+
+```{r}
+alphas <- tibble(
+  stai_s_mean           = alpha(self_report_clean %>% select(matches("stai_s\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  quic_total_mean       = alpha(self_report_clean %>% select(matches("quic\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  quic_monitoring_mean  = alpha(self_report_clean %>% select(matches("quic(01|02|03|04|05|06|07|08|09)")), check.keys = TRUE)$total$raw_alpha %>% round(2),  
+  quic_par_predict_mean = alpha(self_report_clean %>% select(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")), check.keys = TRUE)$total$raw_alpha %>% round(2),   
+  quic_par_env_mean     = alpha(self_report_clean %>% select(matches("quic(22|23|24|25|26|27)")), check.keys = TRUE)$total$raw_alpha %>% round(2),    
+  quic_phys_env_mean    = alpha(self_report_clean %>% select(matches("quic(28|29|30|31|32|33|34)")), check.keys = TRUE)$total$raw_alpha %>% round(2),   
+  quic_safety_mean      = alpha(self_report_clean %>% select(matches("quic(35|36|37)")), check.keys = TRUE)$total$raw_alpha %>% round(2),   
+  unp_mean              = alpha(self_report_clean %>% select(matches("unp\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  chaos_mean            = alpha(self_report_clean %>% select(matches("chaos\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  ses_subj_mean         = alpha(self_report_clean %>% select(matches("ses\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  violence_mean         = alpha(self_report_clean %>% select(matches("violence\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  impuls_mean           = alpha(self_report_clean %>% select(matches("impuls\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  fos_fo_mean           = alpha(self_report_clean %>% select(matches("fos\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  fos_pa_mean           = alpha(self_report_clean %>% select(matches("fos(01|06|07|12|13)")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  fos_tp_mean           = alpha(self_report_clean %>% select(matches("fos(02|05|08|11|14)")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  fos_fc_mean           = alpha(self_report_clean %>% select(matches("fos(03|04|09|10|15)")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+  depression_mean       = alpha(self_report_clean %>% select(matches("depression\\d\\d")), check.keys = TRUE)$total$raw_alpha %>% round(2),
+) %>%
+  pivot_longer(everything(), names_to = "Scale", values_to = "Reliability") %>%
+  flextable(cwidth = c(3, 1)) %>%
+  bold(i = c(1,2,8,9,10,11,12,13,17), j = 1) %>%
+  padding(i = c(3:7, 14:16), padding.left = 20)
+  
+
+alphas
+```
+
+
+
+## Correlations
+
+
+```{r}
+correlations <- self_report_clean %>%
+  select(id, ends_with(c("mean", "total", "composite", "_recoded")), sleep, hungry, rested, att_noise,
+         unp_moving, unp_household_size, unp_partners_father, unp_partners_mother) %>%
+  left_join(
+    cueing_data_clean_mean %>% select(-acc_cueing) %>%  pivot_wider(names_from = "condition", values_from = "rt_cueing") %>% select(id, rt_cued = cued, rt_neutral = neutral)
+    ) %>%
+  left_join(
+    flanker_data_clean_mean %>% select(-acc_flanker) %>%  pivot_wider(names_from = "congruency", values_from = "rt_flanker") %>% select(id, rt_congruent = congruent, rt_incongruent = incongruent)
+  ) %>%
+  left_join(change_data_clean_mean %>% select(id, rt_change)) %>%
+  left_join(change_DDM_results %>% filter(!ex_change_bad_fit) %>% select(id, v, a, t0)) %>%
+  left_join(cueing_DDM_results2 %>% select(id, v_neutral, a_neutral, t0_neutral, v_cued, a_cued, t0_cued))
+   
+
+
+
+table_cor_adversity <- correlations %>%
+  select(unp_mean, quic_total_mean, chaos_mean, change_env_mean, 
+         unp_moving, unp_household_size, unp_partners_father, unp_partners_mother,
+         violence_mean, fighting_mean, violence_composite,
+         ses_subj_mean_recoded, ses_obj_mean, poverty_composite,
+         stai_s_mean, depression_mean,
+         ) %>%
+  corr_table(
+    c.names = c("Perceived", "QUIC", "CHAOS", "Env. change", "Residential changes", "Household size", "Partners mother", "Partners father", "Neighborhood", "Fighting", "Composite", "Perceived", "Objective", "Composite", "Anxiety", "Depression"),
+    numbered = T,
+    flagged = T,
+    stats = ""
+  ) %>%
+  gt(groupname_col = "stat_group") %>%
+  cols_label(Variable = " ") %>% 
+  tab_spanner(c("Unpredictability"), columns = 2:9) %>% 
+  tab_spanner(c("Violence"), columns = 10:12) %>% 
+  tab_spanner(c("Poverty"), columns = 13:15) %>%
+  tab_style(
+    style = cell_borders("all", color = "white"),
+    locations = cells_body(columns = 1:17, rows = 2:16)
+  ) %>%
+  tab_options(
+    table.font.size = "10px",
+  )
+
+
+table_cor_unpredictability <- correlations %>%
+  select(unp_mean, starts_with("quic"), chaos_mean, change_env_mean,
+         unp_moving, unp_household_size, unp_partners_father, unp_partners_mother,
+         stai_s_mean, depression_mean) %>%
+  mutate(
+    unp_moving = case_when(
+      unp_moving == 0 ~ 0,
+      unp_moving %in% c(1,2) ~ 1,
+      unp_moving %in% c(3,4) ~ 2,
+      unp_moving %in% c(5,6) ~ 3,
+      unp_moving %in% c(7,8) ~ 4,
+      unp_moving %in% c(9,10) ~ 5,
+      unp_moving > 10 ~ 6,
+    ),
+    unp_partners_mother = case_when(
+      unp_partners_mother == 0 ~ 0,
+      unp_partners_mother == 1 ~ 1,
+      unp_partners_mother == 2 ~ 2,
+      unp_partners_mother == 3 ~ 3,
+      unp_partners_mother == 4 ~ 4,
+      unp_partners_mother == 5 ~ 5,
+      unp_partners_mother >= 6 ~ 6,
+    ),
+    unp_partners_father = case_when(
+      unp_partners_father == 0 ~ 0,
+      unp_partners_father == 1 ~ 1,
+      unp_partners_father == 2 ~ 2,
+      unp_partners_father == 3 ~ 3,
+      unp_partners_father == 4 ~ 4,
+      unp_partners_father == 5 ~ 5,
+      unp_partners_father >= 6 ~ 6,
+    )
+  ) %>%
+  corr_table(
+    c.names = c("Perceived", "Monitoring", "Par. predictability", "Par. env.", "Phys. env.", "Safety", "Total", "CHAOS", "Env. change", 
+                "Residential changes", "Household size", "Partners mother", "Partners father", "Anxiety", "Depression"),
+    numbered = T,
+    flagged = T,
+    stats = ""
+  ) %>%
+  gt(groupname_col = "stat_group") %>%
+  cols_label(Variable = " ") %>% 
+  tab_spanner(c("QUIC"), columns = 3:8) %>% 
+  tab_spanner(c("CHAOS"), columns = 9) %>% 
+  tab_spanner(c("Objective"), columns = 11:14) %>% 
+  tab_style(
+    style = cell_borders("all", color = "white"),
+    locations = cells_body(columns = 1:16, rows = 2:16)
+  ) %>%
+  tab_options(
+    table.font.size = "10px",
+  )
+
+
+
+table_cor_all <- correlations %>%
+  select(unp_mean, quic_total_mean, chaos_mean, change_env_mean, 
+         violence_composite, poverty_composite, impuls_mean, 
+         fos_fo_mean, fos_pa_mean, fos_tp_mean, fos_fc_mean,
+         stai_s_mean, depression_mean,
+         rt_change, rt_neutral, rt_cued, rt_congruent, rt_incongruent, 
+         v, a, t0,
+         v_neutral, a_neutral, t0_neutral, v_cued, a_cued, t0_cued) %>%
+  mutate(unpredictability = across(c(unp_mean, quic_total_mean, chaos_mean, change_env_mean)) %>% rowMeans(., na.rm = T)) %>%
+  mutate(across(starts_with("rt_"), ~log(.))) %>%
+  select(unpredictability, everything(), -c(unp_mean, quic_total_mean, chaos_mean, change_env_mean)) %>%
+  corr_table(
+    c.names = c("Unpredictability", "Violence", "Poverty", "Impulsivity", "FOS - Composite", "FOS - planning", "FOS - time persp.", "FOS - Fut. conseq.", "Anxiety", "Depression",
+                "Change", "Cueing - neut.", "Cueing - cued", "Flanker - congr.", "Flanker - incongr.",
+                "Change - v", "Change - "),
+    numbered = T,
+    flagged = T,
+    stats = c("")
+  ) %>%
+  gt() %>%
+  tab_style(
+    style = cell_borders("all", color = "white"),
+    locations = cells_body(columns = 1:16, rows = 2:17)
+  ) %>%
+  tab_options(
+    table.font.size = "10px",
+  )
+
+
+
+table_cor_all <- correlations %>%
+  select(unp_mean, quic_total_mean, chaos_mean, change_env_mean, 
+         violence_composite, poverty_composite, 
+         rt_change, rt_neutral, rt_cued, rt_congruent, rt_incongruent, 
+         v, a, t0,
+         ) %>%
+  mutate(unpredictability = across(c(unp_mean, quic_total_mean, chaos_mean, change_env_mean)) %>% rowMeans(., na.rm = T)) %>%
+  mutate(across(starts_with("rt_"), ~log(.))) %>%
+  select(unpredictability, everything(), -c(unp_mean, quic_total_mean, chaos_mean, change_env_mean)) %>%
+  corr_table(
+    c.names = c("Unpredictability", "Violence", "Poverty", 
+                "Change", "Cueing - neut.", "Cueing - cued", "Flanker - congr.", "Flanker - incongr.",
+                "Change - v", "Change - a", "Change - t0"),
+    numbered = T,
+    flagged = T,
+    stats = c("")
+  ) %>%
+  gt() %>%
+  tab_style(
+    style = cell_borders("all", color = "white"),
+    locations = cells_body(columns = 1:12, rows = 2:11)
+  ) %>%
+  tab_options(
+    table.font.size = "10px",
+  )
+```
+
+
+```{r}
+table_cor_adversity
+```
+
+```{r}
+table_cor_unpredictability
+``` 
+
+```{r}
+table_cor_all
+1```

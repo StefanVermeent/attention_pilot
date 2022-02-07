@@ -63,7 +63,7 @@ exploratory_effects_unp_flanker <-
     pval_prop      = fct_reorder(pval_prop, mod_term_num))
 
 # Medians -----------------------------------------------------------------
-exploratory_effects_medians <- 
+e %>% xploratory_effects_medians <- 
   exploratory_effects_unp_flanker %>% 
   select(dv, dv_group, contains("_term"), contains("median_")) %>% 
   distinct()
