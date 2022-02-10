@@ -25,26 +25,97 @@
   <script>
 
   // Presentation of flanker stimuli
+
+// Specify all possible condition orders. Includes function to save counterbalancing code to data when test order is randomly chosen below.
+  var test_order1 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard,
+    flanker_break,
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced,
+    flanker_break,
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded
+  ]
+
+  var test_order2 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 2})}},
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard,
+    flanker_break,
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded,
+    flanker_break,
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced
+  ]
+
+  var test_order3 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 3})}},
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced,
+    flanker_break,
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard,
+    flanker_break,
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded
+  ]
+
+  var test_order4 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 4})}},
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced,
+    flanker_break,
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded,
+    flanker_break,
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard
+  ]
+
+  var test_order5 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 5})}},
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded,
+    flanker_break,
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard,
+    flanker_break,
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced
+  ]
+
+  var test_order6 = [
+    {type: 'call-function', func: function(){jsPsych.data.addProperties({counterbalance: 6})}},
+    flanker_practice_start_degraded, flanker_practice_procedure_degraded, flanker_start_degraded, flanker_test_procedure_degraded,
+    flanker_break,
+    flanker_practice_start_enhanced, flanker_practice_procedure_enhanced, flanker_start_enhanced, flanker_test_procedure_enhanced,
+    flanker_break,
+    flanker_practice_start_standard, flanker_practice_procedure_standard, flanker_start_standard, flanker_test_procedure_standard
+  ]
+
+  counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2, test_order3, test_order4, test_order5, test_order6], 1)[0] 
+
+  var full_experiment_timeline = [
+    fullscreenmode,
+    resize_screen, 
+    flanker_welcome,
+    flanker_instructions,
+    counterbalance,
+    flanker_end
+    ].flat(2)
+
+      
        
-  jsPsych.init({
-    timeline: [
-      resize_screen,
-      fullscreenmode,
-    //  flanker_welcome,
-     // flanker_instructions,
-    //  cursor_off,
-     // flanker_practice_start,
-     // flanker_practice_procedure,
-    //  flanker_practice_finish,
-      flanker_test_procedure, 
-    //  cursor_on,
-    //  flanker_end
-    ],
-    on_interaction_data_update: function(data) {
-      console.log(JSON.stringify(data))
-   },
-    on_finish: function() {
-    jsPsych.data.displayData();
+// Initialize the full experiment
+jsPsych.init({
+  timeline: full_experiment_timeline,
+  data: {
+    task_order: counterbalance 
+  },
+  on_finish: function() {
+    tasks_start           = jsPsych.startTime();
+    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
+    data_flanker_std      = jsPsych.data.get().filter({condition: 'standard'});
+    data_flanker_enh      = jsPsych.data.get().filter({condition: 'enhanced'});
+    data_flanker_deg      = jsPsych.data.get().filter({condition: 'degraded'});
+    data_resize           = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser         = jsPsych.data.getInteractionData().json();
+    window.parent.postMessage([
+      tasks_start, 
+      data_flanker_practice.json(),
+      data_flanker_std.json(), 
+      data_flanker_enh.json(),
+      data_flanker_deg.json(), 
+      data_resize.json(), 
+      tasks_browser], "https://survey.uu.nl/jfe/form/SV_2tsChV0wnzp0LH0");
   }
 });
 

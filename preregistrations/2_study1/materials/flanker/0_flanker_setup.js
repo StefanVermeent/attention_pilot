@@ -1,18 +1,19 @@
 //------------------------- Functions
 
 var set_arrows = function(angles, loc, flankers, target, size, padding){
-  
-  var html = "<style>" +
-             "divbottom{display:flex; justify-content: center; align-items: flex-end; height:600px}" +
-             "divtop{display:flex; justify-content: center; align-items: flex-start; height:600px}" +
-              "</style>";
-  
+
   if(loc == 'up') {
-    html += "<divtop>";
-  } else {
-    html += "<divbottom>";
+    html = "<div style = 'display: flex; justify-content: center; align-items: flex-start; height: 300px'>";
+  } 
+  
+  if(loc == 'down') {
+    html = "<div style = 'display: flex; justify-content: center; align-items: flex-end; height: 300px'>";
   }
   
+  if(loc == 'center') {
+    html = "<div style = 'display: flex; justify-content: center; align-items: flex-start; height:0px'>";
+  }
+        
   
     // Global frame
     html += "<div style = 'display: grid; width: 100%; font-size: " + size + "px; grid: 150px / auto auto auto auto auto;'>";
@@ -37,18 +38,15 @@ var set_arrows = function(angles, loc, flankers, target, size, padding){
     html += "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(" + angles[4] + "deg);'><span>" + flankers + "</span></div>";
     html += "</div>";
     html += "</div>";
+    html += "</div>";
  
    
    return html;
   
 };   
-  
-  
 
 
 
-
-  
   // Fixation cross
   var flanker_fixation = {
   type: 'html-keyboard-response',

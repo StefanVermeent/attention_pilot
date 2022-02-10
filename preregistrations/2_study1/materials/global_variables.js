@@ -13,6 +13,7 @@ var resize_screen = {
   "</p>",
   button_label: ['Continue'],
   pixels_per_unit: 100,
+  starting_size: 300,
   data: {
     task: 'resize',
 }};
