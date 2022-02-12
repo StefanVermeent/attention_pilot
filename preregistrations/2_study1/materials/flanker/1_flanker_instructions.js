@@ -318,7 +318,7 @@ var flanker_start_standard = {
   "<br><br><br><br><br>" +
   "From now on you will not receive feedback after each response.<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
-  "When you are ready to practice, press any key to start.",
+  "When you are ready, press any key to start.",
   data: {variable: "test_start_standard", task: "flanker_start_standard"}
 };
 
@@ -347,7 +347,7 @@ var flanker_start_enhanced = {
   "</div>" +
   "<br><br><br><br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
-  "When you are ready to practice, press any key to start.",
+  "When you are ready, press any key to start.",
   data: {variable: "test_start_enhanced", task: "flanker_start_enhanced"}
 };
 
@@ -355,7 +355,7 @@ var flanker_start_enhanced = {
 var flanker_practice_start_degraded = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-  "Now it's time for the real game.<br><br>" +
+  "You will now play <strong>VERSION 3</strong>.<br><br>" +
   "We will start with <strong>8 practice rounds</strong>." +
   "<div style = 'display: inline-grid; content-align: center; width: 200px; grid: 70px / auto;'>" +
   set_arrows(angles = [45,45,45,45,45], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
@@ -375,7 +375,7 @@ var flanker_start_degraded = {
   "</div>" + 
   "<br><br><br><br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
-  "When you are ready to practice, press any key to start.",
+  "When you are ready, press any key to start.",
   data: {variable: "test_start_degraded", task: "flanker_start_degraded"}
 };
 
