@@ -45,13 +45,18 @@ var cursor_on = {
 var feedback = {
   type: 'html-keyboard-response',
   stimulus: function(){
+    
+    var last_trial_rt = jsPsych.data.getLastTrialData().values()[0].rt;
     var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-    if(last_trial_correct){
-      return "<p style = 'color:green;font-size:40px'>Correct!</p>"; 
+    
+    if(last_trial_rt > 2000){
+      return "<p style = 'color:red;font-size:40px'>Too slow!</p>"; 
     } else {
-      return "<p style = 'color:red;font-size:40px'>Incorrect!</p>"; 
-    }
-  },
+      if(last_trial_correct){
+        return "<p style = 'color:green;font-size:40px'>Correct!</p>"; 
+      } else {
+        return "<p style = 'color:red;font-size:40px'>Incorrect!</p>"; 
+      }}},
   trial_duration: 2000,
   choices: jsPsych.NO_KEYS,
   data: {
