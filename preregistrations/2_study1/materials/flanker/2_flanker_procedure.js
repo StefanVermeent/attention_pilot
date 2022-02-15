@@ -8,7 +8,8 @@ var flanker_present_arrows = {
     location: jsPsych.timelineVariable('location'),
     congruency: jsPsych.timelineVariable('congruency'),
     correct_response: jsPsych.timelineVariable('correct_response'),
-    condition: jsPsych.timelineVariable('condition')
+    condition: jsPsych.timelineVariable('condition'),
+    stimulus: jsPsych.timelineVariable('condition'),
   },
   on_finish: function(data) { 
     if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
