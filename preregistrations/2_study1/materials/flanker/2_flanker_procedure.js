@@ -8,8 +8,7 @@ var flanker_present_arrows = {
     location: jsPsych.timelineVariable('location'),
     congruency: jsPsych.timelineVariable('congruency'),
     correct_response: jsPsych.timelineVariable('correct_response'),
-    condition: jsPsych.timelineVariable('condition'),
-    opacity: jsPsych.timelineVariable('opacity')
+    condition: jsPsych.timelineVariable('condition')
   },
   on_finish: function(data) { 
     if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
@@ -43,7 +42,7 @@ var flanker_test_procedure_standard = {
 {congruency: 'incongruent', condition: 'standard', location: 'down', correct_response: 'right', stim: set_arrows(angles = [0, 0, 0, 0, 0], loc = 'down', flankers = '&larr;', target = '&rarr;', size = 40, padding = 0)},
  ],
   randomize_order: true,
-  repetitions: 1
+  repetitions: 4
 };
 
 
@@ -68,7 +67,7 @@ var flanker_test_procedure_degraded = {
 {congruency: 'incongruent', condition: 'degraded', location: 'down', correct_response: 'right_down', stim: set_arrows(angles = [45, 45, 45, 45, 45], loc = 'down', flankers = '&larr;', target = '&rarr;',      size = 40, padding = 0)},
  ],
   randomize_order: true,
-  repetitions: 1
+  repetitions: 4
 };
 
 
@@ -93,5 +92,5 @@ var flanker_test_procedure_enhanced = {
 {congruency: 'incongruent', condition: 'enhanced', location: 'down', correct_response: 'right', stim: set_arrows(angles = [0, 0, 0, 0, 0], loc = 'down', flankers = '&larr;', target = '&rarr;', size = 60, padding = 20)},
   ],
   randomize_order: true,
-  repetitions: 1
+  repetitions: 4
 };
