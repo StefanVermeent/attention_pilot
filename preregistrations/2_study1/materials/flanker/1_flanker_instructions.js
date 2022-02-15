@@ -36,9 +36,9 @@ var flanker_instructions = {
   "<div style = 'float: left;'>If it points LEFT<br>press the LEFT (&larr;) key.</div>" +
   "<div style = 'float: right;'>If it points RIGHT<br>press the RIGHT (&rarr;) key.</div><br><br><br><br>" + 
   //Page 6
-  "In the example below, the middle arrow points left,<br>" +
-  "so you would press the left key.<br><br>" +
-  "<div style = 'margin: auto; padding: 5px 0px;'; font-size: 40px'>&rarr;&rarr;&larr;&rarr;&rarr;</div><br><br><br>",
+  "In the example below, the middle arrow points right,<br>" +
+  "so you would press the right key.<br><br>" +
+  "<div style = 'font-size: 30px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>", 
   //Page 7
    "<style>" +
    ".grid-container {" +
@@ -230,7 +230,8 @@ var flanker_practice = {
       task: 'flanker_practice',
       location: jsPsych.timelineVariable('location'),
       condition: jsPsych.timelineVariable('condition'),
-      congruency: jsPsych.timelineVariable('congruency')
+      congruency: jsPsych.timelineVariable('congruency'),
+      stimulus: jsPsych.timelineVariable('condition'),
     },
     on_finish: function(data) {
       if(jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response', true))) {
@@ -297,12 +298,13 @@ var flanker_practice_procedure_degraded = {
 var flanker_practice_start_standard = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-  "You will now play <strong>VERSION 1</strong>.<br><br>" +
-  "We will start with <strong>8 practice rounds</strong>." +
+  "You will now play the version shown below:<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 200px; grid: 70px / auto;'>" +
   set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
   "</div>" +
   "<br><br><br><br><br>" +
+  "We will start with <strong>8 practice rounds</strong>." +
+  "<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready to practice, press any key to start.",
   data: {variable: "test_practice_start_standard", task: "flanker_start_standard"}
@@ -326,12 +328,13 @@ var flanker_start_standard = {
 var flanker_practice_start_enhanced = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-  "You will now play <strong>VERSION 2</strong>.<br><br>" +
-  "We will start with <strong>8 practice rounds</strong>." +
+  "You will now play the version shown below:<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 500px; grid: 70px / auto;'>" +
   set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 60, padding = 20) +
   "</div>" + 
   "<br><br><br><br><br>" +
+  "We will start with <strong>8 practice rounds</strong>." +
+  "<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready to practice, press any key to start.",
   data: {variable: "test_practice_start_enhanced", task: "flanker_start_degraded"}
@@ -340,12 +343,12 @@ var flanker_practice_start_enhanced = {
 var flanker_start_enhanced = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-   "You will now play <strong>VERSION 2</strong>.<br><br>" +
-  "We will start with <strong>8 practice rounds</strong>." +
+  "Now it's time for the real game.<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 500px; grid: 70px / auto;'>" +
   set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 60, padding = 20) +
   "</div>" +
   "<br><br><br><br><br>" +
+  "From now on you will not receive feedback after each response.<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready, press any key to start.",
   data: {variable: "test_start_enhanced", task: "flanker_start_enhanced"}
@@ -355,12 +358,13 @@ var flanker_start_enhanced = {
 var flanker_practice_start_degraded = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
-  "You will now play <strong>VERSION 3</strong>.<br><br>" +
-  "We will start with <strong>8 practice rounds</strong>." +
+   "You will now play the version shown below:<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 200px; grid: 70px / auto;'>" +
   set_arrows(angles = [45,45,45,45,45], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
   "</div>" + 
   "<br><br><br><br><br>" +
+  "We will start with <strong>8 practice rounds</strong>." +
+  "<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready to practice, press any key to start.",
   data: {variable: "test_practice_start_degraded", task: "flanker_start_degraded"}
@@ -374,6 +378,7 @@ var flanker_start_degraded = {
   set_arrows(angles = [45,45,45,45,45], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
   "</div>" + 
   "<br><br><br><br><br>" +
+  "From now on you will not receive feedback after each response.<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready, press any key to start.",
   data: {variable: "test_start_degraded", task: "flanker_start_degraded"}
