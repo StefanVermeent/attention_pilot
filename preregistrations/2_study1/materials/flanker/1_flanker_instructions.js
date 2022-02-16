@@ -55,9 +55,8 @@ var flanker_instructions = {
      "</style>" +
      
      "<p style = 'text-align: center;'>" +
-     "You will play three versions of this game.<br>" + 
-     "In each version, the arrows look a bit different:</p><br><br>" +
-     "<div class='grid-container'>" +
+     "You will play three versions of this game. In each version, the arrows look a bit different:</p><br>" +
+     "<div class='grid-container' style = 'height:400px';>" +
 
      "<div class='grid-item'><strong>VERSION 1</strong></div>" +
      "<div class='grid-item'>" +
@@ -79,7 +78,7 @@ var flanker_instructions = {
      "</div>" +
      "</div></div> " +
    
-     "<div class='grid-item'><br><br><br><strong>VERSION 2</strong></div>  " +
+     "<div class='grid-item'><strong>VERSION 2</strong></div>  " +
      "<div class='grid-item'>" +
      "<div style = 'display: inline-grid; width: 500px; font-size: 60px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0px;'>" +
@@ -98,9 +97,9 @@ var flanker_instructions = {
      "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "</div></div>" +
-     "</div>" +
+   //  "</div>" +
  
-     "<div class='grid-item'><br><br><br><strong>VERSION 3</strong></div>" +
+     "<div class='grid-item'><strong>VERSION 3</strong></div>" +
      "<div class='grid-item'>" +
   	 "<div style = 'display: inline-grid; content-align: center; width: 200px; font-size: 40px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
@@ -120,7 +119,8 @@ var flanker_instructions = {
      "</div>" +
      "</div></div> " +
      "</div>  " +
-     "</div>",
+     "</div>" +
+     "<br>",
      //Page 8
    "<style>" +
    ".grid-container {" +
@@ -138,9 +138,8 @@ var flanker_instructions = {
      
      "<p style = 'text-align: center;'>" +
      "Even though the versions look different, your job is the same each time:<br>" + 
-     "Decide which way the <strong>middle arrow</strong> is pointing." +
-     "</p><br><br>" +
-     "<div class='grid-container'>" +
+     "Decide which way the <strong>middle arrow</strong> is pointing.</p><br><br>" +
+          "<div class='grid-container' style = 'height:400px';>" +
 
      "<div class='grid-item'><strong>VERSION 1</strong></div>" +
      "<div class='grid-item'>" +
@@ -162,7 +161,7 @@ var flanker_instructions = {
      "</div>" +
      "</div></div> " +
    
-     "<div class='grid-item'><br><br><br><strong>VERSION 2</strong></div>  " +
+     "<div class='grid-item'><strong>VERSION 2</strong></div>  " +
      "<div class='grid-item'>" +
      "<div style = 'display: inline-grid; width: 500px; font-size: 60px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0px;'>" +
@@ -181,9 +180,9 @@ var flanker_instructions = {
      "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "</div></div>" +
-     "</div>" +
+   //  "</div>" +
  
-     "<div class='grid-item'><br><br><br><strong>VERSION 3</strong></div>" +
+     "<div class='grid-item'><strong>VERSION 3</strong></div>" +
      "<div class='grid-item'>" +
   	 "<div style = 'display: inline-grid; content-align: center; width: 200px; font-size: 40px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
@@ -203,7 +202,8 @@ var flanker_instructions = {
      "</div>" +
      "</div></div> " +
      "</div>  " +
-     "</div>",
+     "</div>" +
+     "<br>",
      
      
      "<p style = 'text-align: center;'>" + 
