@@ -7,9 +7,12 @@ var resize_screen = {
   type: 'resize',
   item_width: 3 + 3/8,
   item_height: 2 + 1/8,
-  prompt: "<p>For this part of the experiment to work correctly, it is important that we know the resolution of your screen.<br><br>" +
-  "Please pick up a creditcard (or another card of similar size) and hold it up to the screen.<br>" +
-  "Then, click and drag the lower right corner of the box until the box is the same size as the credit card when held up to the screen." +
+  prompt: "<p>Before we start, it is important that you follow the steps below carefully.<br>" +
+  "If you skip these steps, the experiment might not work correctly on your computer.<br><br>" +
+  "1. Pick up a creditcard (or another card of similar size) and hold it against your computer screen.<br>" +
+  "2. Next, click on the lower right corner of the blue box. You can now make it bigger or smaller.<br>" +
+  "3. Change the size of the box until it is <strong> just as big as your creditcard</strong>.<br><br><br>" +
+  "Click 'continue' when you are done" +
   "</p>",
   button_label: ['Continue'],
   pixels_per_unit: 100,
