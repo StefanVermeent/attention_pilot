@@ -55,6 +55,21 @@ spec_curves <-
         mod_sig = ifelse(mod_sig != "non", "pos-sig", mod_sig)
       )
     
+    regression_lines <- 
+      primary_effects_change %>% 
+      filter(dv_group == x, mod_term_group %in% c("Main Effect", "Intercept")) %>% 
+      select(mod_term_group, mod_std_coefficient, spec_number, dv) %>%
+      pivot_wider(names_from = 'mod_term_group', values_from = 'mod_std_coefficient') %>%
+      left_join(
+        primary_effects_change %>%
+          select(spec_number, mod_sig, mod_term_group) %>%
+          filter(mod_term_group == "Main Effect")
+      ) %>%
+      mutate(
+        #  dv = factor(dv, levels = c("Drift rate (v)", "Boundary separation (a)", "Non-decision time (t0)")),
+        mod_sig = ifelse(mod_sig != "non", "pos-sig", mod_sig)
+      )
+    
     medians <- 
       primary_effects_change %>% 
       filter(dv_group == x, mod_term_group == "Main Effect") %>% 
@@ -73,6 +88,38 @@ spec_curves <-
       ungroup()
     
     # Plots
+    main_effects <- 
+      regression_lines %>%
+      ggplot() +
+      geom_abline(aes(intercept = Intercept, slope = `Main Effect`, group = spec_number,color = mod_sig)) +
+      xlim(0.5,4) +
+      ylim(-0.25, 0.25) +
+      scale_x_continuous(" ", breaks = c(1,2), labels = c("Neutral","Cued"), expand = c(.1,.1)) +
+      scale_color_manual(values = pval_colors) +
+      scale_fill_manual("Violence Exposure:", labels = c("Low", "High"),values = c("white","gray60")) +
+      scale_alpha_manual(values = c(.1,.8)) +
+      facet_wrap(~dv, scales = "free_y") +
+      guides(alpha = "none", color = "none") +
+      theme(
+        axis.line.y          = element_line(),
+        axis.text.y          = element_text(),
+        axis.ticks.y         = element_line(),
+        axis.line.x          = element_line(),
+        axis.ticks.x         = element_line(),
+        axis.text.x          = element_text(size = rel(.75)),
+        legend.background    = element_blank(), 
+        legend.direction     = "vertical",
+        legend.key.width     = unit(.5,"lines"),
+        legend.key.height    = unit(.5,"lines"),
+        legend.key.size      = unit(.5,units = "points"), 
+        legend.text          = element_text(size = rel(.6),margin = margin(0,0,0,0)),
+        legend.margin        = margin(0,0,0,0),
+        legend.position      = c(.25,.2),
+        legend.title.align   = .5,
+        legend.title         = element_text(size = rel(.75),margin = margin(0,0,0,0)),
+        strip.text           = element_text(size = rel(1), hjust = 0.5, face = "bold", margin = margin(0,0,1,0,"lines")) 
+      ) 
+    
     eff_curve <- 
       effs %>% 
       ggplot(aes(y = mod_std_coefficient, x = spec_rank, color = mod_sig)) +
@@ -202,6 +249,7 @@ spec_curves <-
       )
     
     list(
+      main_effects = main_effects,
       eff_curve    = eff_curve,
       sample_sizes = sample_sizes,
       spec_grid    = spec_grid,
@@ -234,20 +282,20 @@ primary_change_fig2 <-
   ggdraw() +
   draw_plot(
     plot_grid(
+      spec_curves[[2]]$main_effects,
       spec_curves[[2]]$eff_curve,
       spec_curves[[2]]$p_curve,
       spec_curves[[2]]$sample_sizes,
     #  spec_curves[[2]]$spec_grid,
-    nrow  =3,
+    nrow  =4,
     ncol  = 1, 
     align = "v", 
     axis  = "lr",
-    rel_heights = c(.4, .3, .3)
-    # rel_heights = c(.25, .15, .2, .4)
+    rel_heights = c(.3,.3,.2,.2)
     ) +
-      draw_plot_label(c("a","b","c"), x = 1, y = c(.95, .55, .25), size = 10, vjust = 1, hjust = 1), 
+      draw_plot_label(c("a","b","c","d"), x = 1, y = c(.95, .75, .6, .4), size = 10, vjust = 1, hjust = 1), 
     x = 0, y = 0, width = 1, height = .95
-  ) #+ 
+  )
  # draw_label("Change Detection: Violence exposure main effect on DDM parameters", x = 0.6, y = .975, hjust = .5, vjust = 0, fontface = "bold")
 
 

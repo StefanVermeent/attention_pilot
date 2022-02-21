@@ -62,13 +62,13 @@ primary_effects_flanker <-
     pval_prop      = fct_reorder(pval_prop, mod_term_num))
 
 # Medians -----------------------------------------------------------------
-primary_effects_medians <- 
+primary_effects_medians_flanker <- 
   primary_effects_flanker %>% 
   select(dv, dv_group, contains("_term"), contains("median_")) %>% 
   distinct()
 
 # Interaction Data --------------------------------------------------------
-primary_effects_points <- 
+primary_effects_points_flanker <- 
   primary_vio_flanker %>% 
   map_df(function(multiverse){
         specs <- multiverse$specifications %>% 
@@ -89,7 +89,7 @@ primary_effects_points <-
   )
 
 # Simple Slopes -----------------------------------------------------------
-primary_simple_slopes <- 
+primary_simple_slopes_flanker <- 
   primary_vio_flanker %>% 
   map_df(function(multiverse){
     
@@ -126,8 +126,8 @@ primary_simple_slopes <-
 # save data ---------------------------------------------------------------
 save(
   primary_effects_flanker,
-  primary_effects_medians,
-  primary_effects_points,
-  primary_simple_slopes,
+  primary_effects_medians_flanker,
+  primary_effects_points_flanker,
+  primary_simple_slopes_flanker,
   file = here("data", "1_pilot", "1_primary_analyses", "flanker", "3_multiverse_extracted_effects.Rdata")
 )

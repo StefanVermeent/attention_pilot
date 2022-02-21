@@ -4,11 +4,11 @@ library(tidyverse)
 library(here)
 
 # Load results
-load(here("data", "1_pilot", "3_exploratory_analyses", "4_impulsivity", "2_multiverse_results.Rdata"))
+load(here("data", "1_pilot", "1_primary_analyses", "attention_cueing", "2_multiverse_results.Rdata"))
 
 # Raw effect size data ----------------------------------------------------
-exploratory_effects_flanker <- 
-  exploratory_impuls_flanker %>% 
+primary_effects_cueing <- 
+  primary_vio_cueing %>% 
   map_df(function(multiverse){
     
     # All parameters from multiverse
@@ -62,13 +62,13 @@ exploratory_effects_flanker <-
     pval_prop      = fct_reorder(pval_prop, mod_term_num))
 
 # Medians -----------------------------------------------------------------
-primary_effects_medians <- 
+primary_effects_medians_cueing <- 
   primary_effects_cueing %>% 
   select(dv, dv_group, contains("_term"), contains("median_")) %>% 
   distinct()
 
 # Interaction Data --------------------------------------------------------
-primary_effects_points <- 
+primary_effects_points_cueing <- 
   primary_vio_cueing %>% 
   map_df(function(multiverse){
         specs <- multiverse$specifications %>% 
@@ -89,7 +89,7 @@ primary_effects_points <-
   )
 
 # Simple Slopes -----------------------------------------------------------
-primary_simple_slopes <- 
+primary_simple_slopes_cueing <- 
   primary_vio_cueing %>% 
   map_df(function(multiverse){
         specs <- 
@@ -118,8 +118,8 @@ primary_simple_slopes <-
 # save data ---------------------------------------------------------------
 save(
   primary_effects_cueing,
-  primary_effects_medians,
-  primary_effects_points,
-  primary_simple_slopes,
-  file = here("data", "1_pilot", "multiverse", "attention_cueing", "3_multiverse_extracted_effects.Rdata")
+  primary_effects_medians_cueing,
+  primary_effects_points_cueing,
+  primary_simple_slopes_cueing,
+  file = here("data", "1_pilot", "1_primary_analyses", "attention_cueing", "3_multiverse_extracted_effects.Rdata")
 )

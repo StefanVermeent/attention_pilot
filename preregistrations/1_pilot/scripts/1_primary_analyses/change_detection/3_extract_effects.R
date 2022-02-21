@@ -1,9 +1,10 @@
 # Setup -------------------------------------------------------------------
 # Libraries
 library(tidyverse)
+library(here)
 
 # Load results
-load(here("data", "1_pilot", "multiverse", "change_detection", "multiverse_results.Rdata"))
+load(here("data", "1_pilot", "1_primary_analyses", "change_detection", "multiverse_results.Rdata"))
 
 
 # Raw effect size data ----------------------------------------------------
@@ -53,12 +54,12 @@ primary_effects_change <-
         )
 
 # Medians -----------------------------------------------------------------
-primary_effects_medians <- 
+primary_effects_medians_change <- 
   primary_effects_change %>% 
   select(dv, dv_group, contains("_term"), contains("median_")) %>% 
   distinct()
 
-primary_effects_points <- 
+primary_effects_points_change <- 
   primary_vio_change %>% 
   map_df(function(multiverse){
     specs <- multiverse$specifications %>% 
@@ -77,7 +78,7 @@ primary_effects_points <-
 # save data ---------------------------------------------------------------
 save(
   primary_effects_change,
-  primary_effects_medians,
-  primary_effects_points,
-  file = here("data", "1_pilot", "multiverse", "change_detection", "3_multiverse_extracted_effects.Rdata")
+  primary_effects_medians_change,
+  primary_effects_points_change,
+  file = here("data", "1_pilot", "1_primary_analyses", "change_detection", "3_multiverse_extracted_effects.Rdata")
 )
