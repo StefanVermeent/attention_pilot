@@ -1,0 +1,402 @@
+---
+bibliography: references.bib
+csl: apa.csl
+output:
+  officedown::rdocx_document:
+    page_margins:
+      bottom: 1
+      footer: 0
+      gutter: 0
+      header: 0.5
+      left: 1
+      right: 1
+      top: 1
+    plots:
+      align: center
+      caption:
+        pre: 'Figure '
+        sep: '. '
+        style: Image Caption
+    reference_docx: reference-doc.docx
+    tables:
+      caption:
+        pre: 'Table '
+        sep: '. '
+        style: Table Caption
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+
+# Load libraries
+library(tidyverse)
+library(officer)
+library(flextable)
+library(here)
+library(pwr)
+
+
+# set up chunk options
+knitr::opts_chunk$set(
+  echo = F,
+  fig.align = "center",
+  fig.pos = "!t", 
+  out.extra = "",
+  fig.show = "asis",
+  message = FALSE,
+  warning = FALSE
+)
+
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
+
+load(here("data", "2_study1", "0_self_report_raw.Rdata"))
+```
+
+In line with previous theorizing [e.g., @ellis_2020; @frankenhuis_2016; @frankenhuis_2013], we initially expected people from adversity to perform better on cognitive tasks that require a broad attention scope in order to successfully detect peripheral and subtly changing information, and to perform worse on tasks requiring ignoring interfering information (see the [preregistration](https://github.com/StefanVermeent/attention_project/blob/Preregistration/preregistrations/1_pilot/preregistration.docx) of the first pilot study). However, the data pointed in the opposite direction. A Drift Diffusion analysis showed that participants with more violence exposure were generally slower to process information and orient their attention across all three tasks. At the same time, they were faster to narrow down their attention to the central target on the Flanker Task, thereby effectively limiting the amount of flanker interference that they were exposed to. 
+
+The findings in the pilot study suggest that deficit patterns that are typically found on tasks like the Flanker might not reflect problems in attention control and inhibition, even suggesting the opposite. Instead, people from adversity might process information more slowly, leading to longer reaction times. The goal of the current study is to replicate the attention findings on the Flanker Task, and to better understand the apparent information processing deficits. Participants completed three versions of the Flanker Task: the standard version, a version with enhanced visual information, and a version with degraded visual information. 
+
+Figure \@ref(fig:figure1) shows two possible data patterns that we might expect across the different versions at different levels of violence exposure. First, if the findings reflect a general information processing deficit, we would expect performance to be lower for people with more violence exposure across all versions of the task. Alternatively, lower performance on the standard version might reflect an adaptive trade-off towards more robust cognitive functioning, even in the face of noise or perturbations [@giudice_2018]. In that case, we would expect more stable performance for people with more violence exposure. As a result, they might not benefit as much from enhanced visual information, but at the same time might be able to better maintain performance when presented with degraded information.
+
+```{r figure1, fig.width=6, dpi=600, fig.id = "figure1", fig.cap.style = "Image Caption", fig.cap="Overview of the three Flanker conditions and predicted patterns of results under different cognitive mechanisms. A: The different Flanker Task conditions. The standard version is a typical implementation of the Flanker stimuli. The enhanced version improves the quality of information by increasing stimulus size by 12.5% and including padding (5 pixels) between the arrows. The degraded cognition reduces the quality of information by rotating all arrows at a 45° angle. B: Two potential patterns of the effect of condition on people’s perceptual input as a function of violence exposure. Left plot: Under the deficit model, we would expect people with more violence exposure to perform worse across all three conditions. Right plot: If performance is traded off against higher robustness of the cognitive system for people with more violence exposure (Del Giudice & Crespi, 2018), we would expect cognitive performance in this group to be relatively stable across conditions, perhaps even outperforming people with less violence exposure in the degraded condition."}
+knitr::include_graphics("Fig1.png", error = F)
+```
+
+## Primary aims {#primary}
+
+1. Investigate the robustness of the primary DDM findings in the pilot study by pooling the pilot data and the data of the standard condition in the current study. 
+2. Extent the findings of the pilot study by investigating how Flanker performance changes across conditions as a function of violence exposure. We expect that the manipulations primarily have an effect on perceptual input *p*, thereby also affecting overall reaction times.
+
+# Secondary  {#secondary}
+
+1. Investigate the extent to which the [factor structure](#efa) of the unpredictability measures corresponds to the one found in the pilot study. Secondly, investigate how different dimensions of unpredictability relate to Flanker performance.
+2) Explore the role of state anxiety, hunger, and sleep deprivation as potential moderators of the relationship between adversity and attention performance. Anxiety might enhance attention performance by making participants more vigilant. Conversely, hunger and sleep deprivation could have a negative effect on performance.
+3) Explore bivariate correlations between measures of adversity, attention, and measures of temporal orientation (i.e., impulsivity and future orientation).
+4) Explore the correlation between current depressive symptoms and retrospective measures of adversity, which might reflect a negativity bias in recalling past events driven by current depressive symptoms [@nivison_2021].
+
+# Methods {#methods}
+
+## Participants {#participants}
+
+Participants were 550 US-based individuals between the ages of 18 and 30 (*M* = `r #TBD`, *SD* = `r #TBD`). We decided for this age cut-off to reduce the effect of healthy age-related cognitive decline on speeded cognitive tasks, which becomes more pronounced after age 30 [@salthouse_2010]. Recruitment took place through Prolific Academic [www.prolific.co]. The sample was balanced to include roughly 50% males. Participants were eligible for the study if they were from the United States and if they spoke fluent English. Finally, we used the MacArthur's ladder for perceived social-economic status (SES) as used in Prolific's pre-screening battery to ensure that 50% of the sample perceived their current SES to be low (a score of 4 or below).
+
+We conducted a power simulation using the *faux* package in R [@debruine_2021] to determine the optimal number of participants to include (more information including all simulation code on [Github](https://github.com/StefanVermeent/attention_project/tree/preregistration1/preregistrations/1_pilot/scripts)). Assuming an effect size of $\beta$ = 0.1 and a DDM parameter recovery accuracy of *r* = .85, we estimated that we would need 500 participants to achieve at least 80% power. We sampled a total of 550 participants to account for necessary exclusions (based on our experiences in the pilot study). 
+
+## Exclusion criteria {#exclusion}
+
+We applied several exclusion criteria prior to analyzing the data. First, we excluded participants who did not complete the full study and those who did not complete all three Flanker conditions (*N* = `r #TBD `). Second, we analyzed responses to the attention checks and reversed coded items in the questionnaire part of the experiment. We excluded participants if they missed both attention check items or if they had suspicious response patterns (e.g., consistently endorsing high response options even when some items were reverse coded) (*N* = `r #TBD `). Third, we excluded participants whose screen height was < 700 pixels, or whose screen height was bigger than their screen width (suggesting that they did not complete the experiment on a laptop or desktop pc). Finally, we screened participants' accuracy on the Flanker task within each condition. Using a binomial distribution, we calculated that if a participant would be purely guessing on each trial, they would have a probability of 97.5% of obtaining an overall accuracy of 59.4%. Therefore, we excluded participant's data on a particular condition if their accuracy on that condition was below 60%.
+
+In addition, we screened the reaction times on the Flanker Task. For the Drift Diffusion analyses, it is important that each response is generated by a process of active information accumulation (i.e., a diffusion process, as opposed to guessing). To this end, trials with reaction times < 250 ms or > 3500 ms [@ratcliff_2015] were excluded from the analyses (*N* = `r #TBD `). Participants with more than 10 removed trials were excluded from the analyses (N = `r #TBD `). Finally, we logged whether participants exited full-screen mode and/or engaged with other browser tabs (i.e., blur events) at any point during the Flanker Task. We excluded participants for whom blur events occurred while a Flanker block was ongoing (but not while reading instructions or taking breaks in between conditions). Full-screen exits were included in the [multiverse analysis](#multiverse_plan).
+
+## Measures {#measures}
+
+Based on participant feedback in the pilot study, we changed (the wording of) a number of questionnaire items in order to make them more inclusive. We added an item asking about the participant's family composition. In addition, all mentions of 'parent(s)' across questionnaires were changed to 'caregiver(s)' (e.g., "At least one of my caregivers had punishments that were unpredictable"). We also added a question asking about the participant's exact family composition.
+
+### Flanker Task {#flanker}
+
+The Flanker Task is commonly used as a measure of selective attention and response inhibition [@eriksen_1974]. On each trial of a typical Flanker Task, participants are presented with a set of five arrows pointing either left or right. Their job is to indicate the direction of the central arrow while ignoring the flanking arrows to the left and right (see Figure \@ref(fig:figure1)b). On 50% of the trials, the flanking arrows point in the same direction as the central arrow (i.e., congruent trials), and on the other 50% of the trials they point in the opposite direction (i.e., incongruent trials). 
+
+The Flanker Task was programmed in JsPsych version 3.6.1 [@deLeeuw_2015]. We programmed three conditions of the Flanker Task (See Figure \@ref(fig:figure1). In the standard condition, the arrows were 40 pixels in size (0.4 inches) and had zero padding between them. In the 'enhanced' condition, the aim was to increase the quality of visual information provided by the arrows. To this end, we increased the arrow size by 12.5% to 45 pixels (0.45 inches), and increased padding between the arrows to 5 pixels. This increased the width of the Flanker display by 50% with respect to the standard display. In the 'degraded' condition, the aim was to decrease the quality of visual information provided by the arrows. The arrow size and padding were the same as in the standard version, but both flanking and target arrows were rotated 45$^\circ$. Therefore, they provided more noisy information about their horizontal direction. We had no strong *a priori* expectations about how performance of adversity-exposed people might be affected by specific types of stimulus degradation (e.g., arrow rotation, decreasing stimulus contrast). 
+
+Participants completed each condition of the Flanker Task separately in different blocks. The presentation order of the conditions was randomized. Each condition consisted of 64 trials. For the degraded condition, participants completed four repetitions of all parameter combinations: Arrow location (top vs. bottom) X central arrow direction (left-up vs. left-down vs. right-up, vs right-down) X congruency: (congruent vs. incongruent). For the standard and enhanced condition, participants completed eight repetitions of all parameter combinations to match the number of trials in the degraded condition: Arrow location (top vs. bottom) X central arrow direction (left-up vs. left-down vs. right-up, vs right-down) X congruency: (congruent vs. incongruent). Across all three conditions, the arrows were randomly presented in the top-half or bottom-half of the screen at 200 pixels (2 inches) from the center of the screen. This was done to prevent participants from rigidly fixating on the center of the screen, which might reduce the interfering effect of the flanking arrows. Each trial started with a fixation cross presented at the center of the screen. After a delay of 1000ms, the arrows are presented either in the top- or bottom-half of the screen. 
+
+Prior to each block, participants performed eight practice trials of the current condition. During practice, participants received performance feedback after each trial (either "Correct!" printed in green, "Incorrect!" printed in red, or "Too slow!" printed in red if their response latency exceeded 2000 ms). After completing the practice trials, participants completed each block with the opportunity to take a break in between. At the onset of each block, participants were told what the current condition was. No performance feedback of any kind was provided during the test blocks. The main performance measures were RTs and accuracy for each condition.
+
+
+### Current state {#state}
+
+We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S; @spielberger_1999]. The STAI-S contains 20 short items measuring current anxiety (e.g., "I feel tense"; See [Table S1](#appendix) for an overview of all items). Participants rated each item on a scale of 1 (not at all) to 4 (very much so). An overall state anxiety variable was computed by averaging across the 20 unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). We computed an overall sleep deprivation composite by standardizing and averaging across the two unweighted sleep-related items (*M* = `r #TBD `, *SD* = `r #TBD `).
+
+### Violence exposure {#violence}
+
+Violence exposure was measured using the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] and two items assessing exposure to physical fights before age 13. The NVS contains seven items measuring perceived exposure to violence before age 13 (e.g., "Crime was common in the neighborhood where I grew up"; See [Table S2](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true). The physical fighting items assessed the number of times participants witnessed fights before age 13: "Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?" Answers to both items ranged from 1 (0 times) to 8 (12 or more times). The items of the NVS were averaged together (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). Similarly, we averaged the scores on the two fighting items together. Finally, we created a perceived violence exposure composite by standardizing the NVS and fighting composites and calculating an unweighted average (*r* = `r #TBD `).
+
+### Unpredictability {#unpred}
+
+Perceived unpredictability before age 13 was measured using two different scales: A scale of perceived childhood unpredictability used in previous research [@mittal_2015; @young_2018], an adaptation of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019], and two scales measuring change in the family and social environment. The perceived childhood unpredictability scale contained eight items measuring perceived unpredictability before age 13 (e.g, "My family life was generally inconsistent and unpredictable from day-to-day"; See [Table S3](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true).
+
+We included the QUIC because it captures several dimensions of environmental and household unpredictability. The QUIC distinguishes between items capturing more short-term unpredictability (i.e., on the level of seconds to minutes) and more long-term unpredictability (i.e., on the level of days to months). The scale of perceived childhood unpredictability combines items on different time scales. Some items measure unpredictability on a relatively short-term scale (e.g., item 1) while other items measure unpredictability on a long-term scale (e.g., item 3). Unpredictability on different time scales might have different effects on the development of specific attention styles. 
+
+We included all five scales of the QUIC: 1) Parental monitoring and involvement, 2) Parental predictability, 3) Parental environment, 4) Physical environment, and 3) Safety and security (See [Table S4](#appendix) for an overview of all items). The items of the Parental environment subscale deviated most from the original. 
+
+We made three general changes to the original scale as described in @glynn_2019. First, we adapted all items to refer to experiences before age 13. This was done to reduce cognitive load from having to go back-and-forth between different time scales. Second, most items were rated on a scale of 1 (never true) to 5 (very often true) instead of the original yes/no answer format. An exception was made for four items of the parental environment scale which asked for more specific experiences (e.g., "I experienced changes in my custody arrangement"; see [Table S4](#appendix)). For these items, we adopted a response scale with the options "never", "only once", "a couple times", "several times", "many times". Third, quantifiers such as "frequently", "often", and "There was a period of time when [...]" were dropped to better match the response scale. We excluded the item "My parents got divorced" because it did not fit the response format and was captured by one of the items of the perceived unpredictability scale.
+
+We assessed household chaos before age 13 using an adaptation of the Confusion, Hubbub, and Order Scale [CHAOS; @matheny_1995]. The CHAOS consists of 15 items measuring the level of chaos in the household (e.g., "No matter how hard we tried, we always seemed to be running late"; See [Table S5](#appendix) for an overview of all items). We made two changes to the original scale as described in @matheny_1995. First, all items were converted from the present tense to the past tense, and were endorsed as applying to participants' lives before age 13. Second, all items were rated on a scale of 1 (never true) to 5 (very often true) instead of the original yes/no answer format. This change was also implemented to reduce cognitive load by keeping the answer options the same between scales.
+
+In addition, we measured the stability of the family and social environment. On a scale of 1 (the same all the time) to 5 (constant and rapid changes), participants indicated how often the following aspects of their family and social environment changed before age 13: 1) economic status, 2) family environment, 3) childhood neighborhood environment, and 4) childhood school environment. Finally, we included four objective measures of unpredictability before age 13. Participants provided answers to the following items in an open response format: 1) "How often did you move?"; 2) "How many adults lived in your home on average?"; 3) "Think about the caregiver who had the most romantic partners before you were age 13. How many romantic partners did this person have?".
+
+We computed four main unpredictability variables to be able to assess how they would relate to the dependent variables as well as to each other: 1) *unpredictability~perceived~*: containing all items of the perceived unpredictability scale and the QUIC, given their close conceptual overlap (*M* = `r #TBD`, *SD* = `r #TBD`, $\alpha$ = `r #TBD` *r* = `r #TBD` between the two scales); 2) *unpredictability~CHAOS~*: containing the items of the CHAOS (*M* = `r #TBD`, *SD* = = `r #TBD`, $\alpha$ = `r #TBD`); 3) *unpredictability~subjective~*: containing all items of the perceived unpredictability scale, the QUIC and the CHAOS (*M* = `r #TBD`, *SD* = `r #TBD`, $\alpha$ = `r #TBD`); 4) *unpredictability~objective*: containing the items assessing the stability of the family- and social environment , as well as the three objective measures (*M* = `r #TBD`, *SD* = `r #TBD`, $\alpha$ = `r #TBD`).
+
+We computed several unweighted unpredictability variables to be able to assess how they would relate to the dependent variables as well as to each other: 1) overall perceived unpredictability variable containing all eight items of the perceived unpredictability scale (*M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `); 2) an overall QUIC variable by averaging all 37 items (*M* = `r #TBD `, *SD* = = `r #TBD `, $\alpha$ = `r #TBD `); 3) five separate QUIC subscales by averaging their sub-items (Parental monitoring and involvement: *M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `; Parental predictability: *M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `; Parental environment: *M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `; Physical environment: *M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `; Safety and security: *M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). See also [below](#efa) for details on a factor analysis based on the individual items across scales.
+
+### Poverty exposure {#ses}
+
+Participants' perceived level of resource scarcity before age 13 was measured using seven items (e.g., "Your family had enough money to afford the kind of home you all needed"; See [Table S6](#appendix) for an overview of all items). Participants rated each item on a scale from 1 (never true) to 5 (very often true). Scores for the first six items were reverse coded so that higher scores indicated more perceived resource scarcity. The items were averaged together to create an unweighted composite scale (*M* = `r  #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+In addition, we measured several indicators of objective SES before age 13. First, participants separately indicated the highest education of their two primary caregivers (if applicable) on an 8-point scale: 'some high school', 'GED', 'high school diploma', 'some college but no college degree', associate's  degree', 'bachelor's degree', 'master's  degree', or 'doctoral or lab degree'. The caregivers' education level were averaged to create an overall unweighted parental education composite (*M* = `r  #TBD `, *SD* = `r  #TBD `). Participants also indicated their family's household income before age 13 on a 6-point scale: 'less than \$ 25k/year', '\$25k - \$49k/year, '\$50 - \$74k/year', '\$75 - \$99k/year', '\$100 - \$149k/year', 'more than \$150k/year'. Scores were reverse coded so that higher scores indicated higher levels of poverty.
+
+We created a composite score of poverty exposure before age 13 by averaging together the standardized scores of perceived level of resource scarcity, overall caregiver education, and household income.
+
+### Impulsivity {#impulsivity}
+
+We assessed impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale (BIS; short form; [@patton_1995; @spinella_2007]). The Motor Impulsivity subscale of the BIS consists of five items (e.g., "I do things without thinking"; See [Table S7](#appendix) for an overview of all items). We did not include the Non-planning subscale because it overlapped substantially with the Future Orientation Scale described below. In addition, we did not include the Attention impulsivity subscale because it included items which we deemed to be mostly irrelevant for our target population (e.g., "I 'squirm' at plays or lectures"). We changed the original 4-point rating scale (rarely/never to almost always) to a 5-point rating scale ranging from 1 (never true) to 5 (very often true). An overall impulsivity variable was computed by averaging the five unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). 
+
+### Future Orientation {#future_orientation}
+
+We assessed future orientation with an adapted version of the Future Orientation Scale [FOS; @steinberg_2009]. The original scale consists of 15 sets of opposing items separated by "BUT" (e.g., "Some people like to plan things out one step at a time BUT other people like to jump right into things without planning them out beforehand"). Participants first choose the item that best matches their general preference, and then indicate whether the statement is "really true" or "somewhat true". We adapted this format in a couple of ways. First, we converted the two statements per item to a single statement by picking the statements in the original right-hand column. Second, we adapted the 15 statements from a third-person to a first-person format. These changes were made in an attempt to reduce the cognitive load of the items. We worried that people with less formal education or who were sitting in a noisier environment would struggle with the length of the original items. 
+
+In addition, item 8 of the original scale ("[...] other people would rather spend their money right away on something fun than save it for a rainy day") was changed to "I'd rather spend money right away than save it for a rainy day" (i.e., dropping the phrase "on something fun") to make it more general with regard to the thing that money is spent on. For people from adversity, spending money right now instead of saving it for the future might often be born out of necessity (e.g., having just enough money for food and shelter; being in debt) instead of a failure to delay gratification. See [Table S8](#appendix) for an overview of all adapted items). Finally, the rating scale was adapted from the original 4-point scale (ranging from really true for the left-hand statement to really true for the right-hand statement) to a 5-point scale ranging from 1 (never true) to 5 (very often true).
+
+An overall future orientation variable was computed by averaging the 15 unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). In addition, we calculated subscales for "Planning ahead" (items 1, 6, 7, 12 and 13), "Time perspective" (items 2, 5, 8, 11 and 14) and "Anticipation of future consequences" (items 3, 4, 9, 10 and 15).
+
+### Depressive symptoms {#depression}
+
+We assessed depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD; @radloff_1977]. The scale consists of 20 items (e.g., "I do things without thinking"; See [Table S9](#appendix) for an overview of all items). Participants rate each item on a scale of 1 (rarely or none of the time (less than 1 day)) to 4 (most or all of the time (5-7 days)). An overall depression variable was computed by averaging the 20 unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+## Procedure {#procedure}
+
+The experiment was completed on the participants' own laptop or desktop computer and consisted of five parts (in fixed order): consent, Flanker Task, questionnaire battery, brief demographics form, and final checks including the opportunity to give feedback on the experiment. Participants were allowed to refrain from answering any of the questionnaire items, but were prompted with a warning once when moving to the next page if one of the items was not answered (which they could ignore).
+
+After providing consent, participants started with the Flanker Task. They were asked to complete the Flanker Task in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. The order of the tasks was counterbalanced between subjects. At the onset of the first task, the experiment went into full-screen mode to limit distractions from other programs or browser tabs. The size of the task stimuli was controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. Participants were asked to hold a creditcard (or similarly sized card) up against the screen and to increase the size of a blue rectangle on the screen until it matched the size of the creditcard. The stimulus display for each task was resized so that 100 pixels corresponded to 1 inch for all participants. After successfully resizing the screen, participants completed all three tasks. During the task, the cursor was hidden from the screen to minimize distractions. Code for the three tasks can be found on [Github](https://github.com/StefanVermeent/attention_project/tree/main/tasks). 
+
+After completing the Flanker task, participants completed the questionnaire battery in the following fixed order: 1) Current state (state anxiety and separate questions relating to specific states); 2) Childhood adversity (perceived unpredictability, perceived socio-economic status, exposure to violence and physical fights, household chaos); 3) Temporal orientation (impulsivity, future orientation); 4) Depressive symptoms.
+
+Finally, the demographics questions asked about the participant's age, weight, height, physical activity, sex at birth, gender, ethnicity, social class (current and during childhood), education level (one's own as well as caregivers' education level), occupation, and household income (current and during childhood). At the end of the experiment, we asked participants if they ever got up or were interrupted during the study, and how noisy their environment was during the attention tasks. 
+
+The full experiment was expected to take approximately 30 minutes. Participants were paid £3.75 upon completing the full experiment.
+
+## Data analysis {#analysis_plan}
+
+### DDM estimation {#ddm_plan}
+
+The DDM analysis of the Flanker task was done using an adaptation of the standard DDM that was specifically developed to account for Flanker data: The Shrinking Spotlight model [SSP; @grange_2016; @white_2018a; @white_2018b; @white_2011]. The standard DDM model assumes a stable drift rate over time within trials (i.e., the rate of information accumulation does not change over time). However, on the Flanker Task, reaction time patterns indicate that Flankers exert their strongest effect on performance early on the trial, which then decreases over time. This effectively means that the drift rate increases over time, thus violating the basic assumption of the standard DDM [@white_2011]. The SSP explains this pattern by assuming that attention on the Flanker task works like a spotlight that starts relatively broad, and then gradually narrows down to the central arrow over time. Each arrow provides perceptual input *p*. If the flanking arrows are congruent, all flankers take a positive value for *p*; if the flanking arrows are incongruent, they take a negative value for *p* while the central arrow takes a positive value. The drift rate (*v*) at each time point is the function of the strength of perceptual input *p* multiplied by the amount of attention focused on each arrow. 
+
+Attention is operationalized by two additional parameters: the initial width of the attentional spotlight (*SD~a~*) and the shrinking rate of the attentional spotlight (*rd*). The attentional spotlight is assumed to be normally distributed over the arrows, with relatively more attention paid to the arrows at the center and relatively less attention paid to the peripheral arrows. Over time, this normal distribution (*SD~a~*) narrows down to the central arrow at the rate specified by *rd*, thereby gradually decreasing the interfering noise of the flankers and increasing the signal obtained from the target.
+
+Model fit was done using the *flankr* package in R [@grange_2016]. The SSP model was fit to the data of each individual participant in two steps. First, we looped over 50 different sets of starting parameters with a variance of 20 to find the best starting values for each participant. This was done to prevent accidentally converging on a suboptimal solution [@grange_2016]. On this first fitting step, 1000 trials were simulated on each iteration of the fit routine. Second, once the optimal set of starting values was found, we fitted the final model using the best starting values found in step 1 and simulating 50,000 trials on each iteration. 
+
+The model fit for all participants was assessed through QQ-plots comparing the empirical data with the model predictions following @grange_2020. Using each participant's best-fitting parameters (based on the final step above), we simulated RTs and accuracy for 50,000 trials of each congruency condition and each Flanker version. We calculated the total proportion accuracy and the 25th, 50th, and 75th quantile of the response time distribution (correct trials only) for both the simulated data and the empirical data. The outcomes for all participants were plotted against each other. The closer the points are to the diagonal line, the better the models fit the participants' data.
+
+For the analyses, we extracted the following parameters: 1) perceptual input (*p*); 2) boundary separation (*A*); 3) initial attention width (*sd~a~*); 4) Attention shrinking rate (*rd*); Interference effect (*sd~a~* / *rd*); 5) non-decision time (*t0*). 
+
+### Multiverse analysis {#multiverse_plan}
+
+Online experiments come at the trade-off of having less experimental control over the way in which participants complete the experiment and over the environment in which they do so. It is largely unclear which factors affect performance and how strong these effects are. We used multiverse analysis for all main analysis to assess the robustness of the results against various environmental factors and situations during the experiment. We identified seven arbitrary analytic decisions, including or excluding 1) participants who had a recaptcha score below 0.5 (possibly indicating bots); 2) participants who did not rescale their screen at the start of the experiment (see the [procedure section](#procedure)); 3) participants who did not enter fullscreen mode prior to starting the Flanker Task; 4) participants who exited fullscreen mode at any point during the Flanker Task; 5) participants who indicated high levels of noise in their environment; indicated extreme interruptions during the experiment; 7) trials with RTs > 3.2 SD (within subjects). 
+
+For each analysis, we report the median $\beta$, 95% confidence intervals, proportion of *p*-values < .05 across all analytic decisions. For the primary analyses, we used a bootstrapping technique to compute overall *p*-values to assess whether the obtained median $\beta$ is significantly larger than zero [@simonsohn_2020].
+
+### Primary analyses {#primary_plan}
+
+To address the [first primary aim](#primary) we pooled the Flanker data of the pilot study and the current study, using the standard condition of the current study. For the pooled effect of violence exposure on each of the DDM parameters, we ran initial linear models including violence exposure, study number (pilot study vs. current study, sum-coded) and their interaction as an independent variable to check whether the two studies were sufficiently similar. If the interaction was non-significant, we ran a final model version including only violence exposure to estimate the main effect. The pooled effect of violence exposure on raw RTs was assessed through linear mixed models including a random intercept per participant. Initial models included violence exposure, congruency (congruent vs. incongruent, sum-coded as -1 and 1), the violence exposure X congruency interaction, study number (pilot study vs current study, sum-coded), and the violence_exposure X study number interaction. We estimated a final model without study number if the violence exposure X study number interaction was non-significant.
+
+To address the [second primary aim](#primary), we analyzed the effect of violence exposure and Flanker condition type (within the current study only) on Flanker performance using linear mixed effects models with a random intercept per participant. The main dependent variables were mean RTs and the SSP parameters: Perceptual input (*p*), boundary separation (*a*), non-decision time (*t0*), initial attention width (*sd~a~*), attention shrinking rate (*rd*) and the interference effect (*SD~a~*/*rd*). For each outcome measure, we ran two separate models: One comparing the standard condition with the enhanced condition, and one comparing the standard condition with the degraded condition. In both models, condition was dummy-coded using the standard condition as the reference group.
+
+
+### Factor structure of unpredictability {#efa}
+
+The included unpredictability measures contain items that vary in timescale, ranging from features of the childhood environment that might have been unpredictable on a daily basis (e.g., "things were often chaotic in my house") to sources of unpredictability that typically unfold on a timescale of weeks or months (e.g., "At least one of my parents changed jobs frequently"). Since attention is involved in information processing on a timescale of seconds to minutes, we expect that attention styles should be more strongly related to sources of unpredictability that unfold on a similar timescale. However, it is unclear whether current retrospective measures of unpredictability are able to differentiate between different timescales. In addition, it might be the case that items of unpredictability on a longer timescale are good proxies for unpredictability on a a more daily timescale. We conducted an exploratory factor analysis (EFA) to address these issues.
+
+EFA was used to find common latent factors underlying the unpredictability/household chaos measures: perceived unpredictability, QUIC, and CHAOS, stability of the family and social environment, and the objective measures of unpredictability. The number of factors to retain was based on parallel analysis, with the added requirement that each factor was composed of at least five items that had their strongest loading on that particular factor. Factor loadings above 0.32 were considered meaningful (Tabachnick & Fidell, 2014). We anticipated the factors to be correlated substantially, and therefore planned to use oblimin rotation.
+
+
+\pagebreak
+
+# References {#refs}
+
+<div id="refs"></div>
+
+\pagebreak
+
+# Appendix
+
+Go back to [Methods](#state)
+
+```{r supp_table1, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the State-Trait Anxiety Inventory (state subscale; STAI-S)"}
+codebook %>%
+  filter(str_detect(Variable, "stai_s(\\d\\d|_\\d\\d)")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,10,11,15,16,19,20), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#violence)
+
+```{r tableS2, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the Neighborhood Violence Scale (NVS)"}
+codebook %>%
+  filter(str_detect(Variable, "violence\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,3), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS3, tab.id="tableS3", tab.cap.style="Table Caption", tab.cap="Items of the Perceived Childhood Unpredictability scale"}
+codebook %>%
+  filter(str_detect(Variable, "unp\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS4, tab.id="tableS4", tab.cap.style="Table Caption", tab.cap="Items of the Questionnaire of Unpredictability in Childhood (QUIC)"}
+codebook %>%
+  filter(str_detect(Variable, "quic\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Parental monitoring and involvement") %>%
+  add_row(.after = 10, "Label" = "Parental predictability") %>%
+  add_row(.after = 23, "Label" = "Parental environment") %>%
+  add_row(.after = 30, "Label" = "Physical environment") %>%
+  add_row(.after = 38, "Label" = "Safety and security") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,3,4,5,6,7,8,9,11,14,16,22,32), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,11,24)) %>%
+  bold(i = c(1,11,24, 31, 39)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#chaos)
+
+```{r tableS5, tab.id="tableS5", tab.cap.style="Table Caption", tab.cap="Items of the Confusion, Hubbub, and Order Scale (CHAOS)"}
+codebook %>%
+  filter(str_detect(Variable, "chaos\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,7,12,14,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#ses)
+
+```{r tableS6, tab.id="tableS6", tab.cap.style="Table Caption", tab.cap="Items of the perceived resource scarcity scale"}
+codebook %>%
+  filter(str_detect(Variable, "ses\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(!Item %in% c(7), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak 
+
+Go back to [Methods](#impulsivity)
+
+```{r tableS7, tab.id="tableS7", tab.cap.style="Table Caption", tab.cap="Items of the Barrett Impulsivity Scale (BIS) - motor impulsivity subscale"}
+codebook %>%
+  filter(str_detect(Variable, "impuls\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#future_orientation)
+
+```{r tableS8, tab.id="tableS8", tab.cap.style="Table Caption", tab.cap="Items of the Future Orientation Scale (FOS)"}
+codebook %>%
+  filter(str_detect(Variable, "fos\\d\\d")) %>% 
+  slice(match(c("fos01","fos06","fos07","fos12","fos13", "fos02","fos05","fos08","fos11","fos14", "fos03","fos04","fos09","fos10","fos15"), Variable)) %>%
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Planning ahead") %>%
+  add_row(.after = 6, "Label" = "Time perspective") %>%
+  add_row(.after = 12, "Label" = "Anticipation of future consequences") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,9,11,12,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,7,13)) %>%
+  bold(i = c(1,7,13)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#depression)
+
+```{r tableS9, tab.id="tableS9", tab.cap.style="Table Caption", tab.cap="Items of the Epidemiologic Studies Depression Scale (CESD)"}
+codebook %>%
+  filter(str_detect(Variable, "depression\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(4,8,12,16), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
