@@ -62,39 +62,39 @@ var flanker_instructions = {
      "<div class='grid-item'>" +
      "<div style = 'display: inline-grid; width: 200px; height: 80px; font-size: 40px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 0px 0px;'>" +
-     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&larr;</span></div>" +
-     "</div>" +
-     "<div style = 'margin: auto; padding: 0px 0px;'>" +
-     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 0px 0px;'>" +
      "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 0px 0px;'>" +
-     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 0px 0px;'>" +
-     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
+     "</div>" +
+     "<div style = 'margin: auto; padding: 0px 0px;'>" +
+     "<div style = 'margin: auto; padding: 0px 0px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "</div></div> " +
    
      "<div class='grid-item'><strong>VERSION 2</strong></div>  " +
      "<div class='grid-item'>" +
-     "<div style = 'display: inline-grid; width: 500px; font-size: 60px; grid: 70px / auto auto auto auto auto;'>" +
+     "<div style = 'display: inline-grid; width: 280px; font-size: 45px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0px;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "</div></div>" +
    //  "</div>" +
@@ -103,19 +103,19 @@ var flanker_instructions = {
      "<div class='grid-item'>" +
   	 "<div style = 'display: inline-grid; content-align: center; width: 200px; font-size: 40px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&larr;</span></div>" +
-     "</div>" +
-     "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
      "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&rarr;</span></div>" +
+     "</div>" +
+     "<div style = 'margin: auto; padding: 5px 0;'>" +
+     "<div style = 'margin: auto; padding: 5px 0px; transform: rotate(45deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "</div></div> " +
      "</div>  " +
@@ -163,21 +163,21 @@ var flanker_instructions = {
    
      "<div class='grid-item'><strong>VERSION 2</strong></div>  " +
      "<div class='grid-item'>" +
-     "<div style = 'display: inline-grid; width: 500px; font-size: 60px; grid: 70px / auto auto auto auto auto;'>" +
+     "<div style = 'display: inline-grid; width: 280px; font-size: 45px; grid: 70px / auto auto auto auto auto;'>" +
      "<div style = 'margin: auto; padding: 5px 0px;'>" +
      "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&rarr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "<div style = 'margin: auto; padding: 5px 0;'>" +
-     "<div style = 'margin: auto; padding: 5px 20px; transform: rotate(0deg);'><span>&larr;</span></div>" +
+     "<div style = 'margin: auto; padding: 5px 5px; transform: rotate(0deg);'><span>&larr;</span></div>" +
      "</div>" +
      "</div></div>" +
    //  "</div>" +
