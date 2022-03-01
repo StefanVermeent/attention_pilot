@@ -329,23 +329,23 @@ var flanker_practice_start_enhanced = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "You will now play the version shown below:<br><br>" +
-  "<div style = 'display: inline-grid; content-align: center; width: 500px; grid: 70px / auto;'>" +
-  set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 60, padding = 20) +
+  "<div style = 'display: inline-grid; content-align: center; width: 280px; grid: 70px / auto;'>" +
+  set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 45, padding = 5) +
   "</div>" + 
   "<br><br><br><br><br>" +
   "We will start with <strong>8 practice rounds</strong>." +
   "<br><br>" +
   "Place your fingers on the left (&larr;) and right (&rarr;) arrow keys.<br><br>" +
   "When you are ready to practice, press any key to start.",
-  data: {variable: "test_practice_start_enhanced", task: "flanker_start_degraded"}
+  data: {variable: "test_practice_start_enhanced", task: "flanker_start_enhanced"}
 };
 
 var flanker_start_enhanced = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Now it's time for the real game.<br><br>" +
-  "<div style = 'display: inline-grid; content-align: center; width: 500px; grid: 70px / auto;'>" +
-  set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 60, padding = 20) +
+  "<div style = 'display: inline-grid; content-align: center; width: 280px; grid: 70px / auto;'>" +
+  set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 45, padding = 5) +
   "</div>" +
   "<br><br><br><br><br>" +
   "From now on you will not receive feedback after each response.<br><br>" +
