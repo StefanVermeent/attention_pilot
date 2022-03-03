@@ -1,61 +1,121 @@
 library(glue)
 
-flanker_trials <- expand_grid(
-  target      = c('left_up', 'left_down', 'right_up', 'right_down'),
-  outer_left  = c('left_up', 'left_down', 'right_up', 'right_down'),
-  inner_left  = c('left_up', 'left_down', 'right_up', 'right_down'),
-  inner_right = c('left_up', 'left_down', 'right_up', 'right_down'),
-  outer_right = c('left_up', 'left_down', 'right_up', 'right_down'),
-  angle       = c(45, 60, 65, 70, 80),
-  location    = c('up', 'down'),
-  congruency   = c("congruent", "incongruent")
-) %>%
-  # Filter 
-  filter(
-    congruency == "congruent" & str_detect(target, "left") & str_detect(outer_left, "left") & str_detect(inner_left, "left") & str_detect(inner_right, "left") & str_detect(outer_right, "left") |
-    congruency == "congruent" & str_detect(target, "right") & str_detect(outer_left, "right") & str_detect(inner_left, "right") & str_detect(inner_right, "right") & str_detect(outer_right, "right") |
-    congruency == "incongruent" & str_detect(target, "left") & str_detect(outer_left, "right") & str_detect(inner_left, "right") & str_detect(inner_right, "right") & str_detect(outer_right, "right") |
-    congruency == "incongruent" & str_detect(target, "right") & str_detect(outer_left, "left") & str_detect(inner_left, "left") & str_detect(inner_right, "left") & str_detect(outer_right, "left")
+
+
+# Standard Condition ------------------------------------------------------
+
+standard_condition <- 
+  expand_grid(
+    condition  = "standard",
+    size       = 40,
+    padding    = 0,
+    target     = c("left", "right", "left", "right"),
+    congruency = c("congruent", "incongruent"),
+    location   = c("up", "down")
   ) %>%
-  mutate(trial = 1:n()) %>%
-  select(trial, congruency, angle, outer_left, inner_left, target, inner_right, outer_right) %>%
-  pivot_longer(c(outer_left, inner_left, target, inner_right, outer_right), names_to = "arrow", values_to = "direction") %>%
-  separate(direction, c("horizontal", "vertical"), "_") %>%
   mutate(
-    rotation   = case_when(
-      horizontal == "left"  & vertical == "down" ~ 360 - angle,
-      horizontal == "left"  & vertical == "up"   ~ angle,
-      horizontal == "right" & vertical == "down" ~ angle,
-      horizontal == "right" & vertical == "up"   ~ 360 - angle,
+    outer_left = case_when(
+      target == "left" & congruency == "congruent" ~ "left",
+      target == "left" & congruency == "incongruent" ~ "right",
+      target == "right" & congruency == "congruent" ~ "right",
+      target == "right" & congruency == "incongruent" ~ "left"
     ),
-    horizontal = ifelse(horizontal == "left", "&larr;", "&rarr;"),
-    horizontal = ifelse(arrow != "target", NA, horizontal)
+    inner_left = outer_left,
+    inner_right = outer_left,
+    outer_right = outer_left,
+    
+    correct_response   = ifelse(target == "left", "Arrowleft", "Arrowright"),
+    direction_target   = ifelse(target == 'left', "&larr;", "&rarr;"),
+    direction_flankers = ifelse(outer_left == 'left', "&larr;", "&rarr;")) %>%
+  select(congruency, condition, size, padding, location, outer_left, inner_left, target, inner_right, outer_right, correct_response, direction_target, direction_flankers)
+
+
+# Degraded Condition ------------------------------------------------------
+
+degraded_condition <- 
+  expand_grid(
+    condition  = "degraded",
+    size       = 40,
+    padding    = 0,
+    target     = c("left_up", "left_down", "right_up", "right_down"),
+    congruency = c("congruent", "incongruent"),
+    location   = c("up", "down")
   ) %>%
-  select(-vertical) %>%
-  group_by(trial) %>%
-  fill(horizontal, .direction = "downup") %>%
-  ungroup() %>%
-  pivot_wider(names_from = "arrow", values_from = "rotation") %>%
   mutate(
-    direction_flankers = case_when(
-      congruency == "congruent"                            ~ horizontal,
-      congruency == "incongruent" & horizontal == "&larr;" ~ "&rarr;",
-      congruency == "incongruent" & horizontal == "&rarr;" ~ "&larr;",
+    outer_left = case_when(
+      target == "left_up"    & congruency == "congruent" ~ "left_up",
+      target == "left_down"  & congruency == "congruent" ~ "left_down",
+      target == "right_up"   & congruency == "congruent" ~ "right_up",
+      target == "right_down" & congruency == "congruent" ~ "right_down",
+      
+      target == "left_up"    & congruency == "incongruent" ~ "right_down",
+      target == "left_down"  & congruency == "incongruent" ~ "right_up",
+      target == "right_up"   & congruency == "incongruent" ~ "left_down",
+      target == "right_down" & congruency == "incongruent" ~ "left_up",
     ),
+    inner_left = outer_left,
+    inner_right = outer_left,
+    outer_right = outer_left,
+    
+    correct_response   = ifelse(target %in% c("left_up", "left_down"), "Arrowleft", "Arrowright"),
+    direction_target   = ifelse(target %in% c("left_up", "left_down"), "&larr;", "&rarr;"),
+    direction_flankers = ifelse(outer_left %in% c("left_up", "left_down"), "&larr;", "&rarr;")
+  ) %>%
+  select(congruency, condition, size, padding, location, outer_left, inner_left, target, inner_right, outer_right, correct_response, direction_target, direction_flankers)
+
+
+# Enhanced Condition -------------------------------------------------------
+
+enhanced_condition <- 
+  expand_grid(
+    condition  = "enhanced",
+    size       = 80,
+    padding    = 20,
+    target     = c("left", "right", "left", "right"),
+    congruency = c("congruent", "incongruent"),
+    location   = c("up", "down")
+  ) %>%
+  mutate(
+    outer_left = case_when(
+      target == "left" & congruency == "congruent" ~ "left",
+      target == "left" & congruency == "incongruent" ~ "right",
+      target == "right" & congruency == "congruent" ~ "right",
+      target == "right" & congruency == "incongruent" ~ "left"
+    ),
+    inner_left = outer_left,
+    inner_right = outer_left,
+    outer_right = outer_left,
+    correct_response   = ifelse(target == "left", "Arrowleft", "Arrowright"),
+    direction_target   = ifelse(target == 'left', "&larr;", "&rarr;"),
+    direction_flankers = ifelse(outer_left == 'left', "&larr;", "&rarr;")) %>%
+  select(congruency, condition, size, padding, location, outer_left, inner_left, target, inner_right, outer_right, correct_response, direction_target, direction_flankers)
+
+
+
+flanker_trials <- bind_rows(standard_condition, degraded_condition, enhanced_condition) %>%
+  mutate(across(matches("^target$|(outer|inner)_(left|right)"),
+                ~case_when(
+                  . == "left" | . == "right" ~ "0",
+                  . == "left_up" | . == "right_down" ~ "45",
+                  . == "left_down" | . == "right_up" ~ "315",
+                  TRUE ~ .
+                )
+  )) %>%
+  mutate(
     angles_vtr         = str_c("[", str_c(outer_left, inner_left, target, inner_right, outer_right, sep = ", "), "]"),
-    correct_response   = str_c("correct_response: ", "'", ifelse(horizontal == "&larr;", "ArrowLeft", "ArrowRight"), "'"),
-    stim               = str_c("stim: set_arrows(angles = ", angles_vtr, ", loc = '", location, "', flankers = '", direction_flankers, "', target = '", horizontal, "')"),
+    correct_response   = str_c("correct_response: ", "'", correct_response, "'"),
+    stim               = str_c("stim: set_arrows(angles = ", angles_vtr, ", loc = '", location, "', flankers = '", direction_flankers, "', target = '", direction_target, "', size = ", size, ", padding = ", padding, ")"),
     location           = str_c("location: '", location, "'"),
     congruency         = str_c("congruency: '", congruency, "'"),
-    angle              = str_c("angle: '", angle, "'") 
+    condition          = str_c("condition: '", condition, "'") 
   ) %>%
-  select(trial, congruency, angle, location, correct_response, stim)
+  select(congruency, condition, location, correct_response, stim)
 
 
-trial_spec <- 
+trial_spec<- 
   glue_data(
     flanker_trials,
-    "{{{congruency}, {angle}, {location}, {correct_response}, {stim}}},"
+    "{{{congruency}, {condition}, {location}, {correct_response}, {stim}}},"
   ) 
 
 

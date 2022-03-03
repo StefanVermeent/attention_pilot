@@ -19,16 +19,16 @@ var flanker_instructions = {
   //Page 1
   "<p style = 'text-align: center;'>"+ 
   "In this game, you will see five arrows like the ones below.<br><br><br>" +
-  "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>" +
+  "<div style = 'font-size: 40px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>" +
   "Your job is to decide which way the <strong>middle arrow</strong> is pointing.<br><br><br>",
   //Page 2
   "<p style = 'text-align: center;'>"+ 
   "Sometimes, all the arrows point the <strong>same</strong> way.<br><br><br>" +
-  "<div style = 'font-size: 30px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>",
+  "<div style = 'font-size: 40px'>&larr;&larr;&larr;&larr;&larr;</div><br><br><br>",
   //Page 3
   "<p style = 'text-align: center;'>"+ 
   "Other times, the arrows point a <strong>different</strong> way.<br><br><br>" +
-  "<div style = 'font-size: 30px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>",  
+  "<div style = 'font-size: 40px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>",  
   //Page 4
   "<p style = 'text-align: center;'>"+ 
   "You should <i>always</i> look at the <strong>middle arrow</strong> and ignore the others.<br><br>" +
@@ -38,7 +38,7 @@ var flanker_instructions = {
   //Page 6
   "In the example below, the middle arrow points right,<br>" +
   "so you would press the right key.<br><br>" +
-  "<div style = 'font-size: 30px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>", 
+  "<div style = 'font-size: 40px'>&larr;&larr;&rarr;&larr;&larr;</div><br><br><br>", 
   //Page 7
    "<style>" +
    ".grid-container {" +
@@ -314,6 +314,7 @@ var flanker_start_standard = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Now it's time for the real game.<br><br>" +
+  "This round will take about two minutes.<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 200px; grid: 70px / auto;'>" +
   set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
   "</div>" +
@@ -344,6 +345,7 @@ var flanker_start_enhanced = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Now it's time for the real game.<br><br>" +
+  "This round will take about two minutes.<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 280px; grid: 70px / auto;'>" +
   set_arrows(angles = [0,0,0,0,0], loc = "center", flankers = "&larr;", target = "&rarr;", size = 45, padding = 5) +
   "</div>" +
@@ -374,6 +376,7 @@ var flanker_start_degraded = {
   type: "html-keyboard-response",
   stimulus: "<p style = 'text-align: center;'>" +
   "Now it's time for the real game.<br><br>" +
+  "This round will take about two minutes.<br><br>" +
   "<div style = 'display: inline-grid; content-align: center; width: 200px; grid: 70px / auto;'>" +
   set_arrows(angles = [45,45,45,45,45], loc = "center", flankers = "&larr;", target = "&rarr;", size = 40, padding = 0) +
   "</div>" + 
