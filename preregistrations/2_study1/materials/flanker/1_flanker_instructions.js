@@ -231,6 +231,7 @@ var flanker_practice = {
       location: jsPsych.timelineVariable('location'),
       condition: jsPsych.timelineVariable('condition'),
       congruency: jsPsych.timelineVariable('congruency'),
+      correct_response: jsPsych.timelineVariable('correct_response'),
       stimulus: jsPsych.timelineVariable('condition'),
     },
     on_finish: function(data) {
