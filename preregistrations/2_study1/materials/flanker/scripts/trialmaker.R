@@ -69,8 +69,8 @@ degraded_condition <-
 enhanced_condition <- 
   expand_grid(
     condition  = "enhanced",
-    size       = 80,
-    padding    = 20,
+    size       = 45,
+    padding    = 5,
     target     = c("left", "right", "left", "right"),
     congruency = c("congruent", "incongruent"),
     location   = c("up", "down")
@@ -112,7 +112,7 @@ flanker_trials <- bind_rows(standard_condition, degraded_condition, enhanced_con
   select(congruency, condition, location, correct_response, stim)
 
 
-trial_spec<- 
+trial_spec <- 
   glue_data(
     flanker_trials,
     "{{{congruency}, {condition}, {location}, {correct_response}, {stim}}},"
