@@ -82,50 +82,62 @@ vars01_meta <-
 vars02_state <- 
   study_data %>%
   select(id, starts_with('stai_s'), sd_stai, sick, meal, hungry, sleep, rested) %>%
+  # Recode variables
+  mutate(across(matches("stai_s(01|02|05|08|10|11|15|16|19|20)"), ~ 5 - .)) %>%
+  # Tidy labels
+  mutate(across(matches("stai_s"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+  mutate(across(matches("stai_s(01|02|05|08|10|11|15|16|19|20)"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>%
+  # Create composites
   mutate(
-    stai_s_mean = across(matches("stai_s")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1,1,1,-1,1,-1,-1,1,1,1,-1,-1,1,1,-1,-1), items = ., mini = 1, maxi = 4) %>% rowMeans(., na.rm = T),
+    stai_s_mean = across(matches("stai_s"))  %>% rowMeans(., na.rm = T),
     stai_s_missing = across(matches("stai_s")) %>% is.na() %>% rowSums(., na.rm = T)
   ) %>%
-  sjlabelled::var_labels(
-    stai_s_mean = "STAI - State"
+  var_labels(
+    stai_s_mean    = "Mean score of the State-Trait Anxiety Scale (state subscale). Higher scores mean more state anxiety.",
   )
+  
+  
 
 ## Unpredictability ----
 
 vars03_unp <- 
   study_data %>% 
   select(id,starts_with(c("chaos", "unp", "quic", "change_env")), sd_quic, sd_chaos) %>% 
-  # Fix data based on subject feedback
+  # Recode variables
+  mutate(across(matches("chaos(01|02|04|07|12|14|15)"), ~ 6 - .)) %>%
+  mutate(across(matches("quic(01|02|03|04|05|06|07|08|09|11|14|16|22|32)"), ~ 6 - .)) %>%
+  # Tidy labels
+  mutate(across(matches("(quic\\d\\d)|(chaos\\d\\d)|change_env(\\d\\d)|(unp\\d\\d)"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+  mutate(across(matches("(chaos(01|02|04|12|14|15))|(quic(01|02|03|04|05|06|07|08|09|11|14|16|22|32))"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>%
+  # Create composites
   mutate(
-    unp_mean                 = across(matches("unp\\d\\d")) %>% rowMeans(., na.rm = T),
-    unp_missing              = across(matches("unp\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),
+    pcunp_mean               = across(matches("unp\\d\\d")) %>% rowMeans(., na.rm = T),
+    pcunp_missing            = across(matches("unp\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),
     
     change_env_mean          = across(matches("change_env\\d\\d")) %>% rowMeans(., na.rm = T),
     change_env_missing       = across(matches("change_env\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    chaos_mean               = across(matches("chaos\\d\\d")) %>% psych::reverse.code(keys = c(-1,-1,1,-1,1,1,-1,1,1,1,1,-1,1,-1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    chaos_mean               = across(matches("chaos\\d\\d")) %>% rowMeans(., na.rm = T),
     chaos_missing            = across(matches("chaos\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_monitoring_mean     = across(matches("quic(01|02|03|04|05|06|07|08|09)")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_monitoring_mean     = across(matches("quic(01|02|03|04|05|06|07|08|09)")) %>%  rowMeans(., na.rm = T),
     quic_monitoring_missing  = across(matches("quic(01|02|03|04|05|06|07|08|09)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_par_predict_mean    = across(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")) %>% psych::reverse.code(keys = c(1,-1,1,1,-1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_par_predict_mean    = across(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")) %>% rowMeans(., na.rm = T),
     quic_par_predict_missing = across(matches("quic(10|11|12|13|14|15|16|17|18|19|20|21)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_par_env_mean        = across(matches("quic(22|23|24|25|26|27)")) %>% psych::reverse.code(keys = c(-1,1,1,1,1,1), items = ., mini = 0, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_par_env_mean        = across(matches("quic(22|23|24|25|26|27)")) %>% rowMeans(., na.rm = T),
     quic_par_env_missing     = across(matches("quic(22|23|24|25|26|27)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_phys_env_mean       = across(matches("quic(28|29|30|31|32|33|34)")) %>% psych::reverse.code(keys = c(1,1,1,1,-1,1,1), items = ., mini = 0, maxi = 5) %>% rowMeans(., na.rm = T),
+    quic_phys_env_mean       = across(matches("quic(28|29|30|31|32|33|34)")) %>% rowMeans(., na.rm = T),
     quic_phys_env_missing    = across(matches("quic(28|29|30|31|32|33|34)")) %>% is.na() %>% rowSums(., na.rm = T),
     
     quic_safety_mean         = across(matches("quic(35|36|37)")) %>% rowMeans(., na.rm = T),
     quic_safety_missing      = across(matches("quic(35|36|37)")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    quic_total_mean          = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
-      psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,1,-1,1,-1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,-1,1,1,1,1,1), items = ., mini = 1, maxi = 5) %>% 
-      rowMeans(., na.rm = T),
-    quic_total_missing       = across(matches("quic(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37)")) %>% 
-      is.na() %>% rowSums(., na.rm = T),   
+    quic_total_mean          = across(matches("quic\\d\\d")) %>% rowMeans(., na.rm = T),
+    quic_total_missing       = across(matches("quic\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T),   
+    
     unp_moving_binned = case_when(
       unp_moving == 0 ~ 0,
       unp_moving %in% c(1,2) ~ 1,
@@ -135,6 +147,14 @@ vars03_unp <-
       unp_moving %in% c(9,10) ~ 5,
       unp_moving > 10 ~ 6,
     ),
+    
+    # If no other adults besides caregivers lived in the household, set nr of male/female romantic partners to 0.
+    unp_female_fig_num       = ifelse(unp_other_adults == 2, 0, unp_female_fig_num),
+    unp_male_fig_num         = ifelse(unp_other_adults == 2, 0, unp_male_fig_num),
+    
+    unp_female_fig_rom       = ifelse(unp_female_fig_num == 0, 0, unp_female_fig_rom),
+    unp_male_fig_rom         = ifelse(unp_male_fig_num == 0, 0, unp_male_fig_rom),
+                                      
     unp_male_fig_rom_binned = case_when(
       unp_male_fig_rom == 0 ~ 0,
       unp_male_fig_rom == 1 ~ 1,
@@ -153,39 +173,90 @@ vars03_unp <-
       unp_female_fig_rom == 5 ~ 5,
       unp_female_fig_rom >= 6 ~ 6,
     ),
+                                      
+    unp_subj_comp             = across(c(pcunp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale,
+    unp_obj_comp              = across(c(unp_moving_binned, unp_male_fig_rom_binned, unp_female_fig_rom_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
+    unp_comp                  = across(c(unp_subj_comp, unp_obj_comp)) %>% rowMeans(., na.rm = T)
     
-    unpredictability_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale,
-    unpredictability_obj       = across(c(unp_moving_binned, unp_male_fig_rom_binned, unp_female_fig_rom_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
-    unpredictability_composite = across(c(unpredictability_subj, unpredictability_obj)) %>% rowMeans(., na.rm = T)
+    ) %>%
+  var_labels(
+    pcunp_mean                = "Mean score of the Perceived Unpredictability Scale. Higher scores mean more perceived unpredictability prior to age 13.",
+    chaos_mean                = "Mean score of the Confusion, Hubbub, and Order Scale (CHAOS; adapted). Higher scores mean more household chaos prior to age 13.",
+    quic_monitoring_mean      = "Mean scores of the 'Parental Monitoring and Involvement' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    quic_par_predict_mean     = "Mean scores of the 'Parental Predictability' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    quic_par_env_mean         = "Mean scores of the 'Parental Environment' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    quic_phys_env_mean        = "Mean scores of the 'Physical Environment' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    quic_safety_mean          = "Mean scores of the 'Safety and Security' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    quic_total_mean           = "Mean score of all items of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
+                                 Higher scores mean more unpredictability prior to age 13.",
+    unp_moving_binned         = "Binned score of the number of residential changes of participants prior to age 13.",
+    unp_male_fig_rom_binned   = "Binned score of the number of male romantic partners within the household prior to age 13.",
+    unp_female_fig_rom_binned = "Binned score of the number of female romantic partners within the household prior to age 13",
+    
+    unp_subj_comp             = "Subjective unpredictability: Composite measure consisting of the unweighted average of Perceived unpredictability scale (pcunp_mean), 
+                                 CHAOS scale (chaos-mean) and QUIC (quic_total_mean). After averaging, the composite was standardized. Higher scores mean more subjective unpredictability",
+    unp_obj_comp              = "Objective unpredictability: Composite measure consisting of the number of residential changes (binned; unp_moving_binned), 
+                                 number of male romantic figures in the household (binned; unp_male_fig_rom_binned), and number of female romantic partners in the household
+                                 (binned; unp_female_fig_rom_binned). All variables were standardized before calculating the unweighted average. Higher scores mean more
+                                 objective unpredictability",
+    unp_comp                  = "Unpredictability: Composite measure consisting of the unweighted average of objective unpredictability (unp_obj_comp) and subjective unpredictability
+                                 (unp_subj_comp)"
   ) %>%
-  sjlabelled::var_labels(
-    unp_mean              = "Perceived unpredictability",
-    change_env_mean       = "Environmental changes",
-    chaos_mean            = "CHAOS",
-    quic_monitoring_mean  = "QUIC - Parental monitoring",
-    quic_par_predict_mean = "QUIC - Parental predictability",
-    quic_par_env_mean     = "QUIC - Parental environment",
-    quic_phys_env_mean    = "QUIC - Physical environment",
-    quic_safety_mean      = "QUIC - Safety and security",
-    quic_total_mean       = "QUIC - Total"
+  val_labels(
+    unp_moving_binned         = c("0 times" = 0,
+                                  "1-2 times" = 1,
+                                  "3-4 times" = 2,
+                                  "5-6 times" = 3,
+                                  "7-8 times" = 4,
+                                  "9-10 times" = 5,
+                                  "> 10 times" = 6),
+    unp_male_fig_rom_binned   = c("0" = 0,
+                                  "1" = 1, 
+                                  "2" = 2,
+                                  "3" = 3,
+                                  "4" = 4,
+                                  "5" = 5,
+                                  ">6" = 6),
+    unp_female_fig_rom_binned = c("0" = 0,
+                                  "1" = 1, 
+                                  "2" = 2,
+                                  "3" = 3,
+                                  "4" = 4,
+                                  "5" = 5,
+                                  ">6" = 6)
   )
+
+
+
 
 ## Violence ----
 
 vars04_vio <- 
   study_data %>% 
   select(id,matches("violence\\d\\d"), aces_fighting1, aces_fighting2, sd_violence) %>% 
+  # Recode variables
+  mutate(across(matches("violence(01|03)"), ~ 6 - .)) %>%
+  # Tidy labels
+  mutate(across(matches("violence\\d\\d|aces_fighting\\d"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+  mutate(across(matches("violence(01|03)"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>%
+  # Create composites
   mutate(
-    violence_mean      = across(matches("violence\\d\\d$")) %>% psych::reverse.code(keys = c(-1,1,-1,1,1,1,1)) %>% rowMeans(., na.rm = T),
-    violence_missing   = across(matches("violence\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
+    nvs_mean           = across(matches("violence\\d\\d$")) %>% rowMeans(., na.rm = T),
+    nvs_missing        = across(matches("violence\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
     fighting_mean      = across(matches("aces_fighting\\d")) %>% rowMeans(., na.rm = T),
-    violence_composite = across(c(violence_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
+    vio_comp           = across(c(nvs_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
   ) %>%
-  sjlabelled::var_labels(
-    violence_mean = "NVS",
-    fighting_mean = "Fighting",
-    violence_composite = "Violence - Composite"
-  )
+  var_labels(
+    nvs_mean           = "Mean score of the Neighborhood Violence Scale (NVS). Higher scores mean more neighborhood violence prior to age 13.",
+    fighting_mean      = "Mean score of the two fighting exposure items. Higher scores mean more fighting exposure prior to age 13.",
+    vio_comp           = "Violence Exposure: Composite measure consisting of the unweighted average of the NVS (nvs_mean) and fighting average (fighting_mean).
+                          Both measures were standardized before averaging. Higher scores mean more violence exposure prior to age 13."
+  ) 
 
 
 ## SES ----
@@ -193,28 +264,31 @@ vars04_vio <-
 vars05_ses <- 
   study_data %>% 
   select(id,matches("ses\\d\\d"), dems_edu_first, dems_edu_second, dems_income_past, dems_class_past, sd_ses) %>% 
+  # Recode Variables
+  mutate(across(matches("ses07"), ~ 6 - .)) %>%
+  # Tidy labels
+  mutate(across(matches("(ses\\d\\d)"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+  mutate(across(matches("ses07"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>% 
   mutate(
-    dems_income_past      = ifelse(dems_income_past == 7, NA, dems_income_past),
-    ses_subj_mean         = across(matches("ses\\d\\d$")) %>% psych::reverse.code(keys = c(1,1,1,1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
-    ses_subj_missing      = across(matches("ses\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
-    ses_subj_mean_recoded = across(matches("ses\\d\\d$")) %>% psych::reverse.code(keys = c(-1,-1,-1,-1,-1,-1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    dems_income_past        = ifelse(dems_income_past == 7, NA, dems_income_past),
+    edu_caregivers          = across(c(dems_edu_first, dems_edu_second)) %>% rowMeans(., na.rm = T),
+    ) %>%
+  # Create Composites
+  mutate(
+    ses_subj_comp           = across(matches("ses\\d\\d$")) %>% rowMeans(., na.rm = T),
+    ses_subj_missing        = across(matches("ses\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    edu_caregivers_recoded   = across(c(dems_edu_first, dems_edu_second)) %>% psych::reverse.code(keys = c(-1,-1), items = ., mini = 1, maxi = 8) %>% rowMeans(., na.rm = TRUE),
-    income_past_recoded   = across(dems_income_past) %>% psych::reverse.code(keys = c(-1), items = ., mini = 1, maxi = 6) %>% mean(., na.rm = TRUE),
-    class_past_recoded    = across(dems_class_past) %>% psych::reverse.code(keys = c(-1), items = ., mini = 1, maxi = 5) %>% mean(., na.rm = TRUE),
+    ses_obj_comp            = across(c(edu_caregivers, dems_income_past, dems_class_past)) %>% scale %>% rowMeans(., na.rm = T),
+    ses_obj_missing         = across(c(edu_caregivers, dems_income_past, dems_class_past)) %>% is.na %>% rowSums(., na.rm = TRUE),
     
-    ses_obj_mean          = across(c(edu_caregivers_recoded, income_past_recoded, class_past_recoded)) %>% scale %>% rowMeans(., na.rm = TRUE),
-    ses_obj_missing       = across(c(edu_caregivers_recoded, income_past_recoded, class_past_recoded)) %>% is.na %>% rowSums(., na.rm = TRUE),
-    
-    poverty_composite     = across(c(ses_subj_mean_recoded, ses_obj_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
+    ses_comp                = across(c(ses_subj_comp, ses_obj_comp)) %>% scale %>% rowMeans(., na.rm = TRUE)
   ) %>%
-  sjlabelled::var_labels(
-    ses_subj_mean = "Perceived SES",
-    edu_caregivers_recoded = "Parental education - Recoded",
-    income_past_recoded = "Childhood income - Recoded",
-    class_past_recoded = "Childhood social class - Recoded",
-    ses_obj_mean  = "Objective SES - Composite",
-    poverty_composite = "Poverty - Composite"
+  var_labels(
+    ses_subj_comp             = "Subjective SES: Consisting of the average of the perceived SES items. Higher scores mean higher perceived SES, 
+                                 CHAOS scale (chaos-mean) and QUIC (quic_total_mean). After averaging, the composite was standardized. Higher scores mean more subjective unpredictability",
+    ses_obj_comp              = "Objective SES: Composite measure consisting of the average of the caregivers' education level (edu_caregivers), family income during childhood (dems_income_past),
+                                 and social class during childhood (dems_class_past). All variables were standardized before calculating the unweighted average. Higher scores mean higher objective SES.",
+    ses_comp                  = "SES composite: Composite measure consisting of the unweighted average of objective SES (ses_obj_comp) and subjective SES (ses_subj_comp)"
   )
 
 ## Temporal Orientation ----
@@ -223,44 +297,78 @@ vars05_ses <-
 vars06_temp_orientation <- 
   study_data %>% 
   select(id,starts_with(c('impuls', 'fos')), sd_fos) %>% 
+  # Recode variables
+  mutate(across(matches("fos(01|03|04|06|08|11|13|15)"), ~ 6 - .)) %>%
+  # Tidy labels
+  mutate(across(matches("(fos\\d\\d)|impuls\\d\\d"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+  mutate(across(matches("fos(01|03|04|06|08|11|13|15)"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>%
+  # Create composites
   mutate(
-    impuls_mean    = across(matches("impuls")) %>% rowMeans(., na.rm = T),
-    impuls_missing = across(matches("impuls")) %>% is.na() %>% rowSums(., na.rm = T),
+    impuls_mean         = across(matches("impuls")) %>% rowMeans(., na.rm = T),
+    impuls_missing      = across(matches("impuls")) %>% is.na() %>% rowSums(., na.rm = T),
     
-    #'Planning Ahead' Subscale
-    fos_pa_mean         = across(matches("fos(01|06|07|12|13)")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    fos_pa_mean         = across(matches("fos(01|06|07|12|13)")) %>% rowMeans(., na.rm = T),
     fos_pa_missing      = across(matches("fos(01|06|07|12|13)")) %>% is.na() %>% rowSums(., na.rm = T),
-    # 'Time Perspective' subscale
-    fos_tp_mean         = across(matches("fos(02|05|08|11|14)")) %>% psych::reverse.code(keys = c(1,1,-1,-1,1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
+    
+    fos_tp_mean         = across(matches("fos(02|05|08|11|14)")) %>% rowMeans(., na.rm = T),
     fos_tp_missing      = across(matches("fos(02|05|08|11|14)")) %>% is.na() %>% rowSums(., na.rm = T),
-    # 'Anticipation of Future Consequences' subscale
-    fos_fc_mean         = across(matches("fos(03|04|09|10|15)")) %>% psych::reverse.code(keys = c(-1,-1,1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
-    fos_fc_missing      = across(matches("fos(03|04|09|10|15)")) %>% is.na() %>% rowSums(., na.rm = T),
-    # 'Future Orientation Scale' (total of all items)
-    fos_fo_mean         = across(matches("fos(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15)")) %>% psych::reverse.code(keys = c(-1,1,-1,-1,1,-1,1,-1,1,1,-1,1,-1,1,-1), items = ., mini = 1, maxi = 5) %>% rowMeans(., na.rm = T),
-    fos_fo_missing      = across(matches("fos(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15)")) %>% is.na() %>% rowSums(., na.rm = T),  
-  ) %>%
-  sjlabelled::var_labels(
-    impuls_mean = "Impulsivity",
-    fos_pa_mean = "FOS - Planning ahead",
-    fos_tp_mean = "FOS - Time perspective",
-    fos_fc_mean = "FOS - Future consequences",
-    fos_fo_mean = "FOS - Total"
-  )
 
+    fos_fc_mean         = across(matches("fos(03|04|09|10|15)")) %>% rowMeans(., na.rm = T),
+    fos_fc_missing      = across(matches("fos(03|04|09|10|15)")) %>% is.na() %>% rowSums(., na.rm = T),
+    
+    fos_fo_mean         = across(matches("fos\\d\\d")) %>% rowMeans(., na.rm = T),
+    fos_fo_missing      = across(matches("fos\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T)
+    ) %>%
+  var_labels(
+    impuls_mean = "Mean score of the 'Motor Impulsivity' subscale of the Barrett Impulsivity Scale (BIS). Higher scores mean more impulsivity.",
+    fos_pa_mean = "Mean score of the 'Planning Ahead' subscale of the Future Orientation Scale (FOS). Higher scores mean more planning ahead.",
+    fos_tp_mean = "Mean score of the 'Time Perspective' subscale of the Future Orientation Scale (FOS). Higher scores mean longer time perspective.",
+    fos_fc_mean = "Mean score of the 'Anticipation of Future Consequences' subscale of the Future Orientation Scale (FOS). Higher scores mean more anticipation.",
+    fos_fo_mean = "Mean score of the total Future Orientation Scale (FOS). Higher scores mean more future orientation."
+  )
 
 ## Depressive Symptoms ----
 
-vars08_dep <- 
+vars07_dep <- 
   study_data %>% 
   select(id, matches("depression\\d\\d$"), sd_depression) %>% 
+    # Recode variables
+    mutate(across(matches("depression(04|08|12|16)"), ~ 5 - .)) %>%
+    # Tidy labels
+    mutate(across(matches("(depression\\d\\d)"), ~set_label(x = ., label = str_replace_all(get_label(.), "^.*-\\s", "")))) %>%
+    mutate(across(matches("depression(04|08|12|16)"), ~set_label(x = ., label = str_c(get_label(.), " (recoded)")))) %>%
+  # Create composites
   mutate(
-    depression_mean    = across(matches("depression\\d\\d$")) %>% psych::reverse.code(keys = c(1,1,1,-1,1,1,1,-1,1,1,1,-1,1,1,1,-1,1,1,1,1), items = ., mini = 1, maxi = 4) %>% rowMeans(., na.rm = T),
-    depression_missing = across(matches("depression\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T)
+    depression_mean = across(matches("depression\\d\\d")) %>% rowMeans(., na.rm = T),
+    impuls_missing  = across(matches("depression\\d\\d")) %>% is.na() %>% rowSums(., na.rm = T)
   ) %>%
-  sjlabelled::var_labels(
-    depression_mean = "CES-D"
+  var_labels(
+    depression_mean = "Mean score of the Center for Epidemiologic Studies Depression Scale (CESD). Higher scores mean more depressive symptoms."
   )
+
+## Family Composition ----
+
+vars08_fam_comp <- 
+  study_data %>%
+  select(id, starts_with("fam_composition")) %>%
+  mutate(across(contains("fam_composition"), as.character)) %>%
+  pivot_longer(-id, names_to = "option", values_to = "value") %>%
+  drop_na(value) %>%
+  mutate(
+    fam_composition = case_when(
+      option == "fam_composition_1" ~ "I lived with my mother, but not father, most of the time.",
+      option == "fam_composition_2" ~ "I lived with my father, but not mother, most of the time.",
+      option == "fam_composition_3" ~ "I lived with my mother and father an equal amount of time (joint custody)",
+      option == "fam_composition_4" ~ "I lived with my extended family on mother's side (grandparents, aunts ,uncles, cousins)",
+      option == "fam_composition_5" ~ "I lived with my extended family on father's side (grandparents, aunts ,uncles, cousins)",
+      option == "fam_composition_6" ~ "I was in foster care most of the time.",
+      option == "fam_composition_9_text" ~ str_c("Other, namely:", value),
+      option == "fam_composition_10" ~ "Prefer not to say.",
+    )
+  ) %>%
+  group_by(id) %>%
+  summarise(family_composition = str_c(fam_composition, collapse = " & ")) %>%
+  mutate(fam_composition_multiple = ifelse(str_detect(family_composition, "\\s&\\s"), 1, 0)) 
 
 ## Demographics ----
 
@@ -330,6 +438,7 @@ flanker_data <-
   unnest(data_flanker) %>% 
   select(-data_flanker_std, -data_flanker_enh, -data_flanker_deg) %>%
   select(-c(internal_node_id, stimulus)) %>%
+  filter(task == "flanker") %>%
   mutate(
     correct = ifelse(correct, 1, 0)) 
 
@@ -357,7 +466,7 @@ browser_interactions <-
   drop_na(event) %>%
   # Did a blur event occur during a task?
   mutate(
-    event_during_flanker = ifelse((event == "blur") & (time > time_start_flanker_data & time < time_end_flanker_data), TRUE, FALSE),
+    event_during_flanker = ifelse((event == "blur") & (time > time_start_flanker & time < time_end_flanker), TRUE, FALSE),
   )
 
 
@@ -369,6 +478,17 @@ browser_interactions_summary <- browser_interactions %>%
     blur_event           = sum(event == "blur", na.rm=T),
     focus_event          = sum(event == "focus", na.rm = T),
     event_during_flanker = ifelse(any(event_during_flanker == TRUE), TRUE, FALSE)
+  ) %>%
+  var_labels(
+    fullscreenenter      = "Logs whether the participant entered fullscreen mode at the start of the experiment. value 1 if participant entered fullscreen mode;
+                            Value 0 if participant did not enter fullscreen mode.",
+    fullscreenexit       = "Logs whether the participant exited fullscreen mode at any point during the Flanker Task. value 1 if participant exited fullscreen mode;
+                            Value 0 if participant did not exit fullscreen mode.",
+    blur_event           = "Logs whether the participant clicked in another browser tab during the Flanker Task (i.e., a blur event), indicating they left the
+                            main experiment window. Value 1 if participant had 1 or more blur events; Value 0 if participant had no blur events.",
+    event_during_flanker = "Logs whether the participant had at least 1 blur event while the Flanker trials were ungoing. Value 1 if participant had at least 1
+                            blur event during Flanker trials; Value 0 if participant had no blur events during main Flanker trials (excluding instructions, break,
+                            and practice."
   )
 
 ## Screen resizing ----
@@ -379,7 +499,13 @@ resize_screen <-
   drop_na(data_resize) %>%
   mutate(data_resize = map(data_resize, jsonlite::fromJSON)) %>%
   unnest(data_resize) %>%
-  select(id, final_width_px, scale_factor)
+  select(id, final_width_px, scale_factor) %>%
+  mutate(no_resize = ifelse(round(scale_factor, 3) == 0.901, 1, 0)) %>%
+  var_labels(
+    final_width_px = "Final width of the resizing box.",
+    scale_factor   = "Factor by which the experiment screen was resized to fit the participant's monitor size",
+    no_resize      = "If 0, the resize box still had its initial size, indicating the participant did not resize the box."
+  )
 
 
 # Cleaned Data ------------------------------------------------------------
@@ -401,9 +527,9 @@ codebook <- create_codebook(self_report) %>%
 
 save(self_report, codebook, file = here("data", "2_study1", "0_self_report_raw.Rdata"))
 
-save(#flanker_data, 
-    # browser_interactions, 
-     #browser_interactions_summary,
-     #resize_screen, 
+save(flanker_data, 
+     browser_interactions, 
+     browser_interactions_summary,
+     resize_screen, 
      codebook, 
      file = here("data", "2_study1", "0_task_data_raw.Rdata"))
