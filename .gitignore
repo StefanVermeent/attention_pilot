@@ -20,6 +20,8 @@
 *.Rdata
 1_create_scales.R
 
+*.Rdata
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
