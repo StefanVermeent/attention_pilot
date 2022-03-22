@@ -17,6 +17,9 @@
 # RStudio files
 .Rproj.user/
 
+*.Rdata
+1_create_scales.R
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
