@@ -5,6 +5,7 @@ library(tidyverse)
 library(here)
 library(magrittr)
 library(glue)
+library(sjlabelled)
 
 # Load data ---------------------------------------------------------------
 
@@ -44,8 +45,13 @@ flanker_data_clean <- flanker_data %>%
 
 # Apply exclusions --------------------------------------------------------
 
+# Exclude participants who did not complete one or more conditions of the Flanker task
+ids_to_exclude <- c(
+  flanker_data_clean %>% group_by(id) %>% summarise(n_condition = length(unique(condition))) %>% filter(n_condition < 3) %>% select(id) %>% distinct() %>% pull
+)
 
-x <- flanker_data_clean %>%
+
+flanker_data_clean %<>%
   # Remove invalid trials
   filter(!ex_narb_log_outlier) %>%
   filter(!ex_narb_invalid_trial) %>%
@@ -54,22 +60,10 @@ x <- flanker_data_clean %>%
   # Exclude participants who did not complete all tasks
   filter(!id %in% ids_to_exclude) %>%
   # Exclude participants with blur events during the task
- # filter(!event_during_flanker) %>%
+  filter(!event_during_flanker) %>%
   # Exclude participants based on their own feedback:
-  # 1. Participants who did tasks twice due to technical difficulties
- # filter(!id %in% c("291", "410")) %>%
-  # 2. Participants for whom all task windows were cut off
- # filter(!id %in% "302") %>%  
-  # Filter subject who responded with the left arrow on almost all (29 out of 32) of the incongruent trials
-  #filter(!id %in% "318") %>%
+  mutate(across(c(rt, correct), ~ifelse(id == 14 & condition == "degraded", NA, .))) %>%
   select(-starts_with("ex_narb"))
-
-browser_interactions %<>%
-  filter(!id %in% ids_to_exclude)
-
-resize_screen %<>%
-  filter(!id %in% ids_to_exclude)
-
 
 
 # Compute average RTs and accuracy ----------------------------------------
@@ -86,16 +80,50 @@ flanker_data_clean_average <- flanker_data_clean %>%
   ) %>%
   ungroup() %>%
   pivot_wider(names_from = "congruency", values_from = c("rt_flanker", "acc_flanker")) %>%
+  pivot_wider(names_from = "condition", values_from = c("rt_flanker_congruent", "rt_flanker_incongruent", "acc_flanker_congruent", "acc_flanker_incongruent")) %>%
   # Add nested column containing task data in long-form (for DDM)
-  mutate(flanker_data_long = map(id, function(x) {flanker_data_clean %>% filter(id == x)}))
+  mutate(flanker_data_long = map(id, function(x) {flanker_data_clean %>% filter(id == x)})) %>%
+  var_labels(
+    counterbalance = "Counterbalancing code of the Flanker conditions",
+    
+    rt_flanker_congruent_standard    = "Reaction time in seconds on the congruent Flanker trials of the Standard condition.",
+    rt_flanker_incongruent_standard  = "Reaction time in seconds on the incongruent Flanker trials of the Standard condition.",
+    acc_flanker_congruent_standard   = "Accuracy (proportion) on the congruent Flanker trials of the Standard condition.",
+    acc_flanker_incongruent_standard = "Accuracy (proportion) on the incongruent Flanker trials of the Standard condition.",
+    
+    rt_flanker_congruent_enhanced    = "Reaction time in seconds on the congruent Flanker trials of the Enhanced condition.",
+    rt_flanker_incongruent_enhanced  = "Reaction time in seconds on the incongruent Flanker trials of the Enhanced condition.",
+    acc_flanker_congruent_enhanced   = "Accuracy (proportion) on the congruent Flanker trials of the Enhanced condition.",
+    acc_flanker_incongruent_enhanced = "Accuracy (proportion) on the incongruent Flanker trials of the Enhanced condition.",
+    
+    rt_flanker_congruent_degraded    = "Reaction time in seconds on the congruent Flanker trials of the Degraded condition.",
+    rt_flanker_incongruent_degraded  = "Reaction time in seconds on the incongruent Flanker trials of the Degraded condition.",
+    acc_flanker_congruent_degraded   = "Accuracy (proportion) on the congruent Flanker trials of the Degraded condition.",
+    acc_flanker_incongruent_degraded = "Accuracy (proportion) on the incongruent Flanker trials of the Degraded condition.",
+    
+    flanker_data_long = "Nested variable containing the dataframes with trial-level data for each participant. These dataframes are required for the DDM analyses."
+  ) %>%
+  val_labels(
+    counterbalance = c("Standard - Enhanced - Degraded" = 1,
+                       "Standard - Degraded - Enhanced" = 2,
+                       "Enhanced - Standard - Degraded" = 3,
+                       "Enhanced - Degraded - Standard" = 4,
+                       "Degraded - Standard - Enhanced" = 5,
+                       "Degraded - Enhanced - Standard" = 6)
+  )
+
+browser_interactions %<>%
+  filter(!id %in% ids_to_exclude)
+
+resize_screen %<>%
+  filter(!id %in% ids_to_exclude)
+
 
 
 # Write objects -----------------------------------------------------------
 
-save(change_data_clean_average, 
-     cueing_data_clean_average, 
-     flanker_data_clean_average, 
+save(flanker_data_clean_average, 
      browser_interactions, 
      browser_interactions_summary,
      resize_screen,
-     file = here("data", "1_pilot", "1_task_data_clean.Rdata"))
+     file = here("data", "2_study1", "1_task_data_clean.Rdata"))

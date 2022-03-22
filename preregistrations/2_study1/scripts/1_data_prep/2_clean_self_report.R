@@ -76,6 +76,7 @@ self_report_clean %<>%
          dems_edu_first            = ifelse(id == "414", 1, dems_edu_first),
          dems_edu_second           = ifelse(id == "414", 1, dems_edu_second),
          edu_caregivers            = ifelse(id == "414", 1, edu_caregivers))
+
   
 # Save data ---------------------------------------------------------------
 

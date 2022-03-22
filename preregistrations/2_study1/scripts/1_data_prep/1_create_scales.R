@@ -67,12 +67,12 @@ vars01_meta <-
     meta_psychopath_duration  = timestamp_psychopath - timestamp_temp_orient,
     meta_dems_duration        = timestamp_dems - timestamp_psychopath,
     
-    meta_task_duration_z        = scale(meta_task_duration),
-    meta_state_duration_z       = scale(meta_state_duration),
-    meta_ace_duration_z         = scale(meta_ace_duration),
-    meta_temp_orient_duration_z = scale(meta_temp_orient_duration),
-    meta_psychopath_duration_z  = scale(meta_psychopath_duration),
-    meta_dems_duration_z        = scale(meta_dems_duration)
+    meta_task_duration_z        = scale(meta_task_duration) %>% as.numeric(),
+    meta_state_duration_z       = scale(meta_state_duration) %>% as.numeric(),
+    meta_ace_duration_z         = scale(meta_ace_duration) %>% as.numeric(),
+    meta_temp_orient_duration_z = scale(meta_temp_orient_duration) %>% as.numeric(),
+    meta_psychopath_duration_z  = scale(meta_psychopath_duration) %>% as.numeric(),
+    meta_dems_duration_z        = scale(meta_dems_duration) %>% as.numeric()
   ) %>% 
   select(id, starts_with("meta_"))
 
@@ -103,6 +103,8 @@ vars02_state <-
 vars03_unp <- 
   study_data %>% 
   select(id,starts_with(c("chaos", "unp", "quic", "change_env")), sd_quic, sd_chaos) %>% 
+  # Fix mistake in Qualtrics data - contained a six answer with a default answer label
+  mutate(across(matches("unp\\d\\d"), ~case_when(. == 6 ~ 5, TRUE ~ .))) %>%
   # Recode variables
   mutate(across(matches("chaos(01|02|04|07|12|14|15)"), ~ 6 - .)) %>%
   mutate(across(matches("quic(01|02|03|04|05|06|07|08|09|11|14|16|22|32)"), ~ 6 - .)) %>%
@@ -174,7 +176,7 @@ vars03_unp <-
       unp_female_fig_rom >= 6 ~ 6,
     ),
                                       
-    unp_subj_comp             = across(c(pcunp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale,
+    unp_subj_comp             = across(c(pcunp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),
     unp_obj_comp              = across(c(unp_moving_binned, unp_male_fig_rom_binned, unp_female_fig_rom_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
     unp_comp                  = across(c(unp_subj_comp, unp_obj_comp)) %>% rowMeans(., na.rm = T)
     
@@ -445,15 +447,15 @@ flanker_data <-
 ## Browser interactions ----
 
 browser_interactions <- 
-  bind_rows(
+  left_join(
     study_data %>%
       select(id, tasks_browser) %>%
       drop_na(tasks_browser) %>%
       mutate(tasks_browser = map(tasks_browser, jsonlite::fromJSON)) %>%
       unnest(tasks_browser),
     flanker_data %>%
-      select(id, task, time_elapsed) %>% 
-      group_by(id, task) %>% 
+      select(id, condition, task, time_elapsed) %>% 
+      group_by(id, task, condition) %>% 
       summarise(
         "time_start_flanker" := min(time_elapsed),
         "time_end_flanker"   := max(time_elapsed)
@@ -533,3 +535,4 @@ save(flanker_data,
      resize_screen, 
      codebook, 
      file = here("data", "2_study1", "0_task_data_raw.Rdata"))
+
