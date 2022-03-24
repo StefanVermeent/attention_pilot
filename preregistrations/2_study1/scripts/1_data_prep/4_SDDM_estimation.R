@@ -304,15 +304,15 @@ ssp_results_standard <-
 
 # Read Results ------------------------------------------------------------
     
- flanker_ssp_results <- list.files(here("data", "1_pilot"), pattern = "^ssp_fit", full.names = TRUE) %>%
+ ssp_results_standard <- list.files(here("data", "2_study1"), pattern = "^ssp_fit_standard", full.names = TRUE) %>%
    map_df(function(x) read_csv(x)) %>%
    rename(id = subject) %>%
-   rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker")))
+   rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker_std")))
  
  
 # Plot model fit
  
-plot_flanker <- flanker_ssp_results %>%
+plot_flanker <- ssp_results_standard %>%
   
    select(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) %>%
    pmap(function(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) {
@@ -322,7 +322,7 @@ plot_flanker <- flanker_ssp_results %>%
          bestParameters = c(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker),
          g2 = g2_flanker,
          bBIC = bbic_flanker),
-       data = flanker_ssp_setup %>% unnest() %>% filter(subject == id)
+       data = flanker_ssp_setup %>% unnest(flanker_data_long) %>% filter(subject == id)
      )
    }) 
  
@@ -331,4 +331,4 @@ plot_flanker <- flanker_ssp_results %>%
    plotFitSSP(modelFit = x$parameters, data = x$data)
  })
  
-save(flanker_ssp_results, file = here("data", "1_pilot", "1_SSP_objects.Rdata"))
+save(ssp_results_standard, file = here("data", "2_study1", "1_SSP_objects.Rdata"))
