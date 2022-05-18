@@ -19,7 +19,8 @@ flanker_data_clean <- flanker_data %>%
     group_by(id, condition) %>%
     mutate(
       # Is accuracy above the cut-off for performance at chance level?
-      ex_narb_acc_below_cutoff = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(50, 0.50), TRUE, FALSE),
+      ex_narb_acc_below_cutoff_50 = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(50, 0.5), TRUE, FALSE),
+      ex_narb_acc_below_cutoff = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(64, 0.5), TRUE, FALSE),
       # Do all participants have the expected number of trials? 
       ex_narb_rowcount         = n(),
       # Number of missing RTs per participant
@@ -35,12 +36,13 @@ flanker_data_clean <- flanker_data %>%
     ungroup() %>%
     mutate(
       # Exclude participants with more than 10 excluded trials, who did not complete the task, or who performed at chance level
-      "ex_narb_flanker_pass"   := ifelse(across(matches("ex_narb_(NA_trials|log_outliers|invalid_trials)")) %>% rowSums(., na.rm = TRUE) > 10 | 
+      ex_narb_flanker_pass   = ifelse(across(matches("ex_narb_(NA_trials|log_outliers|invalid_trials)")) %>% rowSums(., na.rm = TRUE) > 10 | 
                                         ex_narb_rowcount %in% c(1,2) |
                                         ex_narb_acc_below_cutoff == TRUE, 
-                                        FALSE, TRUE),
+                                        FALSE, TRUE)
     ) %>%
   left_join(browser_interactions_summary %>% select(id, event_during_flanker))
+
 
 
 # Apply exclusions --------------------------------------------------------
@@ -79,6 +81,11 @@ flanker_data_clean_average <- flanker_data_clean %>%
     acc_flanker    = (sum(correct) / n()),
   ) %>%
   ungroup() %>%
+  mutate(condition = case_when(
+    condition == "standard" ~ "std",
+    condition == "enhanced" ~ "enh",
+    condition == "degraded" ~ "deg"
+  )) %>%
   pivot_wider(names_from = "congruency", values_from = c("rt_flanker", "acc_flanker")) %>%
   pivot_wider(names_from = "condition", values_from = c("rt_flanker_congruent", "rt_flanker_incongruent", "acc_flanker_congruent", "acc_flanker_incongruent")) %>%
   # Add nested column containing task data in long-form (for DDM)
@@ -111,6 +118,20 @@ flanker_data_clean_average <- flanker_data_clean %>%
                        "Degraded - Standard - Enhanced" = 5,
                        "Degraded - Enhanced - Standard" = 6)
   )
+
+
+flanker_data_clean_average %>%
+  mutate(across(matches("(acc|rt)_flanker_(congruent|incongruent)"), ~scale(.) %>% as.numeric, .names = "{.col}_z")) %>%
+  select(id, matches("^(acc|rt)")) %>%
+  filter(if_any(matches("(std|enh|deg)_z"), ~.>3.2))
+
+
+# 73, 304, 340, 99, 483 are many SDs above the rest on RTs
+
+# 176 incongruent degraded is suspicious (response pattern?)
+
+
+
 
 browser_interactions %<>%
   filter(!id %in% ids_to_exclude)

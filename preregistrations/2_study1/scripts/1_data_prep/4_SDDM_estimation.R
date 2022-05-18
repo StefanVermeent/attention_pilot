@@ -304,31 +304,123 @@ ssp_results_standard <-
 
 # Read Results ------------------------------------------------------------
     
- ssp_results_standard <- list.files(here("data", "2_study1"), pattern = "^ssp_fit_standard", full.names = TRUE) %>%
-   map_df(function(x) read_csv(x)) %>%
-   rename(id = subject) %>%
-   rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker_std")))
+ssp_results <- c("^ssp_fit_standard", "^ssp_fit_enhanced", "^ssp_fit_degraded") %>%
+  map(function(x) {
+    list.files(here("data", "2_study1"), pattern = x, full.names = TRUE) %>%
+      map_df(function(y) read_csv(y)) %>%
+      rename(id = subject) %>%
+      rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker_", str_extract(x, "[a-z]*$"))))
+  }) %>%
+  reduce(left_join) %>%
+  select(-c(starts_with(c("start", "g2")))) %>%
+  rename_with(~gsub("standard", "std", .x)) %>%
+  rename_with(~gsub("enhanced", "enh", .x)) %>%
+  rename_with(~gsub("degraded", "deg", .x)) %>%
+  mutate(
+    interference_flanker_std = sda_flanker_std / rd_flanker_std,
+    interference_flanker_enh = sda_flanker_enh / rd_flanker_enh,
+    interference_flanker_deg = sda_flanker_deg / rd_flanker_deg
+  )
+
+
+
+# Investigate extreme DDM parameter estimates -----------------------------
+
+ssp_outliers <- ssp_results %>%
+  mutate(across(matches("^(a|t0|p|interference)"), ~scale(.) %>% as.numeric, .names = "{.col}_z")) %>%
+  drop_na() %>%
+  filter(if_any(ends_with("_z"), ~ . > 3.2))
+
+flanker_data_clean_average %>%
+  select(flanker_data_long) %>%
+  unnest(flanker_data_long) %>%
+  filter(id %in% c(ssp_outliers %>% pull(id) %>% unique)) %>%
+  split(.$id) %>%
+  map(function(x) {
+    ggplot(x, aes(scale(rt))) +
+      geom_histogram(bins = 64) +
+      facet_grid(condition~congruency) + 
+      scale_x_continuous(breaks = seq(-12,12, 0.5)) +
+      labs(
+        title = str_c("id = ", x$id %>% unique)
+      ) %>%
+      print
+  })
+
+# Apply trial filtering and nest data
+refit_data <- flanker_ssp_setup %>%
+  unnest(flanker_data_long) %>%
+  filter(subject %in% c(ssp_outliers %>% pull(id) %>% unique)) %>%
+  group_by(subject, condition, congruency) %>%
+  mutate(rt_z = scale(rt) %>% as.numeric) %>%
+  filter(rt_z < 3.2) %>%
+  group_by(subject, condition) %>%
+  mutate(n_trials = n()) %>%
+  filter(n_trials > 54) %>%
+  ungroup() %>%
+  select(-c(rt_z, n_trials))
+
+
+ssp_refit <- tibble(subject = ssp_outliers %>% pull(id) %>% unique) %>%
+  mutate(flanker_data_long = map(subject, function(x) {refitted_participants %>% filter(subject == x)})) %>%
+  select(flanker_data_long)
+
+
+# Find best starting parameters for each subject in the Standard Condition
+ssp_refit  %>%
+  mutate(
+    results = future_map(flanker_data_long,
+                         function(x) {
+                           
+                           tic()
+                           # Find best starting parameters
+                           best_starting_parms <-
+                             fitMultipleSSP(x, var = var_start_parms,
+                                            conditionName = "standard",
+                                            nParms = n_start_parms,
+                                            nTrials = n_first_pass,
+                                            multipleSubjects = FALSE)
+                           
+                           
+                           # Perform final fit using best starting parameters
+                           final_fit <-
+                             fitSSP(x, conditionName = "standard", 
+                                    parms = best_starting_parms$bestParameters,
+                                    nTrials = n_final_pass, multipleSubjects = FALSE)
+                           time <- toc()
+                           
+                           final_fit_results <-
+                             tibble(
+                               subject    = unique(x$subject),
+                               start_a    = best_starting_parms$bestParameters[1],
+                               start_t0   = best_starting_parms$bestParameters[2],
+                               start_p    = best_starting_parms$bestParameters[3],
+                               start_rd   = best_starting_parms$bestParameters[4],
+                               start_sda  = best_starting_parms$bestParameters[5],
+                               start_g2   = best_starting_parms$g2,
+                               start_bbic = best_starting_parms$bBIC,
+                               
+                               a          = final_fit$bestParameters[1],
+                               t0         = final_fit$bestParameters[2],
+                               p          = final_fit$bestParameters[3],
+                               rd         = final_fit$bestParameters[4],
+                               sda        = final_fit$bestParameters[5],
+                               g2         = final_fit$g2,
+                               bbic       = final_fit$bBIC
+                             )
+                           
+                           # Backup data
+                           write_csv(final_fit_results, here("data", "2_study1", str_c("ssp_refit_standard", unique(x$subject), ".csv")))
+                           
+                           message(cat("Subject", unique(x$subject), "was processed in", time$toc %>% as.numeric, "seconds."))
+                           
+                           return(final_fit_results)
+                           
+                         },
+                         .options = furrr_options(seed = TRUE)
+    ))
+
+
  
  
-# Plot model fit
- 
-plot_flanker <- ssp_results_standard %>%
-  
-   select(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) %>%
-   pmap(function(a_flanker,t0_flanker,p_flanker,rd_flanker,sda_flanker,g2_flanker,bbic_flanker, id) {
-     
-     list(
-       parameters = list(
-         bestParameters = c(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker),
-         g2 = g2_flanker,
-         bBIC = bbic_flanker),
-       data = flanker_ssp_setup %>% unnest(flanker_data_long) %>% filter(subject == id)
-     )
-   }) 
- 
- 
- map(plot_flanker, function(x) {
-   plotFitSSP(modelFit = x$parameters, data = x$data)
- })
- 
-save(ssp_results_standard, file = here("data", "2_study1", "1_SSP_objects.Rdata"))
+save(ssp_results_standard, ssp_results_enhanced, ssp_results_degraded, file = here("data", "2_study1", "1_SSP_objects.Rdata"))

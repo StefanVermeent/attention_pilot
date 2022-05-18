@@ -175,13 +175,14 @@ vars03_unp <-
       unp_female_fig_rom == 5 ~ 5,
       unp_female_fig_rom >= 6 ~ 6,
     ),
-                                      
+    unp_pcunp_quic_comp       = across(c(pcunp_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),                         
     unp_subj_comp             = across(c(pcunp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),
     unp_obj_comp              = across(c(unp_moving_binned, unp_male_fig_rom_binned, unp_female_fig_rom_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
     unp_comp                  = across(c(unp_subj_comp, unp_obj_comp)) %>% rowMeans(., na.rm = T)
     
     ) %>%
   var_labels(
+    unp_pcunp_quic_comp       = "Unpredictability composite score consisting of the Perceived Unpredictability Scale and the QUIC. Higher scores mean more perceived unpredictability prior to age 13.",
     pcunp_mean                = "Mean score of the Perceived Unpredictability Scale. Higher scores mean more perceived unpredictability prior to age 13.",
     chaos_mean                = "Mean score of the Confusion, Hubbub, and Order Scale (CHAOS; adapted). Higher scores mean more household chaos prior to age 13.",
     quic_monitoring_mean      = "Mean scores of the 'Parental Monitoring and Involvement' subscale of the Questionnaire of Unpredictability in Childhood (QUIC; adapted). 
@@ -251,7 +252,7 @@ vars04_vio <-
     nvs_mean           = across(matches("violence\\d\\d$")) %>% rowMeans(., na.rm = T),
     nvs_missing        = across(matches("violence\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
     fighting_mean      = across(matches("aces_fighting\\d")) %>% rowMeans(., na.rm = T),
-    vio_comp           = across(c(nvs_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
+    vio_comp           = across(c(nvs_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = F)
   ) %>%
   var_labels(
     nvs_mean           = "Mean score of the Neighborhood Violence Scale (NVS). Higher scores mean more neighborhood violence prior to age 13.",
@@ -475,8 +476,8 @@ browser_interactions <-
 browser_interactions_summary <- browser_interactions %>%
   group_by(id) %>%
   summarise(
-    fullscreenenter      = sum(event == "fullscreenenter", na.rm=T),
-    fullscreenexit       = sum(event == "fullscreenexit", na.rm=T),
+    fullscreenenter      = ifelse(sum(event == "fullscreenenter", na.rm=T) > 0, 1, 0),
+    fullscreenexit       = ifelse(sum(event == "fullscreenexit", na.rm=T) > 0, 1, 0),
     blur_event           = sum(event == "blur", na.rm=T),
     focus_event          = sum(event == "focus", na.rm = T),
     event_during_flanker = ifelse(any(event_during_flanker == TRUE), TRUE, FALSE)
