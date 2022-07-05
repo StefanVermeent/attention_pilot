@@ -21,15 +21,14 @@ cleaned_data <-
   # Task data: RTs and accuracy
   left_join(flanker_data_clean_average, by = "id") %>%
   # Task data: DDM
-  left_join(ssp_results_standard, by = "id") %>%
-  left_join(ssp_results_enhanced, by = "id") %>%
-  left_join(ssp_results_degraded, by = "id") %>%
+  left_join(ssp_results_refit, by = "id") %>%
   left_join(resize_screen, by = "id") %>%
   left_join(browser_interactions_summary, by = "id") %>%
   # Remove participants who have no task data
   filter(!is.na(rt_flanker_congruent_std), !is.na(rt_flanker_congruent_deg), !is.na(rt_flanker_congruent_enh)) %>%
   # Manual exclusions
-  filter(!id %in% c(99, 176, 304, 340, 483, 73, 335, 114, 466, 16)) %>%
+  filter(!id %in% c(73, 99, 114, 163, 176, 304, 308, 335, 340, 483)) %>%
+ # filter(!id %in% c(19, 121, 223, 8, 269, 464, 466, 491, 223)) %>%
   mutate(
     interference_flanker_std = sda_flanker_std / rd_flanker_std,
     interference_flanker_enh = sda_flanker_enh / rd_flanker_enh,
@@ -43,22 +42,22 @@ write_csv(cleaned_data %>% select(-matches("flanker_data_long")), here("data", "
 save(cleaned_data, browser_interactions, file = here("data", "2_study1", "2_cleaned_data.Rdata"))
 
 
-
 # RTs:
+# 73: 75th quantile of RTs for each condition are extreme outliers
+# 483: 75th quantile of RTs for each condition are extreme outliers
+# 340: Nearly all quantiles across conditions are extreme outliers
+# 304: Consistently does something else than the rest of the sample
+# 176: Extreme interference outlier on standard condition
+# 99: Extreme outliers on 50th and 75th quantile
 
-# 304 is clearly doing something different than most others
-# same goes for 99
-# Same goes for 176
-# Same goes for 483
-# Same goes for 340
+# Accuracy:
+# 114: Accuracy is substantially lower on degraded than all other participants
+# 163: Prediction is way off on degraded trials
+# 308: Among lowest accuracy on all conditions, substantial outlier on standard congruent
+# 335: Below chance level on enhanced ingruent; (near) perfect on others
 
 
-# Acc:
-# Standard: 73, 483 and 176 are clear outliers on standard congruent accuracy
 
-# 335: below chance level on enhanced incongruent; (near) perfect on others
-# 114: Very different pattern than other participants
-# 466: at chance level on degraded
 
 
 

@@ -5,7 +5,10 @@ response_sd <- function(df, prefix_vars) {
  df %>%
    rowwise() %>%
    mutate("sd_{prefix_vars}" := sd(c_across(matches(prefix_vars)), na.rm = TRUE)) %>%
-   ungroup() 
+   ungroup() %>%
+   var_labels(
+     "sd_{prefix_vars}" := "Standard Deviation of item responses on the questionnaire. If (close to) 0, the participant tended to respond with the same response option regardless of reverse coding."
+   )
 }
 
 gbinom <- function(n, p, low=0, high=n,scale = F) {

@@ -19,7 +19,7 @@ flanker_data_clean <- flanker_data %>%
     group_by(id, condition) %>%
     mutate(
       # Is accuracy above the cut-off for performance at chance level?
-      ex_narb_acc_below_cutoff_50 = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(50, 0.5), TRUE, FALSE),
+      #ex_narb_acc_below_cutoff_50 = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(50, 0.5), TRUE, FALSE),
       ex_narb_acc_below_cutoff = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(64, 0.5), TRUE, FALSE),
       # Do all participants have the expected number of trials? 
       ex_narb_rowcount         = n(),
@@ -47,11 +47,6 @@ flanker_data_clean <- flanker_data %>%
 
 # Apply exclusions --------------------------------------------------------
 
-# Exclude participants who did not complete one or more conditions of the Flanker task
-ids_to_exclude <- c(
-  flanker_data_clean %>% group_by(id) %>% summarise(n_condition = length(unique(condition))) %>% filter(n_condition < 3) %>% select(id) %>% distinct() %>% pull
-)
-
 
 flanker_data_clean %<>%
   # Remove invalid trials
@@ -67,6 +62,14 @@ flanker_data_clean %<>%
   mutate(across(c(rt, correct), ~ifelse(id == 14 & condition == "degraded", NA, .))) %>%
   select(-starts_with("ex_narb"))
 
+
+# Exclude participants who did not complete one or more conditions of the Flanker task
+ids_to_exclude <- c(
+  flanker_data_clean %>% group_by(id) %>% summarise(n_condition = length(unique(condition))) %>% filter(n_condition < 3) %>% select(id) %>% distinct() %>% pull
+)
+
+flanker_data_clean %<>%
+  filter(!id %in% ids_to_exclude)
 
 # Compute average RTs and accuracy ----------------------------------------
 
@@ -124,12 +127,6 @@ flanker_data_clean_average %>%
   mutate(across(matches("(acc|rt)_flanker_(congruent|incongruent)"), ~scale(.) %>% as.numeric, .names = "{.col}_z")) %>%
   select(id, matches("^(acc|rt)")) %>%
   filter(if_any(matches("(std|enh|deg)_z"), ~.>3.2))
-
-
-# 73, 304, 340, 99, 483 are many SDs above the rest on RTs
-
-# 176 incongruent degraded is suspicious (response pattern?)
-
 
 
 

@@ -6,10 +6,10 @@ read_csv("data/2_study1/hddm_gelrub_free_std.csv") %>% summarise(max = max(`1`))
 load("data/2_study1/2_cleaned_data.Rdata")
 
 
-hddm_data <- list.files("data/2_study1", pattern = "hddm.*mod", full.names = T) %>%
+hddm_data <- list.files("data/2_study1", pattern = "hddm_fixed", full.names = T) %>%
   map_dfr(function(x) {
     
-    read_csv(x) %>%
+    read_csv(x, show_col_types = F) %>%
       rename(id = `...1`) %>%
       filter(str_detect(id, "subj")) %>%
       separate(id, into = c("parm", "id"), sep = "_") %>%
