@@ -24,6 +24,7 @@ hddm_data <- flanker_data_clean_average %>%
   mutate(
     flanker_data_long = map(flanker_data_long, function(x) {
       
+      
       x %>%
         mutate(rt=rt/1000) %>%
         select(-response) %>%
