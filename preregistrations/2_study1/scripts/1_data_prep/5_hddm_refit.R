@@ -9,16 +9,15 @@ source("preregistrations/2_study1/scripts/custom_functions/functions_analyses.R"
 load("data/2_study1/1_task_data_clean.Rdata")
 
 # Python
-reticulate::import("hddm")
+# Note: if this script is not run using the stefanvermeent/flanker_project Docker image, a Python 3.7 Conda environment with the relevant dependencies first
+# has to be created. See the README file of the Github Repository of this project for more information.
+reticulate::use_condaenv("py37")
+hddm <- reticulate::import("hddm")
 reticulate::import("pandas", as = "pd")
 reticulate::import("matplotlib.pyplot", as = "plt")
 
 
-# 2. Set Conda env and load data ---------------------------------------------
-
-# Note: setting the conda environment is only necessary when running this file locally, not when it's run inside the Docker container.
-use_condaenv("py37")
-
+# 2. Load data ---------------------------------------------
 hddm_data <- flanker_data_clean_average %>%
   select(flanker_data_long) %>%
   mutate(
@@ -31,7 +30,12 @@ hddm_data <- flanker_data_clean_average %>%
         rename(subj_idx = id, response = correct) %>%
         select(subj_idx, condition, congruency, response, rt)
     }) 
-  )
+  ) %>%
+  unnest(flanker_data_long)
+
+hddm_data_std <- hddm_data %>% filter(condition == "standard", subj_idx %in% 1:10)
+hddm_data_enh <- hddm_data %>% filter(condition == "enhanced")
+hddm_data_deg <- hddm_data %>% filter(condition == "degraded")
 
 
 # 3. HDDM --------------------------------------------------------------------
@@ -44,46 +48,39 @@ hddm_data <- flanker_data_clean_average %>%
 
 ## 3.2 Standard condition: Model a ---- 
 
-py_run_string("mod_fixed_std = hddm.HDDM(data = r.data, bias = False)")                  # Specify model
-py_run_string("mod_fixed_std.find_starting_values()")                                    # Find starting values
-py_run_string("hddm_fixed_std = mod_fixed_std.sample(100000, burn=50000, thin = 10)")    # Sample from model
+### 3.2.1 Initiate and fit model
+py_run_string("mod_fixed_std = r.hddm.HDDM(data = r.hddm_data_std, bias = False)")            
+py_run_string("mod_fixed_std.find_starting_values()")                                 
+py_run_string("hddm_fixed_std = mod_fixed_std.sample(500, burn=10)")    
 
-py_run_string("hddm_fixed_std")
+### 3.2.2 Extract parameter estimates and fit statistics
+hddm_fixed_std_parms <- parse_hddm_stats(py$hddm_fixed_std$stats()) 
+hddm_fixed_std_dic   <- py$hddm_fixed_std$DIC 
+hddm_fixed_std_bpic  <- py$hddm_fixed_std$BPIC
 
-
-hddm_fixed_std_parms <- parse_hddm_stats(hddm_fixed_std$hddm_fixed_std$stats()) 
-hddm_fixed_std_dic   <- hddm_fixed_std$hddm_fixed_std$DIC 
-hddm_fixed_std_bpic  <- hddm_fixed_std$hddm_fixed_std$BPIC
-
-
-py_run_string("v_trace = hddm_fixed_std.trace('v')[:]")
-py_run_string("v_std_trace = hddm_fixed_std.trace('v_std')[:]")
-py_run_string("a_trace = hddm_fixed_std.trace('a')[:]")
-py_run_string("a_std_trace = hddm_fixed_std.trace('a_std')[:]")
-py_run_string("t_trace = hddm_fixed_std.trace('t')[:]")
-py_run_string("t_std_trace = hddm_fixed_std.trace('t_std')[:]")
+### 3.2.3 Extract traces
+hddm_fixed_std_traces <- parse_hddm_traces(stats_object = "hddm_fixed_std")
 
 
-py$v_trace %>%
-  as_tibble() %>%
-  mutate(run = 1:n()) %>%
-  ggplot() +
-  geom_line(aes(run, value)) +
-  theme_classic()
+## 3.3 Standard condition: Model b ---- 
 
-py$v_trace %>%
-  as_tibble() %>%
-  mutate(run = 1:n()) %>%
-  ggplot() +
-  geom_histogram(aes(value)) +
-  theme_classic()
+### 3.3.1 Initiate and fit model
+py_run_string("mod_free_std = r.hddm.HDDM(data = r.hddm_data_std, bias = False, depends_on = ({'v':'congruency', 't':'congruency'}))") 
+py_run_string("mod_free_std.find_starting_values()")                                                                                  
+py_run_string("hddm_free_std = mod_free_std.sample(500, burn=10)")                                                                    
 
+### 3.3.2 Extract parameter estimates and fit statistics
+hddm_free_std_parms <- parse_hddm_stats(py$hddm_free_std$stats()) 
+hddm_free_std_dic   <- py$hddm_free_std$DIC 
+hddm_free_std_bpic  <- py$hddm_free_std$BPIC
 
-## 3.2 Standard condition: Model b ---- 
-
-py_run_string("mod_free_std = hddm.HDDM(data = r.data, bias = False)")                  # Specify model
-py_run_string("mod_free_std.find_starting_values()")                                    # Find starting values
-py_run_string("hddm_free_std = mod_free_std.sample(100000, burn=50000, thin = 10)")    # Sample from model
+### 3.3.3 Extract traces
+hddm_free_std_traces <- parse_hddm_traces(stats_object = "hddm_free_std", parms = c('v(congruent)', 'v(incongruent)', 'v_std',
+                                                                                    'a', 'a_std',
+                                                                                    't(congruent)', 't(incongruent)', 't_std'))
 
 
-hddm_free_std_parms <- parse_hddm_stats(hddm_free_std$hddm_free_std$stats()) 
+save(hddm_fixed_std_parms, hddm_fixed_std_dic, hddm_fixed_std_bpic, hddm_fixed_std_traces,
+     hddm_free_std_parms, hddm_free_std_dic, hddm_free_std_bpic, hddm_free_std_traces,
+     file = "data/2_study1/hddm_objects.RData")
+

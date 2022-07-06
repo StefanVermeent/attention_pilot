@@ -45,6 +45,7 @@ standardize_parameters <- function(model) {
 
 parse_hddm_stats <- function(stats_object) {
   
+  
   names(stats_object) %>%
     str_subset(".*subj.*") %>%
     map_df(function(x){
@@ -52,6 +53,11 @@ parse_hddm_stats <- function(stats_object) {
       tibble(
         id   = x,
         mean =  stats_object[[x]]$mean,
+        sd   =  stats_object[[x]]$sd,
+        mc_error = stats_object[[x]]$`mc error`,
+        quantile25 = stats_object[[x]]$quantiles$`25`,
+        quantile50 = stats_object[[x]]$quantiles$`50`,
+        quantile75 = stats_object[[x]]$quantiles$`75`,
         hpd_95 =  stats_object[[x]]$`95% HPD interval`,
       )
     }) %>%
@@ -59,3 +65,20 @@ parse_hddm_stats <- function(stats_object) {
     select(-rm) %>%
     mutate(parameter = str_replace_all(parameter, "_subj", ""))
 }
+
+
+parse_hddm_traces <- function(stats_object, parms = c('v', 'v_std', 'a', 'a_std', 't', 't_std')){
+
+    parms %>%
+      map(function(x) {
+        py_run_string(paste0("trace = ", stats_object, ".trace('", x, "')[:]"))
+        
+        
+          py$trace %>%
+          as_tibble() %>%
+          mutate(parm = x)
+        
+      })
+  }
+  
+
