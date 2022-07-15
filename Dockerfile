@@ -1,3 +1,5 @@
+
+
 FROM rocker/rstudio:4.1.2
 
 LABEL maintainer="p.c.s.vermeent@gmail.com"
@@ -8,10 +10,17 @@ ENV RENV_VERSION 0.15.5
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
 RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
 
-
+WORKDIR c:/repositories/attention_pilot
 COPY renv.lock renv.lock
 
 ENV RENV_PATHS_LIBRARY renv/library/R-4.2
+
+RUN mkdir -p renv
+COPY .Rprofile .Rprofile
+COPY renv/activate.R renv/activate.R
+COPY renv/settings.dcf renv/settings.dcf
+
+RUN R -e "renv::restore()"
 
 
 # Install base utilities
@@ -21,7 +30,8 @@ RUN apt-get update && \
 
 # Install miniconda
 ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+#RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 
 # Put conda in path so we can use conda activate
