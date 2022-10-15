@@ -3,198 +3,267 @@
 library(tidyverse)
 library(multitool) #devtools::install_github("ethan-young/multitool", force = T)
 library(here)
-library(lme4)
+library(ggeffects)
+library(lmerTest)
 
 
 # Load data files ---------------------------------------------------------
 source(here("preregistrations", "2_study1", "scripts", "custom_functions", "functions_analyses.R"))
 load(here("data", "2_study1", "2_cleaned_data.Rdata"))
+load("data/2_study1/hddm_objects.RData")
 
 
-
-# Prepare data for analyses -----------------------------------------------
-primary_enh_data <- cleaned_data %>%
-  select(id, scale_factor, dems_edu, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise, counterbalance, 
-         vio_comp, matches("^((a|t0|p|sda|rd|interference|rt)_(flanker|flanker_(congruent|incongruent))_(enh|std))")) %>%
+cleaned_data <- read_csv("data/2_study1/2_cleaned_data.csv") %>%
+  left_join(
+    reduce(
+      list(
+        model_std %>% mutate(id = as.numeric(id)), 
+        model_deg %>% mutate(id = as.numeric(id)), 
+        model_enh %>% mutate(id = as.numeric(id))), 
+      left_join)
+  ) %>%
   mutate(
-    scale_factor             = ifelse(round(scale_factor, 4) == 0.9007, 0, 1),
-    rtdiff_flanker_std       = rt_flanker_congruent_std - rt_flanker_incongruent_std,
-    rtdiff_flanker_enh       = rt_flanker_congruent_enh - rt_flanker_incongruent_enh
-    # vio_comp_c               = scale(vio_comp, scale = F) %>% as.numeric
-  ) %>%
-  # Long format for analyses
-  pivot_longer(matches("^((a|t0|p|sda|rd|interference|rtdiff)_flanker_(enh|std))"),
-               names_to = c(".value", "condition"),
-               names_pattern = "(^.*_flanker)(.*)") %>%
-  # Sum-code conditions
-  mutate(condition = ifelse(condition == "_std", 0, 1)) %>%
-  group_by(condition) %>%
-  # Calculate standardized dv measures
-  mutate(across(matches("(a|t0|p|sda|rd|interference|rtdiff)_flanker"), 
-                function(x) {scale(x) %>% as.numeric}, 
-                .names = "{.col}_z")
-  ) %>%
-  ungroup()
-
-
-primary_deg_data <- cleaned_data %>%
-  select(id, scale_factor, dems_edu, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise, counterbalance, 
-         vio_comp, matches("^((a|t0|p|sda|rd|interference|rt)_(flanker|flanker_(congruent|incongruent))_(deg|std))")) %>%
-  mutate(
-    scale_factor             = ifelse(round(scale_factor, 4) == 0.9007, 0, 1),
-    rtdiff_flanker_std       = rt_flanker_congruent_std - rt_flanker_incongruent_std,
-    rtdiff_flanker_deg       = rt_flanker_congruent_deg - rt_flanker_incongruent_deg
-    # vio_comp_c               = scale(vio_comp, scale = F) %>% as.numeric
-  ) %>%
-  # Long format for analyses
-  pivot_longer(matches("^((a|t0|p|sda|rd|interference|rtdiff)_flanker_(deg|std))"),
-               names_to = c(".value", "condition"),
-               names_pattern = "(^.*_flanker)(.*)") %>%
-  # Sum-code conditions
-  mutate(condition = ifelse(condition == "_std", 0, 1)) %>%
-  group_by(condition) %>%
-  # Calculate standardized dv measures
-  mutate(across(matches("(a|t0|p|sda|rd|interference|rtdiff)_flanker"), 
-                function(x) {scale(x) %>% as.numeric}, 
-                .names = "{.col}_z")
-  ) %>%
-  ungroup()
+    v_hddm_diff_std = v_con_hddm_std - v_incon_hddm_std,
+    v_hddm_diff_enh = v_con_hddm_enh - v_incon_hddm_enh,
+    v_hddm_diff_deg = v_con_hddm_deg - v_incon_hddm_deg,
+    
+    t_hddm_diff_std = t_con_hddm_std - t_incon_hddm_std,
+    t_hddm_diff_enh = t_con_hddm_enh - t_incon_hddm_enh,
+    t_hddm_diff_deg = t_con_hddm_deg - t_incon_hddm_deg
+  )
 
 
 
 
-# Multiverse for enhanced condition ---------------------------------------
+# 1. Shrinking Spotlight Model (SSP) --------------------------------------
 
-## Filters ----
-primary_enh_filter_grid <- 
-  create_filter_grid(
-    .df = primary_enh_data,
-    scale_factor == 1,
+## 1.1 Standard - Enhanced comparison ----
+
+mult_ssp_data_enh <- cleaned_data %>%
+  select(id, vio_comp, unp_comp, matches("^(a|t0|p|sda|rd|interference)_flanker_(std|enh)"),
+         scale_factor, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise) %>%
+  pivot_longer(
+    cols = matches("flanker"),
+    names_to = c(".value", "condition"),
+    names_pattern = "(^.*_flanker)(.*)"
+    ) %>%
+  mutate(condition = ifelse(condition == "_std", 0, 1)) 
+
+
+mult_ssp_grid_enh <- mult_ssp_data_enh |>
+  multitool::add_variables("iv", vio_comp, unp_comp) |>
+  multitool::add_variables("dv", a_flanker, t0_flanker, p_flanker, interference_flanker) |>
+  multitool::add_filters(
+    round(scale_factor, 4) != 0.9007,
     fullscreenenter == 1,
+    fullscreenexit == 0,
     attention_interrupt_sum < 1,
     att_noise %in% c(0,1,2)
-  )
+  ) |>
+  multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+  multitool::add_model(lmer({dv} ~ {iv} * condition + (1|id))) |>
+  multitool::add_postprocess("simslopes_adv", sim_slopes(pred = 'condition', modx = "{iv}", modx.values = c(-1,1))) |>
+  add_postprocess("points", ggpredict(terms = c("condition [0,1]", "{iv} [-1,1]"))) |>
+  multitool::expand_decisions()
 
-## Dependent variables ----
-primary_enh_var_grid <- 
-  create_var_grid(
-    .df = primary_enh_data,
-    dv = c(p_flanker, t0_flanker, a_flanker, interference_flanker, rtdiff_flanker)
-  )
+mult_ssp_fit_enh <- run_multiverse(mult_ssp_grid_enh)
 
-## Model specification ----
-primary_enh_mod_grid <- 
-  create_model_grid(
-    lmer({dv} ~ vio_comp_c * condition + (1|id))
-  )
 
-## Preprocessing steps ----
-primary_enh_preprocess <- 
-  create_preprocess(
-    mutate(vio_comp_c = scale(vio_comp, scale = F) |> as.numeric())
-  )
-
-primary_enh_postprocess <- NULL
-
-## Create full grid ----
-primary_enh_full_grid <- 
-  combine_all_grids(
-    .df            = primary_enh_data,
-    filter_grid    = primary_enh_filter_grid, 
-    var_grid       = primary_enh_var_grid,
-    model_grid     = primary_enh_mod_grid,
-    preprocessing  = primary_enh_preprocess,
-    postprocessing = primary_enh_postprocess
+mult_ssp_eff_enh <- mult_ssp_fit_enh %>%
+  unnest(c(lmer_fitted, specifications)) %>%
+  select(decision, variables, filters, lmer_tidy) %>%
+  unnest(c(filters, variables, lmer_tidy)) %>%
+  select(-c(effect, group, statistic)) %>%
+  filter(term %in% c("vio_comp", "unp_comp", "vio_comp:condition", "unp_comp:condition")) %>%
+  mutate(
+    term = case_when(
+      term == "vio_comp" ~ "vio_main",
+      term == "unp_comp" ~ "unp_main",
+      term == "vio_comp:condition" ~ "vio_int",
+      term == "unp_comp:condition" ~ "unp_int"
     )
+  )
+
+mult_ssp_simsl_enh <- mult_ssp_fit_enh %>%
+  unnest(sim_slopes_fitted) %>%
+  select(decision, sim_slopes_tidy) %>%
+  unnest(sim_slopes_tidy) %>%
+  select(-c(statistic, mod2, mod2.value, term)) 
 
 
-multiverse <- run_multiverse(
-  .grid = primary_enh_full_grid,
-  save_model = FALSE
-)
+## 1.2 Standard - Degraded comparison ----
+
+mult_ssp_data_deg <- cleaned_data %>%
+  select(id, vio_comp, unp_comp, matches("^(a|t0|p|sda|rd|interference)_flanker_(std|deg)"),
+         scale_factor, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise) %>%
+  pivot_longer(
+    cols = matches("flanker"),
+    names_to = c(".value", "condition"),
+    names_pattern = "(^.*_flanker)(.*)"
+  ) %>%
+  mutate(condition = ifelse(condition == "_std", 0, 1)) 
 
 
-
-report_universe_console(multiverse, 50)
-
-# Unpack multiverse -------------------------------------------------------
-
-unpacked_multiverse <- multiverse %>%
-  unnest(c(filters, variables, lmer)) %>%
-  unnest(lmer_result_tidy) %>%
-  filter(term %in% c("vio_comp_c", "vio_comp_c:condition"))
-
-# Proportion p-values
-unpacked_multiverse %>%
-  group_by(dv) %>%
-  summarise(
-    median_beta = median(estimate),
-    p_prop = sum(p.value < .05)/n()*100)
-
-
-
-# Multiverse for degraded condition ---------------------------------------
-
-
-## Filters ----
-primary_deg_filter_grid <- 
-  create_filter_grid(
-    .df = primary_deg_data,
-    scale_factor == 1,
+mult_ssp_grid_deg <- mult_ssp_data_deg |>
+  multitool::add_variables("iv", vio_comp, unp_comp) |>
+  multitool::add_variables("dv", a_flanker, t0_flanker, p_flanker, interference_flanker) |>
+  multitool::add_filters(
+    round(scale_factor, 4) != 0.9007,
     fullscreenenter == 1,
+    fullscreenexit == 0,
     attention_interrupt_sum < 1,
     att_noise %in% c(0,1,2)
+  ) |>
+  multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+  multitool::add_model(lmer({dv} ~ {iv} * condition + (1|id))) |>
+  multitool::add_postprocess("simslopes_adv", sim_slopes(pred = 'condition', modx = "{iv}", modx.values = c(-1,1))) |>
+  add_postprocess("points", ggpredict(terms = c("condition [0,1]", "{iv} [-1,1]"))) |>
+  multitool::expand_decisions()
+
+mult_ssp_fit_deg <- run_multiverse(mult_ssp_grid_deg)
+
+
+mult_ssp_eff_deg <- mult_ssp_fit_deg %>%
+  unnest(c(lmer_fitted, specifications)) %>%
+  select(decision, variables, filters, lmer_tidy) %>%
+  unnest(c(filters, variables, lmer_tidy)) %>%
+  select(-c(effect, group, statistic)) %>%
+  filter(term %in% c("vio_comp", "unp_comp", "vio_comp:condition", "unp_comp:condition")) %>%
+  mutate(
+    term = case_when(
+      term == "vio_comp" ~ "vio_main",
+      term == "unp_comp" ~ "unp_main",
+      term == "vio_comp:condition" ~ "vio_int",
+      term == "unp_comp:condition" ~ "unp_int"
+    )
   )
 
-## Dependent variables ----
-primary_deg_var_grid <- 
-  create_var_grid(
-    .df = primary_deg_data,
-    dv = c(p_flanker, t0_flanker, a_flanker, interference_flanker, rtdiff_flanker)
+mult_ssp_simsl_deg <- mult_ssp_fit_deg %>%
+  unnest(sim_slopes_fitted) %>%
+  select(decision, sim_slopes_tidy) %>%
+  unnest(sim_slopes_tidy) %>%
+  select(-c(statistic, mod2, mod2.value, term)) 
+
+
+
+# 2. Hierarchical Bayesian DDM (HDDM) -------------------------------------
+
+## 2.1 Standard - Enhanced comparison ----
+
+mult_hddm_data_enh <- cleaned_data %>%
+  select(id, vio_comp, unp_comp, a_hddm_std, a_hddm_enh, matches("^(v|t)_hddm_diff_(std|enh)"),
+         scale_factor, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise) %>%
+  pivot_longer(
+    cols = matches("hddm"),
+    names_to = c("parameter", "condition"),
+    values_to = "value",
+    names_pattern = "(.*hddm.*)(std|enh)"
+  ) %>%
+  mutate(
+    parameter = str_replace_all(parameter, "_$", ""),
+    condition = ifelse(condition == "std", 0, 1)
+  ) %>%
+  pivot_wider(names_from = "parameter", values_from = "value")
+
+
+mult_hddm_grid_enh <- mult_hddm_data_enh |>
+  multitool::add_variables("iv", vio_comp, unp_comp) |>
+  multitool::add_variables("dv", a_hddm, v_hddm_diff, t_hddm_diff) |>
+  multitool::add_filters(
+    round(scale_factor, 4) != 0.9007,
+    fullscreenenter == 1,
+    fullscreenexit == 0,
+    attention_interrupt_sum < 1,
+    att_noise %in% c(0,1,2)
+  ) |>
+  multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+  multitool::add_model(lmer({dv} ~ {iv} * condition + (1|id))) |>
+  multitool::add_postprocess("simslopes_adv", sim_slopes(pred = 'condition', modx = "{iv}", modx.values = c(-1,1))) |>
+  add_postprocess("points", ggpredict(terms = c("condition [0,1]", "{iv} [-1,1]"))) |>
+  multitool::expand_decisions()
+
+
+mult_hddm_fit_enh <- run_multiverse(mult_hddm_grid_enh)
+
+
+mult_hddm_eff_enh <- mult_hddm_fit_enh %>%
+  unnest(c(lmer_fitted, specifications)) %>%
+  select(decision, variables, filters, lmer_tidy) %>%
+  unnest(c(filters, variables, lmer_tidy)) %>%
+  select(-c(effect, group, statistic)) %>%
+  filter(term %in% c("vio_comp", "unp_comp", "vio_comp:condition", "unp_comp:condition")) %>%
+  mutate(
+    term = case_when(
+      term == "vio_comp" ~ "vio_main",
+      term == "unp_comp" ~ "unp_main",
+      term == "vio_comp:condition" ~ "vio_int",
+      term == "unp_comp:condition" ~ "unp_int"
+    )
   )
 
-## Model specification ----
-primary_deg_mod_grid <- 
-  create_model_grid(
-    lmer({dv} ~ vio_comp_c * condition + (1|id))
+mult_hddm_simsl_enh <- mult_hddm_fit_enh %>%
+  unnest(sim_slopes_fitted) %>%
+  select(decision, sim_slopes_tidy) %>%
+  unnest(sim_slopes_tidy) %>%
+  select(-c(statistic, mod2, mod2.value, term)) 
+
+
+
+
+## 2.2 Standard - Degraded comparison ----
+
+mult_hddm_data_deg <- cleaned_data %>%
+  select(id, vio_comp, unp_comp, a_hddm_std, a_hddm_deg, matches("^(v|t)_hddm_diff_(std|deg)"),
+         scale_factor, fullscreenenter, fullscreenexit, attention_interrupt_sum, att_noise) %>%
+  pivot_longer(
+    cols = matches("hddm"),
+    names_to = c("parameter", "condition"),
+    values_to = "value",
+    names_pattern = "(.*hddm.*)(std|deg)"
+  ) %>%
+  mutate(
+    parameter = str_replace_all(parameter, "_$", ""),
+    condition = ifelse(condition == "std", 0, 1)
+  ) %>%
+  pivot_wider(names_from = "parameter", values_from = "value")
+
+
+mult_hddm_grid_deg <- mult_hddm_data_deg |>
+  multitool::add_variables("iv", vio_comp, unp_comp) |>
+  multitool::add_variables("dv", a_hddm, v_hddm_diff, t_hddm_diff) |>
+  multitool::add_filters(
+    round(scale_factor, 4) != 0.9007,
+    fullscreenenter == 1,
+    fullscreenexit == 0,
+    attention_interrupt_sum < 1,
+    att_noise %in% c(0,1,2)
+  ) |>
+  multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+  multitool::add_model(lmer({dv} ~ {iv} * condition + (1|id))) |>
+  multitool::add_postprocess("simslopes_adv", sim_slopes(pred = 'condition', modx = "{iv}", modx.values = c(-1,1))) |>
+  add_postprocess("points", ggpredict(terms = c("condition [0,1]", "{iv} [-1,1]"))) |>
+  multitool::expand_decisions()
+
+mult_hddm_fit_deg <- run_multiverse(mult_hddm_grid_deg)
+
+
+mult_hddm_eff_deg <- mult_hddm_fit_deg %>%
+  unnest(c(lmer_fitted, specifications)) %>%
+  select(decision, variables, filters, lmer_tidy) %>%
+  unnest(c(filters, variables, lmer_tidy)) %>%
+  select(-c(effect, group, statistic)) %>%
+  filter(term %in% c("vio_comp", "unp_comp", "vio_comp:condition", "unp_comp:condition")) %>%
+  mutate(
+    term = case_when(
+      term == "vio_comp" ~ "vio_main",
+      term == "unp_comp" ~ "unp_main",
+      term == "vio_comp:condition" ~ "vio_int",
+      term == "unp_comp:condition" ~ "unp_int"
+    )
   )
 
-## Preprocessing steps ----
-primary_deg_preprocess <- 
-  create_preprocess(
-    mutate(vio_comp_c = scale(vio_comp, scale = F) |> as.numeric())
-  )
-
-primary_deg_postprocess <- NULL
-
-## Create full grid ----
-primary_deg_full_grid <- 
-  combine_all_grids(
-    .df            = primary_deg_data,
-    filter_grid    = primary_deg_filter_grid, 
-    var_grid       = primary_deg_var_grid,
-    model_grid     = primary_deg_mod_grid,
-    preprocessing  = primary_deg_preprocess,
-    postprocessing = primary_deg_postprocess
-  )
-
-
-multiverse_deg <- run_multiverse(
-  .grid = primary_deg_full_grid,
-  save_model = FALSE
-)
-
-
-# Unpack multiverse -------------------------------------------------------
-
-unpacked_multiverse_deg <- multiverse_deg %>%
-  unnest(c(filters, variables, lmer)) %>%
-  unnest(lmer_result_tidy) %>%
-  filter(term %in% c("vio_comp_c", "vio_comp_c:condition"))
-
-# Proportion p-values
-unpacked_multiverse %>%
-  group_by(dv) %>%
-  summarise(
-    median_beta = median(estimate),
-    p_prop = sum(p.value < .05)/n()*100)
+mult_hddm_simsl_deg <- mult_hddm_fit_deg %>%
+  unnest(sim_slopes_fitted) %>%
+  select(decision, sim_slopes_tidy) %>%
+  unnest(sim_slopes_tidy) %>%
+  select(-c(statistic, mod2, mod2.value, term)) 

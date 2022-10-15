@@ -11,7 +11,7 @@ library(sjlabelled)
 
 load(here("data", "2_study1", "0_task_data_raw.Rdata"))
 
-source(here("preregistrations", "2_study1", "scripts", "custom_functions", "functions_exclusions.R"))
+source("preregistrations/2_study1/scripts/custom_functions/functions_exclusions.R")
 
 # Planned exclusions ------------------------------------------------------
 

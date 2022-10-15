@@ -45,39 +45,36 @@ standardize_parameters <- function(model) {
 
 parse_hddm_stats <- function(stats_object) {
   
-  
-  names(stats_object) %>%
-    str_subset(".*subj.*") %>%
-    map_df(function(x){
-      
-      tibble(
-        id   = x,
-        mean =  stats_object[[x]]$mean,
-        sd   =  stats_object[[x]]$sd,
-        mc_error = stats_object[[x]]$`mc error`,
-        quantile25 = stats_object[[x]]$quantiles$`25`,
-        quantile50 = stats_object[[x]]$quantiles$`50`,
-        quantile75 = stats_object[[x]]$quantiles$`75`,
-        hpd_95 =  stats_object[[x]]$`95% HPD interval`,
-      )
-    }) %>%
-    separate(id, into = c("parameter", "id", "rm"), sep = "\\.") %>%
-    select(-rm) %>%
-    mutate(parameter = str_replace_all(parameter, "_subj", ""))
+  stats_object %>%
+    mutate(id = stats_object %>% rownames) %>%
+    as_tibble() %>%
+    unnest(everything()) %>%
+    rename(
+      sd = std,
+      mc_error = `mc err`,
+      quantile25 = `25q`,
+      quantile50 = `50q`,
+      quantile75 = `75q`
+    ) %>%
+    select(id, mean, sd, mc_error, starts_with("quantile")) %>%
+    filter(str_detect(id, ".*subj.*")) %>% 
+    separate(id, into = c("parameter", "id"), sep = "(\\.)") %>%
+    mutate(
+      parameter = str_replace_all(parameter, "_subj", ""),
+      parameter = str_replace_all(parameter, "\\(", "_"),
+      parameter = str_replace_all(parameter, "\\)", "")
+    ) %>%
+    arrange(id)
 }
 
 
 parse_hddm_traces <- function(stats_object, parms = c('v', 'v_std', 'a', 'a_std', 't', 't_std')){
 
     parms %>%
-      map(function(x) {
-        py_run_string(paste0("trace = ", stats_object, ".trace('", x, "')[:]"))
-        
-        
-          py$trace %>%
+      map_dfr(function(x) {
+        trace <- stats_object[[x]][[1]] %>%
           as_tibble() %>%
           mutate(parm = x)
-        
       })
   }
   

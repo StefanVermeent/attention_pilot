@@ -1,46 +1,73 @@
 library(tidyverse)
+library(forecast)
+
+load("data/2_study1/hddm_free_std_results.RData")
+load("data/2_study1/hddm_fixed_std_results.RData")
+load("data/2_study1/2_cleaned_data.RData")
 
 
-read_csv("data/2_study1/hddm_gelrub_free_std.csv") %>% summarise(max = max(`1`))
 
-load("data/2_study1/2_cleaned_data.Rdata")
+# Convergence checks ------------------------------------------------------
 
-
-hddm_data <- list.files("data/2_study1", pattern = "hddm_fixed", full.names = T) %>%
-  map_dfr(function(x) {
-    
-    read_csv(x, show_col_types = F) %>%
-      rename(id = `...1`) %>%
-      filter(str_detect(id, "subj")) %>%
-      separate(id, into = c("parm", "id"), sep = "_") %>%
-      separate(id, into = c("condition", "id"), sep = "\\.") %>%
-      mutate(condition = str_replace_all(condition, "subj|\\(|\\)", "")) %>%
-      unite("parm", c(parm, condition), sep = "_") %>%
-      mutate(parm = str_replace_all(parm, "_$", "")) %>%
-      select(parm, id, mean) %>%
-      mutate(source = x)
+hddm_free_std_results$traces %>%
+  map_df(function(x){
+    x %>% mutate(n=1:n())
   }) %>%
-  group_by(parm, id) %>%
-  summarise(value = mean(mean, na.rm = T)) %>%
-  ungroup() %>%
-  pivot_wider(names_from = "parm", values_from = "value", names_prefix = "hddm_") %>%
-  mutate(id = as.numeric(id))
+  ggplot(aes(n,value)) +
+  geom_line() +
+  facet_wrap(~parm, scales = "free") +
+  theme_classic()
+
+hddm_free_std_results$traces %>%
+  map_df(function(x){
+    autocor <- forecast::Acf(x, 100)
+    
+    autocor$lag %>% 
+      as_tibble() %>%
+      select(Lag = V1) %>%
+      bind_cols(
+        autocor$acf %>%
+          as_tibble() %>%
+          select(ACF = V1)) %>%
+      mutate(parm = unique(x$parm))
+  }) %>%
+  ggplot(aes(Lag, ACF)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_segment(mapping = aes(xend = Lag, yend = 0)) +
+  facet_wrap(~parm) +
+  theme_classic()
 
 
-cleaned_data %>%
-  select(id, matches("^(p|a|t0|rd|sda|interference)_flanker_std")) %>%
-  rename_with(.cols = matches("flanker"), ~str_replace_all(., "_flanker_std", "")) %>%
-  rename(
-    ssp_a = a,
-    ssp_t0 = t0,
-    ssp_p = p,
-    ssp_rd = rd,
-    ssp_sda = sda,
-    ssp_interference = interference
-  ) %>%
-  left_join(hddm_data) %>%
+
+
+hddm_free_std_results$parms %>%
+  select(id,parameter,mean) %>%
+  mutate(parameter = str_replace_all(parameter, "\\(incongruent\\)", "_incon")) %>%
+  mutate(parameter = str_replace_all(parameter, "\\(congruent\\)", "_con")) %>%
+  mutate(id = as.numeric(id)) %>%
+  pivot_wider(names_from = 'parameter', values_from = 'mean') %>%
+  select(id, v_incon, v_con, t_incon, t_con, a) %>%
+  left_join(cleaned_data %>% select(id, matches('(p|t0|a|interference)_flanker_std'), acc_flanker_incongruent_std, acc_flanker_congruent_std)) %>%
+  drop_na(a_flanker_std) %>%
   select(-id) %>%
-  cor() %>%
-  corrplot::corrplot(method = "number")
-  
+  cor(method = "spearman") %>%
+  corrplot::corrplot(method='number')
+
+
+
+
+hddm_fixed_std_results$parms %>%
+  select(id,parameter,mean) %>%
+#  mutate(parameter = str_replace_all(parameter, "\\(incongruent\\)", "_incon")) %>%
+#  mutate(parameter = str_replace_all(parameter, "\\(congruent\\)", "_con")) %>%
+  mutate(id = as.numeric(id)) %>%
+  pivot_wider(names_from = 'parameter', values_from = 'mean') %>%
+ # select(id, v_incon, v_con, t_incon, t_con, a) %>%
+  left_join(cleaned_data %>% select(id, acc_flanker_incongruent_std)) %>%
+  drop_na(acc_flanker_incongruent_std) %>%
+  select(-id) %>%
+  cor(method = "spearman") %>%
+  corrplot::corrplot(method='number')
+
+
 
