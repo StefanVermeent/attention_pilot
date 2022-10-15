@@ -32,9 +32,9 @@ task_exclusions <- function(data, label, lower_rt_cutoff = 250, upper_rt_cutoff 
       ex_narb_invalid_trial      = ifelse(rt < upper_rt_cutoff & rt > lower_rt_cutoff, FALSE, TRUE),
       ex_narb_invalid_trials_n   = ifelse(n() > 1, sum(rt > upper_rt_cutoff | rt < lower_rt_cutoff, na.rm = TRUE), NA),
       
-      ex_narb_invalid_trials_neutral_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "neutral", na.rm = TRUE), NA),
+     # ex_narb_invalid_trials_neutral_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "neutral", na.rm = TRUE), NA),
       
-      ex_narb_invalid_trials_cued_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "cued", na.rm = TRUE), NA),
+     # ex_narb_invalid_trials_cued_n   = ifelse(n() > 1, sum((rt > upper_rt_cutoff | rt < lower_rt_cutoff) & condition == "cued", na.rm = TRUE), NA),
       
       
       

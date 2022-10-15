@@ -57,7 +57,7 @@ execute_fast_dm <- function(task, model_version = "") {
 
 
 read_DDM <- function(task, model_version = "") {
-  results <- read_delim(here("data", "1_pilot", "DDM", str_glue("ddm_results_{task}{model_version}.lst")), delim = " ", trim_ws = TRUE) %>%
+  results <- read_table(here("data", "1_pilot", "DDM", str_glue("ddm_results_{task}{model_version}.lst"))) %>%
     mutate(dataset = str_replace_all(dataset, str_c("^", task, "_DDM_subject"), "") %>% as.numeric(),
            task = task) %>%
     rename(id = dataset)

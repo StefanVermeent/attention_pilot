@@ -75,7 +75,7 @@ spec_curves_flanker_raw <-
       ungroup()
     
     int_points <- 
-      primary_effects_points %>% 
+      primary_effects_points_flanker %>% 
       filter(dv_group == dv_which) %>%
       mutate(dv = factor(dv, levels = c("RT", "RT (log)", "Perceptual input (p)", "Boundary separation (a)", 
                                         "Non-decision time (t0)", "Initial attention width (sda)", "Rate of spotlight shrinking (rd)"))) %>%
@@ -469,8 +469,8 @@ primary_flanker_fig1 <-
       spec_curves_flanker_raw[[1]]$eff_curve,
       spec_curves_flanker_raw[[1]]$p_curve,
       spec_curves_flanker_raw[[1]]$sample_sizes,
-    #  spec_curves_raw[[1]]$spec_grid,
-      nrow  = 4,
+      spec_curves_flanker_raw[[1]]$spec_grid,
+      nrow  = 5,
       ncol  = 1, 
       align = "v", 
       axis  = "lr",
@@ -488,7 +488,7 @@ primary_flanker_fig2 <-
       spec_curves_flanker_ssp[[1]]$eff_curve,
       spec_curves_flanker_ssp[[1]]$p_curve,
       spec_curves_flanker_ssp[[1]]$sample_sizes,
-    #  spec_curves_ssp[[1]]$spec_grid,
+      spec_curves_ssp[[1]]$spec_grid,
       nrow  =3,
       ncol  = 1, 
       align = "v", 

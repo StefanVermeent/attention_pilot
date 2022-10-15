@@ -1,4 +1,4 @@
-alibrary(tidyverse)
+library(tidyverse)
 library(cowplot)
 library(here)
 library(magrittr)
@@ -71,7 +71,7 @@ spec_curves_interaction <-
       ungroup()
     
     int_points <- 
-      primary_effects_points %>% 
+      primary_effects_points_cueing %>% 
       filter(dv_group == dv_which) %>%
       mutate(dv = factor(dv, levels = c("RT", "RT (log)", "Drift rate (v)", "Boundary separation (a)", "Non-decision time (t0)"))) %>%
       mutate(

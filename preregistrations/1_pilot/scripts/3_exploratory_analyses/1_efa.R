@@ -41,7 +41,7 @@ efa_model <- factanal(efa_data, factors = 5, rotation = "oblimin")
 efa_model
 
 efa_tidy <- tidy(efa_model) %>% 
-  mutate(across(starts_with("fl"), ~ifelse(. < .32, NA, .))) %>% 
+#  mutate(across(starts_with("fl"), ~ifelse(. < .32, NA, .))) %>% 
   left_join(codebook %>% rename(variable = Variable)) %>% 
   arrange(fl1, fl2, fl3, fl4, fl5) %>% 
   mutate(

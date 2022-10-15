@@ -1,14 +1,14 @@
 
-# Libraries ---------------------------------------------------------------
+# 1. Libraries ---------------------------------------------------------------
 
 library(tidyverse)
 library(glue)
 library(here)
 library(RWiener)
-library(mvtnorm)
+#library(mvtnorm)
 library(data.table)
 
-# Load data ---------------------------------------------------------------
+# 2. Load data ---------------------------------------------------------------
 
 load(here("data", "1_pilot", "1_task_data_clean.Rdata"))
 
@@ -17,9 +17,9 @@ source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "funct
 
 
 
-# Change Detection Task ---------------------------------------------------
+# 3. Change Detection Task ---------------------------------------------------
 
-# Pre-treatment
+## Preparations ----
 change_DDM_setup <- change_data_clean_average %>%
   select(change_data_long) %>%
   unnest(change_data_long) %>%
@@ -61,7 +61,7 @@ change_DDM_results_mod1 <- read_DDM(task = "change", model_version = "_mod1") %>
 change_bic_mod1 <- mean(change_DDM_results_mod1$bic, na.rm = TRUE)
 
 
-# Model 2: 5-parameter model (inter-trial variability parameters fixed to 0) ----
+## Model 2: 5-parameter model (inter-trial variability parameters fixed to 0) ----
 
 # #Set Fast-DM settings
 
@@ -130,53 +130,66 @@ change_DDM_results_mod4 <- read_DDM(task = "change", model_version = "_mod4") %>
 
 change_bic_mod4 <- mean(change_DDM_results_mod4$bic, na.rm = TRUE)
 
+change_DDM_results_mod4 %<>%
+  select(
+    id,
+    change_ml_a = a,
+    change_ml_v = v,
+    change_ml_t0 = t0
+  )
+
+
+## Model 5: KS estimation with st0 freely esimated (not preregistered) ----
+
+# Set Fast-DM settings
+
+fast_dm_settings(task = "change", 
+                 model_version = "_mod5",
+                 method = "ks",
+                 d = 0,
+                 zr = 0.5,
+                 szr = 0, sv = 0, st0 = "",
+                 format = "TIME RESPONSE")
+
+# Compute DDM parameters
+execute_fast_dm(task = "change", model_version = "_mod5")
+
+# Read DDM results
+change_DDM_results_mod5 <- read_DDM(task = "change", model_version = "_mod5") %>%
+  left_join(change_DDM_setup %>% group_by(id) %>% summarise(n_trials = n())) %>%
+  mutate(bic = (-2 * fit) + (7 * log(n_trials)))
+
+change_bic_mod5 <- mean(change_DDM_results_mod5$bic, na.rm = TRUE)
+
+change_DDM_results_mod5 %<>%
+  select(
+    id,
+    change_ks_a = a,
+    change_ks_v = v,
+    change_ks_t0 = t0,
+    change_ks_st0 = st0
+  )
+
+
+
+## Remove individual files from folder ----
+remove_DDM_files()
+
+## Model fit ----
 
 glue(
-"Change Detection Model Versions:
+  "Change Detection Model Versions:
 
 The BIC value of model 1 is {change_bic_mod1}
 The BIC value of model 2 is {change_bic_mod2}
 The BIC value of model 3 is {change_bic_mod3}
 The BIC value of model 4 is {change_bic_mod4}
+The BIC value of model 5 is {change_bic_mod5}
 ")
 
-### Remove individual files from folder
-remove_DDM_files()
-
-## Change model fit ----
-
-## Simulate data ----
-
-change_sim_params <- simulate_DDM_parameters(data = change_DDM_results_mod4, nsim = 5000)
-
-pmap(change_sim_params, function(n,a,t0,z,v, row) {
-  rwiener(n,a,t0,z,v) %>%
-    as_tibble() %>%
-  mutate(resp = ifelse(resp == "upper", 1, 0)) %>%
-    write_delim(file = here("data", "1_pilot", "DDM", str_c("par_sim", row, ".dat")), col_names = FALSE)
-})
-
-execute_fast_dm(task = "change", model_version = "_mod4")
-
-### Read simulation results ----
-change_simulation_fit_vector <- read_DDM(task = "change", model_version = "_mod4") %>%
-  select(fit) %>%
-  pull() 
 
 
-change_DDM_results_mod4 %<>%
-  mutate(change_ml_bad_fit = ifelse(fit < quantile(change_simulation_fit_vector, .05)[[1]], TRUE, FALSE)) %>%
-  select(
-    id,
-    change_ml_a = a,
-    change_ml_v = v,
-    change_ml_t0 = t0,
-    change_ml_fit = fit,
-    change_ml_bad_fit
-  )
-
-
-# Attention Cueing Task ---------------------------------------------------
+# 4. Attention Cueing Task ---------------------------------------------------
 
 ## Pre-treatment ----
 
@@ -199,6 +212,7 @@ write_DDM_files(data = cueing_DDM_setup, vars = c("rt", "correct", "condition"),
 ## 6. 5-parameter model (inter-trial variability parameters fixed to 0); a is constrained to be equal across conditions
 ## 7. 4-parameter model (d fixed to 0); a is constrained to be equal across conditions
 ## 8. 3-parameter model (z fixed to 0.5); a is constrained to be equal across conditions
+## 9. KS estimation with st0 freely esimated (not preregistered)
 
 
 ## Model 1: 8-parameter model; a varies across conditions ----
@@ -224,7 +238,7 @@ cueing_bic_mod1 <- mean(cueing_DDM_results_mod1$bic, na.rm = TRUE)
 
 
 
-# Model 2: 5-parameter model (inter-trial variability parameters fixed to 0); a varies across conditions ----
+## Model 2: 5-parameter model (inter-trial variability parameters fixed to 0); a varies across conditions ----
 
 fast_dm_settings(task = "cueing", 
                  model_version = "_mod2",
@@ -315,7 +329,7 @@ cueing_bic_mod5 <- mean(cueing_DDM_results_mod5$bic, na.rm = TRUE)
 
 
 
-# Model 6: 5-parameter model (inter-trial variability parameters fixed to 0); a is fixed to be equal across conditions ----
+## Model 6: 5-parameter model (inter-trial variability parameters fixed to 0); a is fixed to be equal across conditions ----
 
 fast_dm_settings(task = "cueing", 
                  model_version = "_mod6",
@@ -381,19 +395,6 @@ cueing_DDM_results_mod8 <- read_DDM(task = "cueing", model_version = "_mod8") %>
 
 cueing_bic_mod8 <- mean(cueing_DDM_results_mod8$bic, na.rm = TRUE)
 
-
-glue(
-"Attention Cueing Model Versions:
-The BIC value of model 1 is {cueing_bic_mod1}
-The BIC value of model 2 is {cueing_bic_mod2}
-The BIC value of model 3 is {cueing_bic_mod3}
-The BIC value of model 4 is {cueing_bic_mod4}
-The BIC value of model 5 is {cueing_bic_mod5}
-The BIC value of model 6 is {cueing_bic_mod6}
-The BIC value of model 7 is {cueing_bic_mod7}
-The BIC value of model 8 is {cueing_bic_mod8}
-")
-
 cueing_DDM_results_mod8 %<>%
   select(
     id,
@@ -407,18 +408,111 @@ cueing_DDM_results_mod8 %<>%
   )
 
 
-# Cueing model fit --------------------------------------------------------
-# 
-# ## Simulate data ----
-# 
-# cueing_sim_params <- simulate_DDM_parameters(data = cueing_DDM_results_mod8, nsim = 5000)
+## Model 9: KS estimation with st0 freely esimated (not preregistered) ----
 
+fast_dm_settings(task = "cueing", 
+                 model_version = "_mod9",
+                 method = "ks",
+                 d = 0,
+                 zr = 0.5,
+                 szr = 0, sv = 0, st0 = "",
+                 depend = c("depends v condition", "depends t0 condition", "depends st0 condition"), 
+                 format = "TIME RESPONSE condition")
+
+# Compute DDM parameters
+execute_fast_dm(task = "cueing", model_version = "_mod9")
+
+# Read DDM results
+cueing_DDM_results_mod9 <- read_DDM(task = "cueing", model_version = "_mod9") %>%
+  left_join(change_DDM_setup %>% group_by(id) %>% summarise(n_trials = n())) %>%
+  mutate(bic = (-2 * fit) + (7 * log(n_trials)))
+
+cueing_bic_mod9 <- mean(cueing_DDM_results_mod9$bic, na.rm = TRUE)
+
+cueing_DDM_results_mod9 %<>%
+  select(
+    id,
+    cueing_cued_ks_a = a,
+    cueing_cued_ks_v = v_cued,
+    cueing_cued_ks_t0 = t0_cued,
+    cueing_neutral_ks_a = a,
+    cueing_neutral_ks_v = v_neutral,
+    cueing_neutral_ks_t0 = t0_neutral,
+    cueing_ks_fit = fit
+  )
+
+## Remove individual files from folder ----
+remove_DDM_files()
+
+
+
+# 5. Flanker Task ---------------------------------------------------------
+
+## Pre-treatment ----
+
+flanker_DDM_setup <- flanker_data_clean_average %>%
+  select(flanker_data_long) %>%
+  unnest(flanker_data_long) %>%
+  select(id, rt, correct, congruency) %>%
+  mutate(rt = rt / 1000) 
+
+## Write individual datafiles ----
+write_DDM_files(data = flanker_DDM_setup, vars = c("rt", "correct", "congruency"), task = "flanker") 
+
+
+## Model 1: KS estimation 
+
+fast_dm_settings(task = "flanker", 
+                 model_version = "_mod1",
+                 method = "ks",
+                 d = 0,
+                 zr = 0.5,
+                 szr = 0, sv = 0, st0 = "",
+                 depend = c("depends v congruency", "depends t0 congruency"), 
+                 format = "TIME RESPONSE congruency")
+
+# Compute DDM parameters
+execute_fast_dm(task = "flanker", model_version = "_mod1")
+
+# Read DDM results
+flanker_DDM_results_mod1 <- read_DDM(task = "flanker", model_version = "_mod1") %>%
+  left_join(flanker_DDM_setup %>% group_by(id, congruency) %>% summarise(n_trials = n())) %>%
+  mutate(bic = (-2 * fit) + (7 * log(n_trials)))
+
+flanker_bic_mod1 <- mean(flanker_DDM_results_mod1$bic, na.rm = TRUE)
+
+flanker_DDM_results_mod1 %<>%
+  select(
+    id,
+    flanker_con_ks_a = a,
+    flanker_con_ks_v = v_congruent,
+    flanker_con_ks_t0 = t0_congruent,
+    flanker_incon_ks_a = a,
+    flanker_incon_ks_v = v_incongruent,
+    flanker_incon_ks_t0 = t0_incongruent,
+    flanker_ks_fit = fit
+  )
+
+## Remove individual files from folder ----
+remove_DDM_files()
+
+
+## Model fit ----
+glue(
+  "Flanker Model Versions:
+The BIC value of model 1 is {flanker_bic_mod1}
+")
+
+
+
+# 6. Save objects ---------------------------------------------------------
 
 save(
   change_DDM_results_mod1, change_bic_mod1,
   change_DDM_results_mod2, change_bic_mod2,
   change_DDM_results_mod3, change_bic_mod3,
   change_DDM_results_mod4, change_bic_mod4,
+  change_DDM_results_mod5, change_bic_mod5,
   
   cueing_DDM_results_mod1, cueing_bic_mod1,
   cueing_DDM_results_mod2, cueing_bic_mod2,
@@ -428,4 +522,9 @@ save(
   cueing_DDM_results_mod6, cueing_bic_mod6,
   cueing_DDM_results_mod7, cueing_bic_mod7,
   cueing_DDM_results_mod8, cueing_bic_mod8,
+  cueing_DDM_results_mod9, cueing_bic_mod9,
+  
+  flanker_DDM_results_mod1, flanker_bic_mod1,
   file = here("data", "1_pilot", "1_DDM_objects.Rdata"))
+
+
