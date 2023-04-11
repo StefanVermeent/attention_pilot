@@ -29,7 +29,7 @@
 
 
 
-var jsPsych = initJsPsych();
+
 
 var globallocal_timeline = [
   cursor_on,
@@ -83,8 +83,33 @@ var full_experiment_timeline = [
   counterbalance,
   cognitive_tasks_end
   ].flat(2)
+  
+var jsPsych = initJsPsych({
+  on_finish: function() {
+    tasks_start           = jsPsych.startTime();
+    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
+    data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
+    
+    data_globloc_practice = jsPsych.data.get().filter({task: 'globloc_practice'});
+    data_globloc01        = jsPsych.data.get().filter({task: 'globloc01'});
+    data_globloc02        = jsPsych.data.get().filter({task: 'globloc02'});
+    
+    data_resize           = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser         = jsPsych.data.getInteractionData().json();
 
-
+    window.parent.postMessage([
+      tasks_start, 
+      data_flanker_practice.json(),
+      data_flanker.json(),
+      data_globloc_practice.json(),
+      data_globloc01.json(),
+      data_globloc02.json(),
+      data_resize.json(),
+      tasks_browser
+      ], 
+      "https://survey.uu.nl/jfe/form/SV_3eXfcxfHcpYTCWW");
+  }
+});
 
 jsPsych.run(full_experiment_timeline);
 </script>

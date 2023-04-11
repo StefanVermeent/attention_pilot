@@ -17,6 +17,7 @@ var globloc01 = {
   feedback_duration: 500,
   show_stim_with_feedback: false,
   stimulus: function(){return(jsPsych.timelineVariable('stimulus'))},
+  data: {variable: "globloc_01", task: 'globloc01'},
   timeline: [
 {stimulus: Ge_Lp, key_answer: 'g', data: {rule: 'global', type: 'first', variable: 'globloc_01', task: 'globloc'}},
 {stimulus: Gp_Lh, key_answer: 'l', data: {rule: 'local', type: 'switch', variable: 'globloc_01', task: 'globloc'}},
@@ -62,7 +63,7 @@ var globloc02 = {
   feedback_duration: 500,
   show_stim_with_feedback: false,
   stimulus: function(){return(jsPsych.timelineVariable('stimulus'))},
-  data: {variable: "globloc_02", task: 'globloc'},
+  data: {variable: "globloc_02", task: 'globloc02'},
   timeline: [
     {stimulus: Gh_Lt, key_answer: 'g', data: {rule: 'global', type: 'first', variable: 'globloc_01', task: 'globloc'}},
 {stimulus: Gh_Lf, key_answer: 'g', data: {rule: 'global', type: 'repeat', variable: 'globloc_01', task: 'globloc'}},
