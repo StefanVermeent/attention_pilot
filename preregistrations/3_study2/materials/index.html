@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>Cognitive Tasks</title>
+    <script src="https://unpkg.com/jspsych@7.3.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-categorize-html@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-resize@1.0.2"></script>
+
+    
+    <script src="global_variables.js"></script>
+
+    <script src="globallocal/0_globallocal_setup.js"></script>
+    <script src="globallocal/1_globallocal_instructions.js"></script>
+    <script src="globallocal/2_globallocal_procedure.js"></script>
+    
+    <script src="flanker/0_flanker_setup.js"></script>
+    <script src="flanker/1_flanker_instructions.js"></script>
+    <script src="flanker/2_flanker_procedure.js"></script>
+    
+    <link href="https://unpkg.com/jspsych@7.3.2/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+
+
+
+var jsPsych = initJsPsych();
+
+var globallocal_timeline = [
+  cursor_on,
+  preload_globloc, 
+  globloc_welcome, 
+  globloc_instructions, 
+  cursor_off,
+  globloc_practice_start, 
+  globloc_practice,
+  cursor_on,
+  globloc_practice_end, 
+  cursor_off,
+  globloc_test_start, 
+  globloc01,
+  cursor_on,
+  globloc_interblock, 
+  cursor_off,
+  globloc_test_start,
+  globloc02,
+  cursor_on
+]
+
+var flanker_timeline = [
+  flanker_welcome,
+  flanker_instructions,
+  cursor_off,
+  flanker_practice_start,
+  flanker_practice_procedure,
+  flanker_practice_finish,
+  flanker_test_procedure, 
+  cursor_on,
+  flanker_end
+]
+
+var test_order1 = [
+  {type: jsPsychCallFunction, func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
+  globallocal_timeline, flanker_timeline
+]
+
+var test_order2 = [
+  {type: jsPsychCallFunction, func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
+  flanker_timeline, globallocal_timeline 
+]
+
+counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2], 1)[0]
+
+
+var full_experiment_timeline = [
+  fullscreenmode,
+  resize_screen, 
+  counterbalance,
+  cognitive_tasks_end
+  ].flat(2)
+
+
+
+jsPsych.run(full_experiment_timeline);
+</script>
+</html>

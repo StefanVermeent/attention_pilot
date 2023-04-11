@@ -1,0 +1,396 @@
+---
+bibliography: references.bib
+csl: apa.csl
+output:
+  officedown::rdocx_document:
+    page_margins:
+      bottom: 1
+      footer: 0
+      gutter: 0
+      header: 0.5
+      left: 1
+      right: 1
+      top: 1
+    plots:
+      align: center
+      caption:
+        pre: 'Figure '
+        sep: '. '
+        style: Image Caption
+    reference_docx: reference-doc.docx
+    tables:
+      caption:
+        pre: 'Table '
+        sep: '. '
+        style: Table Caption
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+
+# Load libraries
+library(tidyverse)
+library(officer)
+library(flextable)
+library(here)
+library(pwr)
+
+
+# set up chunk options
+knitr::opts_chunk$set(
+  echo = F,
+  fig.align = "center",
+  fig.pos = "!t", 
+  out.extra = "",
+  fig.show = "asis",
+  message = FALSE,
+  warning = FALSE
+)
+
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
+
+load(here("data", "2_study1", "0_self_report_raw.Rdata"))
+```
+
+
+
+
+
+Generally speaking, the results of the first two studies were not in line with our initial predictions about a present-oriented attention style.
+Although we expected such a style to lead to faster speed of perceptual processing on attention tasks, we generally found the opposite pattern.
+One reason for this might be that a present-oriented attention style leads people from adversity to process information more holistically, which would lower the depth of perceptual processing of any individual stimulus.
+Another related reason might be that an external, present-oriented attention style extends beyond the computer screen to all of their immediate environment.
+Both of these are potential mechanistic explanations for a lowered quality of perceptual processing that would be in line with a specialized attention style.
+In study 2, we aimed to replicate the broader findings from study 1 (lowered perceptual input on the Flanker Task but no differences in interference) and to investigate if and how the lower quality of perceptual processing was associated with a more holistic style of attention.
+
+## Primary aims {#primary}
+
+1. Investigate how unpredictability and violence exposure are associated with perceptual input and interference on the Flanker Task by pooling the data across all three studies.
+
+2. Investigate how unpredictability and violence exposure are associated with a preference for more holistic vs. detailed processing of information.
+
+
+# Methods {#methods}
+
+## Participants {#participants}
+
+Participants will be 400 US-based individuals between the ages of 18 and 30. Recruitment will be identical to study 1. 
+We conducted a power analysis for the planned linear regressions through simulation. 
+We determined the required sample size to achieve power of > .90 for a standardized main effect of 0.05.
+This main effect is slightly lower than the effect of 0.06 that we found for perceptual input in the pooled analyses of study 1.
+Simulations revealed that we would require around 450 participants to achieve a power of .93.
+We decided to recruit 500 participants with the expectation that we will have to exclude around 50 participants.
+
+## Exclusion criteria {#exclusion}
+
+Participants will be excluded if they 1) do not complete the full study or both cognitive tasks, 2) miss both attention check items or if they have suspicious response patterns (e.g., consistently endorsing high response options even when some items were reverse coded), 3) have a screen height < 700 pixels or a screen height that is bigger than the screen width to ensure the tasks were completed on a laptop or desktop pc, 4) exit full-screen mode and/or engaged with other broswer tabs *during* the cognitive tasks (but not while reading instructions or while taking breaks in between blocks), 5) do not perform above chance on either the Flanker Task or the Global-Local Task (based on a binomial distribution using a probability of 97.5%).
+
+In addition, we will screen reaction times on both cognitive tasks. 
+We will remove trials with response times < 250 or > 3500 ms.
+Participants with more than 10 removed trials will be excluded from the analyses.
+
+## Measures {#measures}
+
+### Flanker Task {#flanker}
+
+The Flanker Task was identical to the standard version used in study 1. 
+It was programmed in JsPsych 7.3.2 [@deleeuw_2015]. 
+Participants first completed eight practice trials and next completed 64 test trials in a single block.
+
+## Global-Local Task {#globallocal}
+
+
+
+### Current state {#state}
+
+We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S; @spielberger_1999]. The STAI-S contains 20 short items measuring current anxiety (e.g., "I feel tense"; See [Table S1](#appendix) for an overview of all items). Participants rated each item on a scale of 1 (not at all) to 4 (very much so). An overall state anxiety variable was computed by averaging across the 20 unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
+
+In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). We computed an overall sleep deprivation composite by standardizing and averaging across the two unweighted sleep-related items (*M* = `r #TBD `, *SD* = `r #TBD `).
+
+### Violence exposure {#violence}
+
+Violence exposure was measured using the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] and two items assessing exposure to physical fights before age 13. The NVS contains seven items measuring perceived exposure to violence before age 13 (e.g., "Crime was common in the neighborhood where I grew up"; See [Table S2](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true). The physical fighting items assessed the number of times participants witnessed fights before age 13: "Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?" Answers to both items ranged from 1 (0 times) to 8 (12 or more times). The items of the NVS were averaged together (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). Similarly, we averaged the scores on the two fighting items together. Finally, we created a perceived violence exposure composite by standardizing the NVS and fighting composites and calculating an unweighted average (*r* = `r #TBD `).
+
+### Unpredictability {#unpred}
+
+We distinguish between subjective and objective measures of environmental unpredictability.
+We distinguish between subjective and objective measures of environmental unpredictability.
+Subjective unpredictability will be measured as an unweighted average of three scales: 1) A scale of perceived childhood unpredictability used in previous research (see [Table S3]) [@mittal_2015; @young_2018]; 2) An adapted version of the Confusion, Hubbub and Order Scale [CHAOS; @matheny_1995] (see [Table S5](#appendix)); 3) An adapted version of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019] (see [Table S4](#appendix)).
+Objective unpredictability will be measured as an unweighted average of four items relating to experiences prior to age 13: 1) number of residential changes, 2) number of male and female romantic partners of a caregiver besides the other primary caregiver (measured separately; values > 6 were given a value 6 to prevent extreme outliers), 4) self-reported stability of the family and social environment across four dimensions: economic status, family environment, childhood neighborhood environment, and childhood school environment (rated between 1 (the same all the time) and 5 (constant and rapid changes)).
+The main analyses will be based on a full composite that is an unweighted standardized average of subjective and objective unpredictability.
+
+### Poverty exposure {#ses}
+
+We will create a poverty composite score that is the average of the following measures (standardized) focusing on the family situation prior to age 13: 1) perceived level of resource scarcity (See [Table S6](#appendix)); 2) the unweighted average of the highest achieved education of both primary caregivers; 3) household income (6-point scale: 'less than \$ 25k/year', '\$25k - \$49k/year, '\$50 - \$74k/year', '\$75 - \$99k/year', '\$100 - \$149k/year', 'more than \$150k/year'. Scores were reverse coded so that higher scores indicated higher levels of poverty.).
+
+### Attentional style
+
+We will measure attentional style using the Attentional Style Questionnaire [ASQ; @calster_2018].
+The ASQ measures self-reported attentional style, with seven items  
+
+### Impulsivity {#impulsivity}
+
+We will measure impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale (BIS; short form; [@patton_1995; @spinella_2007]) (See [Table S7](#appendix)) 
+An overall impulsivity variable will be computed by averaging the five unweighted items. 
+
+### Future Orientation {#future_orientation}
+
+We will measure future orientation with an adapted version of the Future Orientation Scale [FOS; @steinberg_2009] (See [Table S8](#appendix).
+An overall future orientation variable will be computed by averaging the 15 unweighted items.
+
+### Depressive symptoms {#depression}
+
+We will measure depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD; @radloff_1977] (See [Table S9](#appendix). 
+An overall depression variable will be computed by averaging the 20 unweighted items.
+
+## Procedure {#procedure}
+
+The experiment will be completed on the participants' own laptop or desktop computer and will of five parts (in fixed order): consent, cognitive tasks, questionnaire battery, brief demographics form, and final checks including the opportunity to give feedback on the experiment. Participants are allowed to refrain from answering any of the questionnaire items, but are prompted with a warning once when moving to the next page if one of the items is not answered (which they can ignore).
+
+After providing consent, participants start either with the Flanker Task or Global-Local Task (counterbalanced). They are asked to complete the tasks in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. 
+At the onset of the first task, the experiment switches to full-screen mode to limit distractions from other programs or browser tabs.
+The size of the task stimuli is controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. 
+After successfully resizing the screen, participants complete all three tasks. 
+Code for the three tasks can be found at [https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/materials](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/materials). 
+
+After completing the cognitive tasks, participants complete the questionnaire battery in the following fixed order: 1) Current state (state anxiety and separate questions relating to specific states); 2) Childhood adversity (perceived unpredictability, perceived socio-economic status, exposure to violence and physical fights, household chaos); 3) Temporal orientation (impulsivity, future orientation); 4) Depressive symptoms.
+
+Finally, the demographics questions asks about the participant's age, weight, height, physical activity, sex at birth, gender, ethnicity, social class (current and during childhood), education level (one's own as well as caregivers' education level), occupation, and household income (current and during childhood). 
+At the end of the experiment, we ask participants if they ever got up or were interrupted during the study, and how noisy their environment was during the attention tasks. 
+
+The full experiment is expected to take approximately 30 minutes. Participants are paid £3.75 upon completing the full experiment.
+
+## Data analysis {#analysis_plan}
+
+### DDM estimation {#ddm_plan}
+
+For the Flanker Task, we will use the Shrinking Spotlight Model [SSP; @grange_2016; @white_2018a; @white_2018b; @white_2011] to fit the data.
+The SSP model will be fit to the data of each individual participant in two steps. 
+First, we loop over 50 different sets of starting parameters with a variance of 20 to find the best starting values for each participant.  
+On this first fitting step, 1000 trials will be simulated on each iteration of the fit routine. 
+Second, after finding the optimal set of starting values, we fit the final model using the best starting values found in step 1 and simulate 50,000 trials on each iteration. 
+The main parameters of interest are perceptual input (*p*) and interference (initial attention width / attention shrinking rate).
+
+For the Global-Local Task, we will use an hierarchical Bayesian DDM to fit the data using the runjags package [@denwood_2016].
+Drift rate and non-decision time will be freely estimated per task condition (global vs. local), whereas boundary separation wil be fixed to be equal across conditions.
+The starting point will be fixed to 0.5.
+Each model will be fit with three Markov Chain Monte Carlo (MCMC) chains. Each chain will contain 2,000 burn-in samples and 10,000 additional samples. 
+Of these samples, every 10th sample will be retained. 
+Posterior samples of all three chains will be combined, resulting in a posterior sample of 3,000 samples. 
+The main parameter of interest is the drift rate, more specifically, the difference between drift rates (drift rate~global~ - drift rate~local~).
+
+### Primary analyses
+
+To address the [first primary aim](#primary), we will fit a linear regression model to the pooled data of all three studies (i.e., the pilot study, study 1, and study 2).
+We will fit different models for environmental unpredictability and violence exposure as predictors (using the respective composite scores) and for perceptual input and interference as dependent variables.
+Each model will additionally contain the following covariates: study number (...), whether participants rescaled their screen at the start of the cognitive tasks (yes or no, sum-coded), whether participants experienced interruptions during the tasks (yes or no, sum-coded), and whether people exited full-screen mode during the experiment (yes or no, sum-coded).
+Note that the latter three covariates were included as arbitrary decisions in the multiverse analyses for the pilot study and study 1.
+However, as we found that they substantially altered the results, we decided to reclassify them as non-arbitrary decisions and include them as covariates instead.
+To address the [second primary aim](#primary), we will fit the same model as described above for the first primary aim, but with different the difference score of the Global-Local drift rate as the dependent variable.
+
+### Multiverse analysis {#multiverse_plan}
+
+We will conduct a multiverse analysis for all primary analyses.
+We identified seven arbitrary analytic decisions, including or excluding 1) participants who had a recaptcha score below 0.5 (possibly indicating bots); 2) participants who did not enter fullscreen mode prior to starting the cognitive tasks; 3) participants who indicated high levels of noise in their environment.
+For each analysis, we report the median $\beta$, 95% confidence intervals, proportion of *p*-values < .05 across all analytic decisions. For the primary analyses, we used a bootstrapping technique to compute overall *p*-values to assess whether the obtained median $\beta$ is significantly larger than zero [@simonsohn_2020].
+
+
+\pagebreak
+
+# References {#refs}
+
+<div id="refs"></div>
+
+\pagebreak
+
+# Appendix
+
+Go back to [Methods](#state)
+
+```{r supp_table1, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the State-Trait Anxiety Inventory (state subscale; STAI-S)"}
+codebook %>%
+  filter(str_detect(Variable, "stai_s(\\d\\d|_\\d\\d)")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,10,11,15,16,19,20), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#violence)
+
+```{r tableS2, tab.id="tableS2", tab.cap.style="Table Caption", tab.cap="Items of the Neighborhood Violence Scale (NVS)"}
+codebook %>%
+  filter(str_detect(Variable, "violence\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,3), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS3, tab.id="tableS3", tab.cap.style="Table Caption", tab.cap="Items of the Perceived Childhood Unpredictability scale"}
+codebook %>%
+  filter(str_detect(Variable, "unp\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#unpred)
+
+```{r tableS4, tab.id="tableS4", tab.cap.style="Table Caption", tab.cap="Items of the Questionnaire of Unpredictability in Childhood (QUIC)"}
+codebook %>%
+  filter(str_detect(Variable, "quic\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Parental monitoring and involvement") %>%
+  add_row(.after = 10, "Label" = "Parental predictability") %>%
+  add_row(.after = 23, "Label" = "Parental environment") %>%
+  add_row(.after = 30, "Label" = "Physical environment") %>%
+  add_row(.after = 38, "Label" = "Safety and security") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,3,4,5,6,7,8,9,11,14,16,22,32), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,11,24)) %>%
+  bold(i = c(1,11,24, 31, 39)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#chaos)
+
+```{r tableS5, tab.id="tableS5", tab.cap.style="Table Caption", tab.cap="Items of the Confusion, Hubbub, and Order Scale (CHAOS)"}
+codebook %>%
+  filter(str_detect(Variable, "chaos\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,7,12,14,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#ses)
+
+```{r tableS6, tab.id="tableS6", tab.cap.style="Table Caption", tab.cap="Items of the perceived resource scarcity scale"}
+codebook %>%
+  filter(str_detect(Variable, "ses\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(!Item %in% c(7), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak 
+
+Go back to [Methods](#impulsivity)
+
+```{r tableS7, tab.id="tableS7", tab.cap.style="Table Caption", tab.cap="Items of the Barrett Impulsivity Scale (BIS) - motor impulsivity subscale"}
+codebook %>%
+  filter(str_detect(Variable, "impuls\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
+Go back to [Methods](#future_orientation)
+
+```{r tableS8, tab.id="tableS8", tab.cap.style="Table Caption", tab.cap="Items of the Future Orientation Scale (FOS)"}
+codebook %>%
+  filter(str_detect(Variable, "fos\\d\\d")) %>% 
+  slice(match(c("fos01","fos06","fos07","fos12","fos13", "fos02","fos05","fos08","fos11","fos14", "fos03","fos04","fos09","fos10","fos15"), Variable)) %>%
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  add_row(.before = 1, "Label" = "Planning ahead") %>%
+  add_row(.after = 6, "Label" = "Time perspective") %>%
+  add_row(.after = 12, "Label" = "Anticipation of future consequences") %>%
+  mutate(Label = ifelse(Item %in% c(1,2,5,8,9,11,12,15), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  merge_h_range(i = c(1,7,13)) %>%
+  bold(i = c(1,7,13)) %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```
+
+\pagebreak
+
+Go back to [Methods](#depression)
+
+```{r tableS9, tab.id="tableS9", tab.cap.style="Table Caption", tab.cap="Items of the Epidemiologic Studies Depression Scale (CESD)"}
+codebook %>%
+  filter(str_detect(Variable, "depression\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  mutate(Label = ifelse(Item %in% c(4,8,12,16), str_c(Label, "*"), Label)) %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description") %>%
+  add_footer_row(values = " ", colwidths = 3) %>%
+  compose(
+    i = 1, j = 1,
+    as_paragraph(as_i("Note: "), "Reverse scored items."),
+    part = 'footer')
+```

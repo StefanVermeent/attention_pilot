@@ -4,7 +4,7 @@
 
 // At start of experiment: Make sure the size of stimulus presentation is the same for all participants.
 var resize_screen = {
-  type: 'resize',
+  type: jsPsychResize,
   item_width: 3 + 3/8,
   item_height: 2 + 1/8,
   prompt: "<p>Before we start, it is important that you follow the steps below carefully.<br>" +
@@ -22,13 +22,13 @@ var resize_screen = {
 }};
 
 var fullscreenmode = {
-  type: 'fullscreen',
+  type: jsPsychFullscreen,
   fullscreen_mode: true
 };
 
 // Remove cursor during cognitive tasks
 var cursor_off = {
-    type: 'call-function',
+    type: jsPsychCallFunction,
     func: function() {
         document.body.style.cursor= "none";
     }
@@ -37,7 +37,7 @@ var cursor_off = {
 
 // Make cursor visible again in between cognitive tasks or when a button response is required.
 var cursor_on = {
-    type: 'call-function',
+    type: jsPsychCallFunction,
     func: function() {
         document.body.style.cursor= "auto";
     }
@@ -46,7 +46,7 @@ var cursor_on = {
 
 // Task feedback during the practice trials.
 var feedback = {
-  type: 'html-keyboard-response',
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: function(){
     
     var last_trial_rt = jsPsych.data.getLastTrialData().values()[0].rt;
@@ -61,7 +61,7 @@ var feedback = {
         return "<p style = 'color:red;font-size:40px'>Incorrect!</p>"; 
       }}},
   trial_duration: 2000,
-  choices: jsPsych.NO_KEYS,
+  choices: "NO_KEYS",
   data: {
     variable: 'feedback'
   }
@@ -70,7 +70,7 @@ var feedback = {
 
 // End of Cognitive task part of the experiment.
 var cognitive_tasks_end = {
-  type: "html-button-response",
+  type: jsPsychHtmlButtonResponse,
   stimulus: 
   "Great job!<br><br>" +
   "You have finished the first part of the experiment.<br><br>" +
