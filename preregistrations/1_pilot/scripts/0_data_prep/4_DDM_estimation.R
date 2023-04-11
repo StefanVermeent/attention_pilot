@@ -1,14 +1,14 @@
 
-# 1. Libraries ---------------------------------------------------------------
+# Libraries ---------------------------------------------------------------
 
 library(tidyverse)
 library(glue)
 library(here)
 library(RWiener)
-#library(mvtnorm)
 library(data.table)
 
-# 2. Load data ---------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
 
 load(here("data", "1_pilot", "1_task_data_clean.Rdata"))
 
@@ -17,9 +17,11 @@ source(here("preregistrations", "1_pilot", "scripts", "custom_functions", "funct
 
 
 
-# 3. Change Detection Task ---------------------------------------------------
+# 1. Standard DDM Models --------------------------------------------------
 
-## Preparations ----
+# 1.1. Change Detection Task ---------------------------------------------------
+
+## Prepare data ----
 change_DDM_setup <- change_data_clean_average %>%
   select(change_data_long) %>%
   unnest(change_data_long) %>%
@@ -189,9 +191,9 @@ The BIC value of model 5 is {change_bic_mod5}
 
 
 
-# 4. Attention Cueing Task ---------------------------------------------------
+# 1.2. Attention Cueing Task ---------------------------------------------------
 
-## Pre-treatment ----
+## Prepare data ----
 
 cueing_DDM_setup <- cueing_data_clean_average %>%
   select(cueing_data_long) %>%
@@ -398,10 +400,9 @@ cueing_bic_mod8 <- mean(cueing_DDM_results_mod8$bic, na.rm = TRUE)
 cueing_DDM_results_mod8 %<>%
   select(
     id,
-    cueing_cued_ml_a = a,
+    cueing_ml_a = a,
     cueing_cued_ml_v = v_cued,
     cueing_cued_ml_t0 = t0_cued,
-    cueing_neutral_ml_a = a,
     cueing_neutral_ml_v = v_neutral,
     cueing_neutral_ml_t0 = t0_neutral,
     cueing_ml_fit = fit
@@ -424,7 +425,7 @@ execute_fast_dm(task = "cueing", model_version = "_mod9")
 
 # Read DDM results
 cueing_DDM_results_mod9 <- read_DDM(task = "cueing", model_version = "_mod9") %>%
-  left_join(change_DDM_setup %>% group_by(id) %>% summarise(n_trials = n())) %>%
+  left_join(cueing_DDM_setup %>% group_by(id) %>% summarise(n_trials = n())) %>%
   mutate(bic = (-2 * fit) + (7 * log(n_trials)))
 
 cueing_bic_mod9 <- mean(cueing_DDM_results_mod9$bic, na.rm = TRUE)
@@ -432,10 +433,9 @@ cueing_bic_mod9 <- mean(cueing_DDM_results_mod9$bic, na.rm = TRUE)
 cueing_DDM_results_mod9 %<>%
   select(
     id,
-    cueing_cued_ks_a = a,
+    cueing_ks_a = a,
     cueing_cued_ks_v = v_cued,
     cueing_cued_ks_t0 = t0_cued,
-    cueing_neutral_ks_a = a,
     cueing_neutral_ks_v = v_neutral,
     cueing_neutral_ks_t0 = t0_neutral,
     cueing_ks_fit = fit
@@ -446,9 +446,10 @@ remove_DDM_files()
 
 
 
-# 5. Flanker Task ---------------------------------------------------------
 
-## Pre-treatment ----
+# 1.3 Flanker Task (not preregistered) ------------------------------------
+
+## Prepare data ----
 
 flanker_DDM_setup <- flanker_data_clean_average %>%
   select(flanker_data_long) %>%
@@ -460,10 +461,43 @@ flanker_DDM_setup <- flanker_data_clean_average %>%
 write_DDM_files(data = flanker_DDM_setup, vars = c("rt", "correct", "congruency"), task = "flanker") 
 
 
-## Model 1: KS estimation 
+## Model 1: 3-parameter model (d fixed to 0) ----
 
 fast_dm_settings(task = "flanker", 
                  model_version = "_mod1",
+                 method = "ml",
+                 d = 0,
+                 zr = 0.5,
+                 szr = 0, sv = 0, st0 = 0,
+                 depend = c("depends v condition", "depends t0 condition"), 
+                 format = "TIME RESPONSE condition")
+
+# Compute DDM parameters
+execute_fast_dm(task = "flanker", model_version = "_mod1")
+
+# Read DDM results
+flanker_DDM_results_mod1 <- read_DDM(task = "flanker", model_version = "_mod1") %>%
+  left_join(flanker_DDM_setup %>% group_by(id) %>% summarise(n_trials = n())) %>%
+  mutate(bic = (-2 * fit) + (3 * log(n_trials))) 
+
+flanker_bic_mod1 <- mean(flanker_DDM_results_mod1$bic, na.rm = TRUE)
+
+flanker_DDM_results_mod1 %<>%
+  select(
+    id,
+    flanker_ml_a = a,
+    flanker_con_ml_v = v_congruent,
+    flanker_con_ml_t0 = t0_congruent,
+    flanker_incon_ml_v = v_incongruent,
+    flanker_incon_ml_t0 = t0_incongruent,
+    flanker_ml_fit = fit
+  )
+
+
+## Model 2: KS estimation ----
+
+fast_dm_settings(task = "flanker", 
+                 model_version = "_mod2",
                  method = "ks",
                  d = 0,
                  zr = 0.5,
@@ -472,22 +506,21 @@ fast_dm_settings(task = "flanker",
                  format = "TIME RESPONSE congruency")
 
 # Compute DDM parameters
-execute_fast_dm(task = "flanker", model_version = "_mod1")
+execute_fast_dm(task = "flanker", model_version = "_mod2")
 
 # Read DDM results
-flanker_DDM_results_mod1 <- read_DDM(task = "flanker", model_version = "_mod1") %>%
+flanker_DDM_results_mod2 <- read_DDM(task = "flanker", model_version = "_mod2") %>%
   left_join(flanker_DDM_setup %>% group_by(id, congruency) %>% summarise(n_trials = n())) %>%
   mutate(bic = (-2 * fit) + (7 * log(n_trials)))
 
-flanker_bic_mod1 <- mean(flanker_DDM_results_mod1$bic, na.rm = TRUE)
+flanker_bic_mod2 <- mean(flanker_DDM_results_mod2$bic, na.rm = TRUE)
 
-flanker_DDM_results_mod1 %<>%
+flanker_DDM_results_mod2 %<>%
   select(
     id,
-    flanker_con_ks_a = a,
+    flanker_ks_a = a,
     flanker_con_ks_v = v_congruent,
     flanker_con_ks_t0 = t0_congruent,
-    flanker_incon_ks_a = a,
     flanker_incon_ks_v = v_incongruent,
     flanker_incon_ks_t0 = t0_incongruent,
     flanker_ks_fit = fit
@@ -505,9 +538,142 @@ The BIC value of model 1 is {flanker_bic_mod1}
 
 
 
-# 6. Save objects ---------------------------------------------------------
+# 2. SSP Model (Flanker only) ---------------------------------------------
+
+# Tidy Flanker Data -------------------------------------------------------
+
+flanker_SDDM_setup <- flanker_data_clean_average %>%
+  select(flanker_data_long) %>%
+  mutate(
+    flanker_data_long = map(flanker_data_long, function(x) {
+      
+      x %>%
+        mutate(rt=rt/1000) %>%
+        rename(subject = id, accuracy = correct) %>%
+        select(subject, congruency, accuracy, rt)
+    }) 
+  )
+
+
+# In case processing was interrupted, we check which subjects were already processed and skip them
+processed_files <- list.files(here("data", "1_pilot")) %>%
+  str_subset("ssp_fit") %>%
+  str_replace_all("ssp_fit_|.csv", "") %>%
+  as.numeric()
+
+flanker_SDDM_setup %<>%
+  mutate(
+    flanker_data_long = map(flanker_data_long, function(x){
+      
+      if(unique(x$subject) %in% processed_files) {
+        return(NA)
+      } else {
+        return(x)
+      }
+    })
+  ) %>%
+  filter(!is.na(flanker_data_long))
+
+# Fit SSP Model -----------------------------------------------------------
+
+# Number of cores for parallel processing
+cores <- parallel::detectCores()
+
+# set random seed so user can reproduce simulation outcome
+set.seed(42)
+
+# during the fit, how many sets of starting parameters should be used?
+n_start_parms <- 50
+
+# what should the variance across starting parameters be?
+var_start_parms <- 20
+
+# how many trials to simulate during each iteration of the fit routine whilst
+# exploring multiple starting parameters?
+n_first_pass <- 1000
+
+# how many trials to simulate during the final fit routine?
+n_final_pass <- 50000
+
+
+# Initiate parallel processing
+plan(multisession, workers = cores - 2)
+
+# Find best starting parameters for each subject
+
+ssp_results <- 
+  flanker_SDDM_setup %>%
+  mutate(
+    results = future_map(flanker_data_long,
+                         function(x) {
+                           
+                           message("we are getting past the start")
+                           tic()
+                           # Find best starting parameters
+                           best_starting_parms <-
+                             fitMultipleSSP(x, var = var_start_parms,
+                                            nParms = n_start_parms,
+                                            nTrials = n_first_pass,
+                                            multipleSubjects = FALSE)
+                           
+                           message("We got pas the best starting parms function")
+                           
+                           
+                           # Perform final fit using best starting parameters
+                           final_fit <-
+                             fitSSP(x, parms = best_starting_parms$bestParameters,
+                                    nTrials = n_final_pass, multipleSubjects = FALSE)
+                           time <- toc()
+                           
+                           message("We got pas the final fit")
+                           
+                           final_fit_results <-
+                             tibble(
+                               subject    = unique(x$subject),
+                               start_a    = best_starting_parms$bestParameters[1],
+                               start_t0   = best_starting_parms$bestParameters[2],
+                               start_p    = best_starting_parms$bestParameters[3],
+                               start_rd   = best_starting_parms$bestParameters[4],
+                               start_sda  = best_starting_parms$bestParameters[5],
+                               start_g2   = best_starting_parms$g2,
+                               start_bbic = best_starting_parms$bBIC,
+                               
+                               a          = final_fit$bestParameters[1],
+                               t0         = final_fit$bestParameters[2],
+                               p          = final_fit$bestParameters[3],
+                               rd         = final_fit$bestParameters[4],
+                               sda        = final_fit$bestParameters[5],
+                               g2         = final_fit$g2,
+                               bbic       = final_fit$bBIC
+                             )
+                           
+                           # Backup data
+                           write_csv(final_fit_results, here("data", "1_pilot", "ssp", str_c("ssp_fit_", unique(x$subject), ".csv")))
+                           
+                           message(cat("Subject", unique(x$subject), "was processed in", time$toc %>% as.numeric, "seconds."))
+                           
+                           return(final_fit_results)
+                           
+                         },
+                         .options = furrr_options(seed = TRUE)
+    ))
+
+
+
+
+flanker_ssp_results <- list.files(here("data", "1_pilot", "ssp"), pattern = "^ssp_fit", full.names = TRUE) %>%
+  map_df(function(x) read_csv(x)) %>%
+  rename(id = subject) %>%
+  select(-starts_with('start_'), -starts_with('g2'), -starts_with('bbic')) |> 
+  rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c("flanker_ssp_", .))) |> 
+  mutate(flanker_ssp_interference = flanker_ssp_sda / flanker_ssp_rd)
+
+
+
+# 3. Save objects ---------------------------------------------------------
 
 save(
+  # DDM estimation (ML and KS)
   change_DDM_results_mod1, change_bic_mod1,
   change_DDM_results_mod2, change_bic_mod2,
   change_DDM_results_mod3, change_bic_mod3,
@@ -525,6 +691,11 @@ save(
   cueing_DDM_results_mod9, cueing_bic_mod9,
   
   flanker_DDM_results_mod1, flanker_bic_mod1,
-  file = here("data", "1_pilot", "1_DDM_objects.Rdata"))
+  flanker_DDM_results_mod2, flanker_bic_mod2,
+  
+  # SSP estimation (flanker only)
+  flanker_ssp_results,
+  
+  file = "preregistrations/1_pilot/analysis_objects/DDM_objects.Rdata")
 
 

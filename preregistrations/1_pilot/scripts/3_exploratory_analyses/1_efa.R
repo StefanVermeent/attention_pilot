@@ -23,7 +23,7 @@ load(here("data", "1_pilot", "0_self_report_raw.Rdata"))
 
 efa_data <- cleaned_data %>%
   select(matches("(quic\\d\\d)|(unp\\d\\d)|(chaos\\d\\d)|(change_env\\d\\d)"), 
-         unp_partners_father_binned, unp_partners_mother_binned, unp_household_size, unp_moving_binned) %>%
+         unp_partners_father_binned, unp_partners_mother_binned, unp_moving_binned) %>%
   drop_na() %>%
   mutate(across(matches("quic(01|02|03|04|05|06|07|08|09|11|14|16|22|32)"), ~ 6 - .)) %>%
   mutate(across(matches("chaos(01|02|04|07|12|14|15)"), ~ 6 - .))

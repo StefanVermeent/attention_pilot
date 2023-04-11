@@ -6,8 +6,8 @@ corr_table <- function (data, sample_size = T, use = "pairwise", method = "pears
     suppressWarnings(ifelse(...))
   }
   
-  descriptives <- describe(data) %>% as.data.frame() %>% round(2) 
-  corr_data <- corr.test(x = data, use = use, method = method)
+  descriptives <- psych::describe(data) %>% as.data.frame() %>% round(2) 
+  corr_data <- psych::corr.test(x = data, use = use, method = method)
   ns <- corr_data$n
   rs <- corr_data$r %>% round(2) %>% formatC(digits = 2, width = 3, flag = '0', format = 'f')
   

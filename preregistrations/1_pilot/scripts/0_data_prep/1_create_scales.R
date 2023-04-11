@@ -155,10 +155,10 @@ vars03_unp <-
       unp_partners_father == 5 ~ 5,
       unp_partners_father >= 6 ~ 6,
     ),
-    
-    unpredictability_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale,
-    unpredictability_obj       = across(c(unp_moving_binned, unp_partners_mother_binned, unp_partners_father_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
-    unpredictability_composite = across(c(unpredictability_subj, unpredictability_obj)) %>% rowMeans(., na.rm = T)
+    unp_quic_punp              = across(c(unp_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) |> scale() |> as.numeric(),
+    unpredictability_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale |> as.numeric(), 
+    unpredictability_obj       = across(c(unp_moving_binned, unp_partners_mother_binned, unp_partners_father_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T) |> as.numeric(),
+    unpredictability_composite = across(c(unpredictability_subj, unpredictability_obj)) %>% rowMeans(., na.rm = T)|> as.numeric()
   ) %>%
   sjlabelled::var_labels(
     unp_mean              = "Perceived unpredictability",
