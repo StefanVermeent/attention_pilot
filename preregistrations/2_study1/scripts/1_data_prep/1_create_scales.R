@@ -175,7 +175,7 @@ vars03_unp <-
       unp_female_fig_rom == 5 ~ 5,
       unp_female_fig_rom >= 6 ~ 6,
     ),
-    unp_pcunp_quic_comp       = across(c(pcunp_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),                         
+    unp_pcunp_quic_comp       = across(c(pcunp_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),  
     unp_subj_comp             = across(c(pcunp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale %>% as.numeric(),
     unp_obj_comp              = across(c(unp_moving_binned, unp_male_fig_rom_binned, unp_female_fig_rom_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T),
     unp_comp                  = across(c(unp_subj_comp, unp_obj_comp)) %>% rowMeans(., na.rm = T)

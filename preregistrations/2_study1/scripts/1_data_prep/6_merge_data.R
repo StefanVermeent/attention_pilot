@@ -11,6 +11,7 @@ library(glue)
 load(here("data", "2_study1", "1_self_report_clean.Rdata"))
 load(here("data", "2_study1", "1_task_data_clean.Rdata"))
 load(here("data", "2_study1", "1_SSP_objects.Rdata"))
+load('preregistrations/2_study1/analysis_objects/hddm_model_objects.RData')
 
 
 # Combine data ------------------------------------------------------------
@@ -32,7 +33,9 @@ cleaned_data <-
   mutate(
     interference_flanker_std = sda_flanker_std / rd_flanker_std,
     interference_flanker_enh = sda_flanker_enh / rd_flanker_enh,
-    interference_flanker_deg = sda_flanker_deg / rd_flanker_deg
+    interference_flanker_deg = sda_flanker_deg / rd_flanker_deg,
+    # Remove age types
+    dems_age = ifelse(dems_age < 18 | dems_age > 30, NA, dems_age)
   )
 
 # .csv file (nested columns containing trial-level data are dropped)

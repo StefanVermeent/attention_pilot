@@ -46,7 +46,10 @@ flanker_data_clean <- flanker_data %>%
 
 
 # Apply exclusions --------------------------------------------------------
-
+# Exclude participants who did not complete one or more conditions of the Flanker task
+ids_to_exclude <- c(
+  flanker_data_clean %>% group_by(id) %>% summarise(n_condition = length(unique(condition))) %>% filter(n_condition < 3) %>% select(id) %>% distinct() %>% pull
+)
 
 flanker_data_clean %<>%
   # Remove invalid trials
@@ -63,10 +66,7 @@ flanker_data_clean %<>%
   select(-starts_with("ex_narb"))
 
 
-# Exclude participants who did not complete one or more conditions of the Flanker task
-ids_to_exclude <- c(
-  flanker_data_clean %>% group_by(id) %>% summarise(n_condition = length(unique(condition))) %>% filter(n_condition < 3) %>% select(id) %>% distinct() %>% pull
-)
+
 
 flanker_data_clean %<>%
   filter(!id %in% ids_to_exclude)

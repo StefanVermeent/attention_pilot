@@ -28,17 +28,6 @@ flanker_ssp_setup <- flanker_data_clean_average %>%
     }) 
   )
 
-# Write data for HDDM estimation
-flanker_ssp_setup %>%
-  unnest(flanker_data_long) %>%
-  rename(
-    subj_idx = subject,
-    response = accuracy,
-  ) %>%
-  write_csv("data/2_study1/hddm_data.csv")
-
-
-
 # Global Fit Parameters ---------------------------------------------------
 
 # Number of cores for parallel processing
@@ -132,7 +121,7 @@ ssp_results_standard  %<>%
                       )
                     
                     # Backup data
-                    write_csv(final_fit_results, here("data", "2_study1", str_c("ssp_fit_standard", unique(x$subject), ".csv")))
+                    write_csv(final_fit_results, here("data", "2_study1/ssp", str_c("ssp_fit_standard", unique(x$subject), ".csv")))
                     
                     message(cat("Subject", unique(x$subject), "was processed in", time$toc %>% as.numeric, "seconds."))
                     
@@ -148,7 +137,7 @@ ssp_results_standard  %<>%
 # Model Fit: Enhanced condition -------------------------------------------
 
 # In case processing was interrupted, we check which subjects were already processed and skip them
-processed_files <- list.files(here("data", "2_study1")) %>%
+processed_files <- list.files(here("data", "ssp", "2_study1")) %>%
   str_subset("ssp_fit_enhanced") %>%
   str_replace_all("ssp_fit_enhanced|.csv", "") %>%
   as.numeric()
@@ -216,7 +205,7 @@ ssp_results_enhanced <-
                              )
                            
                            # Backup data
-                           write_csv(final_fit_results, here("data", "2_study1", str_c("ssp_fit_enhanced", unique(x$subject), ".csv")))
+                           write_csv(final_fit_results, here("data", "2_study1", "ssp", str_c("ssp_fit_enhanced", unique(x$subject), ".csv")))
                            
                            message(cat("Subject", unique(x$subject), "was processed in", time$toc %>% as.numeric, "seconds."))
                            
@@ -231,7 +220,7 @@ ssp_results_enhanced <-
 # Model Fit: Degraded condition -------------------------------------------
 
 # In case processing was interrupted, we check which subjects were already processed and skip them
-processed_files <- list.files(here("data", "2_study1")) %>%
+processed_files <- list.files(here("data", "ssp", "2_study1")) %>%
   str_subset("ssp_fit_degraded") %>%
   str_replace_all("ssp_fit_degraded|.csv", "") %>%
   as.numeric()
@@ -299,7 +288,7 @@ ssp_results_standard <-
                              )
                            
                            # Backup data
-                           write_csv(final_fit_results, here("data", "2_study1", str_c("ssp_fit_standard", unique(x$subject), ".csv")))
+                           write_csv(final_fit_results, here("data", "2_study1", "ssp", str_c("ssp_fit_standard", unique(x$subject), ".csv")))
                            
                            message(cat("Subject", unique(x$subject), "was processed in", time$toc %>% as.numeric, "seconds."))
                            
@@ -315,7 +304,7 @@ ssp_results_standard <-
     
 ssp_results_initial <- c("^ssp_fit_standard", "^ssp_fit_enhanced", "^ssp_fit_degraded") %>%
   map(function(x) {
-    list.files(here("data", "2_study1"), pattern = x, full.names = TRUE) %>%
+    list.files(here("data","2_study1", "ssp"), pattern = x, full.names = TRUE) %>%
       map_df(function(y) read_csv(y)) %>%
       rename(id = subject) %>%
       rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker_", str_extract(x, "[a-z]*$"))))
@@ -434,7 +423,7 @@ ssp_refit  %>%
 
 ssp_results_refit <- c("^ssp_refit_standard", "^ssp_refit_enhanced", "^ssp_refit_degraded") %>%
   map(function(x) {
-    list.files(here("data", "2_study1"), pattern = x, full.names = TRUE) %>%
+    list.files(here("data", "2_study1", "ssp"), pattern = x, full.names = TRUE) %>%
       map_df(function(y) read_csv(y)) %>%
       rename(id = subject) %>%
       rename_with(.cols = !matches("id"), ~str_replace_all(.x, ., str_c(., "_flanker_", str_extract(x, "[a-z]*$"))))
