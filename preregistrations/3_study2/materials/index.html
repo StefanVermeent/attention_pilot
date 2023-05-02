@@ -31,6 +31,36 @@
 
 
 
+
+  
+var jsPsych = initJsPsych({
+  on_finish: function() {
+    tasks_start           = jsPsych.startTime();
+    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
+    data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
+    
+    data_globloc_practice = jsPsych.data.get().filter({task: 'globloc_practice'});
+    data_globloc01        = jsPsych.data.get().filter({task: 'globloc01'});
+    data_globloc02        = jsPsych.data.get().filter({task: 'globloc02'});
+    
+    data_resize           = jsPsych.data.get().filter({task: 'resize'});
+    tasks_browser         = jsPsych.data.getInteractionData().json();
+
+    window.parent.postMessage([
+      tasks_start, 
+      data_flanker_practice.json(),
+      data_flanker.json(),
+      data_globloc_practice.json(),
+      data_globloc01.json(),
+      data_globloc02.json(),
+      data_resize.json(),
+      tasks_browser
+      ], 
+      "https://survey.uu.nl/jfe/form/SV_3eXfcxfHcpYTCWW");
+  }
+});
+
+
 var globallocal_timeline = [
   cursor_on,
   preload_globloc, 
@@ -66,51 +96,18 @@ var flanker_timeline = [
 
 var test_order1 = [
   {type: jsPsychCallFunction, func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
-  globallocal_timeline, flanker_timeline
-]
+  fullscreenmode, resize_screen, flanker_timeline, globallocal_timeline, cognitive_tasks_end
+].flat(2)
 
 var test_order2 = [
-  {type: jsPsychCallFunction, func: function(){jsPsych.data.addProperties({counterbalance: 1})}},
-  flanker_timeline, globallocal_timeline 
-]
+  {type: jsPsychCallFunction, func: function(){jsPsych.data.addProperties({counterbalance: 2})}},
+  fullscreenmode, resize_screen, globallocal_timeline, flanker_timeline, cognitive_tasks_end
+].flat(2)
 
 counterbalance = jsPsych.randomization.sampleWithoutReplacement([test_order1, test_order2], 1)[0]
-
-
-var full_experiment_timeline = [
-  fullscreenmode,
-  resize_screen, 
-  counterbalance,
-  cognitive_tasks_end
-  ].flat(2)
   
-var jsPsych = initJsPsych({
-  on_finish: function() {
-    tasks_start           = jsPsych.startTime();
-    data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
-    data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
-    
-    data_globloc_practice = jsPsych.data.get().filter({task: 'globloc_practice'});
-    data_globloc01        = jsPsych.data.get().filter({task: 'globloc01'});
-    data_globloc02        = jsPsych.data.get().filter({task: 'globloc02'});
-    
-    data_resize           = jsPsych.data.get().filter({task: 'resize'});
-    tasks_browser         = jsPsych.data.getInteractionData().json();
+timeline = counterbalance
 
-    window.parent.postMessage([
-      tasks_start, 
-      data_flanker_practice.json(),
-      data_flanker.json(),
-      data_globloc_practice.json(),
-      data_globloc01.json(),
-      data_globloc02.json(),
-      data_resize.json(),
-      tasks_browser
-      ], 
-      "https://survey.uu.nl/jfe/form/SV_3eXfcxfHcpYTCWW");
-  }
-});
-
-jsPsych.run(full_experiment_timeline);
+jsPsych.run(counterbalance);
 </script>
 </html>

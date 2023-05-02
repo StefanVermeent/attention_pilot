@@ -2,7 +2,7 @@
 var globloc_welcome = {
   type: jsPsychInstructions,
   pages: [
-    "Welcome to the <strong>GLOBAL/LOCAL TASK!</strong.<br><br><br><br><br>"
+    "Welcome to the <strong>LETTER TASK!</strong.<br><br><br><br><br>"
   ],
   show_clickable_nav: true,
   allow_backward: true,
@@ -30,8 +30,8 @@ var globloc_instructions = {
       "Your job is to find the target letters (<strong>'H'</strong> or <strong>'E'</strong>) as quickly as possible<br>and indicate whether you found it as the <strong>BIG LETTER</strong> or <strong>SMALL LETTER</strong>.",
       
       //Page 5 
-    "<div style = 'float: left; padding-right: 150px'>If the target is BIG<br>press the 'G' key.<br><br><img height = 400 src = globallocal/img/black_e_of_t.png></img></div>" +
-    "<div style = 'float: right; padding-left: 150px'>If the target is SMALL<br>press the 'L' key.<br><br><img height = 400 src = globallocal/img/black_f_of_h.png></img></div>" +
+    "<div style = 'float: left; padding-right: 150px'>If the BIG letter is the target<br>press the 'G' key.<br><br><img height = 400 src = globallocal/img/black_e_of_t.png></img></div>" +
+    "<div style = 'float: right; padding-left: 150px'>If the SMALL letters are the target<br>press the 'L' key.<br><br><img height = 400 src = globallocal/img/black_f_of_h.png></img></div>" +
 
     "<p style = 'text-align: center;'>" +
       "Remember, try to be as FAST and ACCURATE as possible."
@@ -51,7 +51,7 @@ var globloc_practice_start = {
     stimulus: "<p style = 'text-align: center;'>" +
       "You will now practice the task 10 times.<br>" +
       "Remember, the target letters are 'H' and 'E'.<br>" +
-      "Place your fingers on the <strong>G (global)</strong> and <strong>L (local)</strong> keys.<br><br><br>" +
+      "Place your fingers on the <strong>G (BIG)</strong> and <strong>L (SMALL)</strong> keys.<br><br><br>" +
       "When you are ready, press any key to start practicing.",
   choices: "ALL_KEYS",
   data: {
