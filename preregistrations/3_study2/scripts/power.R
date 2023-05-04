@@ -7,18 +7,11 @@ library(furrr)
 
 set.seed(43876)
 
-# Simulation settings -----------------------------------------------------
-
-p_mean            <- 0.519
-p_sd              <- 0.157
-interference_mean <- 111.387
-interference_sd   <-  58.165
-
 
 # 1. Pooled Main Effects --------------------------------------------------
 
-n    <- c(300,350,400,450,500, 600, 1500, 1600)
-beta <- c(0.05, 0.1)
+n    <- c(300,400,500,600)
+beta <- c(0.06, 0.1)
 
 plan(multisession, workers = 5)
 
@@ -31,18 +24,27 @@ power <- furrr::future_map_dfr(1:500, function(x){
         tibble(
           id = 1:y,
           adversity = rnorm(n=y, mean = 0, sd = 1) |> scale() |> as.numeric(),
-          p_flanker = p_mean + (adversity * z) + rnorm(y, 0, 2*p_sd) 
+          con1    = (adversity * 0) + rnorm(y, 0, 0.7),
+          con2    = (adversity * (z*2)) + rnorm(y, 0, 0.7) 
+        ) |> 
+        pivot_longer(c(con1, con2), names_to = "condition", values_to = "v") |> 
+        mutate(
+          condition = ifelse(condition == "con1", -1, 1)
         )
       
-      # Fit model
-      lm(data = sim_data, p_flanker ~ adversity) |> 
-        broom::tidy() |> 
-        filter(term == "adversity") |> 
+      fit <- lmerTest::lmer(data = sim_data, v ~ adversity*condition + (1|id))
+      
+      fit <- fit |> 
+        broom.mixed::tidy() |> 
+        filter(term == "adversity:condition") |> 
         mutate(
           sim  = x,
           n    = y,
-          beta = z
+          beta = z,
+          sigma = sigma(fit)
         )
+      
+      
     },.options = furrr_options(seed = TRUE))
   },.options = furrr_options(seed = TRUE))
 },.options = furrr_options(seed = TRUE))
