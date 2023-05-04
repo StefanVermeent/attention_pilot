@@ -4,6 +4,54 @@ set.seed(486)
 
 n_block_trials <-  32
 
+check_if_same_rule <- function(data) {
+  1:nrow(data) |> 
+    map_chr(function(x) {
+      
+      if(x %in% c(1,2)) {
+        return(data$type[x])
+      }
+      current <- data$type[x]
+      previous <- c(data$type[x-1], data$type[x-2], data$type[x-3])
+      
+      if(all(previous == current)) {
+        if(current == "repeat") {
+          current <- "switch"
+        } else {
+          current <- "repeat"
+        }
+      }
+      return(current)
+    })
+}
+
+check_if_same_stim <- function(data) {
+  1:nrow(data) |> 
+    map_chr(function(x) {
+      
+      if(x ==1) {
+        return(data$stimulus[x])
+      }
+      
+      current = data$stimulus[x]
+      previous = data$stimulus[x-1]
+      subsequent = data$stimulus[x+1] 
+      
+      global_stims <- c('Ge_Lf', 'Ge_Lp', 'Ge_Lt', 'Gh_Lf', 'Gh_Lp', 'Gh_Lt')
+      local_stims <-  c('Gf_Le', 'Gf_Lh', 'Gp_Le', 'Gp_Lh', 'Gt_Le', 'Gt_Lh')
+      
+      if(current == previous) {
+        if(data$rule[x] == "global") {
+          current <- sample(global_stims[!global_stims %in% c(subsequent, current)], size = 1)
+        }
+        if(data$rule[x] == "local") {
+          current <- sample(local_stims[!local_stims %in% c(subsequent, current)], size = 1)
+        }
+      }
+      return(current)
+    })
+}
+
 stim_vector <- c('Ge_Lf', 'Ge_Lp', 'Ge_Lt', 'Gf_Le', 'Gf_Lh', 
 'Gh_Lf', 'Gh_Lp', 'Gh_Lt', 'Gp_Le', 'Gp_Lh', 'Gt_Le', 
 'Gt_Lh')
@@ -15,7 +63,8 @@ trials01 <- tibble(
   variable = "globloc_01",
   task     = "globloc",
   key_answer = NA
-) 
+) %>% 
+  mutate(type = check_if_same_rule(data = .))
 
 # Generate repeat or switch trials
 n = 1
@@ -42,11 +91,9 @@ trials01 <- trials01 |>
     key_answer = case_when(
       rule == 'global' ~ 's',
       rule == 'local'  ~ 'l'
-      
     )
-  )
-
-  
+  ) %>%
+  mutate(stimulus = check_if_same_stim(data = .))
 
 
 # stimulus set 2
@@ -56,7 +103,9 @@ trials02 <- tibble(
   variable = "globloc_01",
   task     = "globloc",
   key_answer = NA
-) 
+) %>%
+  mutate(type = check_if_same_rule(data = .)) %>%
+  mutate(type = check_if_same_rule(data = .))
 
 # Generate repeat or switch trials
 n = 1
@@ -83,9 +132,11 @@ trials02 <- trials02 |>
     key_answer = case_when(
       rule == 'global' ~ 's',
       rule == 'local'  ~ 'l'
-      
     )
-  )
+  ) %>%
+  mutate(stimulus = check_if_same_stim(data = .)) %>%
+  mutate(stimulus = check_if_same_stim(data = .))
+
 
 
 # Trial stimulus set
