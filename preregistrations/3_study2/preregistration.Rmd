@@ -60,26 +60,29 @@ set_flextable_defaults(
   padding.right = 1
 )
 
-load(here("data", "2_study1", "0_self_report_raw.Rdata"))
+load(here("data", "3_study2", "0_self_report_raw.Rdata"))
 ```
 
+Initially we predicted that higher levels of adversity---especially violence exposure---would be associated with a present-oriented attention style.
+We expected such an attention style to be associated with faster attention to subtle changes and peripheral information, but also with lowered inhibition.
+Generally speaking, the results of the first two studies were not in line with these predictions.
+Instead, the Flanker findings suggest that both violence exposure and environmental unpredictability are associated with lowered perceptual input, but is not associated with changes in attention.
+These findings are intriguing as they suggest that performance differences are not driven by differences in interference control---which is typically assumed.
+While interesting, these findings so far leave open the question why perceptual input is negatively associated with perceptual input.
 
-
-
-
-Generally speaking, the results of the first two studies were not in line with our initial predictions about a present-oriented attention style.
-Although we expected such a style to lead to faster speed of perceptual processing on attention tasks, we generally found the opposite pattern.
-One reason for this might be that a present-oriented attention style leads people from adversity to process information more holistically, which would lower the depth of perceptual processing of any individual stimulus.
-Another related reason might be that an external, present-oriented attention style extends beyond the computer screen to all of their immediate environment.
-Both of these are potential mechanistic explanations for a lowered quality of perceptual processing that would be in line with a specialized attention style.
-In study 2, we aimed to replicate the broader findings from study 1 (lowered perceptual input on the Flanker Task but no differences in interference) and to investigate if and how the lower quality of perceptual processing was associated with a more holistic style of attention.
+First, it may indicate a deficit in processing information.
+Note that this explanation would be different from typical interpretations of lowered Flanker performance, which typically equate lower performance (i.e., longer RTs) with lowered inhibition ability.
+Instead, a deficit in processing information is a different pathway to lowered performance: it implies that people from adversity are completing the task with lower-quality information---akin to when the arrows would be more blurry.
+Alternatively, the difference in perceptual input may not be a cognitive deficit per se, but instead could be a signature of a difference in processing style.
+People from adversity  may process information more holistically, focusing more on the whole instead of individual pieces of information.
+On a task like the Flanker, this would lower the depth of perceptual processing of any individual stimulus, thus potentially explaining the pattern of results in the previous two studies.
+In study 2, our aim is to replicate the central Flanker findings of the pilot study and study 1 (lowered perceptual input but no differences in interference), and to investigate whether adversity would be associated with a stronger tendency to process information holistically on a Global-Local Task.
 
 ## Primary aims {#primary}
 
 1. Investigate how unpredictability and violence exposure are associated with perceptual input and interference on the Flanker Task by pooling the data across all three studies.
 
 2. Investigate how unpredictability and violence exposure are associated with a preference for more holistic vs. detailed processing of information.
-
 
 # Methods {#methods}
 
@@ -94,7 +97,7 @@ We decided to recruit 500 participants with the expectation that we will have to
 
 ## Exclusion criteria {#exclusion}
 
-Participants will be excluded if they 1) do not complete the full study or both cognitive tasks, 2) miss both attention check items or if they have suspicious response patterns (e.g., consistently endorsing high response options even when some items were reverse coded), 3) have a screen height < 700 pixels or a screen height that is bigger than the screen width to ensure the tasks were completed on a laptop or desktop pc, 4) exit full-screen mode and/or engaged with other broswer tabs *during* the cognitive tasks (but not while reading instructions or while taking breaks in between blocks), 5) do not perform above chance on either the Flanker Task or the Global-Local Task (based on a binomial distribution using a probability of 97.5%).
+Participants will be excluded if they 1) do not complete the full study or both cognitive tasks, 2) miss both attention check items or if they have suspicious response patterns (e.g., consistently endorsing high response options even when some items were reverse coded), 3) have a screen height < 700 pixels or a screen height that is bigger than the screen width to ensure the tasks were completed on a laptop or desktop pc, 4) exit full-screen mode and/or engaged with other browser tabs *during* the cognitive tasks (but not while reading instructions or while taking breaks in between blocks), 5) do not perform above chance on either the Flanker Task or the Global-Local Task (based on a binomial distribution using a probability of 97.5%).
 
 In addition, we will screen reaction times on both cognitive tasks. 
 We will remove trials with response times < 250 or > 3500 ms.
@@ -102,31 +105,44 @@ Participants with more than 10 removed trials will be excluded from the analyses
 
 ## Measures {#measures}
 
+We provide brief summaries of measures that were unchanged between study 1 and the current study 2.
+See the appendix for a full overview of all questionnaires.
+
 ### Flanker Task {#flanker}
 
-The Flanker Task was identical to the standard version used in study 1. 
+The Flanker Task is identical to the standard version used in study 1. 
 It was programmed in JsPsych 7.3.2 [@deleeuw_2015]. 
-Participants first completed eight practice trials and next completed 64 test trials in a single block.
+Participants first complete eight practice trials and next completed 64 test trials in a single block.
 
 ## Global-Local Task {#globallocal}
 
+The Global-Local Task is a measure of global-local processing [@navon_1977].
+Many different versions of the task exist in the literature.
+One key dimension is whether the tasks measures focused attention (by cueing attention towards the global or local level prior to stimulus presentation) or divided attention (by having participants search for a target on both levels) [@lee_2023].
+Here, we use a version measuring divided attention, which allows measuring a natural preference for either global or local processing [@hakim_2016; lee_2023; @mckone_2010]. 
 
+Participants are presented with images of big letters (the global level) that are comprised of small letters (the local level)---so-called Navon images [@navon_1977].
+On each trial, participants are instructed to find one of two target letters---an 'E' or 'H'---and indicate whether the target letter was present on the global or local letter by pressing 'g' or 'l' on their keyboard, respectively.
+Stimuli consisted of all combinations of the letters 'T', 'F', 'P', 'L', 'H', and 'E', with 'H' and 'E' present in each stimulus.
+Each stimulus was 600 pixels high and 395 pixels wide and comprised of seven local letters vertically and five local letters horizontally. 
+The global and local level never contained the same letter.
+Participants first completed eight practice trials, after which they completed an additional 64 test trials.
+The main outcome measure is mean response time and accuracy for global targets and local targets separately.
 
 ### Current state {#state}
 
-We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S; @spielberger_1999]. The STAI-S contains 20 short items measuring current anxiety (e.g., "I feel tense"; See [Table S1](#appendix) for an overview of all items). Participants rated each item on a scale of 1 (not at all) to 4 (very much so). An overall state anxiety variable was computed by averaging across the 20 unweighted items (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `).
-
-In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). We computed an overall sleep deprivation composite by standardizing and averaging across the two unweighted sleep-related items (*M* = `r #TBD `, *SD* = `r #TBD `).
+We will assess state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [Stai-S; @speilberger_1999] (See [Table S1](#appendix)).
+ An overall state anxiety variable was computed by averaging across the 20 unweighted items.
 
 ### Violence exposure {#violence}
 
-Violence exposure was measured using the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] and two items assessing exposure to physical fights before age 13. The NVS contains seven items measuring perceived exposure to violence before age 13 (e.g., "Crime was common in the neighborhood where I grew up"; See [Table S2](#appendix) for an overview of all items). Participants rated each on a scale from 1 (never true) to 5 (very often true). The physical fighting items assessed the number of times participants witnessed fights before age 13: "Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?" Answers to both items ranged from 1 (0 times) to 8 (12 or more times). The items of the NVS were averaged together (*M* = `r #TBD `, *SD* = `r #TBD `, $\alpha$ = `r #TBD `). Similarly, we averaged the scores on the two fighting items together. Finally, we created a perceived violence exposure composite by standardizing the NVS and fighting composites and calculating an unweighted average (*r* = `r #TBD `).
+Violence exposure will be measured using two measures: 1) the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] (see [Table S2](#appendix)) and 2) two items assessing exposure to physical fights before age 13 ("Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?").
+A violence exposure composite score will be calculated as an unweighted average of the mean NVS score (standardized) and the mean of the fighting items (standardized).
 
 ### Unpredictability {#unpred}
 
 We distinguish between subjective and objective measures of environmental unpredictability.
-We distinguish between subjective and objective measures of environmental unpredictability.
-Subjective unpredictability will be measured as an unweighted average of three scales: 1) A scale of perceived childhood unpredictability used in previous research (see [Table S3]) [@mittal_2015; @young_2018]; 2) An adapted version of the Confusion, Hubbub and Order Scale [CHAOS; @matheny_1995] (see [Table S5](#appendix)); 3) An adapted version of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019] (see [Table S4](#appendix)).
+Subjective unpredictability will be measured as an unweighted average of three scales: 1) A scale of perceived childhood unpredictability used in previous research (see [Table S3](#appendix)) [@mittal_2015; @young_2018]; 2) An adapted version of the Confusion, Hubbub and Order Scale [CHAOS; @matheny_1995] (see [Table S5](#appendix)); 3) An adapted version of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019] (see [Table S4](#appendix)).
 Objective unpredictability will be measured as an unweighted average of four items relating to experiences prior to age 13: 1) number of residential changes, 2) number of male and female romantic partners of a caregiver besides the other primary caregiver (measured separately; values > 6 were given a value 6 to prevent extreme outliers), 4) self-reported stability of the family and social environment across four dimensions: economic status, family environment, childhood neighborhood environment, and childhood school environment (rated between 1 (the same all the time) and 5 (constant and rapid changes)).
 The main analyses will be based on a full composite that is an unweighted standardized average of subjective and objective unpredictability.
 
@@ -137,7 +153,9 @@ We will create a poverty composite score that is the average of the following me
 ### Attentional style
 
 We will measure attentional style using the Attentional Style Questionnaire [ASQ; @calster_2018].
-The ASQ measures self-reported attentional style, with seven items  
+The ASQ measures self-reported attentional style, with seven items asking about the participant's propensity for internally oriented attention (e.g., "During an activity, unrelated mmental images and thoughts come to my mind") and seven items about externally oriented attention (e.g., "I am easily drawn to new stimuli (for example, voices of people passing by, as sound in the house, ...) that are not relevant to a task I am doing"). 
+Where necessary, items were recoded in such a way that they reflected *distractibility* by internal and external stimuli, respectively, with higher scores reflecting a higher degree of distractibility.
+We will compute unweighted averages separately for internally oriented attention and externally oriented attention.
 
 ### Impulsivity {#impulsivity}
 
@@ -188,22 +206,24 @@ The starting point will be fixed to 0.5.
 Each model will be fit with three Markov Chain Monte Carlo (MCMC) chains. Each chain will contain 2,000 burn-in samples and 10,000 additional samples. 
 Of these samples, every 10th sample will be retained. 
 Posterior samples of all three chains will be combined, resulting in a posterior sample of 3,000 samples. 
-The main parameter of interest is the drift rate, more specifically, the difference between drift rates (drift rate~global~ - drift rate~local~).
+The main parameters of interest are the two drift rates of the global and local target conditions.
 
 ### Primary analyses
 
 To address the [first primary aim](#primary), we will fit a linear regression model to the pooled data of all three studies (i.e., the pilot study, study 1, and study 2).
 We will fit different models for environmental unpredictability and violence exposure as predictors (using the respective composite scores) and for perceptual input and interference as dependent variables.
-Each model will additionally contain the following covariates: study number (...), whether participants rescaled their screen at the start of the cognitive tasks (yes or no, sum-coded), whether participants experienced interruptions during the tasks (yes or no, sum-coded), and whether people exited full-screen mode during the experiment (yes or no, sum-coded).
+Each model will additionally contain the following covariates: (1) study number (pilot study, study 1, or study 2; sum-coded), (2) whether participants rescaled their screen at the start of the cognitive tasks (yes or no; sum-coded), (3) whether participants experienced interruptions during the tasks (yes or no; sum-coded), and (4) whether people exited full-screen mode during the experiment (yes or no; sum-coded).
 Note that the latter three covariates were included as arbitrary decisions in the multiverse analyses for the pilot study and study 1.
 However, as we found that they substantially altered the results, we decided to reclassify them as non-arbitrary decisions and include them as covariates instead.
-To address the [second primary aim](#primary), we will fit the same model as described above for the first primary aim, but with different the difference score of the Global-Local drift rate as the dependent variable.
+To address the [second primary aim](#primary), we will fit separate linear mixed effects models for environmental unpredictability and violence exposure with drift rate as the dependent variable and adversity type, task condition, and their interaction as independent variables. 
+The models will contain a random intercept for participants, and contain the same covariates as described above. 
 
 ### Multiverse analysis {#multiverse_plan}
 
 We will conduct a multiverse analysis for all primary analyses.
 We identified seven arbitrary analytic decisions, including or excluding 1) participants who had a recaptcha score below 0.5 (possibly indicating bots); 2) participants who did not enter fullscreen mode prior to starting the cognitive tasks; 3) participants who indicated high levels of noise in their environment.
-For each analysis, we report the median $\beta$, 95% confidence intervals, proportion of *p*-values < .05 across all analytic decisions. For the primary analyses, we used a bootstrapping technique to compute overall *p*-values to assess whether the obtained median $\beta$ is significantly larger than zero [@simonsohn_2020].
+For each analysis, we report the median $\beta$, 95% confidence intervals, proportion of *p*-values < .05 across all analytic decisions. 
+For the primary analyses, we used a bootstrapping technique to compute overall *p*-values to assess whether the obtained median $\beta$ is significantly larger than zero [@simonsohn_2020].
 
 
 \pagebreak
