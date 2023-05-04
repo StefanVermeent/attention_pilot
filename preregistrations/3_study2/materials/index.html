@@ -35,7 +35,7 @@
   
 var jsPsych = initJsPsych({
   on_finish: function() {
-    tasks_start           = jsPsych.startTime();
+    tasks_start           = jsPsych.getStartTime();
     data_flanker_practice = jsPsych.data.get().filter({task: 'flanker_practice'});
     data_flanker          = jsPsych.data.get().filter({task: 'flanker'});
     
