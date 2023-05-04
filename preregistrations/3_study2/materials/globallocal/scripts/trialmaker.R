@@ -12,13 +12,11 @@ check_if_same_rule <- function(data) {
         return(data$type[x])
       }
       current <- data$type[x]
-      previous <- c(data$type[x-1], data$type[x-2], data$type[x-3])
+      previous <- c(data$type[x-1], data$type[x-2])
       
       if(all(previous == current)) {
         if(current == "repeat") {
           current <- "switch"
-        } else {
-          current <- "repeat"
         }
       }
       return(current)
@@ -60,10 +58,13 @@ stim_vector <- c('Ge_Lf', 'Ge_Lp', 'Ge_Lt', 'Gf_Le', 'Gf_Lh',
 trials01 <- tibble(
   type     = c('first', sample(c(rep('repeat',n_block_trials/2), rep('switch',n_block_trials/2)), size = n_block_trials, replace = F)),
   rule     = c('global', rep(NA, n_block_trials)),
-  variable = "globloc_01",
-  task     = "globloc",
+  variable = "globloc01",
+  task     = "globloc01",
   key_answer = NA
 ) %>% 
+  mutate(type = check_if_same_rule(data = .)) %>%
+  mutate(type = check_if_same_rule(data = .)) %>%
+  mutate(type = check_if_same_rule(data = .)) %>%
   mutate(type = check_if_same_rule(data = .))
 
 # Generate repeat or switch trials
@@ -89,7 +90,7 @@ trials01 <- trials01 |>
       rule == 'global' ~ sample(str_subset(stim_vector, "(Ge|Gh)"), size = 33, replace = T), 
       rule == 'local' ~ sample(str_subset(stim_vector, "(Le|Lh)"), size = 33, replace = T)),
     key_answer = case_when(
-      rule == 'global' ~ 's',
+      rule == 'global' ~ 'g',
       rule == 'local'  ~ 'l'
     )
   ) %>%
@@ -100,10 +101,12 @@ trials01 <- trials01 |>
 trials02 <- tibble(
   type     = c('first', sample(c(rep('repeat',n_block_trials/2), rep('switch',n_block_trials/2)), size = n_block_trials, replace = F)),
   rule     = c('global', rep(NA, n_block_trials)),
-  variable = "globloc_01",
-  task     = "globloc",
+  variable = "globloc01",
+  task     = "globloc01",
   key_answer = NA
 ) %>%
+  mutate(type = check_if_same_rule(data = .)) %>%
+  mutate(type = check_if_same_rule(data = .)) %>%
   mutate(type = check_if_same_rule(data = .)) %>%
   mutate(type = check_if_same_rule(data = .))
 
@@ -130,7 +133,7 @@ trials02 <- trials02 |>
       rule == 'global' ~ sample(str_subset(stim_vector, "(Ge|Gh)"), size = 33, replace = T), 
       rule == 'local' ~ sample(str_subset(stim_vector, "(Le|Lh)"), size = 33, replace = T)),
     key_answer = case_when(
-      rule == 'global' ~ 's',
+      rule == 'global' ~ 'g',
       rule == 'local'  ~ 'l'
     )
   ) %>%
@@ -144,7 +147,7 @@ trialsprac <- tibble(
   type     = c('first', sample(c(rep('repeat',5), rep('switch',5)), size = 10, replace = F)),
   rule     = c('global', rep(NA,10)),
   variable = "globloc_prac",
-  task     = "globloc",
+  task     = "globloc_prac",
   key_answer = NA
 ) 
 
@@ -171,7 +174,7 @@ trialsprac <- trialsprac |>
       rule == 'global' ~ sample(str_subset(stim_vector, "(Ge|Gh)"), size = 11, replace = T), 
       rule == 'local' ~ sample(str_subset(stim_vector, "(Le|Lh)"), size = 11, replace = T)),
     key_answer = case_when(
-      rule == 'global' ~ 's',
+      rule == 'global' ~ 'g',
       rule == 'local'  ~ 'l'
       
     )
