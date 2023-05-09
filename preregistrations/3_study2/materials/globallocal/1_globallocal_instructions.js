@@ -21,17 +21,17 @@ var globloc_instructions = {
       "In this game, you will see pictures of <strong>big letters</strong> that are made up of <strong>small letters</strong>.<br><br>" +
       "The pictures will always contain an <strong>'H'</strong> or an <strong>'E'</strong>. These are the <strong>TARGET LETTERS</strong>.<br><br>" +
       "For example, you might see a <strong>big 'H'</strong> that is made up of <strong>small 'P's</strong>:<br><br><br>" +
-      "<img height = 400 src = globallocal/img/black_h_of_p.png></img><br><br>",
+      "<img height = 300 src = globallocal/img/black_h_of_p.png></img><br><br>",
       
       "Other times, you might see a <strong>big 'F'</strong> that is made up of <strong>small 'E's</strong>:<br><br><br>" +
-      "<img height = 400 src = globallocal/img/black_f_of_e.png></img><br><br>",
+      "<img height = 300 src = globallocal/img/black_f_of_e.png></img><br><br>",
       
     "<p style = 'text-align: center;'>" + 
       "Your job is to find the target letters (<strong>'H'</strong> or <strong>'E'</strong>) as quickly as possible<br>and indicate whether you found it as the <strong>BIG LETTER</strong> or <strong>SMALL LETTER</strong>.",
       
       //Page 5 
-    "<div style = 'float: left; padding-right: 150px'>If the BIG letter is the target<br>press the 'G' key.<br><br><img height = 400 src = globallocal/img/black_e_of_t.png></img></div>" +
-    "<div style = 'float: right; padding-left: 150px'>If the SMALL letters are the target<br>press the 'L' key.<br><br><img height = 400 src = globallocal/img/black_f_of_h.png></img></div>" +
+    "<div style = 'float: left; padding-right: 150px'>If the BIG letter is the target<br>press the 'G' key.<br><br><img height = 200 src = globallocal/img/black_e_of_t.png></img></div>" +
+    "<div style = 'float: right; padding-left: 150px'>If the SMALL letters are the target<br>press the 'L' key.<br><br><img height = 200 src = globallocal/img/black_f_of_h.png></img></div>" +
 
     "<p style = 'text-align: center;'>" +
       "Remember, try to be as FAST and ACCURATE as possible."
