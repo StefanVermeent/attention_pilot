@@ -101,8 +101,8 @@ trials01 <- trials01 |>
 trials02 <- tibble(
   type     = c('first', sample(c(rep('repeat',n_block_trials/2), rep('switch',n_block_trials/2)), size = n_block_trials, replace = F)),
   rule     = c('global', rep(NA, n_block_trials)),
-  variable = "globloc01",
-  task     = "globloc01",
+  variable = "globloc02",
+  task     = "globloc02",
   key_answer = NA
 ) %>%
   mutate(type = check_if_same_rule(data = .)) %>%

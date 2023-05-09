@@ -1,4 +1,4 @@
-var preload_globloc = {
+var preload_globloc01 = {
     type: jsPsychPreload,
     images: [
       'globallocal/img/black_e_of_f.png',
@@ -6,7 +6,13 @@ var preload_globloc = {
       'globallocal/img/black_e_of_t.png',
       'globallocal/img/black_h_of_f.png',
       'globallocal/img/black_h_of_p.png',
-      'globallocal/img/black_h_of_t.png',
+      'globallocal/img/black_h_of_t.png'
+      ]
+}  
+
+var preload_globloc02 = {
+    type: jsPsychPreload,
+    images: [
       'globallocal/img/black_f_of_e.png',
       'globallocal/img/black_f_of_h.png',
       'globallocal/img/black_p_of_e.png',
@@ -14,8 +20,10 @@ var preload_globloc = {
       'globallocal/img/black_t_of_e.png',
       'globallocal/img/black_t_of_h.png'
       ]
-}
-         
+}  
+
+  
+  
 var Ge_Lf  = "<img src='globallocal/img/black_e_of_f.png' height=600px>";
 var Ge_Lp  = "<img src='globallocal/img/black_e_of_p.png' height=600px>";
 var Ge_Lt  = "<img src='globallocal/img/black_e_of_t.png' height=600px>";
