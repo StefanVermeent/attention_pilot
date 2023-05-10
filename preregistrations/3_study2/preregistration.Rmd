@@ -80,20 +80,25 @@ In study 2, our aim is to replicate the central Flanker findings of the pilot st
 
 ## Primary aims {#primary}
 
-1. Investigate how unpredictability and violence exposure are associated with perceptual input and interference on the Flanker Task by pooling the data across all three studies.
+1. Investigate how unpredictability and violence exposure are associated with perceptual input and interference on the Flanker Task.
 
 2. Investigate how unpredictability and violence exposure are associated with a preference for more holistic vs. detailed processing of information.
+
+3. Investigate if differences in perceptual input and processing style are associated within-subjects.
 
 # Methods {#methods}
 
 ## Participants {#participants}
 
-Participants will be 400 US-based individuals between the ages of 18 and 30. Recruitment will be identical to study 1. 
-We conducted a power analysis for the planned linear regressions through simulation. 
-We determined the required sample size to achieve power of > .90 for a standardized main effect of 0.05.
-This main effect is slightly lower than the effect of 0.06 that we found for perceptual input in the pooled analyses of study 1.
-Simulations revealed that we would require around 450 participants to achieve a power of .93.
-We decided to recruit 500 participants with the expectation that we will have to exclude around 50 participants.
+Participants will be 600 US-based individuals between the ages of 18 and 30. 
+Recruitment will be identical to study 1. 
+We conducted a power analysis for the planned linear mixed models involving the Global Local Task through simulation. 
+We determined the required sample size to achieve power of > .80 for a standardized interaction effect of 0.06 with different levels of noise (sigma; 0.6, 0.7 and 0.8).
+This main effect is slightly lower than the main effect of 0.06 that we found for perceptual input in the pooled analyses of study 1.
+Simulations revealed that when sigma is 0.6, power is sufficient around N = 500.
+When sigma is 0.7, power is sufficient above N = 550.
+When sigma is 0.8, power is sufficient above N = 700.
+As sigma tended to be between 0.6 and 0.7 in the first two studies, we decided to recruit 600 participants with the expectation that we will have to exclude around 50 participants.
 
 ## Exclusion criteria {#exclusion}
 
@@ -119,7 +124,7 @@ Participants first complete eight practice trials and next completed 64 test tri
 The Global-Local Task is a measure of global-local processing [@navon_1977].
 Many different versions of the task exist in the literature.
 One key dimension is whether the tasks measures focused attention (by cueing attention towards the global or local level prior to stimulus presentation) or divided attention (by having participants search for a target on both levels) [@lee_2023].
-Here, we use a version measuring divided attention, which allows measuring a natural preference for either global or local processing [@hakim_2016; lee_2023; @mckone_2010]. 
+Here, we use a version measuring divided attention, which allows measuring a natural preference for either global or local processing [@hakim_2017; @lee_2023; @mckone_2010]. 
 
 Participants are presented with images of big letters (the global level) that are comprised of small letters (the local level)---so-called Navon images [@navon_1977].
 On each trial, participants are instructed to find one of two target letters---an 'E' or 'H'---and indicate whether the target letter was present on the global or local letter by pressing 'g' or 'l' on their keyboard, respectively.
@@ -131,18 +136,18 @@ The main outcome measure is mean response time and accuracy for global targets a
 
 ### Current state {#state}
 
-We will assess state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [Stai-S; @speilberger_1999] (See [Table S1](#appendix)).
+We will assess state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [Stai-S\; @spielberger_1999] (See [Table S1](#appendix)).
  An overall state anxiety variable was computed by averaging across the 20 unweighted items.
 
 ### Violence exposure {#violence}
 
-Violence exposure will be measured using two measures: 1) the Neighborhood Violence Scale [NVS; @frankenhuis_2018; @frankenhuis_deVries_2020] (see [Table S2](#appendix)) and 2) two items assessing exposure to physical fights before age 13 ("Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?").
+Violence exposure will be measured using two measures: 1) the Neighborhood Violence Scale [NVS\; @frankenhuis_2018; @frankenhuis_deVries_2020] (see [Table S2](#appendix)) and 2) two items assessing exposure to physical fights before age 13 ("Based on your experiences, how many times did you see or hear someone being beaten up in real life, before age 13?" and "How many times were you in a physical fight, before age 13?").
 A violence exposure composite score will be calculated as an unweighted average of the mean NVS score (standardized) and the mean of the fighting items (standardized).
 
 ### Unpredictability {#unpred}
 
 We distinguish between subjective and objective measures of environmental unpredictability.
-Subjective unpredictability will be measured as an unweighted average of three scales: 1) A scale of perceived childhood unpredictability used in previous research (see [Table S3](#appendix)) [@mittal_2015; @young_2018]; 2) An adapted version of the Confusion, Hubbub and Order Scale [CHAOS; @matheny_1995] (see [Table S5](#appendix)); 3) An adapted version of the Questionnaire of Unpredictability in Childhood [QUIC; @glynn_2019] (see [Table S4](#appendix)).
+Subjective unpredictability will be measured as an unweighted average of three scales: 1) A scale of perceived childhood unpredictability used in previous research (see [Table S3](#appendix)) [@mittal_2015; @young_2018]; 2) An adapted version of the Confusion, Hubbub and Order Scale [CHAOS\; @matheny_1995] (see [Table S5](#appendix)); 3) An adapted version of the Questionnaire of Unpredictability in Childhood [QUIC\; @glynn_2019] (see [Table S4](#appendix)).
 Objective unpredictability will be measured as an unweighted average of four items relating to experiences prior to age 13: 1) number of residential changes, 2) number of male and female romantic partners of a caregiver besides the other primary caregiver (measured separately; values > 6 were given a value 6 to prevent extreme outliers), 4) self-reported stability of the family and social environment across four dimensions: economic status, family environment, childhood neighborhood environment, and childhood school environment (rated between 1 (the same all the time) and 5 (constant and rapid changes)).
 The main analyses will be based on a full composite that is an unweighted standardized average of subjective and objective unpredictability.
 
@@ -152,24 +157,24 @@ We will create a poverty composite score that is the average of the following me
 
 ### Attentional style
 
-We will measure attentional style using the Attentional Style Questionnaire [ASQ; @calster_2018].
+We will measure attentional style using the Attentional Style Questionnaire [ASQ\; @calster_2018] (See [Table S7](#appendix).
 The ASQ measures self-reported attentional style, with seven items asking about the participant's propensity for internally oriented attention (e.g., "During an activity, unrelated mmental images and thoughts come to my mind") and seven items about externally oriented attention (e.g., "I am easily drawn to new stimuli (for example, voices of people passing by, as sound in the house, ...) that are not relevant to a task I am doing"). 
 Where necessary, items were recoded in such a way that they reflected *distractibility* by internal and external stimuli, respectively, with higher scores reflecting a higher degree of distractibility.
 We will compute unweighted averages separately for internally oriented attention and externally oriented attention.
 
 ### Impulsivity {#impulsivity}
 
-We will measure impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale (BIS; short form; [@patton_1995; @spinella_2007]) (See [Table S7](#appendix)) 
+We will measure impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale (BIS; short form; [@patton_1995; @spinella_2007]) (See [Table S8](#appendix)) 
 An overall impulsivity variable will be computed by averaging the five unweighted items. 
 
 ### Future Orientation {#future_orientation}
 
-We will measure future orientation with an adapted version of the Future Orientation Scale [FOS; @steinberg_2009] (See [Table S8](#appendix).
+We will measure future orientation with an adapted version of the Future Orientation Scale [FOS\; @steinberg_2009] (See [Table S9](#appendix).
 An overall future orientation variable will be computed by averaging the 15 unweighted items.
 
 ### Depressive symptoms {#depression}
 
-We will measure depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD; @radloff_1977] (See [Table S9](#appendix). 
+We will measure depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD\; @radloff_1977] (See [Table S10](#appendix). 
 An overall depression variable will be computed by averaging the 20 unweighted items.
 
 ## Procedure {#procedure}
@@ -178,7 +183,7 @@ The experiment will be completed on the participants' own laptop or desktop comp
 
 After providing consent, participants start either with the Flanker Task or Global-Local Task (counterbalanced). They are asked to complete the tasks in a quiet room in the house where they would be least likely to be distracted by other people or outside noises. 
 At the onset of the first task, the experiment switches to full-screen mode to limit distractions from other programs or browser tabs.
-The size of the task stimuli is controlled between subjects using the resize plugin in JsPsych [@deLeeuw_2015]. 
+The size of the task stimuli is controlled between subjects using the resize plugin in JsPsych [@deleeuw_2015]. 
 After successfully resizing the screen, participants complete all three tasks. 
 Code for the three tasks can be found at [https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/materials](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/materials). 
 
@@ -193,7 +198,7 @@ The full experiment is expected to take approximately 30 minutes. Participants a
 
 ### DDM estimation {#ddm_plan}
 
-For the Flanker Task, we will use the Shrinking Spotlight Model [SSP; @grange_2016; @white_2018a; @white_2018b; @white_2011] to fit the data.
+For the Flanker Task, we will use the Shrinking Spotlight Model [SSP\; @grange_2016; @white_2018a; @white_2018b; @white_2011] to fit the data.
 The SSP model will be fit to the data of each individual participant in two steps. 
 First, we loop over 50 different sets of starting parameters with a variance of 20 to find the best starting values for each participant.  
 On this first fitting step, 1000 trials will be simulated on each iteration of the fit routine. 
@@ -210,13 +215,20 @@ The main parameters of interest are the two drift rates of the global and local 
 
 ### Primary analyses
 
-To address the [first primary aim](#primary), we will fit a linear regression model to the pooled data of all three studies (i.e., the pilot study, study 1, and study 2).
-We will fit different models for environmental unpredictability and violence exposure as predictors (using the respective composite scores) and for perceptual input and interference as dependent variables.
-Each model will additionally contain the following covariates: (1) study number (pilot study, study 1, or study 2; sum-coded), (2) whether participants rescaled their screen at the start of the cognitive tasks (yes or no; sum-coded), (3) whether participants experienced interruptions during the tasks (yes or no; sum-coded), and (4) whether people exited full-screen mode during the experiment (yes or no; sum-coded).
+All linear mixed effects models will contain a random intercept for participants.
+All primary models will contain the following covariates: (1) study number (pilot study, study 1, or study 2; sum-coded), (2) whether participants rescaled their screen at the start of the cognitive tasks (yes or no; sum-coded), (3) whether participants experienced interruptions during the tasks (yes or no; sum-coded), and (4) whether people exited full-screen mode during the experiment (yes or no; sum-coded).
 Note that the latter three covariates were included as arbitrary decisions in the multiverse analyses for the pilot study and study 1.
 However, as we found that they substantially altered the results, we decided to reclassify them as non-arbitrary decisions and include them as covariates instead.
+
+To address the [first primary aim](#primary), we will fit a linear regression model to the pooled data of all three studies (i.e., the pilot study, study 1, and study 2).
+We will fit different models for environmental unpredictability and violence exposure as predictors (using the respective composite scores) and for perceptual input and interference as dependent variables.
+
 To address the [second primary aim](#primary), we will fit separate linear mixed effects models for environmental unpredictability and violence exposure with drift rate as the dependent variable and adversity type, task condition, and their interaction as independent variables. 
-The models will contain a random intercept for participants, and contain the same covariates as described above. 
+
+To address the [third primary aim](#primary), we will stack the perceptual input of the Flanker Task and the drift rate of the Global-Local task.
+Before stacking the data, we will compute a difference score of Global-Local drift rates by substracting the drift rate on local trials from the drift rate on global trials (with higher scores meaning relatively faster information processing on global trials).
+In addition, perceptual input and the drift rate difference score will be separately standardized.
+We will fit separate linear mixed effects models for environmental unpredictability and violence exposure with the standardized performance measure as the dependent variable, and adversity type, task (Flanker or Global-Local, sum-coded) and their interaction as independent variables.
 
 ### Multiverse analysis {#multiverse_plan}
 
@@ -357,9 +369,23 @@ codebook %>%
 
 \pagebreak 
 
+Go back to [Methods](#att_style)
+
+```{r tableS7, tab.id="tableS7", tab.cap.style="Table Caption", tab.cap="Items of the Attention Style Questionnaire"}
+codebook %>%
+  filter(str_detect(Variable, "att_style\\d\\d")) %>% 
+  mutate(Item = 1:n()) %>%
+  select(Item, Label) %>%
+  add_column(.after = 1, "empty1" = "") %>%
+  flextable(cwidth = c(0.75, .2, 5)) %>%
+  set_header_labels(Item = "Item", empty1 = "", Label = "Description")
+```
+
+\pagebreak
+
 Go back to [Methods](#impulsivity)
 
-```{r tableS7, tab.id="tableS7", tab.cap.style="Table Caption", tab.cap="Items of the Barrett Impulsivity Scale (BIS) - motor impulsivity subscale"}
+```{r tableS8, tab.id="tableS8", tab.cap.style="Table Caption", tab.cap="Items of the Barrett Impulsivity Scale (BIS) - motor impulsivity subscale"}
 codebook %>%
   filter(str_detect(Variable, "impuls\\d\\d")) %>% 
   mutate(Item = 1:n()) %>%
@@ -373,7 +399,7 @@ codebook %>%
 
 Go back to [Methods](#future_orientation)
 
-```{r tableS8, tab.id="tableS8", tab.cap.style="Table Caption", tab.cap="Items of the Future Orientation Scale (FOS)"}
+```{r tableS9, tab.id="tableS9", tab.cap.style="Table Caption", tab.cap="Items of the Future Orientation Scale (FOS)"}
 codebook %>%
   filter(str_detect(Variable, "fos\\d\\d")) %>% 
   slice(match(c("fos01","fos06","fos07","fos12","fos13", "fos02","fos05","fos08","fos11","fos14", "fos03","fos04","fos09","fos10","fos15"), Variable)) %>%
@@ -399,7 +425,7 @@ codebook %>%
 
 Go back to [Methods](#depression)
 
-```{r tableS9, tab.id="tableS9", tab.cap.style="Table Caption", tab.cap="Items of the Epidemiologic Studies Depression Scale (CESD)"}
+```{r tableS10, tab.id="tableS10", tab.cap.style="Table Caption", tab.cap="Items of the Epidemiologic Studies Depression Scale (CESD)"}
 codebook %>%
   filter(str_detect(Variable, "depression\\d\\d")) %>% 
   mutate(Item = 1:n()) %>%
