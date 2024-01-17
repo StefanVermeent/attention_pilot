@@ -2,6 +2,7 @@ library(tidyverse)
 library(patchwork)
 library(ggsci)
 library(here)
+library(flextable)
 
 
 source(here("preregistrations/1_pilot/scripts/custom_functions/functions_corrplot.R"))
@@ -63,43 +64,6 @@ sample_pilot <- cleaned_data |>
     ))
 
 
-
-## IV correlations ----
-
-pilot_iv_cor_table <- cleaned_data |> 
-  select(violence_mean, fighting_mean, violence_composite, 
-         quic_total_mean, unp_mean, chaos_mean, change_env_mean, unpredictability_obj, unpredictability_composite) |> 
-  corr_table(
-    numbered = T,
-    c.names = c("Neigh. violence", "Fighting", "Violence comp.", 
-                "QUIC", "Perc. unpredictability", "CHAOS", "Env. change", "Obj. unpredictability", "Unpredictability comp"),
-    stats = c("mean", "sd", "median", "min", "max")
-  ) |> 
-  add_column(empty1 = "", .after = 4) |> 
-  mutate(across(
-    everything(),
-    ~ifelse(is.na(.), "", .)
-  )) |> 
-  mutate(across(
-    everything(),
-    ~formatC(.,  digits = 2, width = 3, flag = "0", format = 'f'))) |> 
-  flextable() |> 
-  width("empty1", width = .2) %>% 
-  width(j = 1, width = .75) %>% 
-  set_header_labels(Variable = "", empty1 = "") %>% 
-  add_header_row(
-    values = c(" ", "Violence exposure", " ", "Environmental unpredictability"),
-    colwidths = c(1, 3, 1, 6)
-  ) %>% 
-  border_remove() %>% 
-  border(i = 1, j = c("1","2","3","4","5","6","7","8","9"), border.bottom = fp_border_default(), part = "header") %>% 
-  border(i = 1, border.top = fp_border_default(), part = "header") %>% 
-  border(i = 2, border.bottom = fp_border_default(), part = "header") %>% 
-  border(i = 14, border.bottom = fp_border_default(), part = "body") %>% 
-  align(i = 1:14, j = 1, align = "left", part = "body") %>% 
-  bold(i = 1:2, part = "header") %>% 
-  set_table_properties(width = 1, layout = "autofit")
-
 # Main results  -----------------------------------------------------------
 
 ## Plots ----
@@ -118,7 +82,7 @@ theme_set(
       panel.spacing.y   = unit(0.5, "lines"),
       plot.margin       = margin(.25,.25,.25,.25,"lines"),
       plot.background   = element_rect(color = NA),
-      plot.title        = element_text(size = rel(.85), hjust = 0, margin = margin(0,0,.5,0, "lines")),
+      plot.title        = element_text(size = 14, hjust = 0.5),
       plot.subtitle     = element_blank(),
       panel.grid        = element_line(color = NA),
       strip.background  = element_blank(), 
@@ -133,44 +97,44 @@ pval_colors <- c("sig" = "#006D77", "non-sig" = "gray70")
 
 ## Objects containing all plot panels ----
 
-pilot_prim_lm_effect_plot <- unique(prim_lm_effects_sum$dv) |> 
+pilot_prim_lm_effect_plot <- unique(pilot_prim_lm_effects_sum$dv) |> 
   map(function(x) {
     
-    effect_data <- prim_lm_effects_sum |> 
+    effect_data <- pilot_prim_lm_effects_sum |> 
       filter(dv == x) |> 
       select(decision, dv, term, estimate, p.value) |> 
       mutate(term = ifelse(term == "(Intercept)", "intercept", term)) |> 
       pivot_wider(names_from = term, values_from = c(estimate, p.value)) |> 
       mutate(
-        p.value_chr = ifelse(p.value_violence_composite < .05, "sig", "non-sig")
+        p.value_chr = ifelse(p.value_vio_comp < .05, "sig", "non-sig")
       )
     
-    vio_min <- cleaned_data$violence_composite |> scale() |>  min()
-    vio_max <- cleaned_data$violence_composite |> scale() |>  max()
-    y_min <- min(effect_data$estimate_intercept) + vio_max*min(effect_data$estimate_violence_composite) -0.05
-    y_max <- max(effect_data$estimate_intercept) + vio_max*max(effect_data$estimate_violence_composite) +0.05
+    vio_min <- cleaned_data$vio_comp |> scale() |>  min()
+    vio_max <- cleaned_data$vio_comp |> scale() |>  max()
+    y_min <- min(effect_data$estimate_intercept) + vio_max*min(effect_data$estimate_vio_comp) -0.05
+    y_max <- max(effect_data$estimate_intercept) + vio_max*max(effect_data$estimate_vio_comp) +0.05
     int_med <- median(effect_data$estimate_intercept)
     
     ggplot() +
       # coord_cartesian(xlim = c(vio_min, vio_max), ylim = c(y_min, y_max)) +
-      geom_segment(data = effect_data, aes(x = vio_min, xend = vio_max, y = int_med+estimate_violence_composite*vio_min, yend = int_med+estimate_violence_composite*vio_max, color = p.value_chr)) +
+      geom_segment(data = effect_data, aes(x = vio_min, xend = vio_max, y = int_med+estimate_vio_comp*vio_min, yend = int_med+estimate_vio_comp*vio_max, color = p.value_chr)) +
       scale_color_manual(values = pval_colors) +
       guides(color = 'none') +
       labs(
         x = "Violence Exposure",
         y = ""
       ) +
-      geom_segment(data = prim_lm_medians_sum[[x]], aes(x = vio_min, xend = vio_max, y = int_med+med_effect_violence_composite*vio_min, yend = int_med+med_effect_violence_composite*vio_max), size = 1.5) + 
-      geom_point(data = prim_lm_medians_sum[[x]], aes(x = vio_min, y = int_med+vio_min*med_effect_violence_composite), size = 2, fill = "white", color = "black", shape = 21) +
-      geom_point(data = prim_lm_medians_sum[[x]], aes(x = vio_max, y = int_med+vio_max*med_effect_violence_composite), size = 2, fill = "white", color = "black", shape = 21) 
+      geom_segment(data = pilot_prim_lm_medians_sum[[x]], aes(x = vio_min, xend = vio_max, y = int_med+med_effect_vio_comp*vio_min, yend = int_med+med_effect_vio_comp*vio_max), size = 1.5) + 
+      geom_point(data = pilot_prim_lm_medians_sum[[x]], aes(x = vio_min, y = int_med+vio_min*med_effect_vio_comp), size = 2, fill = "white", color = "black", shape = 21) +
+      geom_point(data = pilot_prim_lm_medians_sum[[x]], aes(x = vio_max, y = int_med+vio_max*med_effect_vio_comp), size = 2, fill = "white", color = "black", shape = 21) 
     
   }) |> 
-  setNames(unique(prim_lm_effects_sum$dv))
+  setNames(unique(pilot_prim_lm_effects_sum$dv))
 
-pilot_prim_lm_eff_curve_plot <- unique(prim_lm_effects_sum$dv) |> 
+pilot_prim_lm_eff_curve_plot <- unique(pilot_prim_lm_effects_sum$dv) |> 
   map(function(x) {
     
-    prim_lm_effects_sum |> 
+    pilot_prim_lm_effects_sum |> 
       filter(dv == x, term != "(Intercept)") |>
       mutate(
         p.value_chr = ifelse(p.value < .05, "sig", "non-sig"),
@@ -184,30 +148,30 @@ pilot_prim_lm_eff_curve_plot <- unique(prim_lm_effects_sum$dv) |>
         inherit.aes = F,
         show.legend = F
       ) +
-      ylim(-.25, .25) +
+      scale_y_continuous(breaks = seq(-0.4, 0.4, 0.1), limits = c(-.35, .35)) +
       geom_hline(aes(yintercept = 0), size = .5,linetype = "solid") +
-      geom_point(size = 1, shape = 19, show.legend = F) +
+      geom_point(size = 3, shape = 19, show.legend = F) +
       geom_point(
-        data = prim_lm_medians_sum[[x]],
+        data = pilot_prim_lm_medians_sum[[x]],
         aes(y = med_effect_std, x = 32),
-        shape = 21,
-        size  = 2.5,
+        shape = 1,
+        size  = 3,
         fill  = "white",
-        stroke = 1,
+        stroke = 3,
         show.legend = F,
         inherit.aes = F
       )  +
       geom_text(
-        aes(x = 32, y = 0.18, label = paste0(sum(p.value < .05)/n*100, " % of p-values < .05")),
+        aes(x = 32, y = 0.28, label = paste0(sum(p.value < .05)/n*100, " % of p-values < .05")),
         size = 3,
         show.legend = F,
         inherit.aes = F
       ) +
-      geom_label(
-        data = prim_lm_medians_sum[[x]],
-        aes(y = med_effect_std, label = as.character(round(med_effect_std,2)), x = 32),
-        nudge_y = .055,
-        size = 2.5,
+      geom_text(
+        data = pilot_prim_lm_medians_sum[[x]],
+        aes(y = med_effect_std, label = paste0("\u03b2\ = ", as.character(round(med_effect_std,2))), x = 32),
+        nudge_y = -.06,
+        size = 4,
         show.legend = F,
         inherit.aes = F
       ) +
@@ -222,13 +186,13 @@ pilot_prim_lm_eff_curve_plot <- unique(prim_lm_effects_sum$dv) |>
         axis.line.x = element_blank()
       )
   }) |> 
-  setNames(unique(prim_lm_effects_sum$dv))
+  setNames(unique(pilot_prim_lm_effects_sum$dv))
 
 # Plot lm p-value curve
-pilot_prim_lm_pvalues_plot <- unique(prim_lm_effects_sum$dv) |>
+pilot_prim_lm_pvalues_plot <- unique(pilot_prim_lm_effects_sum$dv) |>
   map(function(x) {
     
-    pvalues <- prim_lm_effects_sum |>
+    pvalues <- pilot_prim_lm_effects_sum |>
       filter(dv == x, term != "(Intercept)") |> 
       ungroup() |> 
       select(decision, p.value)  
@@ -260,12 +224,12 @@ pilot_prim_lm_pvalues_plot <- unique(prim_lm_effects_sum$dv) |>
       )
     
   }) |> 
-  setNames(unique(prim_lm_effects_sum$dv))
+  setNames(unique(pilot_prim_lm_effects_sum$dv))
 
-pilot_prim_lm_variance_plot <- names(prim_lm_variance_sum) |>
+pilot_prim_lm_variance_plot <- names(pilot_prim_lm_variance_sum) |>
   map(function(x) {
     
-    prim_lm_variance_sum[[x]] |> 
+    pilot_prim_lm_variance_sum[[x]] |> 
       ggplot(aes(grp, percent, fill = grp)) +
       geom_bar(stat = "identity") +
       scale_fill_uchicago() +
@@ -277,14 +241,14 @@ pilot_prim_lm_variance_plot <- names(prim_lm_variance_sum) |>
         y = ""
       )
   }) |> 
-  setNames(names(prim_lm_variance_sum))
+  setNames(names(pilot_prim_lm_variance_sum))
 
 
 
-pilot_prim_lmer_effect_plot <- names(prim_lmer_points_sum) |> 
+pilot_prim_lmer_effect_plot <- names(pilot_prim_lmer_points_sum) |> 
   map(function(x) {
     
-    prim_lmer_points_sum[[x]] |> 
+    pilot_prim_lmer_points_sum[[x]] |> 
       select(-iv) |> 
       rename(
         iv = level,
@@ -334,12 +298,12 @@ pilot_prim_lmer_effect_plot <- names(prim_lmer_points_sum) |>
         legend.position=c(0.8,0.7),
         legend.background = element_blank())
   }) |> 
-  setNames(names(prim_lmer_points_sum))
+  setNames(names(pilot_prim_lmer_points_sum))
 
-pilot_prim_lmer_eff_curve_plot <- unique(prim_lmer_effects_sum$dv) |> 
+pilot_prim_lmer_eff_curve_plot <- unique(pilot_prim_lmer_effects_sum$dv) |> 
   map(function(x) {
     
-    prim_lmer_effects_sum |> 
+    pilot_prim_lmer_effects_sum |> 
       filter(dv == x, str_detect(term, ":")) |>
       mutate(p.value_chr = ifelse(p.value < .05, "sig", "non-sig"),
              n = n()) |> 
@@ -356,7 +320,7 @@ pilot_prim_lmer_eff_curve_plot <- unique(prim_lmer_effects_sum$dv) |>
       geom_hline(aes(yintercept = 0), size = .5,linetype = "solid") +
       geom_point(size = 1, shape = 19, show.legend = F) +
       geom_point(
-        data = prim_lmer_medians_sum[[x]],
+        data = pilot_prim_lmer_medians_sum[[x]],
         aes(y = med_effect_std, x = 64),
         shape = 21,
         size  = 2.5,
@@ -372,7 +336,7 @@ pilot_prim_lmer_eff_curve_plot <- unique(prim_lmer_effects_sum$dv) |>
         inherit.aes = F
       ) +
       geom_label(
-        data = prim_lmer_medians_sum[[x]],
+        data = pilot_prim_lmer_medians_sum[[x]],
         aes(y = med_effect_std, label = as.character(round(med_effect_std,2)), x = 64),
         nudge_y = .055,
         size = 2.5,
@@ -390,13 +354,13 @@ pilot_prim_lmer_eff_curve_plot <- unique(prim_lmer_effects_sum$dv) |>
         axis.line.x = element_blank()
       )
   }) |> 
-  setNames(unique(prim_lmer_effects_sum$dv))
+  setNames(unique(pilot_prim_lmer_effects_sum$dv))
 
 
-pilot_prim_lmer_pvalues_plot <- names(prim_lmer_points_sum) |>
+pilot_prim_lmer_pvalues_plot <- names(pilot_prim_lmer_points_sum) |>
   map(function(x) {
     
-    pvalues <- prim_lmer_points_sum[[x]] |> 
+    pvalues <- pilot_prim_lmer_points_sum[[x]] |> 
       select(decision, p.value) |> 
       distinct()
     
@@ -426,12 +390,12 @@ pilot_prim_lmer_pvalues_plot <- names(prim_lmer_points_sum) |>
       )
     
   }) |> 
-  setNames(names(prim_lmer_points_sum))
+  setNames(names(pilot_prim_lmer_points_sum))
 
-pilot_prim_lmer_variance_plot <- names(prim_lmer_variance_sum) |>
+pilot_prim_lmer_variance_plot <- names(pilot_prim_lmer_variance_sum) |>
   map(function(x) {
     
-    prim_lmer_variance_sum[[x]] |> 
+    pilot_prim_lmer_variance_sum[[x]] |> 
       ggplot(aes(grp, percent, fill = grp)) +
       geom_bar(stat = "identity") +
       scale_fill_uchicago() +
@@ -443,7 +407,7 @@ pilot_prim_lmer_variance_plot <- names(prim_lmer_variance_sum) |>
         y = ""
       )
   }) |> 
-  setNames(names(prim_lmer_variance_sum))
+  setNames(names(pilot_prim_lmer_variance_sum))
 
 
 
@@ -485,8 +449,6 @@ pilot_mult_vio_ddm_flanker <-
   ((pilot_prim_lm_variance_plot$flanker_ssp_p + ggtitle("Explained variance (%)") + theme(plot.title = element_text(hjust = 0.5, size = rel(0.9), face = "bold"))) +
      (pilot_prim_lm_variance_plot$flanker_ssp_interference + right_hand_themes) + plot_layout(ncol = 2)) 
 
-ggsave(filename = here("manuscript/figures/pilot_flankeronly.png"), pilot_mult_vio_ddm_flanker, width = 10, height = 8, dpi = 600)
-
 
 
 pilot_mult_vio_ddm <-
@@ -524,11 +486,11 @@ pilot_mult_vio_rt <-
 
 ## Simple Slopes: Violence exposure ----
 
-pilot_simslopes <- prim_lmer_simslopes_sum |> 
-  filter(dv == "cueing_hddm_v") |> 
-  mutate(condition = ifelse(modx.value == -1, "neutral", "cued")) |> 
-  select(decision, estimate, p.value, condition) |> 
-  group_by(condition) |> 
+pilot_simslopes <- pilot_prim_lmer_simslopes_sum |> 
+#  filter(dv %in% "cueing_hddm_v", dv == "flanker_rt") |> 
+  mutate(condition = ifelse(modx.value == -1, "con1", "con2")) |> 
+  select(decision, dv,  estimate, p.value, condition) |> 
+  group_by(dv, condition) |> 
   summarise(
     mean_est = round(mean(estimate),2),
     sum_p    = round(sum(p.value < .05)/n()*100,2)
@@ -537,17 +499,13 @@ pilot_simslopes <- prim_lmer_simslopes_sum |>
               values_from = c("mean_est", "sum_p"))
 
 
-prim_lmer_points_sum[["cueing_hddm_v"]] |> 
-  group_by(level, group) |> 
-  summarise(
-    mean_effect = mean(predicted),
-    prop_pvalue = sum(p.value < .05)/n()*100) 
+
 
 ## Main effects: Violence exposure ----
 
-pilot_main_eff_rt_df <- prim_lmer_effects_sum |> 
+pilot_main_eff_rt_df <- pilot_prim_lmer_effects_sum |> 
   filter(dv %in% c("flanker_rt", "cueing_rt")) |> 
-  filter(str_detect(term, "violence_composite|:")) |> 
+  filter(str_detect(term, "vio_comp|:")) |> 
   group_by(dv, term) |> 
   summarise(
     median_effect = round(median(Std_Coefficient),2),
@@ -563,9 +521,9 @@ pilot_main_eff_rt_df <- prim_lmer_effects_sum |>
   ) |> 
   select(dv, median_effect_Main, Main_CI, p_sum_Main, median_effect_Interaction, Interaction_CI, p_sum_Interaction) |> 
   bind_rows(
-    prim_lm_effects_sum |> 
+    pilot_prim_lm_effects_sum |> 
       filter(dv %in% c("rt_change")) |> 
-      filter(term == "violence_composite") |> 
+      filter(term == "vio_comp") |> 
       group_by(dv) |> 
       summarise(
         median_effect_Main = round(median(Std_Coefficient),2),
@@ -622,9 +580,9 @@ pilot_main_eff_rt_table <-
   )
 
 
-pilot_main_eff_ddm_df <- prim_lmer_effects_sum |> 
+pilot_main_eff_ddm_df <- pilot_prim_lmer_effects_sum |> 
   filter(dv %in% c("cueing_rt", "cueing_hddm_v", "flanker_rt", "cueing_hddm_t")) |> 
-  filter(str_detect(term, "violence_composite|:")) |> 
+  filter(str_detect(term, "vio_comp|:")) |> 
   group_by(dv, term) |> 
   summarise(
     median_effect = round(median(Std_Coefficient),2),
@@ -644,10 +602,10 @@ pilot_main_eff_ddm_df <- prim_lmer_effects_sum |>
   ) |> 
   select(dv, median_effect_Main, Main_CI, p_sum_Main, median_effect_Interaction, Interaction_CI, p_sum_Interaction) |> 
   bind_rows(
-    prim_lm_effects_sum |> 
+    pilot_prim_lm_effects_sum |> 
       filter(dv %in% c("cueing_fixed_hddm_a", "flanker_ssp_p", "flanker_ssp_t0", "flanker_ssp_interference", "flanker_ssp_a", 
                        "change_hddm_v", "change_hddm_t", "change_hddm_a", "rt_change")) |> 
-      filter(term == "violence_composite") |> 
+      filter(term == "vio_comp") |> 
       group_by(dv) |> 
       summarise(
         median_effect_Main = round(median(Std_Coefficient),2),
@@ -721,7 +679,7 @@ pilot_main_eff_ddm_table <-
     empty1 = ""
   ) |> 
   add_header_row(
-    values = c(" ", "Violence exposure", "", "Interaction"),
+    values = c(" ", "Main Effect", "", "Interaction"),
     colwidths = c(1, 3, 1, 3)
   ) |> 
   compose(i = 2, j = c(2,6), as_paragraph("\U1D6FD"), part = "header") %>% 
@@ -753,4 +711,3 @@ pilot_main_eff_ddm_table <-
 
 
 
-ggsave(filename = here("manuscript/figures/figure2.png"), pilot_mult_vio_ddm, width = 10, height = 8, dpi = 600)
