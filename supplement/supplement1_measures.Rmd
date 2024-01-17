@@ -1,0 +1,63 @@
+---
+title: "1_measurement_overview"
+author: "Stefan Vermeent"
+date: "2023-02-21"
+output: pdf_document
+---
+
+# 1. Descriptions of exploratory measures
+
+## 1.1. Current state 
+We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S\; @spielberger_1999]. 
+The STAI-S contains 20 short items measuring current anxiety (e.g., "I feel tense"). 
+Participants rated each item on a scale of 1 (not at all) to 4 (very much so). 
+An overall state anxiety variable was computed by averaging across the 20 unweighted items (Cronbach's $\alpha$ = `r txt_ivs_alpha_pilot$stai_s`).
+
+In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). We computed an overall sleep deprivation composite by standardizing and averaging across the two unweighted sleep-related items.
+
+## 1.2 Poverty exposure 
+Participants' perceived level of resource scarcity before age 13 was measured using seven items (e.g., "Your family had enough money to afford the kind of home you all needed"; See [Table S6](#appendix) for an overview of all items). 
+Participants rated each item on a scale from 1 (never true) to 5 (very often true). 
+Scores for the first six items were reverse coded so that higher scores indicated more perceived resource scarcity. 
+The items were averaged together to create an unweighted composite scale (Cronbach's $\alpha$ = `r txt_ivs_alpha_pilot$ses`).
+
+In addition, we measured several indicators of objective SES before age 13. 
+First, participants separately indicated the highest education of their mother and father on an 8-point scale: 'some high school', 'GED', 'high school diploma', 'some college but no college degree', associate's  degree', 'bachelor's degree', 'master's  degree', or 'doctoral or lab degree'. 
+The mother and father education level were averaged to create an overall unweighted parental education composite. 
+Participants also indicated their family's household income before age 13 on a 6-point scale: 'less than \$ 25k/year', '\$25k - \$49k/year, '\$50 - \$74k/year', '\$75 - \$99k/year', '\$100 - \$149k/year', 'more than \$150k/year'. 
+Scores were reverse coded so that higher scores indicated higher levels of poverty.
+
+We created a composite score of poverty exposure before age 13 by averaging together the standardized scores of perceived level of resource scarcity, overall parental education, and household income.
+
+## 1.3. Impulsivity 
+We assessed impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale [BIS short form\; @patton_1995; @spinella_2007]. 
+The Motor Impulsivity subscale of the BIS consists of five items (e.g., "I do things without thinking").
+We did not include the Non-planning subscale because it overlapped substantially with the Future Orientation Scale described below. 
+In addition, we did not include the Attention impulsivity subscale because it included items which we deemed to be mostly irrelevant for our target population (e.g., "I 'squirm' at plays or lectures"). 
+We changed the original 4-point rating scale (rarely/never to almost always) to a 5-point rating scale ranging from 1 (never true) to 5 (very often true). 
+An overall impulsivity variable was computed by averaging the five unweighted items.
+Reliability was the scale was high($\alpha$ = `r txt_ivs_alpha_pilot$impuls`). 
+
+## 1.4. Future Orientation 
+We assessed future orientation with an adapted version of the Future Orientation Scale [FOS\; @steinberg_2009]. 
+The original scale consists of 15 sets of opposing items separated by "BUT" (e.g., "Some people like to plan things out one step at a time BUT other people like to jump right into things without planning them out beforehand"). 
+Participants first choose the item that best matches their general preference, and then indicate whether the statement is "really true" or "somewhat true". 
+We adapted this format in a couple of ways. 
+First, we converted the two statements per item to a single statement by picking the statements in the original right-hand column. 
+Second, we adapted the 15 statements from a third-person to a first-person format. 
+These changes were made in an attempt to reduce the cognitive load of the items. 
+We worried that people with less formal education or who were sitting in a noisier environment would struggle with the length of the original items. 
+
+In addition, item 8 of the original scale ("[...] other people would rather spend their money right away on something fun than save it for a rainy day") was changed to "I'd rather spend money right away than save it for a rainy day" (i.e., dropping the phrase "on something fun") to make it more general with regard to the thing that money is spent on. 
+For people from adversity, spending money right now instead of saving it for the future might often be born out of necessity (e.g., having just enough money for food and shelter; being in debt) instead of a failure to delay gratification. 
+Finally, the rating scale was adapted from the original 4-point scale (ranging from really true for the left-hand statement to really true for the right-hand statement) to a 5-point scale ranging from 1 (never true) to 5 (very often true).
+An overall future orientation variable was computed by averaging the 15 unweighted items.
+Reliability of the scale was high (Cronbach's $\alpha$ = `r txt_ivs_alpha_pilot$fos_fo`). 
+
+
+# 1.5 Depressive symptoms 
+We assessed depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD\; @radloff_1977]. 
+The scale consists of 20 items (e.g., "I do things without thinking"). 
+Participants rate each item on a scale of 1 (rarely or none of the time (less than 1 day)) to 4 (most or all of the time (5-7 days)). 
+An overall depression variable was computed by averaging the 20 unweighted items.
+Reliability of the scale was high (Cronbach's $\alpha$ = `r txt_ivs_alpha_pilot$depression`).
