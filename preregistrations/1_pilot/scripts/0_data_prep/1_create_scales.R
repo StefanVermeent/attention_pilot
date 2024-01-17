@@ -156,9 +156,9 @@ vars03_unp <-
       unp_partners_father >= 6 ~ 6,
     ),
     unp_quic_punp              = across(c(unp_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) |> scale() |> as.numeric(),
-    unpredictability_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale |> as.numeric(), 
-    unpredictability_obj       = across(c(unp_moving_binned, unp_partners_mother_binned, unp_partners_father_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T) |> as.numeric(),
-    unpredictability_composite = across(c(unpredictability_subj, unpredictability_obj)) %>% rowMeans(., na.rm = T)|> as.numeric()
+    unp_subj      = across(c(unp_mean, chaos_mean, quic_total_mean)) %>% rowMeans(., na.rm = T) %>% scale |> as.numeric(), 
+    unp_obj       = across(c(unp_moving_binned, unp_partners_mother_binned, unp_partners_father_binned, change_env_mean)) %>% scale %>% rowMeans(., na.rm = T) |> as.numeric(),
+    unp_comp = across(c(unp_subj, unp_obj)) %>% rowMeans(., na.rm = T)|> as.numeric()
   ) %>%
   sjlabelled::var_labels(
     unp_mean              = "Perceived unpredictability",
@@ -181,12 +181,12 @@ vars04_vio <-
     violence_mean      = across(matches("violence\\d\\d$")) %>% psych::reverse.code(keys = c(-1,1,-1,1,1,1,1)) %>% rowMeans(., na.rm = T),
     violence_missing   = across(matches("violence\\d\\d$")) %>% is.na() %>% rowSums(., na.rm = T),
     fighting_mean      = across(matches("aces_fighting\\d")) %>% rowMeans(., na.rm = T),
-    violence_composite = across(c(violence_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
+    vio_comp = across(c(violence_mean, fighting_mean)) %>% scale %>% rowMeans(., na.rm = TRUE)
   ) %>%
   sjlabelled::var_labels(
     violence_mean = "NVS",
     fighting_mean = "Fighting",
-    violence_composite = "Violence - Composite"
+    vio_comp = "Violence - Composite"
   )
 
 

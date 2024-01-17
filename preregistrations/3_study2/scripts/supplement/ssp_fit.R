@@ -3,10 +3,9 @@ library(here)
 library(furrr)
 library(parallel)
 library(flankr)
-library(cowplot)
 
-load(here("data", "2_study1", "1_SSP_objects.Rdata"))
-load(here("data", "2_study1", "2_cleaned_data.Rdata"))
+load(here("data", "3_study2", "1_SSP_objects.Rdata"))
+load(here("data", "3_study2", "2_cleaned_data.Rdata"))
   
   
 # Plot model fit ----------------------------------------------------------
@@ -16,16 +15,10 @@ cores <- detectCores()- 4
 plan('multisession', workers = cores)
 
 suspect_participants <- 
-  bind_rows(
-    ssp_results_refit %>% select(matches("^(a|t0|p|rd|sda|bbic|g2)_flanker_std"), id) %>% rename_with(.cols = !matches("id"), ~str_replace_all(.x, "_std", "")) %>% mutate(condition = "standard"),
-    ssp_results_refit %>% select(matches("^(a|t0|p|rd|sda|bbic|g2)_flanker_deg"), id) %>% rename_with(.cols = !matches("id"), ~str_replace_all(.x, "_deg", "")) %>% mutate(condition = "degraded"),
-    ssp_results_refit %>% select(matches("^(a|t0|p|rd|sda|bbic|g2)_flanker_enh"), id) %>% rename_with(.cols = !matches("id"), ~str_replace_all(.x, "_enh", "")) %>% mutate(condition = "enhanced")
-  ) %>%
-  #filter(id %in% c(73, 99, 176, 304, 340, 483)) %>%
+  ssp_results_refit %>% select(matches("^(a|t0|p|rd|sda|bbic|g2)_flanker"), id) %>%
   mutate(fit = pmap(., function(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker, g2_flanker, bbic_flanker, id, condition) {
     
     id_i = id
-    condition_i = condition
     
     plotFitSSP(
       modelFit = list(bestParameters = c(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker), g2 = g2_flanker, bBic = bbic_flanker),
@@ -33,7 +26,6 @@ suspect_participants <-
                     filter(id == id_i) %>% 
                     select(flanker_data_long) %>% 
                     unnest(flanker_data_long) %>% 
-                    filter(condition == condition_i) %>%
                     mutate(rt = rt/1000) %>%
                     select(subject = id, rt = rt, congruency, accuracy = correct),
       multipleSubjects = F
@@ -63,10 +55,8 @@ predicted_quantiles <-
         sim_data = future_pmap(., function(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker, id, condition) {
           
           simulateSSP(parms = c(a_flanker, t0_flanker, p_flanker, rd_flanker, sda_flanker), nTrials = 50000) %>%
-            mutate(
-              id        = id,
-              condition = condition) %>%
-            group_by(id, congruency, condition) %>%
+            mutate(id = id) %>%
+            group_by(id, congruency) %>%
             summarise(
               prop_acc_pred = sum(accuracy == 1) / n(),
               quan_rt_pred  = list(quantile(rt, probs = seq(0.25, 0.75, 0.25), na.rm = T))
@@ -86,16 +76,15 @@ predicted_quantiles2 <- predicted_quantiles %>%
 
 
 observed_quantiles <- cleaned_data %>%
- # filter(id %in% c(73, 99, 176, 304, 340, 483)) %>%
   select(flanker_data_long) %>%
   unnest(flanker_data_long) %>%
-  group_by(id, congruency, condition) %>%
+  group_by(id, congruency) %>%
   summarise(
     prop_acc_obs = sum(correct == 1) / n(),
     quan_rt_obs  = list(quantile(rt, probs = seq(0.25, 0.75, 0.25)))
   ) %>%
   unnest(quan_rt_obs) %>%
-  group_by(id, congruency, condition)  %>%
+  group_by(id, congruency)  %>%
   mutate(
     quantile = c("25th Percentile", "50th Percentile", "75th Percentile"),
     quan_rt_obs  = quan_rt_obs / 1000) 
@@ -103,8 +92,6 @@ observed_quantiles <- cleaned_data %>%
 
 qq_data <- left_join(predicted_quantiles2, observed_quantiles) %>%
   mutate(
-    color = ifelse(id %in% c(73, 99, 176, 304, 340, 483), 0, 1),
-    label = ifelse(id %in% c(73, 99, 176, 304, 340, 483), id, NA),
     label_all = id)
 
 # Plot predicted and observed RTs
@@ -133,7 +120,7 @@ ssp_fit_rt <- qq_data %>%
   })
 
 
-study1_ssp_fit_rt <- ssp_fit_rt %>%
+study2_ssp_fit_rt <- ssp_fit_rt %>%
   ggdraw() +
   draw_plot(
     plot_grid(
@@ -149,7 +136,7 @@ study1_ssp_fit_rt <- ssp_fit_rt %>%
 
 
 # Plot predicted and observed Accuracy
-study1_ssp_fit_acc <- qq_data %>%
+study2_ssp_fit_acc <- qq_data %>%
   select(-quantile) %>%
   distinct() %>%
   group_by(congruency, condition) %>%
@@ -237,4 +224,4 @@ ssp_cor_plot <- bind_rows(
   )
 
 
-save(study1_ssp_fit_rt, study1_ssp_fit_acc, file = here("data", "2_study1", "ssp_fit.RData"))
+save(study2_ssp_fit_rt, study2_ssp_fit_acc, file = here("data", "3_study2", "ssp_fit.RData"))

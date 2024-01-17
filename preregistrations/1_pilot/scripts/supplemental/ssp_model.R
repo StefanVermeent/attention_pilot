@@ -53,29 +53,7 @@ observed_quantiles_flanker <- cleaned_data %>%
     quan_rt_obs  = quan_rt_obs / 1000) 
   
 
-qq_data_flanker <- left_join(predicted_quantiles_flanker, observed_quantiles_flanker)
 
-qq_flanker_rt <- ggplot(qq_data_flanker) +
-  geom_point(aes(quan_rt_obs, quan_rt_pred)) +
-  geom_abline(slope = 1, intercept = 0) +
-  facet_grid(congruency~quantile) +
-  labs(
-    x = "\nObserved RT",
-    y = "Predicted RT\n",
-    title = "Flanker Task"
-  ) +
-  theme_classic()
-
-qq_flanker_acc <- ggplot(qq_data_flanker) +
-  geom_point(aes(prop_acc_obs, prop_acc_pred)) +
-  geom_abline(slope = 1, intercept = 0) +
-  facet_grid(congruency~quantile) +
-  expand_limits(x = 0, y = 0) +
-  labs(
-    x = "\nObserved Acc",
-    y = "Predicted Acc\n"
-  ) +
-  theme_classic()
 
 ggsave(qq_flanker_rt, file = "qq_plot_flanker_rt.png", height = 4, width = 6)
 ggsave(qq_flanker_acc, file = "qq_plot_flanker_acc.png", height = 4, width = 6)

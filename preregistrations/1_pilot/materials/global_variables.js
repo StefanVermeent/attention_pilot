@@ -18,13 +18,13 @@ var resize_screen = {
 }};
 
 var fullscreenmode = {
-  type: 'fullscreen',
+  type: jsPsychFullscreen,
   fullscreen_mode: true
 };
 
 // Remove cursor during cognitive tasks
 var cursor_off = {
-    type: 'call-function',
+    type: 'callfunction',
     func: function() {
         document.body.style.cursor= "none";
     }
@@ -33,7 +33,7 @@ var cursor_off = {
 
 // Make cursor visible again in between cognitive tasks or when a button response is required.
 var cursor_on = {
-    type: 'call-function',
+    type: 'callfunction',
     func: function() {
         document.body.style.cursor= "auto";
     }
@@ -52,7 +52,7 @@ var feedback = {
     }
   },
   trial_duration: 2000,
-  choices: jsPsych.NO_KEYS,
+  choices: "NO_KEYS",
   data: {
     variable: 'feedback'
   }
@@ -61,7 +61,7 @@ var feedback = {
 
 // End of Cognitive task part of the experiment.
 var cognitive_tasks_end = {
-  type: "html-button-response",
+  type: 'html-button-response',
   stimulus: 
   "Great job!<br><br>" +
   "You have finished the first part of the experiment.<br><br>" +

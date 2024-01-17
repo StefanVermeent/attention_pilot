@@ -80,7 +80,7 @@ study1_prim_ssp_pooled_effect_plot <- unique(prim_ssp_pooled_effects_sum$dv) |>
         x = "Violence Exposure",
         y = "Predicted\n"
       ) +
-      geom_segment(data = prim_ssp_pooled_medians_sum[[x]], aes(x = vio_min, xend = vio_max, y = med_effect_vio_comp*vio_min, yend = med_effect_vio_comp*vio_max), size = 1.5) + 
+      geom_segment(data = prim_ssp_pooled_medians_sum[[x]], aes(x = vio_min, xend = vio_max, y = med_effect_vio_comp*vio_min, yend = med_effect_vio_comp*vio_max), linewidth = 1.5) + 
       geom_point(data = prim_ssp_pooled_medians_sum[[x]], aes(x = vio_min, y = vio_min*med_effect_vio_comp), size = 2, fill = "white", color = "black", shape = 21) +
       geom_point(data = prim_ssp_pooled_medians_sum[[x]], aes(x = vio_max, y = vio_max*med_effect_vio_comp), size = 2, fill = "white", color = "black", shape = 21) 
     

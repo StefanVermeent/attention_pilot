@@ -39,7 +39,7 @@ cleaned_data <-
   # Remove participants who have no task data
   filter(!is.na(rt_change) | !is.na(rt_cueing_cued) | !is.na(rt_flanker_congruent)) |>
   mutate(across(matches('meta.*duration.*_z'), as.numeric)) |> 
-  mutate(unpredictability_subj = as.numeric(unpredictability_subj)) |>
+  mutate(unp_subj = as.numeric(unp_subj)) |>
   # Fix typos in age
   mutate(dems_age = ifelse(dems_age < 18 | dems_age > 30, NA, dems_age))
 

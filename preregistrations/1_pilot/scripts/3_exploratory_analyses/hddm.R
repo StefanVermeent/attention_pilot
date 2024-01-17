@@ -376,7 +376,7 @@ hddm_cueing_data <- mcmc_cueing_mod1 |>
 
 
 save(
-  mcmc_flanker_mod1, hddm_flanker_data,
-  mcmc_cueing_mod1, hddm_cueing_data,
-  mcmc_change_mod1, hddm_change_data,
+  mcmc_flanker_mod1, hddm_flanker_data, flanker_id_matches,
+  mcmc_cueing_mod1, hddm_cueing_data, cueing_id_matches,
+  mcmc_change_mod1, hddm_change_data, change_id_matches,
   file = 'preregistrations/1_pilot/analysis_objects/hddm_model_objects.RData')
