@@ -25,7 +25,7 @@ load("preregistrations/3_study2/analysis_objects/hddm_globloc_model2_objects.RDa
 # Pilot study
 pilot_data <- read_csv("data/1_pilot/2_cleaned_data.csv") |> 
   select(id, 
-         depression_mean, impuls_mean, fos_fo_mean, ses_comp = poverty_composite,
+         depression_mean, impuls_mean, fos_fo_mean,
          a_flanker = flanker_ssp_a, t0_flanker = flanker_ssp_t0, p_flanker = flanker_ssp_p, interference_flanker = flanker_ssp_interference) %>%
   filter(is.finite(interference_flanker)) |> 
   mutate(
@@ -37,7 +37,7 @@ pilot_data <- read_csv("data/1_pilot/2_cleaned_data.csv") |>
 
 study1_data <-  read_csv("data/2_study1/2_cleaned_data.csv") |> 
   select(id, 
-         depression_mean, impuls_mean, fos_fo_mean, ses_comp,
+         depression_mean, impuls_mean, fos_fo_mean,
          a_flanker_std, t0_flanker_std, p_flanker_std, interference_flanker_std) %>%
   rename(a_flanker = a_flanker_std,
          t0_flanker = t0_flanker_std,
@@ -51,7 +51,7 @@ study1_data <-  read_csv("data/2_study1/2_cleaned_data.csv") |>
 # Study 2
 study2_data <-  read_csv("data/3_study2/2_cleaned_data.csv") |> 
   select(id,
-         depression_mean, impuls_mean, fos_fo_mean, ses_comp, att_style_int, att_style_ext,
+         depression_mean, impuls_mean, fos_fo_mean, att_style_int, att_style_ext,
          a_flanker, t0_flanker, p_flanker, interference_flanker,
          hddm_v_local, hddm_v_global
   ) %>%
@@ -69,7 +69,7 @@ study2_data <-  read_csv("data/3_study2/2_cleaned_data.csv") |>
 supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |> 
   filter(is.finite(interference_flanker)) |> 
   select(
-    depression_mean, impuls_mean, fos_fo_mean, ses_comp,
+    depression_mean, impuls_mean, fos_fo_mean, 
     att_style_int, att_style_ext, p_flanker, interference_flanker,
     a_flanker, t0_flanker, v_globloc_diff
   ) |>
@@ -78,7 +78,6 @@ supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |>
       "Depression",
       "Impulsivity",
       "Future orientation",
-      "SES",
       "Internal attention style",
       "External attention style",
       "Flanker - Perceptual input",
@@ -92,7 +91,7 @@ supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |>
     ) |> 
   flextable() |> 
   border_remove() |> 
-  border(i = 11, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
+  border(i = 10, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
   border(i = 1, border.top = fp_border_default(style = "none", width = 0), part = "header") |>
   border(i = 1, border.bottom = fp_border_default(), part = "header") |>
   # These next few rows are for including a Title
@@ -100,22 +99,22 @@ supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |>
   border(i = 1, border.top = fp_border_default(style = "none", width = 0), part = "header") |>
   add_header_row(
     values = " ",
-    colwidths = 12
+    colwidths = 11
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph(as_b("Table SX. "), "Bivariate correlations between exploratory measures and SSP parameters."),
+    as_paragraph(as_b("Table S2. "), "Bivariate correlations between exploratory measures and SSP parameters."),
     part = "header"
   ) |> 
   # These next few rows are for including a Footer (e.g., a note).
-  add_footer_row(values = " ", colwidths = 12) |>
-  add_footer_row(values = " ", colwidths = 12) |>
+  add_footer_row(values = " ", colwidths = 11) |>
+  add_footer_row(values = " ", colwidths = 11) |>
   flextable::compose(
     i = 1, j = 1,
     as_paragraph(as_i("Note: "), "* = ", as_i("p"), " < .05; ", "** = ", as_i("p"), " < .01; ", "*** = ", as_i("p"), " < .001. The upper diagonal presents sample sizes for each comparison."),
     part = "footer"
   ) |> 
-  autofit()
+  width(width = c(3, rep(0.5, 10)))
 
 save(supp_cor_table, file = "preregistrations/3_study2/analysis_objects/supp_section2.Rdata")  
 

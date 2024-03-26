@@ -446,7 +446,7 @@ self_report <-
     by = "id"
    ) |> 
   select(
-    id, meta_start, meta_captcha, meta_resolution_ratio, meta_resolution_height, matches("^(chaos|unp|change|quic|unp_comp|violence|vio_comp|fighting|ses|fos|dems_age|dems_sex|dems_gender|att_check01|att_check02|att_getup|att_interrupted|att_noise|attention)")
+    id, meta_start, meta_captcha, meta_resolution_ratio, meta_resolution_height, dems_edu, dems_class_current, matches("^(chaos|unp|pcunp|change|quic|unp_comp|violence|vio_comp|fighting|ses|fos|depression|impuls|dems_age|dems_sex|dems_gender|att_check01|att_check02|att_getup|att_interrupted|att_noise|attention)")
   )
 
 codebook <- create_codebook(self_report) %>%

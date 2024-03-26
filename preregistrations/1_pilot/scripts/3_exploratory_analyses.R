@@ -105,14 +105,14 @@ efa_tidy <- tidy(efa_model) %>%
 pilot_efa_table <- efa_tidy %>%
   rename(
     "Household\nstability/conflict" = `1`,
-    "Monitoring/neglect" = `2`,
+    "Monitoring/\nneglect" = `2`,
     "Macro unp." = `3`,
     "Disorganization" = `4`,
-    "People in household" = `5`
+    "People in\nhousehold" = `5`
   ) |> 
   select(-var) |> 
   flextable() |> 
-  autofit() |> 
+
   bold(i = 1:24, j = 2) |> 
   bold(i = 25:37, j = 3) |>
   bold(i = 38:44, j = 4) |>
@@ -127,9 +127,10 @@ pilot_efa_table <- efa_tidy %>%
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph(as_b("Table SX. "), "Exploratory Factor Analysis on unpredictability items in the Pilot."),
+    as_paragraph(as_b("Table S1. "), "Exploratory Factor Analysis on unpredictability items in the Pilot."),
     part = "header"
-  )
+  ) |> 
+  width(width = c(4,0.75,0.75,0.75,0.75,0.75))
   
 save(pilot_efa_table, file = "preregistrations/1_pilot/analysis_objects/supp_section2.Rdata")
 
