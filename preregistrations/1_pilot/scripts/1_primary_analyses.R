@@ -14,25 +14,6 @@ load("data/1_pilot/2_cleaned_data.Rdata")
 
 
 
-# Flanker - lm() models
-# - all SSP parameters
-# - a for ml, ks and HDDM
-
-# Flanker - lmer() models
-# - v and t0 for ml, ks and HDDM
-# - raw RTs
-
-
-# Change - lm() models
-# - v, t0 and a for ml, ks and HDDM
-# - raw RTs
-
-# Cueing - lm() models
-# - a for ml, ks, and HDDM
-
-# Cueing - lmer() models
-# - v and t0 for ml, ks and HDDM
-# - raw RTs
 
 
 # 1. Prepare data ---------------------------------------------------------

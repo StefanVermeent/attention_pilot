@@ -76,7 +76,7 @@ vars01_meta <-
   select(id, starts_with("meta_"))
 
 
-## Current state ----
+## |> Current state ----
 
 vars02_state <- 
   pilot_data %>%
@@ -444,23 +444,13 @@ self_report <-
     ls() %>% str_subset("^vars0\\d|^vars10") %>% map(function(x) eval(as.symbol(x))),
     left_join,
     by = "id"
-   ) #%>%
-  # left_join(browser_interactions_summary, by = "id") %>%
-  # left_join(resize_screen, by = "id") %>%
-  # left_join(
-  #   browser_interactions %>% 
-  #     select(id, starts_with("event")) %>% 
-  #     distinct() %>%
-  #     group_by(id) %>%
-  #     summarise(
-  #       event_during_cueing  = ifelse(isTRUE(any(event_during_cueing)), FALSE, TRUE),
-  #       event_during_flanker = ifelse(isTRUE(any(event_during_flanker)), FALSE, TRUE),
-  #       event_during_change  = ifelse(isTRUE(any(event_during_change)), FALSE, TRUE), 
-  #     )
-  # )
+   ) |> 
+  select(
+    id, meta_start, meta_captcha, meta_resolution_ratio, meta_resolution_height, matches("^(chaos|unp|change|quic|unp_comp|violence|vio_comp|fighting|ses|fos|dems_age|dems_sex|dems_gender|att_check01|att_check02|att_getup|att_interrupted|att_noise|attention)")
+  )
 
 codebook <- create_codebook(self_report) %>%
-  mutate(Label =  ifelse(str_detect(Variable, "^(meta|stai|chaos|unp|quic|change_env|violence|ses|impuls|fos|depression)"), 
+  mutate(Label =  ifelse(str_detect(Variable, "^(meta|chaos|unp|quic|change_env|violence|ses|impuls|fos|depression)"), 
                         str_replace_all(Label, pattern = "^(.*|.*\\n.*)\\s-\\s", replacement = ""),
                         'no'))
 

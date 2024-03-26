@@ -33,7 +33,6 @@ cleaned_data <-
   left_join(hddm_cueing_data, by = "id") |> 
   left_join(flanker_DDM_results_mod2 |> distinct(), by = "id") |>
   left_join(flanker_ssp_results, by = "id") |>
-  left_join(hddm_flanker_data, by = "id") |> 
   left_join(resize_screen, by = "id") |>
   left_join(browser_interactions_summary, by = "id") |>
   # Remove participants who have no task data
