@@ -11,8 +11,7 @@ library(glue)
 load(here("data", "3_study2", "1_self_report_clean.Rdata"))
 load(here("data", "3_study2", "1_task_data_clean.Rdata"))
 load(here("data", "3_study2", "1_SSP_objects.Rdata"))
-load('preregistrations/3_study2/analysis_objects/hddm_globloc_model_objects.RData')
-load('preregistrations/3_study2/analysis_objects/hddm_globloc_model2_objects.RData')
+load('preregistrations/3_study2/analysis_objects/hddm_model_objects.RData')
 
 
 # Combine data ------------------------------------------------------------

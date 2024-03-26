@@ -90,7 +90,7 @@ globloc_data_clean <- globloc_data %>%
   mutate(
     perc_correct = sum(correct, na.rm=T)/n()*100,
     # Is accuracy above the cut-off for performance at chance level?
-    ex_narb_acc_below_cutoff = ifelse( (sum(correct, na.rm=T)/n())*100 < 200, FALSE, TRUE),# gbinom(64, 0.5), TRUE, FALSE),
+    ex_narb_acc_below_cutoff = ifelse( (sum(correct, na.rm=T)/n())*100 < gbinom(64, 0.5), TRUE, FALSE),
     # Do all participants have the expected number of trials? 
     ex_narb_rowcount         = n(),
     # Number of missing RTs per participant

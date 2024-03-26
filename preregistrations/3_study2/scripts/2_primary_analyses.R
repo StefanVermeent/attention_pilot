@@ -2,7 +2,7 @@
 # 1. Dependencies ---------------------------------------------------------------
 library(tidyverse)
 library(ggsci)
-library(multitool) #devtools::install_github("ethan-young/multitool", force = T)
+library(multitool) 
 library(here)
 library(ggeffects)
 library(interactions)
@@ -14,7 +14,7 @@ source("preregistrations/3_study2/scripts/custom_functions/functions_analyses.R"
 
 load("data/3_study2/2_cleaned_data.rData") 
 
-load("preregistrations/3_study2/analysis_objects/hddm_globloc_model2_objects.RData")
+load("preregistrations/3_study2/analysis_objects/hddm_model_objects.RData")
 
 # 2. Prepare data ------------------------------------------------------------
 
@@ -68,7 +68,7 @@ study2_data <-  read_csv("data/3_study2/2_cleaned_data.csv") |>
          vio_comp, unp_comp, rt_flanker_congruent, rt_flanker_incongruent, acc_flanker_congruent, acc_flanker_incongruent,
          a_flanker, t0_flanker, p_flanker, interference_flanker,
          rt_globloc_global, rt_globloc_local, acc_globloc_global, acc_globloc_local,
-         a_globloc_fixed, v_globloc_local, v_globloc_global, t0_globloc_local, t0_globloc_global
+         a_globloc_fixed = hddm_a_fixed, v_globloc_local = hddm_v_local, v_globloc_global = hddm_v_global, t0_globloc_local = hddm_t0_local, t0_globloc_global = hddm_t0_global
          ) %>%
   mutate(
     id               = str_c("study2_", id),
@@ -135,7 +135,7 @@ study2_prim_aim1_mult <- multitool::run_multiverse(
       fullscreenexit == 0, 
       attention_interrupt_sum < 1
     ) |>
-    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}) |> as.numeric())') |>
     multitool::add_model("lm", lm({dv} ~ {iv} + study)) |>
     multitool::add_postprocess(postprocess_name = "std_coef", 'standardise_parameters()') |> 
     multitool::add_postprocess(postprocess_name = "skew", "(\\\\(x) residuals(x) |> scale() |> parameters::skewness())()") |> 
@@ -158,7 +158,7 @@ study2_prim_aim1_mult_study2 <- multitool::run_multiverse(
       fullscreenexit == 0, 
       attention_interrupt_sum < 1
     ) |>
-    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}) |> as.numeric())') |>
     multitool::add_model("lm", lm({dv} ~ {iv})) |>
     multitool::add_postprocess(postprocess_name = "std_coef", 'standardise_parameters()') |> 
     multitool::add_postprocess(postprocess_name = "skew", "(\\\\(x) residuals(x) |> scale() |> parameters::skewness())()") |> 
@@ -181,16 +181,17 @@ study2_prim_aim2_mult <- multitool::run_multiverse(
       fullscreenexit == 0, 
       attention_interrupt_sum < 1
     ) |>
-    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}))') |>
+    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}) |> as.numeric())') |>
     multitool::add_model("lmer", lmer({dv} ~ {iv} * condition + (1|id))) |>
-    multitool::add_postprocess(postprocess_name = "ss_task", code = sim_slopes(pred = {iv}, modx = condition, modx.values = c(-1,1))) |> 
-    multitool::add_postprocess(postprocess_name = "ss_adversity", code = sim_slopes(pred = condition, modx = {iv}, modx.values = c(-1,1))) |> 
-    multitool::add_postprocess("points", ggpredict(terms = c("{iv} [-1,1]", "condition [-1, 1]"))) |> 
+    multitool::add_postprocess(postprocess_name = "ss_task", hypothesis_test(terms = c("{iv}[-1,1]", "condition[-1,1]"), re.form = NA, test = NULL)) |> 
+    multitool::add_postprocess(postprocess_name = "ss_adversity", hypothesis_test(terms = c("condition[-1,1]", "{iv}[-1,1]"), re.form = NA, test = NULL)) |>
+    multitool::add_postprocess("points", ggpredict(terms = c("{iv}[-1,1]", "condition[-1, 1]"))) |> 
     multitool::add_postprocess(postprocess_name = "std_coef", 'standardize_parameters()') |> 
     multitool::add_postprocess(postprocess_name = "skew", "(\\\\(x) residuals(x) |> scale() |> parameters::skewness())()") |> 
     multitool::add_postprocess(postprocess_name = "kurtosis", "(\\\\(x) residuals(x) |> scale() |> parameters::kurtosis())()") |> 
     multitool::expand_decisions()
 )
+
 
 ## 3.3 Primary Aim 3: Within-subject Global Local and Flanker ----
 
@@ -207,9 +208,10 @@ study2_prim_aim3_mult <- multitool::run_multiverse(
       fullscreenexit == 0, 
       attention_interrupt_sum < 1
     ) |>
-    multitool::add_model("lmer", lmer({dv} ~ {iv} * task + (1|id))) |>
-    multitool::add_postprocess(postprocess_name = "ss_task", code = sim_slopes(pred = {iv}, modx = task, modx.values = c(-1,1))) |> 
-    multitool::add_postprocess(postprocess_name = "ss_adversity", code = sim_slopes(pred = task, modx = {iv}, modx.values = c(-1,1))) |> 
+    multitool::add_preprocess(process_name = "scale_iv",  'mutate({iv} = scale({iv}) |> as.numeric())') |>
+    multitool::add_model("lmer", lmer({dv} ~ {iv} * task + (1|id))) |>    
+    multitool::add_postprocess(postprocess_name = "ss_task", hypothesis_test(terms = c("{iv}[-1,1]" , "task[-1,1]"), re.form = NA, test = NULL)) |>
+    multitool::add_postprocess(postprocess_name = "ss_adversity", hypothesis_test(terms = c("task[-1,1]", "{iv}[-1,1]"), re.form = NA, test = NULL)) |>
     multitool::add_postprocess("points", ggpredict(terms = c("{iv} [-1,1]", "task [-1, 1]"))) |> 
     multitool::add_postprocess(postprocess_name = "std_coef", 'standardize_parameters()') |> 
     multitool::add_postprocess(postprocess_name = "skew", "(\\\\(x) residuals(x) |> scale() |> parameters::skewness())()") |> 
@@ -225,49 +227,66 @@ save(study2_prim_aim1_mult, study2_prim_aim1_mult_study2, study2_prim_aim2_mult,
 
 ## 4.1 Primary Aim 2: Global Local Task ----
 
-study2_prim_aim2_points <- reveal(study2_prim_aim2_mult, .what = points_fitted, .which = ggpredict_full, .unpack_specs = T) |> 
+study2_prim_aim2_points <- reveal(study2_prim_aim2_mult, .what = points_fitted, .which = points_full, .unpack_specs = "wide") |> 
   rename(level = x) |> 
   mutate(dv_iv = paste0(dv, ".", iv))
 
-study2_prim_aim2_simslopes1 <- reveal(study2_prim_aim2_mult, .what = ss_task_fitted, .which = sim_slopes_tidy, .unpack_specs = TRUE)  |> 
-  mutate(dv_iv = paste0(dv, ".", iv))
+study2_prim_aim2_simslopes1 <- reveal(study2_prim_aim2_mult, .what = ss_task_fitted, .which = ss_task_full, .unpack_specs = "wide")  |> 
+  select(decision, iv, dv, condition, Slope, conf.low, conf.high, p.value) |> 
+  mutate(dv_iv = paste0(dv, ".", iv)) 
 
-study2_prim_aim2_simslopes2 <- reveal(study2_prim_aim2_mult, .what = ss_adversity_fitted, .which = sim_slopes_tidy, .unpack_specs = TRUE)  |> 
-  mutate(dv_iv = paste0(dv, ".", iv))
+study2_prim_aim2_simslopes2 <- reveal(study2_prim_aim2_mult, .what = ss_adversity_fitted, .which = ss_adversity_full, .unpack_specs = "wide")  |> 
+  mutate(
+    adversity = case_when(
+      vio_comp == -1 | unp_comp == -1 ~ -1,
+      vio_comp == 1  | unp_comp ==  1 ~ 1
+    )
+  ) |> 
+  mutate(dv_iv = paste0(dv, ".", iv))  |> 
+  select(decision, dv_iv, adversity, Slope, conf.low, conf.high, p.value)
+  
 
 
 # ## 4.2 Primary Aim 3: Within-subject Global Local Task ----
 
-study2_prim_aim3_points <- reveal(study2_prim_aim3_mult, .what = points_fitted, .which = ggpredict_full, .unpack_specs = T) |> 
-  rename(level = x) |> 
-  mutate(dv_iv = paste0(dv, ".", iv))
+study2_prim_aim3_points <- reveal(study2_prim_aim3_mult, .what = points_fitted, .which = points_full, .unpack_specs = 'wide') |> 
+  rename(adversity = x) |> 
+  mutate(dv_iv = paste0(dv, ".", iv)) 
 
-study2_prim_aim3_simslopes1 <- reveal(study2_prim_aim3_mult, .what = ss_task_fitted, .which = sim_slopes_tidy, .unpack_specs = TRUE)  |> 
-  mutate(dv_iv = paste0(dv, ".", iv))
+study2_prim_aim3_simslopes1 <- reveal(study2_prim_aim3_mult, .what = ss_task_fitted, .which = ss_task_full, .unpack_specs = 'wide')  |> 
+  select(decision, iv, dv, task, Slope, conf.low, conf.high, p.value) |> 
+  mutate(dv_iv = paste0(dv, ".", iv)) 
 
-study2_prim_aim3_simslopes2 <- reveal(study2_prim_aim3_mult, .what = ss_adversity_fitted, .which = sim_slopes_tidy, .unpack_specs = TRUE)  |> 
-  mutate(dv_iv = paste0(dv, ".", iv))
+study2_prim_aim3_simslopes2 <- reveal(study2_prim_aim3_mult, .what = ss_adversity_fitted, .which = ss_adversity_full, .unpack_specs = 'wide')  |> 
+  mutate(
+    adversity = case_when(
+      vio_comp == -1 | unp_comp == -1 ~ -1,
+      vio_comp == 1  | unp_comp ==  1 ~ 1
+    )
+  ) |> 
+  select(decision, iv, dv, adversity, Slope, conf.low, conf.high, p.value) |> 
+  mutate(dv_iv = paste0(dv, ".", iv)) 
 
 # 5. Create Multiverse summaries ---------------------------------------------
 
 ## 5.1 Primary Aim 1: Pooled data ----
 
-study2_prim_aim1_effects_sum <- reveal(study2_prim_aim1_mult, .what = model_fitted, .which = lm_tidy, .unpack_specs = TRUE) |> 
+study2_prim_aim1_effects_sum <- reveal(study2_prim_aim1_mult, .what = model_fitted, .which = model_parameters, .unpack_specs = "wide") |> 
   filter(
-    !term %in% c("study")
+    !str_detect(parameter, "study")
   ) |> 
   left_join(
-    reveal(study2_prim_aim1_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = TRUE) |> 
+    reveal(study2_prim_aim1_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = 'wide') |> 
       rename_with(.cols = c("CI", "CI_low", "CI_high"), ~str_c("Std_", .)) |> 
-      select(decision, term = Parameter, starts_with("Std"))
+      select(decision, parameter = Parameter, starts_with("Std"), -ends_with("warnings"), -ends_with("messages"))
   ) |> 
   mutate(dv_iv = paste0(dv, ".", iv))
 
-study2_prim_aim1_effects_sum_study2 <- reveal(study2_prim_aim1_mult_study2, .what = model_fitted, .which = lm_tidy, .unpack_specs = TRUE) |> 
+study2_prim_aim1_effects_sum_study2 <- reveal(study2_prim_aim1_mult_study2, .what = model_fitted, .which = model_parameters, .unpack_specs = 'wide') |> 
   left_join(
-    reveal(study2_prim_aim1_mult_study2, .what = std_coef_fitted, matches("full"), .unpack_specs = TRUE) |> 
+    reveal(study2_prim_aim1_mult_study2, .what = std_coef_fitted, matches("full"), .unpack_specs = 'wide') |> 
       rename_with(.cols = c("CI", "CI_low", "CI_high"), ~str_c("Std_", .)) |> 
-      select(decision, term = Parameter, starts_with("Std"))
+      select(decision, parameter = Parameter, starts_with("Std"), -ends_with("warnings"), -ends_with("messages"))
   ) |> 
   mutate(dv_iv = paste0(dv, ".", iv))
 
@@ -277,16 +296,16 @@ study2_prim_aim1_medians_sum <-
   map(function(x) {
     
     study2_prim_aim1_effects_sum |> 
-      filter(dv_iv == x, !term %in% c("(Intercept)")) |> 
-      group_by(dv_iv, term) |> 
+      filter(dv_iv == x, !parameter %in% c("(Intercept)")) |> 
+      group_by(dv_iv, parameter) |> 
       summarise(
-        med_effect     = median(estimate, na.rm = T),
+        med_effect     = median(coefficient, na.rm = T),
         med_effect_std = median(Std_Coefficient, na.rm = T),
-        sum_pvalue = sum(p.value < .05) / n() * 100
+        sum_pvalue = sum(p < .05) / n() * 100
       ) |> 
-      mutate(term = ifelse(term == "(Intercept)", "intercept", term)) |> 
+      mutate(parameter = ifelse(parameter == "(Intercept)", "intercept", parameter)) |> 
       pivot_wider(
-        names_from = term,
+        names_from = parameter,
         values_from = c(med_effect, med_effect_std, sum_pvalue)
       )
   }) |> 
@@ -297,16 +316,16 @@ study2_prim_aim1_medians_sum_study2 <-
   map(function(x) {
     
     study2_prim_aim1_effects_sum_study2 |> 
-      filter(dv_iv == x, !term %in% c("(Intercept)")) |> 
-      group_by(dv_iv, term) |> 
+      filter(dv_iv == x, !parameter %in% c("(Intercept)")) |> 
+      group_by(dv_iv, parameter) |> 
       summarise(
-        med_effect     = median(estimate, na.rm = T),
+        med_effect     = median(coefficient, na.rm = T),
         med_effect_std = median(Std_Coefficient, na.rm = T),
-        sum_pvalue = sum(p.value < .05) / n() * 100
+        sum_pvalue = sum(p < .05) / n() * 100
       ) |> 
-      mutate(term = ifelse(term == "(Intercept)", "intercept", term)) |> 
+      mutate(term = ifelse(parameter == "(Intercept)", "intercept", parameter)) |> 
       pivot_wider(
-        names_from = term,
+        names_from = parameter,
         values_from = c(med_effect, med_effect_std, sum_pvalue)
       )
   }) |> 
@@ -320,7 +339,7 @@ study2_prim_aim1_variance_sum <- unique(study2_prim_aim1_effects_sum$dv_iv) |>
     
     data <- study2_prim_aim1_effects_sum |> 
       filter(dv_iv == x) |> 
-      filter(!term %in% c("study", "(Intercept)"), !str_detect(term, "study"))
+      filter(!parameter %in% c("study", "(Intercept)"), !str_detect(parameter, "study"))
     
     model <- lmer(Std_Coefficient ~ 1 + (1|scale_factor) + (1|fullscreenexit) + (1|fullscreenenter) + (1|att_noise) + (1|meta_captcha) + (1|attention_interrupt_sum), data = data)
     spec_icc <- icc_specs(model) |> 
@@ -346,7 +365,7 @@ study2_prim_aim1_variance_sum_study2 <- unique(study2_prim_aim1_effects_sum_stud
     
     data <- study2_prim_aim1_effects_sum_study2 |> 
       filter(dv_iv == x) |> 
-      filter(!term %in% c("study", "(Intercept)"), !str_detect(term, "study"))
+      filter(!parameter %in% c("study", "(Intercept)"), !str_detect(parameter, "study"))
     
     model <- lmer(Std_Coefficient ~ 1 + (1|scale_factor) + (1|fullscreenexit) + (1|fullscreenenter) + (1|att_noise) + (1|meta_captcha) + (1|attention_interrupt_sum), data = data)
     spec_icc <- icc_specs(model) |> 
@@ -370,15 +389,14 @@ study2_prim_aim1_variance_sum_study2 <- unique(study2_prim_aim1_effects_sum_stud
 
 ## 5.2 Primary aim 2: Global Local Task ----
 
-study2_prim_aim2_effects_sum <- reveal(study2_prim_aim2_mult, .what = model_fitted, .which = lmer_tidy, .unpack_specs = TRUE) |> 
+study2_prim_aim2_effects_sum <- reveal(study2_prim_aim2_mult, .what = model_fitted, .which = model_parameters, .unpack_specs = "wide") |> 
   filter(
-    effect == 'fixed',
-    term != "(Intercept)"
+    parameter %in% c("(Intercept)", "vio_comp", "unp_comp", "condition", "vio_comp:condition", "unp_comp:condition")
   ) |> 
   left_join(
-    reveal(study2_prim_aim2_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = TRUE) |> 
+    reveal(study2_prim_aim2_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = "wide") |> 
       rename_with(.cols = c("CI", "CI_low", "CI_high"), ~str_c("Std_", .)) |> 
-      select(decision, term = Parameter, starts_with("Std"))
+      select(decision, parameter = Parameter, starts_with("Std"), ends_with("warnings"), ends_with("messages"))
   ) |> 
   mutate(dv_iv = paste0(dv, ".", iv))
 
@@ -387,18 +405,18 @@ study2_prim_aim2_medians_sum <- unique(study2_prim_aim2_effects_sum$dv_iv) |>
   map(function(x) {
     
     study2_prim_aim2_effects_sum |> 
-      filter(dv_iv == x, str_detect(term, ":")) |> 
-      mutate(term = ifelse(str_detect(term, ":"), "interaction", "main effect")) |> 
-      group_by(dv_iv, term) |> 
+      filter(dv_iv == x, str_detect(parameter, ":")) |> 
+      mutate(parameter = ifelse(str_detect(parameter, ":"), "interaction", "main effect")) |> 
+      group_by(dv_iv, parameter) |> 
       summarise(
-        med_effect = median(estimate, na.rm = T),
+        med_effect = median(coefficient, na.rm = T),
         med_effect_std = median(Std_Coefficient, na.rm = T),
         MAD_effect = mad(Std_Coefficient),
-        sum_pvalue = sum(p.value < .05) / n() * 100
+        sum_pvalue = sum(p < .05) / n() * 100
       ) |> 
-      mutate(term = ifelse(term == "(Intercept)", "intercept", term)) |> 
+      mutate(parameter = ifelse(parameter == "(Intercept)", "intercept", parameter)) |> 
       pivot_wider(
-        names_from = term,
+        names_from = parameter,
         values_from = c(med_effect, sum_pvalue)
       )
   }) |> 
@@ -411,9 +429,9 @@ study2_prim_aim2_points_sum <- unique(study2_prim_aim2_points$dv_iv) |>
     
     study2_prim_aim2_points |> 
       filter(dv_iv == x) |> 
-      left_join(study2_prim_aim2_effects_sum |> filter(str_detect(term, ":")) |>  select(decision, dv_iv, p.value)) |> 
+      left_join(study2_prim_aim2_effects_sum |> filter(str_detect(parameter, ":")) |>  select(decision, dv_iv, p)) |> 
       mutate(
-        p.value_chr = ifelse(p.value <.05, "sig", "non-sig"))
+        p.value_chr = ifelse(p <.05, "sig", "non-sig"))
   }) |> 
   setNames(unique(study2_prim_aim2_points$dv_iv))
 
@@ -424,7 +442,7 @@ study2_prim_aim2_variance_sum <- unique(study2_prim_aim2_effects_sum$dv_iv) |>
     
     data <- study2_prim_aim2_effects_sum |> 
       filter(dv_iv == x) |> 
-      filter(str_detect(term, ":"))
+      filter(str_detect(parameter, ":"))
     
     model <- lmer(Std_Coefficient ~ 1 + (1|scale_factor) + (1|fullscreenenter) + (1|fullscreenexit) + (1|attention_interrupt_sum) + (1|att_noise), data = data)
     spec_icc <- icc_specs(model) |> 
@@ -449,15 +467,12 @@ study2_prim_aim2_variance_sum <- unique(study2_prim_aim2_effects_sum$dv_iv) |>
 
 ## 5.3 Primary Aim 3: Within-subject Global Local and Flanker Task ----
 
-study2_prim_aim3_effects_sum <- reveal(study2_prim_aim3_mult, .what = model_fitted, .which = lmer_tidy, .unpack_specs = TRUE) |> 
-  filter(
-    effect == 'fixed',
-    term != "(Intercept)"
-  ) |> 
+study2_prim_aim3_effects_sum <- reveal(study2_prim_aim3_mult, .what = model_fitted, .which = model_parameters, .unpack_specs = "wide") |> 
+  filter(parameter %in% c("(Intercept)", "vio_comp", "unp_comp", "task", "vio_comp:task", "unp_comp:task")) |> 
   left_join(
-    reveal(study2_prim_aim3_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = TRUE) |> 
+    reveal(study2_prim_aim3_mult, .what = std_coef_fitted, matches("full"), .unpack_specs = "wide") |> 
       rename_with(.cols = c("CI", "CI_low", "CI_high"), ~str_c("Std_", .)) |> 
-      select(decision, term = Parameter, starts_with("Std"))
+      select(decision, parameter = Parameter, starts_with("Std"), ends_with("warnings"), ends_with("messages"))
   ) |> 
   mutate(dv_iv = paste0(dv, ".", iv))
 
@@ -466,18 +481,18 @@ study2_prim_aim3_medians_sum <- unique(study2_prim_aim3_effects_sum$dv_iv) |>
   map(function(x) {
     
     study2_prim_aim3_effects_sum |> 
-      filter(dv_iv == x, str_detect(term, ":")) |> 
-      mutate(term = ifelse(str_detect(term, ":"), "interaction", "main effect")) |> 
-      group_by(dv_iv, term) |> 
+      filter(dv_iv == x, str_detect(parameter, ":")) |> 
+      mutate(parameter = ifelse(str_detect(parameter, ":"), "interaction", "main effect")) |> 
+      group_by(dv_iv, parameter) |> 
       summarise(
-        med_effect = median(estimate, na.rm = T),
+        med_effect = median(coefficient, na.rm = T),
         med_effect_std = median(Std_Coefficient, na.rm = T),
         MAD_effect = mad(Std_Coefficient),
-        sum_pvalue = sum(p.value < .05) / n() * 100
+        sum_pvalue = sum(p < .05) / n() * 100
       ) |> 
-      mutate(term = ifelse(term == "(Intercept)", "intercept", term)) |> 
+      mutate(parameter = ifelse(parameter == "(Intercept)", "intercept", parameter)) |> 
       pivot_wider(
-        names_from = term,
+        names_from = parameter,
         values_from = c(med_effect, sum_pvalue)
       )
   }) |> 
@@ -490,9 +505,9 @@ study2_prim_aim3_points_sum <- unique(study2_prim_aim3_points$dv_iv) |>
     
     study2_prim_aim3_points |> 
       filter(dv_iv == x) |> 
-      left_join(study2_prim_aim3_effects_sum |> filter(str_detect(term, ":")) |>  select(decision, dv_iv, p.value)) |> 
+      left_join(study2_prim_aim3_effects_sum |> filter(str_detect(parameter, ":")) |>  select(decision, dv_iv, p)) |> 
       mutate(
-        p.value_chr = ifelse(p.value <.05, "sig", "non-sig"))
+        p.value_chr = ifelse(p <.05, "sig", "non-sig"))
   }) |> 
   setNames(unique(study2_prim_aim3_points$dv_iv))
 
@@ -503,7 +518,7 @@ study2_prim_aim3_variance_sum <- unique(study2_prim_aim3_effects_sum$dv_iv) |>
     
     data <- study2_prim_aim3_effects_sum |> 
       filter(dv_iv == x) |> 
-      filter(str_detect(term, ":"))
+      filter(str_detect(parameter, ":"))
     
     model <- lmer(Std_Coefficient ~ 1 + (1|scale_factor) + (1|fullscreenenter) + (1|fullscreenexit) + (1|attention_interrupt_sum) + (1|att_noise), data = data)
     spec_icc <- icc_specs(model) |> 

@@ -8,6 +8,8 @@ library(interactions)
 library(lmerTest)
 library(parameters)
 library(specr)
+library(psych)
+library(flextable)
 
 source("preregistrations/3_study2/scripts/custom_functions/functions_analyses.R")
 source("preregistrations/3_study2/scripts/custom_functions/functions_corrplot.R")
@@ -49,14 +51,14 @@ study1_data <-  read_csv("data/2_study1/2_cleaned_data.csv") |>
 # Study 2
 study2_data <-  read_csv("data/3_study2/2_cleaned_data.csv") |> 
   select(id,
-         depression_mean, impuls_mean, fos_fo_mean, ses_comp,
+         depression_mean, impuls_mean, fos_fo_mean, ses_comp, att_style_int, att_style_ext,
          a_flanker, t0_flanker, p_flanker, interference_flanker,
-         v_globloc_local, v_globloc_global
+         hddm_v_local, hddm_v_global
   ) %>%
   mutate(
-    v_globloc_diff   = v_globloc_global - v_globloc_local 
+    v_globloc_diff   = hddm_v_global - hddm_v_local 
   ) |> 
-  select(-v_globloc_global, -v_globloc_local) |> 
+  select(-hddm_v_global, -hddm_v_local ) |> 
   mutate(
     a_flanker    = log(a_flanker),
     interference_flanker = ifelse(scale(interference_flanker) > 3.2, NA, interference_flanker)
@@ -66,17 +68,23 @@ study2_data <-  read_csv("data/3_study2/2_cleaned_data.csv") |>
 # Combine data of pilot study and study 1
 supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |> 
   filter(is.finite(interference_flanker)) |> 
-  select(-c(id)) |>
+  select(
+    depression_mean, impuls_mean, fos_fo_mean, ses_comp,
+    att_style_int, att_style_ext, p_flanker, interference_flanker,
+    a_flanker, t0_flanker, v_globloc_diff
+  ) |>
   corr_table(
     c.names = c(
       "Depression",
       "Impulsivity",
       "Future orientation",
       "SES",
-      "Flanker - boundary separation",
-      "Flanker - Non-decision time",
+      "Internal attention style",
+      "External attention style",
       "Flanker - Perceptual input",
       "Flanker - Interference",
+      "Flanker - boundary separation",
+      "Flanker - Non-decision time",
       "Global-Local - Drift rate difference"
     ),
     stats=F, 
@@ -84,15 +92,15 @@ supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |>
     ) |> 
   flextable() |> 
   border_remove() |> 
-  border(i = 9, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
+  border(i = 11, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
   border(i = 1, border.top = fp_border_default(style = "none", width = 0), part = "header") |>
   border(i = 1, border.bottom = fp_border_default(), part = "header") |>
   # These next few rows are for including a Title
-  border(i = 9, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
+ # border(i = 11, border.bottom = fp_border_default(), part = "body") |> # Add APA-style bottom border
   border(i = 1, border.top = fp_border_default(style = "none", width = 0), part = "header") |>
   add_header_row(
     values = " ",
-    colwidths = 10
+    colwidths = 12
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
@@ -100,9 +108,9 @@ supp_cor_table <- bind_rows(pilot_data, study1_data, study2_data) |>
     part = "header"
   ) |> 
   # These next few rows are for including a Footer (e.g., a note).
-  add_footer_row(values = " ", colwidths = 10) |>
-  add_footer_row(values = " ", colwidths = 10) |>
-  compose(
+  add_footer_row(values = " ", colwidths = 12) |>
+  add_footer_row(values = " ", colwidths = 12) |>
+  flextable::compose(
     i = 1, j = 1,
     as_paragraph(as_i("Note: "), "* = ", as_i("p"), " < .05; ", "** = ", as_i("p"), " < .01; ", "*** = ", as_i("p"), " < .001. The upper diagonal presents sample sizes for each comparison."),
     part = "footer"
