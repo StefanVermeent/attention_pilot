@@ -18,7 +18,8 @@
 .Rproj.user/
 
 *.Rdata
-1_create_scales.R
+/*1_create_scales.R
+preregistrations/3_study2/scripts/0_data_prep/1_create_scales.R
 
 *.Rdata
 
@@ -41,3 +42,6 @@ vignettes/*.pdf
 .Renviron
 
 data/
+
+
+
