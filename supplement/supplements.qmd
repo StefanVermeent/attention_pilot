@@ -219,16 +219,39 @@ This model freely estimated the drift rate, non-decision time, and boundary sepa
 
 For the Cued Attention Task, three models provided comparable model fit.
 However, all three models showed estimation problems, especially with regard to the boundary separation.
-Specifically, boundary separation estimates for several participants ended up at an upper boundary of 10, indicating that they were not recovered well.
+Specifically, boundary separation estimates for several participants ended up at an upper boundary of 10, indicating that they were not recovered well (see Figure S2).
 Based on subsequent external input, we fit an additional model using Kolmogorov-Smirnov (KS) estimation instead of ML estimation, additionally estimating the inter-trial variability parameter of the non-decision time.
-This improved parameter estimation (see Figure S3-5).
+This improved parameter estimation (see Figure S4).
 
 ```{r}
 #| label: figureS2
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S2.** Distributions of Drift Diffusion Model parameters for the Cued Attention Task using Kolmogorov-Smirnov estimation.
+#|   **Figure S2.** Distributions of Drift Diffusion Model parameters for the Cued Attention Task using Maximum likelihood estimation.
+cueing_DDM_results_mod8 |> select(starts_with("cueing"), -cueing_ml_fit) |> 
+     rename(
+         "a" = cueing_ml_a,
+         "v - cued" = cueing_cued_ml_v,
+         "v - neutral" = cueing_neutral_ml_v,
+         "t - cued" = cueing_cued_ml_t0,
+         "t - neutral" = cueing_neutral_ml_t0,
+     ) |> 
+     pivot_longer(everything(), names_to = "parameter", values_to = "Estimate") |> 
+     ggplot(aes(Estimate)) +
+     geom_histogram() +
+     facet_wrap(~parameter, scales = 'free') +
+     theme_classic()
+```
+
+<br>
+
+```{r}
+#| label: figureS3
+#| dpi: 600
+#| fig.width: 7
+#| fig-cap: | 
+#|   **Figure S3.** Distributions of Drift Diffusion Model parameters for the Cued Attention Task using Kolmogorov-Smirnov estimation.
 cueing_DDM_results_mod9 |> 
   select(starts_with("cueing"), -cueing_ks_fit) |> 
   rename(
@@ -244,6 +267,8 @@ cueing_DDM_results_mod9 |>
   facet_wrap(~parameter, scales = 'free') +
   theme_classic()
 ```
+<br>
+
 Finally, we switched to estimation using Hierarchical Bayesian DDM (HDDM) for our final analyses.
 The main reason for this step was that although KS estimation seemed to work well, we had fewer trials than is typically recommended for this estimation technique [@lerche_2017].
 An advantage of HDDM is that it uses group-level estimates to inform and constrain individual-level estimates.
@@ -254,19 +279,8 @@ All models were fit using three Markov Chain Monte Carlo (MCMC) chains.
 Each of these chains started with 2,000 burn-in samples, followed by 10,000 additional samples.
 To decrease the total size of the model, every 10th sample was retained, resulting in a posterior sample of 3,000 samples.
 
-Model convergence was assessed (1) by visually inspecting the traces, which should not contain any drifts or large jumps (see Figure S3 and Figure S6); (2) through simulation. Specifically, we used each participant's DDM estimates to simulate 100 RT and accuracy estimates (per condition). The distributions of the participant's true RTs and their simulated RTs were assessed through bivariate correlations at the 25th, 50th and 75th percentile (See Figure S4 and Figure S7).
-We made the same comparison for mean accuracy levels (See Figure S5 and Figure S8).
-
-<br>
-
-```{r}
-#| label: figureS3
-#| dpi: 600
-#| fig.width: 7
-#| fig-cap: | 
-#|   **Figure S3. ** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Cued Attention Task. Plots should resemble a 'fat, hairy catterpillar'.
-pilot_traces_cueing
-```
+Model convergence was assessed (1) by visually inspecting the traces, which should not contain any drifts or large jumps (see Figure S4 and Figure S7); (2) through simulation. Specifically, we used each participant's DDM estimates to simulate 100 RT and accuracy estimates (per condition). The distributions of the participant's true RTs and their simulated RTs were assessed through bivariate correlations at the 25th, 50th and 75th percentile (See Figure S5 and Figure S8).
+We made the same comparison for mean accuracy levels (See Figure S6 and Figure S9).
 
 <br>
 
@@ -275,8 +289,8 @@ pilot_traces_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S4.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
-pilot_recov_rt_cueing
+#|   **Figure S4. ** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Cued Attention Task. Plots should resemble a 'fat, hairy catterpillar'.
+pilot_traces_cueing
 ```
 
 <br>
@@ -286,8 +300,8 @@ pilot_recov_rt_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S5.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered accuracy rates.
-pilot_recov_acc_cueing
+#|   **Figure S5.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
+pilot_recov_rt_cueing
 ```
 
 <br>
@@ -297,8 +311,8 @@ pilot_recov_acc_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S6.** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Change Detection Task. Plots should resemble a 'fat, hairy catterpillar'.
-pilot_traces_change
+#|   **Figure S6.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered accuracy rates.
+pilot_recov_acc_cueing
 ```
 
 <br>
@@ -308,8 +322,8 @@ pilot_traces_change
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S7.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
-pilot_recov_rt_change
+#|   **Figure S7.** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Change Detection Task. Plots should resemble a 'fat, hairy catterpillar'.
+pilot_traces_change
 ```
 
 <br>
@@ -319,7 +333,18 @@ pilot_recov_rt_change
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S8.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered accuracy rates.
+#|   **Figure S8.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
+pilot_recov_rt_change
+```
+
+<br>
+
+```{r}
+#| label: figureS9
+#| dpi: 600
+#| fig.width: 7
+#| fig-cap: | 
+#|   **Figure S9.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered accuracy rates.
 pilot_recov_acc_change
 ```
 
@@ -334,16 +359,16 @@ After finding the optimal starting values, we fit the final model based on 50,00
 Model fit was assessed through simulation.
 For each participant, we simulated 50,000 trials.
 We then calculated correlations between observed and simulated RTs at the 25th, 50th, and 75th percentile, as well as between observed and simulated mean accuracy.
-As can be seen in Figure S9 and Figure S10, we observed high agreement between observed and simulated RTs and accuracy rates.
+As can be seen in Figure S10 and Figure S11, we observed high agreement between observed and simulated RTs and accuracy rates.
 
 <br>
 
 ```{r}
-#| label: figureS9
+#| label: figureS10
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S9.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
+#|   **Figure S10.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
 qq_data_flanker <- left_join(predicted_quantiles_flanker, observed_quantiles_flanker)
 
 qq_flanker_rt <- ggplot(qq_data_flanker) +
@@ -363,11 +388,11 @@ qq_flanker_rt
 <br>
 
 ```{r}
-#| label: figureS10
+#| label: figureS11
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S10.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
+#|   **Figure S11.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
 qq_flanker_acc <- ggplot(qq_data_flanker) +
   geom_point(aes(prop_acc_obs, prop_acc_pred)) +
   geom_abline(slope = 1, intercept = 0) +
@@ -385,20 +410,8 @@ qq_flanker_acc <- ggplot(qq_data_flanker) +
 ## 3.2. Study 1 
 
 Model fit of the Flanker was done the same as in the Pilot.
-Figure S11 and Figure S12 show the model fit based on simulated data.
+Figure S12 and Figure S13 show the model fit based on simulated data.
 We found good model fit across all three conditions, both for RTs as well as accuracy rates.
-
-<br>
-
-```{r}
-#| label: figureS11
-#| dpi: 600
-#| fig.width: 7
-#| fig.height: 7
-#| fig-cap: | 
-#|   **Figure S11.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times across the standard, enhanced, and degraded condition.
-study1_ssp_fit_rt
-```
 
 <br>
 
@@ -406,8 +419,20 @@ study1_ssp_fit_rt
 #| label: figureS12
 #| dpi: 600
 #| fig.width: 7
+#| fig.height: 7
 #| fig-cap: | 
-#|   **Figure S12.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates across the standard, enhanced, and degraded condition.
+#|   **Figure S12.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times across the standard, enhanced, and degraded condition.
+study1_ssp_fit_rt
+```
+
+<br>
+
+```{r}
+#| label: figureS13
+#| dpi: 600
+#| fig.width: 7
+#| fig-cap: | 
+#|   **Figure S13.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates across the standard, enhanced, and degraded condition.
 study1_ssp_fit_acc
 ```
 
@@ -420,26 +445,26 @@ study1_ssp_fit_acc
 ### 3.3.1 Flanker 
 
 Model fit of the Flanker was done the same as in the Pilot and Study 1.
-Figure S13 and Figure S14 show the model fit based on simulated data.
+Figure S14 and Figure S15 show the model fit based on simulated data.
 We found good model fit, both for RTs as well as accuracy rates.
-
-```{r}
-#| label: figureS13
-#| dpi: 600
-#| fig.width: 7
-#| fig-cap: | 
-#|   **Figure S13.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
-study2_ssp_fit_rt
-```
-
-<br>
 
 ```{r}
 #| label: figureS14
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S14.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
+#|   **Figure S14.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
+study2_ssp_fit_rt
+```
+
+<br>
+
+```{r}
+#| label: figureS15
+#| dpi: 600
+#| fig.width: 7
+#| fig-cap: | 
+#|   **Figure S15.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
 study2_ssp_fit_acc
 ```
 
@@ -462,19 +487,19 @@ In this section, we provide a numbered overview of the deviations from the prere
 We had initially planned to analyze both parameters separately.
 However, after analyzing the data from Study 1, we realized that the estimates of these two parameters separately were very unstable.
 We noticed this when plotting the within-person estimates between conditions (standard, enhanced, and degraded) against each other.
-Figure S15 provides an overview of these correlations for attentional width, shrinking rate, interference, and, for illustrative purposes, the RT difference score.
+Figure S16 provides an overview of these correlations for attentional width, shrinking rate, interference, and, for illustrative purposes, the RT difference score.
 We consider the comparison between the standard and enhanced condition the most informative, as the stimuli in these conditions were most similar.
 The within-person correlations between conditions of attentional width and shrinking were very low.
 However, the correlations were substantially higher for interference (which even outperformed the standard RT difference scores, as typically used in traditional assessments).
 Thus, we decided to use the Interference estimate in our analyses across all studies.
 
 ```{r}
-#| label: figureS15
+#| label: figureS16
 #| fig-width: 7
 #| fig-height: 8
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S15. **Within-person bivarate correlations between Flanker conditions in Study 2 for RT differences, attentional width, shrinking rate, and interference.
+#|   **Figure S16. **Within-person bivarate correlations between Flanker conditions in Study 2 for RT differences, attentional width, shrinking rate, and interference.
 study1_ssp_cor_plot
 ```
 
@@ -516,15 +541,15 @@ Specifically, we report (1) the distributions of *p*-values across the multivers
 
 ## 5.1. Pilot
 
-Figure S16 and Figure S17 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 3 in the main text.
+Figure S17 and Figure S18 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 3 in the main text.
 
 ```{r}
-#| label: figureS16
+#| label: figureS17
 #| fig.width: 7
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S16.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Cued Attention Task. Panel B: Change Detection Task. Panel C: Flanker Task.
+#|   **Figure S17.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Cued Attention Task. Panel B: Change Detection Task. Panel C: Flanker Task.
 (
   (pilot_prim_lmer_pvalues_plot$cueing_rt + labs(title = "Raw response time", tag = "A", y = "") + theme_classic()) + 
     (pilot_prim_lmer_pvalues_plot$cueing_hddm_v + labs(title = "Drift rate", y = "") + theme_classic()) + 
@@ -550,46 +575,24 @@ Figure S16 and Figure S17 present *p*-distributions and the explained variance o
 ```{r}
 #| include: false
 #| echo: false
-f17_p1 <- pilot_prim_lmer_variance_plot$cueing_rt + labs(title = "Raw response time", tag = "A", y = "", fill = "")
-f17_p2 <- pilot_prim_lmer_variance_plot$cueing_hddm_v + labs(title = "Drift rate", y = "") + guides(fill = "none")
-f17_p3 <- pilot_prim_lm_variance_plot$cueing_fixed_hddm_a + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f17_p4 <- pilot_prim_lmer_variance_plot$cueing_hddm_t + labs(title = "Non-decision time", y = "") + guides(fill = "none")
+f18_p1 <- pilot_prim_lmer_variance_plot$cueing_rt + labs(title = "Raw response time", tag = "A", y = "", fill = "")
+f18_p2 <- pilot_prim_lmer_variance_plot$cueing_hddm_v + labs(title = "Drift rate", y = "") + guides(fill = "none")
+f18_p3 <- pilot_prim_lm_variance_plot$cueing_fixed_hddm_a + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f18_p4 <- pilot_prim_lmer_variance_plot$cueing_hddm_t + labs(title = "Non-decision time", y = "") + guides(fill = "none")
 
-f17_p5 <- pilot_prim_lm_variance_plot$rt_change + labs(title = "Raw response time", tag = "B", y = "") + guides(fill = "none") 
-f17_p6 <- pilot_prim_lm_variance_plot$change_hddm_v + labs(title = "Drift rate", y = "") + guides(fill = "none") 
-f17_p7 <- pilot_prim_lm_variance_plot$change_hddm_a + labs(title = "Boundary separation", y = "") + guides(fill = "none")
-f17_p8 <- pilot_prim_lm_variance_plot$change_hddm_t + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
+f18_p5 <- pilot_prim_lm_variance_plot$rt_change + labs(title = "Raw response time", tag = "B", y = "") + guides(fill = "none") 
+f18_p6 <- pilot_prim_lm_variance_plot$change_hddm_v + labs(title = "Drift rate", y = "") + guides(fill = "none") 
+f18_p7 <- pilot_prim_lm_variance_plot$change_hddm_a + labs(title = "Boundary separation", y = "") + guides(fill = "none")
+f18_p8 <- pilot_prim_lm_variance_plot$change_hddm_t + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
 
-f17_p9 <- pilot_prim_lmer_variance_plot$flanker_rt + labs(title = "Raw response time", tag = "C", y = "") + guides(fill = "none")
-f17_p10 <- pilot_prim_lm_variance_plot$flanker_ssp_p + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
-f17_p11 <- pilot_prim_lm_variance_plot$flanker_ssp_interference + labs(title = "Interference", y = "") + guides(fill = "none") 
-f17_p12 <- pilot_prim_lm_variance_plot$flanker_ssp_a + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f17_p13 <- pilot_prim_lm_variance_plot$flanker_ssp_t + labs(title = "Non-decision time", y = "") + guides(fill = "none")
+f18_p9 <- pilot_prim_lmer_variance_plot$flanker_rt + labs(title = "Raw response time", tag = "C", y = "") + guides(fill = "none")
+f18_p10 <- pilot_prim_lm_variance_plot$flanker_ssp_p + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
+f18_p11 <- pilot_prim_lm_variance_plot$flanker_ssp_interference + labs(title = "Interference", y = "") + guides(fill = "none") 
+f18_p12 <- pilot_prim_lm_variance_plot$flanker_ssp_a + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f18_p13 <- pilot_prim_lm_variance_plot$flanker_ssp_t + labs(title = "Non-decision time", y = "") + guides(fill = "none")
 
-align_patches(f17_p1,f17_p2,f17_p3,f17_p4,f17_p5,f17_p6,f17_p7,f17_p8,f17_p9,f17_p10,f17_p11,f17_p12,f17_p13)
+align_patches(f18_p1,f18_p2,f18_p3,f18_p4,f18_p5,f18_p6,f18_p7,f18_p8,f18_p9,f18_p10,f18_p11,f18_p12,f18_p13)
 ```
-
-```{r}
-#| label: figureS17
-#| fig.width: 7
-#| fig.height: 10
-#| dpi: 600
-#| fig-cap: | 
-#|   **Figure S17.** Multiverse explained variance of each data cleaning decision belonging to the analyses reported in Table 3 in the main text. Panel A: Cued Attention Task. Panel B: Change Detection Task. Panel C: Flanker Task.
-final_plot_S17 <- 
-  (f17_p1+f17_p2+f17_p3+f17_p4 + plot_layout(ncol = 3)) /
-  (f17_p5+f17_p6+f17_p7+f17_p8 + plot_layout(ncol = 3)) /
-  (f17_p9+f17_p10+f17_p11+f17_p12+f17_p13 + plot_layout(ncol = 3)) + 
-  plot_layout(guides = "collect") & theme(legend.position='bottom')
-
-final_plot_S17
-
-```
-<br>
-
-## 5.2 Study 1
-
-Figure S18 and Figure S19 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 4 in the main text.
 
 ```{r}
 #| label: figureS18
@@ -597,7 +600,29 @@ Figure S18 and Figure S19 present *p*-distributions and the explained variance o
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S18.** Multiverse p-value distributions belonging to the analyses reported in Table 4 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses involving violence exposure (hypothesis-driven). Panel B: Analyses involving unpredictability (exploratory).
+#|   **Figure S18.** Multiverse explained variance of each data cleaning decision belonging to the analyses reported in Table 3 in the main text. Panel A: Cued Attention Task. Panel B: Change Detection Task. Panel C: Flanker Task.
+final_plot_S18 <- 
+  (f18_p1+f18_p2+f18_p3+f18_p4 + plot_layout(ncol = 3)) /
+  (f18_p5+f18_p6+f18_p7+f18_p8 + plot_layout(ncol = 3)) /
+  (f18_p9+f18_p10+f18_p11+f18_p12+f18_p13 + plot_layout(ncol = 3)) + 
+  plot_layout(guides = "collect") & theme(legend.position='bottom')
+
+final_plot_S18
+
+```
+<br>
+
+## 5.2 Study 1
+
+Figure S19 and Figure S20 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 4 in the main text.
+
+```{r}
+#| label: figureS19
+#| fig.width: 7
+#| fig.height: 10
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S19.** Multiverse p-value distributions belonging to the analyses reported in Table 4 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses involving violence exposure (hypothesis-driven). Panel B: Analyses involving unpredictability (exploratory).
 (
   (study1_prim_ssp_pvalues_plot_study1$rt_diff + labs(title = "RT difference", tag = "A", y = "") + theme_classic()) + 
     (study1_prim_ssp_pvalues_plot_study1$p_flanker + labs(title = "Perceptual input", y = "") + theme_classic()) + 
@@ -617,41 +642,21 @@ Figure S18 and Figure S19 present *p*-distributions and the explained variance o
 ```{r}
 #| include: false
 #| echo: false
-f19_p1 <- study1_prim_ssp_variance_plot_study1$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "")
-f19_p2 <- study1_prim_ssp_variance_plot_study1$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
-f19_p3 <- study1_prim_ssp_variance_plot_study1$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
-f19_p4 <- study1_prim_ssp_variance_plot_study1$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f19_p5 <- study1_prim_ssp_variance_plot_study1$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
+f20_p1 <- study1_prim_ssp_variance_plot_study1$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "")
+f20_p2 <- study1_prim_ssp_variance_plot_study1$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
+f20_p3 <- study1_prim_ssp_variance_plot_study1$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
+f20_p4 <- study1_prim_ssp_variance_plot_study1$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f20_p5 <- study1_prim_ssp_variance_plot_study1$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
 
-f19_p6 <- study1_expl_ssp_variance_plot_study1$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
-f19_p7 <- study1_expl_ssp_variance_plot_study1$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
-f19_p8 <- study1_expl_ssp_variance_plot_study1$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none")
-f19_p9 <- study1_expl_ssp_variance_plot_study1$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f19_p10 <- study1_expl_ssp_variance_plot_study1$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
+f20_p6 <- study1_expl_ssp_variance_plot_study1$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
+f20_p7 <- study1_expl_ssp_variance_plot_study1$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
+f20_p8 <- study1_expl_ssp_variance_plot_study1$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none")
+f20_p9 <- study1_expl_ssp_variance_plot_study1$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f20_p10 <- study1_expl_ssp_variance_plot_study1$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
 
 
-align_patches(f19_p1,f19_p2,f19_p3,f19_p4,f19_p5,f19_p6,f19_p7,f19_p8,f19_p9,f19_p10)
+align_patches(f20_p1,f20_p2,f20_p3,f20_p4,f20_p5,f20_p6,f20_p7,f20_p8,f20_p9,f20_p10)
 ```
-
-```{r}
-#| label: figureS19
-#| fig.width: 7
-#| fig.height: 10
-#| dpi: 600
-#| fig-cap: | 
-#|   **Figure S19.** Multiverse explained variance of each data cleaning decision belonging to the analyses reported in Table 4 in the main text. Panel A: Analyses involving violence exposure (hypothesis-driven). Panel B: Analyses involving unpredictability (exploratory).
-final_plot_S19 <- 
-  (f19_p1+f19_p2+f19_p3+f19_p4+f19_p5 + plot_layout(ncol = 3)) /
-  (f19_p6+f19_p7+f19_p8+f19_p9+f19_p10 + plot_layout(ncol = 3)) +
-  plot_layout(guides = "collect") & theme(legend.position='bottom')
-
-final_plot_S19
-
-```
-
-<br>
-
-Figure S20-S23 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 5 in the main text.
 
 ```{r}
 #| label: figureS20
@@ -659,7 +664,27 @@ Figure S20-S23 present *p*-distributions and the explained variance of each data
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S20.** Multiverse p-value distributions belonging to the interaction effects involving violence exposure reported in Table 5 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
+#|   **Figure S20.** Multiverse explained variance of each data cleaning decision belonging to the analyses reported in Table 4 in the main text. Panel A: Analyses involving violence exposure (hypothesis-driven). Panel B: Analyses involving unpredictability (exploratory).
+final_plot_S20 <- 
+  (f20_p1+f20_p2+f20_p3+f20_p4+f20_p5 + plot_layout(ncol = 3)) /
+  (f20_p6+f20_p7+f20_p8+f20_p9+f20_p10 + plot_layout(ncol = 3)) +
+  plot_layout(guides = "collect") & theme(legend.position='bottom')
+
+final_plot_S20
+
+```
+
+<br>
+
+Figure S21-S24 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 5 in the main text.
+
+```{r}
+#| label: figureS21
+#| fig.width: 7
+#| fig.height: 10
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S21.** Multiverse p-value distributions belonging to the interaction effects involving violence exposure reported in Table 5 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
 (
   (study1_prim_ssp_enh_pvalues_plot$rt_diff + labs(title = "RT difference", tag = "A", x = "p", y = "") + theme_classic()) + 
     (study1_prim_ssp_enh_pvalues_plot$p_flanker + labs(title = "Perceptual input", x = "p", y = "") + theme_classic()) + 
@@ -681,38 +706,21 @@ Figure S20-S23 present *p*-distributions and the explained variance of each data
 ```{r}
 #| include: false
 #| echo: false
-f21_p1 <- study1_prim_ssp_enh_variance_plot$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "")
-f21_p2 <- study1_prim_ssp_enh_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
-f21_p3 <- study1_prim_ssp_enh_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
-f21_p4 <- study1_prim_ssp_enh_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f21_p5 <- study1_prim_ssp_enh_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
+f22_p1 <- study1_prim_ssp_enh_variance_plot$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "")
+f22_p2 <- study1_prim_ssp_enh_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none") 
+f22_p3 <- study1_prim_ssp_enh_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
+f22_p4 <- study1_prim_ssp_enh_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f22_p5 <- study1_prim_ssp_enh_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
 
-f21_p6 <- study1_prim_ssp_deg_variance_plot$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
-f21_p7 <- study1_prim_ssp_deg_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
-f21_p8 <- study1_prim_ssp_deg_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
-f21_p9 <- study1_prim_ssp_deg_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f21_p10 <- study1_prim_ssp_deg_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none")
+f22_p6 <- study1_prim_ssp_deg_variance_plot$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
+f22_p7 <- study1_prim_ssp_deg_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
+f22_p8 <- study1_prim_ssp_deg_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
+f22_p9 <- study1_prim_ssp_deg_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f22_p10 <- study1_prim_ssp_deg_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none")
 
 
-align_patches(f21_p1,f21_p2,f21_p3,f21_p4,f21_p5,f21_p6,f21_p7,f21_p8,f21_p9,f21_p10)
+align_patches(f22_p1,f22_p2,f22_p3,f22_p4,f22_p5,f22_p6,f22_p7,f22_p8,f22_p9,f22_p10)
 ```
-
-```{r}
-#| label: figureS21
-#| fig.width: 7
-#| fig.height: 10
-#| dpi: 600
-#| fig-cap: | 
-#|   **Figure S21.** Multiverse explained variance of each data cleaning decision belonging to the interaction effects involving violence exposure reported in Table 5 in the main text. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
-final_plot_S21 <- 
-  (f21_p1+f21_p2+f21_p3+f21_p4+f21_p5 + plot_layout(ncol = 3)) /
-  (f21_p6+f21_p7+f21_p8+f21_p9+f21_p10 + plot_layout(ncol = 3)) /
-  plot_layout(guides = "collect") & theme(legend.position='bottom')
-
-final_plot_S21
-
-```
-
 
 ```{r}
 #| label: figureS22
@@ -720,7 +728,24 @@ final_plot_S21
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S22.** Multiverse p-value distributions belonging to the interaction effects involving unpredictability reported in Table 5 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
+#|   **Figure S22.** Multiverse explained variance of each data cleaning decision belonging to the interaction effects involving violence exposure reported in Table 5 in the main text. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
+final_plot_S22 <- 
+  (f22_p1+f22_p2+f22_p3+f22_p4+f22_p5 + plot_layout(ncol = 3)) /
+  (f22_p6+f22_p7+f22_p8+f22_p9+f22_p10 + plot_layout(ncol = 3)) /
+  plot_layout(guides = "collect") & theme(legend.position='bottom')
+
+final_plot_S22
+
+```
+
+
+```{r}
+#| label: figureS23
+#| fig.width: 7
+#| fig.height: 10
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S23.** Multiverse p-value distributions belonging to the interaction effects involving unpredictability reported in Table 5 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
 (
   (study1_expl_ssp_enh_pvalues_plot$rt_diff + labs(title = "RT difference", tag = "A", x = "p", y = "")) + theme_classic() + 
     (study1_expl_ssp_enh_pvalues_plot$p_flanker + labs(title = "Perceptual input", x = "p", y = "") + theme_classic()) + 
@@ -741,43 +766,21 @@ final_plot_S21
 ```{r}
 #| include: false
 #| echo: false
-f23_p1 <- study1_expl_ssp_enh_variance_plot$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "") 
-f23_p2 <- study1_expl_ssp_enh_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
-f23_p3 <- study1_expl_ssp_enh_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none")
-f23_p4 <- study1_expl_ssp_enh_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none")
-f23_p5 <- study1_expl_ssp_enh_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none")
+f24_p1 <- study1_expl_ssp_enh_variance_plot$rt_diff + labs(title = "RT difference", tag = "A", y = "", fill = "") 
+f24_p2 <- study1_expl_ssp_enh_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
+f24_p3 <- study1_expl_ssp_enh_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none")
+f24_p4 <- study1_expl_ssp_enh_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none")
+f24_p5 <- study1_expl_ssp_enh_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none")
 
-f23_p6 <- study1_expl_ssp_deg_variance_plot$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
-f23_p7 <- study1_expl_ssp_deg_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
-f23_p8 <- study1_expl_ssp_deg_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
-f23_p9 <- study1_expl_ssp_deg_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
-f23_p10 <- study1_expl_ssp_deg_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
+f24_p6 <- study1_expl_ssp_deg_variance_plot$rt_diff + labs(title = "RT difference", tag = "B", y = "") + guides(fill = "none") 
+f24_p7 <- study1_expl_ssp_deg_variance_plot$p_flanker + labs(title = "Perceptual input", y = "") + guides(fill = "none")
+f24_p8 <- study1_expl_ssp_deg_variance_plot$interference_flanker + labs(title = "Interference", y = "") + guides(fill = "none") 
+f24_p9 <- study1_expl_ssp_deg_variance_plot$a_flanker + labs(title = "Boundary separation", y = "") + guides(fill = "none") 
+f24_p10 <- study1_expl_ssp_deg_variance_plot$t0_flanker + labs(title = "Non-decision time", y = "") + guides(fill = "none") 
 
 
-align_patches(f23_p1,f23_p2,f23_p3,f23_p4,f23_p5,f23_p6,f23_p7,f23_p8,f23_p9,f23_p10)
+align_patches(f24_p1,f24_p2,f24_p3,f24_p4,f24_p5,f24_p6,f24_p7,f24_p8,f24_p9,f24_p10)
 ```
-
-```{r}
-#| label: figureS23
-#| fig.width: 7
-#| fig.height: 10
-#| dpi: 600
-#| fig-cap: | 
-#|   **Figure S23.** Multiverse explained variance of each data cleaning decision belonging to the interaction effects involving unpredictability reported in Table 5 in the main text. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
-final_plot_S23 <- 
-  (f23_p1+f23_p2+f23_p3+f23_p4+f23_p5 + plot_layout(ncol = 3)) /
-  (f23_p6+f23_p7+f23_p8+f23_p9+f23_p10 + plot_layout(ncol = 3)) /
-  plot_layout(guides = "collect") & theme(legend.position='bottom')
-
-final_plot_S23
-
-```
-
-<br>
-
-## 5.3 Study 2
-
-Figure S24 and Figure S25 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 2 in the main text.
 
 ```{r}
 #| label: figureS24
@@ -785,7 +788,29 @@ Figure S24 and Figure S25 present *p*-distributions and the explained variance o
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S24.** Multiverse p-value distributions belonging to the associations between violence exposure with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 2 in the main text. 
+#|   **Figure S24.** Multiverse explained variance of each data cleaning decision belonging to the interaction effects involving unpredictability reported in Table 5 in the main text. Panel A: Analyses comparing the enhanced condition to the standard condition. Panel B: Analyses comparing the degraded condition to the standard condition.
+final_plot_S24 <- 
+  (f24_p1+f24_p2+f24_p3+f24_p4+f24_p5 + plot_layout(ncol = 3)) /
+  (f24_p6+f24_p7+f24_p8+f24_p9+f24_p10 + plot_layout(ncol = 3)) /
+  plot_layout(guides = "collect") & theme(legend.position='bottom')
+
+final_plot_S24
+
+```
+
+<br>
+
+## 5.3 Study 2
+
+Figure S25 and Figure S26 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 2 in the main text.
+
+```{r}
+#| label: figureS25
+#| fig.width: 7
+#| fig.height: 10
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S25.** Multiverse p-value distributions belonging to the associations between violence exposure with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 2 in the main text. 
 (
   (pilot_prim_lm_pvalues_plot$flanker_ssp_p + labs(title = "Perceptual input", tag = "Pilot", y = "", x = "p") + theme_classic()) + 
     (pilot_prim_lm_pvalues_plot$flanker_ssp_interference + labs(title = "Interference", y = "", x = "p") + theme_classic()) 
@@ -806,12 +831,12 @@ Figure S24 and Figure S25 present *p*-distributions and the explained variance o
 
 
 ```{r}
-#| label: figureS25
+#| label: figureS26
 #| fig.width: 7
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S25.** Multiverse explained variance of each data cleaning decision belonging to the associations between violence exposure with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 2 in the main text. 
+#|   **Figure S26.** Multiverse explained variance of each data cleaning decision belonging to the associations between violence exposure with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 2 in the main text. 
 (
   (pilot_prim_lm_variance_plot$flanker_ssp_p + labs(title = "Perceptual input", tag = "Pilot", fill = "", y = "")) + 
     (pilot_prim_lm_variance_plot$flanker_ssp_interference + labs(title = "Interference", y = "") + guides(fill = "none")) 
@@ -831,15 +856,15 @@ Figure S24 and Figure S25 present *p*-distributions and the explained variance o
 ```
 <br>
 
-Figure S26 and Figure S27 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 3 in the main text.
+Figure S27 and Figure S28 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 3 in the main text.
 
 ```{r}
-#| label: figureS26
+#| label: figureS27
 #| fig.width: 7
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S26.** Multiverse p-value distributions belonging to the associations between unpredictability with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 3 in the main text. 
+#|   **Figure S27.** Multiverse p-value distributions belonging to the associations between unpredictability with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 3 in the main text. 
 (
   (pilot_expl_lm_pvalues_plot$flanker_ssp_p + labs(title = "Perceptual input", tag = "Pilot", y = "", x = "p") + theme_classic()) + 
     (pilot_expl_lm_pvalues_plot$flanker_ssp_interference + labs(title = "Interference", y = "", x = "p") + theme_classic()) 
@@ -860,12 +885,12 @@ Figure S26 and Figure S27 present *p*-distributions and the explained variance o
 <br>
 
 ```{r}
-#| label: figureS27
+#| label: figureS28
 #| fig.width: 7
 #| fig.height: 10
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure S27.** Multiverse explained variance of each data cleaning decision belonging to the associations between unpredictability with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 3 in the main text. 
+#|   **Figure S28.** Multiverse explained variance of each data cleaning decision belonging to the associations between unpredictability with perceptual input and interference in the Pilot, Study 1, Study 2, and pooled across all studies, as reported in Figure 3 in the main text. 
 (
   (pilot_expl_lm_variance_plot$flanker_ssp_p + labs(title = "Perceptual input", fill = "", tag = "Pilot", y = "")) + 
     (pilot_expl_lm_variance_plot$flanker_ssp_interference + labs(title = "Interference", y = "") + guides(fill = "none")) 
