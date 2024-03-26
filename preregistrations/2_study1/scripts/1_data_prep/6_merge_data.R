@@ -45,23 +45,5 @@ write_csv(cleaned_data %>% select(-matches("flanker_data_long")), here("data", "
 save(cleaned_data, browser_interactions, file = here("data", "2_study1", "2_cleaned_data.Rdata"))
 
 
-# RTs:
-# 73: 75th quantile of RTs for each condition are extreme outliers
-# 483: 75th quantile of RTs for each condition are extreme outliers
-# 340: Nearly all quantiles across conditions are extreme outliers
-# 304: Consistently does something else than the rest of the sample
-# 176: Extreme interference outlier on standard condition
-# 99: Extreme outliers on 50th and 75th quantile
-
-# Accuracy:
-# 114: Accuracy is substantially lower on degraded than all other participants
-# 163: Prediction is way off on degraded trials
-# 308: Among lowest accuracy on all conditions, substantial outlier on standard congruent
-# 335: Below chance level on enhanced ingruent; (near) perfect on others
-
-
-
-
-
 
   

@@ -25,7 +25,7 @@ cleaned_data_pilot <- cleaned_data %>%
     unp_female_fig_rom_binned = unp_partners_father_binned 
   )
 
-source(here("preregistrations", "1_pilot", "scripts", "3_exploratory_analyses", "1_efa.R"))
+source("preregistrations/1_pilot/scripts/3_exploratory_analyses.R")
 
 efa_tidy_pilot <- efa_tidy %>%
   rename(
@@ -133,10 +133,10 @@ study1_efa_fig <- efa_data_combined %>%
       Factor == "f5" ~ "People in household",
     )
   ) %>%
-  ggplot(aes(Loading_pilot, Loading_study1, color = cutoff)) +
+  ggplot(aes(x = Loading_pilot, y = Loading_study1, color = cutoff)) +
   geom_point() +
+  geom_text_repel(aes(label = var)) +
   geom_smooth(method = "lm") +
-  geom_text(aes(label = var), nudge_y = 0.05, nudge_x = 0.05) +
   theme_classic() +
   scale_color_manual(values = c("#198B27", "black", "darkgrey")) +
   facet_wrap(~Factor) +

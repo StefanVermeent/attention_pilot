@@ -171,53 +171,43 @@ ggplot() +
 
 # Correlations between parameters -----------------------------------------
 
-ssp_cor_plot <- bind_rows(
+study1_ssp_cor_plot <- bind_rows(
   cleaned_data %>%
-    select(id, matches("^(t0|p|a|sda|rd|t0|interference)_flanker_(std|enh)"), matches("^rt.*(std|enh)")) %>%
+    select(id, matches("^(sda|rd|interference)_flanker_(std|enh)"), matches("^rt.*(std|enh)")) %>%
     mutate(
       rt_diff_flanker_std = rt_flanker_congruent_std - rt_flanker_incongruent_std,
       rt_diff_flanker_enh = rt_flanker_congruent_enh - rt_flanker_incongruent_enh) %>%
     mutate(comparison = "standard - enhanced") %>%
     rename_with(~gsub("_enh", "_alt", .x, fixed = T)),
-  #  rename_with(~gsub("rt_flanker_congruent", "rt_congruent_flanker", .x, fixed = T)) %>%
-  #  rename_with(~gsub("rt_flanker_incongruent", "rt_incongruent_flanker", .x, fixed = T)),
   cleaned_data %>%
-    select(id, matches("^(t0|p|a|sda|rd|t0|interference)_flanker_(incongruent|congruent|std|deg)"), matches("^rt.*(std|deg)")) %>%
+    select(id, matches("^(sda|rd|interference)_flanker_(incongruent|congruent|std|deg)"), matches("^rt.*(std|deg)")) %>%
     mutate(comparison = "standard - degraded")  %>%
     mutate(
       rt_diff_flanker_std = rt_flanker_congruent_std - rt_flanker_incongruent_std,
       rt_diff_flanker_deg = rt_flanker_congruent_deg - rt_flanker_incongruent_deg) %>%
     rename_with(~gsub("_deg", "_alt", .x, fixed = T)),
-  #  rename_with(~gsub("rt_flanker_congruent", "rt_congruent_flanker", .x, fixed = T)) %>%
-  #  rename_with(~gsub("rt_flanker_incongruent", "rt_incongruent_flanker", .x, fixed = T)),
   cleaned_data %>%
-    select(id, matches("^(t0|p|a|sda|rd|t0|interference)_flanker_(incongruent|congruent|deg|enh)"), matches("^rt.*(enh|deg)")) %>%
+    select(id, matches("^(sda|rd|interference)_flanker_(incongruent|congruent|deg|enh)"), matches("^rt.*(enh|deg)")) %>%
     mutate(comparison = "enhanced - degraded")  %>%
     mutate(
       rt_diff_flanker_deg = rt_flanker_congruent_deg - rt_flanker_incongruent_deg,
       rt_diff_flanker_enh = rt_flanker_congruent_enh - rt_flanker_incongruent_enh) %>%
     rename_with(~gsub("_enh", "_std", .x, fixed = T)) %>%
     rename_with(~gsub("_deg", "_alt", .x, fixed = T))
-  #  rename_with(~gsub("rt_flanker_congruent", "rt_congruent_flanker", .x, fixed = T)) %>%
-  #  rename_with(~gsub("rt_flanker_incongruent", "rt_incongruent_flanker", .x, fixed = T)),
 ) %>%
-  pivot_longer(matches("^((a|t0|p|interference||rt_diff)_flanker_(std|alt))"),
+  pivot_longer(matches("^((sda|rd|interference||rt_diff)_flanker_(std|alt))"),
                names_to = c("parameter", "task", ".value"),
                names_pattern = "(^[a-z0-9_]*)(_flanker_)(.*)") %>%
   drop_na() %>%
   select(-task) %>%
- # mutate(across(c(std, alt), ~ifelse(parameter == "interference", log(.), .))) %>%
   mutate(parameter = case_when(
     parameter == "rt_diff" ~ "RT Difference Score",
-  #  parameter == "sda" ~ "Attentional width",
-  #  parameter == "rd" ~ "Shrinking rate",
-    parameter == "a" ~ "Boundary Separation",
-    parameter == "t0" ~ "Non-Decision Time",
-    parameter == "p" ~ "Perceptual Input",
+    parameter == "sda" ~ "Attentional width",
+    parameter == "rd" ~ "Shrinking rate",
     parameter == "interference" ~ "Interference"
   ),
   parameter = factor(parameter, 
-                     levels = c("RT Difference Score", "Perceptual Input", "Interference", "Non-Decision Time", "Boundary Separation"))
+                     levels = c("RT Difference Score", "Attentional width", "Shrinking rate", "Interference"))
   ) %>%
 #  mutate(color = ifelse(std > alt, "red", "blue")) %>%
   group_by(parameter, comparison) %>%
@@ -237,4 +227,4 @@ ssp_cor_plot <- bind_rows(
   )
 
 
-save(study1_ssp_fit_rt, study1_ssp_fit_acc, file = here("data", "2_study1", "ssp_fit.RData"))
+save(study1_ssp_fit_rt, study1_ssp_fit_acc, study1_ssp_cor_plot, file = here("data", "2_study1", "ssp_fit.RData"))

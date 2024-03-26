@@ -519,7 +519,10 @@ self_report <-
     ls() %>% str_subset("^vars0\\d|^vars10") %>% map(function(x) eval(as.symbol(x))),
     left_join,
     by = "id"
-  ) 
+  ) |> 
+  select(
+    id, meta_start, meta_captcha, meta_resolution_ratio, meta_resolution_height, matches("^(chaos|unp|change|quic|unp_comp|violence|vio_comp|fighting|ses|fos|dems_age|dems_sex|dems_gender|att_check01|att_check02|att_getup|att_interrupted|att_noise|attention)")
+  )
 
 codebook <- create_codebook(self_report) %>%
   mutate(Label =  ifelse(str_detect(Variable, "^(meta|stai|chaos|unp|quic|change_env|violence|ses|impuls|fos|depression)"), 
