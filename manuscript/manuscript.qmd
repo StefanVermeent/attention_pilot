@@ -81,7 +81,7 @@ load("study2_staged_results.RData")
 load("pooled_staged_results.Rdata")
 ```
 
-#### **Childhood adversity is not associated with lowered inhibition, but lower perceptual processing: A Drift Diffusion Model analysis**
+#### **Childhood adversity is not associated with lowered inhibition, but slower perceptual processing: A Drift Diffusion Model analysis**
 
 #### Stefan Vermeent^1,2^, Ethan S. Young^1^, Jean-Louis van Gelder^2^, & Willem E. Frankenhuis^1,2,3^
 
@@ -378,7 +378,8 @@ These results were not in line with our expectation that people from adversity w
 ```{r}
 #| tab.id: table3
 #| results: markup
-pilot_main_eff_ddm_table
+pilot_main_eff_ddm_table |> 
+  border(i = 1, border.bottom = fp_border_default(), part = "header") 
 ```
 
 <br>
@@ -463,7 +464,8 @@ In the exploratory analysis, there was a significant negative association betwee
 ```{r}
 #| tab.id: table4
 #| results: markup
-study1_results_table
+study1_results_table |> 
+  border(i = 1, border.bottom = fp_border_default(), part = "header") 
 ```
 
 After pooling the data of the pilot study and Study 1, there was a negative association between violence exposure and interference (median $\beta$ = `r study1_pooled_results_list$interference_vio$median_effect`, 95% CI = `r study1_pooled_results_list$interference_vio$CI`, `r study1_pooled_results_list$interference_vio$p_sum` % of *p*s \<.05, bootstrapped *p* = `r study1_pooled_results_list$interference_vio$boot_p`).
@@ -477,10 +479,13 @@ Interference was lower in the enhanced condition (median $\beta$ = `r study1_con
 Unexpectedly, interference was also lower in the degraded condition (median $\beta$ = `r study1_condition_vio_results_list$interference_degraded$median_effect_Condition`, 95% CI = `r study1_condition_vio_results_list$interference_degraded$condition_CI`, `r study1_condition_vio_results_list$interference_degraded$p_sum_Condition` % of *p*s \<.05), suggesting that the angle in the flanking arrows reduced interference, relative to the standard condition.
 However, none of the interaction effects for either violence exposure or unpredictability were significant.
 
+\pagebreak
+
 ```{r}
 #| tab.id: table5
 #| results: markup
-study1_condition_results_table
+study1_condition_results_table |> 
+  border(i = 1, border.bottom = fp_border_default(), part = "header") 
 ```
 
 The results of the Pilot and Study 1 were inconsistent with regard to the association between adversity and interference, but hinted at two general patterns.

@@ -56,7 +56,7 @@ select(nvs_mean, fighting_mean, vio_comp,
     ~ifelse(is.na(.), "", .)
   )) |> 
   mutate(across(
-    everything(),
+    -Variable,
     ~formatC(.,  digits = 2, width = 3, flag = "0", format = 'f'))) |> 
   flextable() |> 
   width("empty1", width = .2) |> 
@@ -99,12 +99,12 @@ select(nvs_mean, fighting_mean, vio_comp,
   border(i = 2, border.top = fp_border_default(), part = "header") |> 
   border(i = 3, border.bottom = fp_border_default(), part = "header") |> 
   border(i = 17, border.bottom = fp_border_default(), part = "body") |> 
-  align(i = 1:12, j = 1, align = "left", part = "body") |> 
   bold(i = 2:3, part = "header") |> 
-  align(i = 2:3, align = c("center"), part = "header") |> 
-  align(i = 1, align = c("left"), part = "body") |> 
-  padding(j=1, padding.left=0) |> 
-  autofit() 
+  align(j = 2:3, align = c("center"), part = "header") |> 
+  align(j = 2:12, align = c("center"), part = "body") |> 
+  align(i = 1:17, j = 1, align = c("left"), part = "body") |> 
+  border(i = 1, border.bottom = fp_border_default(), part = "header") |> 
+  width(width = c(1.5, rep(0.6, 3), 0.1, rep(0.6, 7)))
 
 
 
@@ -213,12 +213,13 @@ demographics_table <- list(
   ) |>
   border_remove() |> 
   border(i = 2, border.top = fp_border_default(), part = "header") |> 
-  border(i = 1, border.top = fp_border_default(), part = "body") |> 
   border(i = 24, border.bottom = fp_border_default(), part = "body") |> 
-  set_table_properties(width = 1, layout = "autofit") |> 
   bold(i = c(1, 2, 3, 8, 18), j = 1) |> 
   bold(i = 1, j = 2:4, part = "header") |> 
-  padding(i=c(4:7, 9:17, 19:24), j=1, padding.left=20)
+  padding(i=c(4:7, 9:17, 19:24), j=1, padding.left=20) |> 
+  border(i = 1, border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 2, border.bottom = fp_border_default(), part = "header") |> 
+  autofit()
 
 
 
