@@ -83,13 +83,46 @@ load("pooled_staged_results.Rdata")
 
 #### **Childhood adversity is not associated with lowered inhibition, but slower perceptual processing: A Drift Diffusion Model analysis**
 
-#### Stefan Vermeent^1,2^, Ethan S. Young^1^, Jean-Louis van Gelder^2^, & Willem E. Frankenhuis^1,2,3^
+#### Stefan Vermeent^a,b^, Ethan S. Young^a^, Jean-Louis van Gelder^b^, & Willem E. Frankenhuis^a,b,c^
 
-#### ^1^ Department of Psychology, Utrecht University, Utrecht, The Netherlands
+#### ^a^ Department of Psychology, Utrecht University, Utrecht, The Netherlands
 
-#### ^2^ Max Planck Institute for the Study of Crime, Security, and Law, Freiburg, Germany
+#### ^b^ Max Planck Institute for the Study of Crime, Security, and Law, Freiburg, Germany
 
-#### ^3^ Evolutionary and Population Biology, Institute for Biodiversity and Ecosystem Dynamics, University of Amsterdam, Amsterdam, the Netherlands
+#### ^c^ Evolutionary and Population Biology, Institute for Biodiversity and Ecosystem Dynamics, University of Amsterdam, Amsterdam, the Netherlands
+
+<br>
+
+# Corresponding author
+
+Correspondence concerning this article should be addressed to Stefan Vermeent, Department of Psychology, Utrecht University, Heidelberglaan 1, 3584 CS Utrecht, The Netherlands. Email: p.c.s.vermeent@gmail.com / p.c.s.vermeent@uu.nl.
+
+# Data Statement
+
+All scripts, materials, and data supporting the results presented here are available on the article's GitHub repository [(https://stefanvermeent.github.io/attention_project/)](https://stefanvermeent.github.io/attention_project/).
+
+# Funding Statement
+WEF’s contributions have been supported by the Dutch Research Council (V1.Vidi.195.130) and the James S. McDonnell Foundation (https://doi.org/10.37717/220020502).
+
+# Author contributions
+
+**Stefan Vermeent:** Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Project administration, Data curation, Visualization, Writing - original draft, Writing - review & editing.
+**Ethan S. Young:** Conceptualization, Methodology, Supervision, Writing - review & editing.
+**Jean-Louis van Gelder:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
+**Willem E. Frankenhuis:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
+
+\pagebreak
+
+# Abstract
+
+Previous research has shown that people who grew up in adverse conditions tend to perform worse on cognitive tasks like the Flanker, which suggests that they have more difficulty inhibiting distractions.
+Across an online Pilot and two online follow-up studies, we used Drift Diffusion Modeling to better understand performance differences on the Flanker in association with childhood adversity. 
+Neither exposure to violence nor unpredictability were associated with inhibition.
+In contrast, although mixed, results suggested that exposure to violence and unpredictability were associated with lower strength of perceptual input; that is, how well someone can process the arrows in general.
+Finally, people exposed to adversity had a more holistic processing style, and this style was associated with lower strength of perceptual input.
+Taken together, our findings underscore that researchers should be cautious when drawing inferences about inhibition abilities in people exposed to adversity based on response times alone.
+
+*Key-words:* childhood adversity, inhibition, Flanker, Drift Diffusion Modeling
 
 \pagebreak
 
@@ -648,9 +681,9 @@ We hypothesized that the potential adaptive benefits of a more diffuse scope of 
 People with a present-oriented attention style (versus a more future-oriented attention style) are more geared towards processing information that is relevant for solving challenges and obtaining rewards in the here-and-now.
 A general tendency to be more attuned to the present (while disregarding the future) is sometimes referred to as a short-term mindset [@kubel_2023; @vangelder_2023], which also includes tendencies to be more impulsive, to more steeply discount future rewards, and to be more sensation-seeking.
 Although short-term mindsets are associated with exposure to adversity [@ganschow_2023], it is unclear how they are associated with performance on attention tasks.
-We explored bivariate correlations between two indicators of short-term mindsets (impulsivity and future orientation) and SSP parameters of the Flanker (for more information on the measures, see section 1 of the supplemental materials).
+We explored bivariate correlations pooled across all studies between two indicators of short-term mindsets (impulsivity and future orientation) and SSP parameters of the Flanker (for more information on the measures, see section 1 of the supplemental materials).
 
-See Table SX for an overview of the correlations.
+See Table S2 for an overview of the correlations.
 Impulsivity was negatively associated with the strength of perceptual input (*r* = -.07, *p* = .004) and positively associated with interference (*r* = .09, *p* = .005). 
 In addition, impulsivity was also associated with a more holistic information processing style (*r* = .11, *p* = .020). 
 Thus, more impulsive participants processed information less deeply and were more easily drawn to distractions, but this might partly be explained by a holistic information processing style.
@@ -662,7 +695,7 @@ Thus, more future-oriented participants processed information more deeply, which
 We investigated how two dimensions of childhood adversity---violence exposure and environmental unpredictability---are related to differences in how people attend to and process information.
 Specifically, we hypothesized that exposure to adversity might lead to a present-oriented attention style that would facilitate rapidly detecting novel or changing information, yet which would interfere with ignoring distractors.
 Across one pilot and two main studies, we tested how adversity was associated with performance on different attention tasks.
-The Pilot study compared performance on a Cued Attention Task, Change Detection Task, and a Flanker.
+The Pilot compared performance on a Cued Attention Task, Change Detection Task, and a Flanker.
 Two follow-up studies focused on the Flanker, with Study 2 also including a Global-Local Task.
 We leveraged DDM to estimate the processes underlying lowered and improved performance.
 This allowed us to investigate whether performance differences were associated with abilities (i.e., attention orientation, interference control, stimulus processing), or ability-irrelevant processes (e.g., stimulus encoding, response execution, response caution).
@@ -732,6 +765,61 @@ This is an important difference not just for theory development, but also for fu
 For example, when applied to school contexts, interventions based on an inhibition interpretation would focus on the learning environment, perhaps removing things from the classroom that could be distracting.
 In contrast, an intervention based on an information processing interpretation might instead focus on increasing the apparent relevance of the learning materials, perhaps by providing more repetition or by making the content more ecologically relevant [@young_2022].
 Thus, cognitive modeling can offer crucial insights for our understanding of cognitive abilities in adverse conditions.
+
+\pagebreak
+
+# Glossary
+
+**Adversity:** prolonged exposures to intense stress; for instance, resulting from abuse, neglect, and poverty.
+
+<br>
+<br>
+
+**Boundary separation:** Parameter from the Drift Diffusion Model and Shrinking Spotlight Model. Provides a measure of a person's level of response caution on binary decision-making tasks.
+
+<br>
+<br>
+
+**Developmental adaptation:** A process that tailors people to the demands of their environments based on their experiences.
+
+<br>
+<br>
+
+**Drift Diffusion Model:** A formal cognitive model that estimates cognitive processes at different stages of the decision-making process for speeded binary decision-making tasks.
+It represents decision-making on binary decision-making tasks as a process in which people accumulate information until one response is sufficiently favored over the other.
+
+<br>
+<br>
+
+**Drift rate:** Parameter from the Drift Diffusion Model. Provides a measure of a person's speed of information accumulation on binary
+
+<br>
+<br>
+
+**Inhibition:** A person's ability to ignore task-irrelevant distractors in favor of task-relevant information. Operationalized in the Shrinking Spotlight Model as the initial attention width over all stimuli (i.e., target and distractors) divided by the rate at which attention is narrowed down to the central target.
+
+<br>
+<br>
+
+**Multiverse analysis:** An analysis technique that systematically and transparently assesses the influence of arbitrary data cleaning decisions on analysis results.
+
+<br>
+<br>
+
+**Non-decision time:** Parameter from the Drift Diffusion Model and Shrinking Spotlight Model. Provides a measure of the time it takes a person to prepare for the task at the start of the trial (before information processing) and the time it takes to execute a response (after a response boundary has been reached) on binary decision-making tasks.
+
+<br>
+<br>
+
+**Perceptual input:** Parameter from the Shrinking Spotlight Model of Flanker performance. Provides a measure of how well a person can process the Flanker stimuli in general.
+
+<br>
+<br>
+
+**Shrinking Spotlight Model:** An extension of the standard Drift Diffusion Model to account for attention processes on the Flanker.
+
+
+
 
 \pagebreak
 
