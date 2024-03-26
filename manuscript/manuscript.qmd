@@ -98,7 +98,8 @@ load("pooled_staged_results.Rdata")
 The predominant view in developmental psychology is that exposure to adversity impairs cognitive abilities.
 This view is supported by decades of research showing that people living in high-adversity contexts tend to score lower on a variety of cognitive tests [@hackman_2010; @ursache_2016].
 Recent adaptation-based perspectives, however, have argued that people from adversity may also develop intact, or enhanced, abilities for solving problems in high-adversity contexts [@ellis_2017; @frankenhuis_2013].
-Adaptation- and deficit-based perspectives are considered complimentary: for instance, adversity may impair some cognitive processes, yet enhance others.
+Adaptation- and deficit-based perspectives are considered complimentary.
+For instance, adversity may impair some cognitive processes, yet enhance others.
 Despite their compatibility, few studies have investigated how the interplay of impaired and enhanced abilities shapes performance.
 In this paper, across three preregistered online experiments, we used cognitive modeling to derive a process-level understanding of the association between childhood adversity and performance on the Flanker Task, a popular measure of cognitive control [@ridderinkhof_2021].
 
@@ -125,10 +126,10 @@ This could compromise more long-term goal-directed behavior, especially in chaot
 
 Thus, lowered performance on tasks like the Flanker could reflect either a cognitive impairment or a difference in attentional strategies.
 Distinguishing between these two possibilities is challenging for two reasons.
-First, few studies in the adversity literature have measured performance differences on different attention tasks within the same individual.
+First, few studies in the adversity literature have measured performance differences on different attention tasks within the same individual [@mezzacappa_2004; @mittal_2015].
 Thus, it is unclear whether lowered inhibition is related to enhanced processing of peripheral information in people from from adverse backgrounds.
 Second, performance on inhibition tasks is---beyond the ability to inhibit distractors---also influenced by other factors, such as a person's general processing speed and response caution [@hedge_2022; @loffler_2022].
-This multifinality means that lowered performance on inhibition tasks does not necessarily reflect inhibition difficulties.
+This means that lowered performance on inhibition tasks does not necessarily reflect inhibition difficulties.
 In other words, we should consider cognitive processes other than ability when drawing inferences based on inhibition tasks.
 
 ## Using Drift Diffusion Modeling to estimate attention and processing styles
@@ -179,15 +180,17 @@ knitr::include_graphics("figures/fig1.png")
 The overarching goal of our studies is to understand the attentional and processing styles that people develop in conditions of adversity.
 We focus on measures of exposure to violence and environmental unpredictability.
 Previous research shows that these two types of adversity are on the one hand associated with improved attention shifting and working memory updating [@fields_2021; @mittal_2015; @young_2018; @young_2022], and on the other hand with lowered inhibition and working memory capacity [@fields_2021; @mittal_2015; @young_2018].
-We conducted three online studies: one pilot and two follow-up studies).
+We conducted three online studies: one pilot and two follow-up studies.
 Using cognitive modeling, we unpack Flanker performance in comparison to other tasks that require externally focused attention (Pilot), across visual processing manipulations (Study 1), and in terms of tendencies for holistic versus local processing (Study 2).
 
 We used an incremental preregistration approach across studies (for all preregistrations, code and materials, see <https://github.com/stefanvermeent/attention_project/preregistrations>).
 For each study, we preregistered primary (i.e., hypothesis-driven) and exploratory analyses.
 The main text addresses the primary analyses involving violence exposure and the exploratory analyses involving environmental unpredictability.
-We describe the other exploratory analyses in the supplemental materials and involved constructs that we hypothesized might be related to a present-oriented attention style, such as impulsivity and future orientation.
+We describe the other exploratory analyses in the supplemental materials (section 2).
+For an overview of all deviations from the preregistrations, see section 4 of the supplemental materials.
 
-# Pilot study
+
+# Pilot
 
 In the Pilot, our goal was to understand how childhood adversity relates to performance on tasks with different attentional demands.
 Participants completed self-report measures of childhood adversity and three cognitive tasks.
@@ -298,7 +301,7 @@ The hierarchical Bayesian fitting procedure was a deviation from the preregistra
 There were several issues with estimating DDM parameters for the Cued Attention task, which we later discovered were caused specifically by ML.
 An important difference between HDDM and ML is that HDDM uses the group information to inform individual parameter estimates, whereas ML models are fitted to each individual separately.
 This generally improves the accuracy of the estimation.
-See the supplemental materials for an overview of the fit procedure and model fit across all models.
+See the supplemental materials (section 3) for an overview of the fit procedure and model fit across all models.
 
 ### Self-report measures
 
@@ -351,6 +354,7 @@ iv_cor_pooled_table
 **Multiverse analysis.** In an amendment to the preregistration, we quantified the robustness of our findings against six data cleaning decisions that may affect the robustness of online studies by using multiverse analysis, using the *multitool* package [@young_2023].
 Multiverse analysis allows for systematically evaluating the robustness of analyses across all combinations of different arbitrary data processing decisions [for details, see @giudice_2021; @simonsohn_2020; @steegen_2016].
 Specifically, we looked at the influence of including or excluding 1) participants who scored below 0.5 on a build-in bot-detection measure on Prolific (potentially indicating a bot); 2) participants who did not rescale their screen at the start of the experiment; 3) participants who did not enter fullscreen mode prior to starting the tasks; 4) participants who exited fullscreen mode at any point during the tasks; 5) participants who indicated high levels of noise in their environment; 6) participants who indicated extreme interruptions during the experiment.
+See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
 ### Primary analyses
 
@@ -400,7 +404,7 @@ Our first aim was to examine the robustness of our finding of improved interfere
 We did so by analyzing the data of the standard condition, as well as by pooling the data of the Pilot and Study 1.
 Our second aim was to investigate whether manipulating visual information on the Flanker would influence performance for people with more violence exposure.
 
-We preregistered two potential data patterns and associated interpretations, without a priori favoring one over the other.
+We preregistered two potential data patterns and associated interpretations, without favoring one over the other *a priori*.
 First, the strength of perceptual input might be lower for people with more exposure to violence compared to people with less exposure to violence across all conditions.
 Second, lower performance on the standard version might reflect an adaptive trade-off towards cognitive functioning that is less affected by noise or perturbations, at a cost of lower overall performance [@giudice_2018].
 In that case, we would expect the strength of perceptual input to be influenced to a lesser extent across conditions for people with more exposure to violence than for people with less exposure to violence.
@@ -445,6 +449,7 @@ However, this led to one important change for the pooled analysis: rescaling (ye
 
 For each analysis, we report the median $\beta$s, 95% confidence intervals, and the proportion of *p*-values \< .05 across all analytic decisions.
 For the primary analyses, we used bootstrapping to compute the probability of obtaining an effect size at least as extreme as observed in the real data, conditioned on a true effect size of zero [for details, see @simonsohn_2020].
+See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
 **Primary analyses.** To address the first aim, we analyzed the data from the standard condition, as well as pooled the Flanker data of the Pilot and the current study.
 We ran separate linear models for each SSP parameter as well as RT difference scores with violence exposure as main predictor and study as covariate (effect-coded).
@@ -549,16 +554,17 @@ Participants were paid £4.50 when they reached the end of the experiment.
 ### Data analyses
 
 **Multiverse analysis.** We included the same decisions in the multiverse as in the previous studies.
-However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot and Study 1, instead of a subset, as we preregistered (for details, see <https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/preregistration_amendment.md>)
+However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot and Study 1, instead of a subset, as we preregistered (for details, see <https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/preregistration_amendment.md>).
+See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
-**DDM estimation.** For the Flanker, we used the SSP (@grange_2016; @white_2018a; @white_2018b; @white_2011\] using the same procedure as in Study 1. For the Global-Local Task, we used a hierarchical Bayesian DDM to fit the data using the *runjags* package [@denwood_2016]. See the supplemental materials (Section 4) for more information about the procedure and model fit.
+**DDM estimation.** For the Flanker, we used the SSP [@grange_2016; @white_2018a; @white_2018b; @white_2011] using the same procedure as in Study 1. For the Global-Local Task, we used a hierarchical Bayesian DDM to fit the data using the *runjags* package [@denwood_2016]. See the supplemental materials (Section 3) for more information about the procedure and model fit.
 
 We deviated from our preregistration regarding the preprocessing of Global-Local Task data.
 Specifically, we relaxed the low performance threshold as the task was more difficult than anticipated.
-These deviations are described in the amendment (<https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/preregistration_amendment.md>).
+These deviations are described in the supplemental materials (section 4).
 
-**Primary analyses.** We ran simple regressions for analyses involving only main effects (primary aim 1), and linear mixed effects models for analyses involving within-subject interactions (primary aim 2 and 3).
-To address the third primary aim (within-subject interaction between Global-Local drift rate and Flanker strength of perceptual input), we further preprocessed the data in two steps.
+**Primary analyses.** We ran simple regressions for analyses involving only main effects (aim 1), and linear mixed effects models for analyses involving within-subject interactions (aim 2 and 3).
+To address aim 3 (within-subject interaction between Global-Local drift rate and Flanker strength of perceptual input), we further preprocessed the data in two steps.
 First, we computed a difference score of Global-Local drift rates by subtracting the drift rate on local trials from the drift rate on global trials (with higher scores reflecting relatively faster information processing on global trials).
 Second, we separately standardized the Flanker strength of perceptual input and Global-Local drift rate difference.
 We fitted linear mixed effects models with the standardized performance measures as the dependent variable, and adversity type, task (Flanker or Global-Local, sum-coded) and their interaction as independent variables.

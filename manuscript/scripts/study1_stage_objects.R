@@ -34,7 +34,7 @@ txt_ivs_dist_study1 <-
   })
 
 txt_ivs_alpha_study1 <- 
-  c("stai_s\\d\\d", "violence\\d\\d", "unp\\d\\d", 
+  c("violence\\d\\d", "unp\\d\\d", 
     "quic(01|02|03|04|05|06|07|08|09)", "quic(10|11|12|13|14|15|16|17|18|19|20|21)", "quic(22|23|24|25|26|27)", "quic(28|29|30|31|32|33|34)", "quic(35|36|37)",
     "quic.*\\d\\d", "chaos\\d\\d", "ses\\d\\d", "impuls\\d\\d", 
     "fos(01|06|07|12|13)", "fos(02|05|08|11|14)", "fos(03|04|09|10|15)", "fos.*\\d\\d", "depression\\d\\d") |> 
@@ -43,7 +43,7 @@ txt_ivs_alpha_study1 <-
        select(matches(x)) |> 
        psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
   }) |> 
-  setNames(c("stai_s", "violence", "unp", 
+  setNames(c("violence", "unp", 
              "quic_monitoring", "quic_par_predict", "quic_par_env", "quic_phys_env", "quic_safety",
              "quic_total", "chaos", "ses", "impuls", "fos_pa", "fos_tp", "fos_fc", "fos_fo", "depression"))
 
@@ -839,7 +839,7 @@ study1_expl_ssp_eff_curve_plot_study1 <- unique(study1_expl_ssp_effects_sum_stud
         inherit.aes = F
       )  +
       geom_text(
-        aes(x = 32, y = 0.28, label = paste0(round(sum(p.value < .05)/n*10, 1), " % of p-values < .05")),
+        aes(x = 32, y = 0.28, label = paste0(round(sum(p.value < .05)/n*100, 1), " % of p-values < .05")),
         size = 5,
         show.legend = F,
         inherit.aes = F
