@@ -32,12 +32,14 @@ iv_cor_pooled_table <-  bind_rows(
       mutate(id = paste0("pilot", id)) |> 
       rename(
         pcunp_mean   = unp_mean,
-        nvs_mean     = violence_mean
+        nvs_mean     = violence_mean,
+        unp_subj_comp = unp_subj,
+        unp_obj_comp = unp_obj
       ),
     study1_data |> 
       mutate(id = paste0("study1", id)),
     study2_data |> 
-      mutate(id = paste0("study2", id)) |> select(-weight)
+      mutate(id = paste0("study2", id)) 
   ) |> 
 select(nvs_mean, fighting_mean, vio_comp, 
        quic_total_mean, pcunp_mean, chaos_mean, change_env_mean, unp_obj_comp, unp_subj_comp, unp_comp) |> 
@@ -100,9 +102,9 @@ select(nvs_mean, fighting_mean, vio_comp,
   align(i = 1:12, j = 1, align = "left", part = "body") |> 
   bold(i = 2:3, part = "header") |> 
   align(i = 2:3, align = c("center"), part = "header") |> 
-  autofit() |> 
   align(i = 1, align = c("left"), part = "body") |> 
-  padding(j=1, padding.left=0)
+  padding(j=1, padding.left=0) |> 
+  autofit() 
 
 
 
