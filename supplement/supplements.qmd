@@ -3,7 +3,7 @@ bibliography: ../manuscript/references.bib
 csl: ../manuscript/apa.csl
 format: 
   docx:
-    reference-doc: ../manuscript/reference-doc.docx
+    reference-doc: reference-doc.docx
     toc: true
     toc-location: left
     toc-title: Table of Contents
@@ -84,6 +84,7 @@ The exploratory measures described in section 1.1 - 1.5 were collected in all th
 The exploratory measure described in section 1.6 was collected on Study 2 only.
 
 The following exploratory measures were collected in all three studies.
+<br>
 
 ## 1.1. Current state 
 We assessed state anxiety during the experiment using the state subscale of the State-Trait Anxiety Inventory [STAI-S\; @spielberger_1999]. 
@@ -92,6 +93,7 @@ Participants rated each item on a scale of 1 (not at all) to 4 (very much so).
 An overall state anxiety variable was computed by averaging across the 20 unweighted items.
 
 In addition, participants answered five questions relating to specific states: "Are you currently sick?" (rated as yes or no); "Have you eaten a full meal today?" (rated as yes or no); "How hungry do you feel right now?" (rated from 1 (not at all) to 5 (very hungry)); "How well did you sleep last night?" (rated from 1 (very poorly) to 5 (very well)); "How rested or refreshed did you feel when you woke up this morning?" (rated from 1 (not at all) to 5 (very rested)). We computed an overall sleep deprivation composite by standardizing and averaging across the two unweighted sleep-related items.
+<br>
 
 ## 1.2. Poverty exposure 
 Participants' perceived level of resource scarcity before age 13 was measured using seven items (e.g., "Your family had enough money to afford the kind of home you all needed"). 
@@ -106,6 +108,7 @@ Participants also indicated their family's household income before age 13 on a 6
 Scores were reverse coded so that higher scores indicated higher levels of poverty.
 
 We created a composite score of poverty exposure before age 13 by averaging together the standardized scores of perceived level of resource scarcity, overall parental education, and household income.
+<br>
 
 ## 1.3. Impulsivity 
 We assessed impulsivity with the Motor Impulsivity subscale of the Barrett Impulsivity Scale [BIS short form\; @patton_1995; @spinella_2007]. 
@@ -114,6 +117,7 @@ We did not include the Non-planning subscale because it overlapped substantially
 In addition, we did not include the Attention impulsivity subscale because it included items which we deemed to be mostly irrelevant for our target population (e.g., "I 'squirm' at plays or lectures"). 
 We changed the original 4-point rating scale (rarely/never to almost always) to a 5-point rating scale ranging from 1 (never true) to 5 (very often true). 
 An overall impulsivity variable was computed by averaging the five unweighted items.
+<br>
 
 ## 1.4. Future Orientation 
 We assessed future orientation with an adapted version of the Future Orientation Scale [FOS\; @steinberg_2009]. 
@@ -129,23 +133,28 @@ In addition, item 8 of the original scale ("[...] other people would rather spen
 For people from adversity, spending money right now instead of saving it for the future might often be born out of necessity (e.g., having just enough money for food and shelter; being in debt) instead of a failure to delay gratification. 
 Finally, the rating scale was adapted from the original 4-point scale (ranging from really true for the left-hand statement to really true for the right-hand statement) to a 5-point scale ranging from 1 (never true) to 5 (very often true).
 An overall future orientation variable was computed by averaging the 15 unweighted items.
+<br>
 
 ## 1.5. Depressive symptoms 
 We assessed depressive symptoms during the past week using the Center for Epidemiologic Studies Depression Scale [CESD\; @radloff_1977]. 
 The scale consists of 20 items (e.g., "I do things without thinking"). 
 Participants rate each item on a scale of 1 (rarely or none of the time (less than 1 day)) to 4 (most or all of the time (5-7 days)). 
 An overall depression variable was computed by averaging the 20 unweighted items.
+<br>
 
 ## 1.6. Attentional style
 
-We measured attentional style using the Attentional Style Questionnaire [ASQ\; @calster_2018] (See [Table S7](#appendix).
+We measured attentional style using the Attentional Style Questionnaire [ASQ\; @calster_2018].
 The ASQ measures self-reported attentional style, with seven items asking about the participant's propensity for internally oriented attention (e.g., "During an activity, unrelated mmental images and thoughts come to my mind") and seven items about externally oriented attention (e.g., "I am easily drawn to new stimuli (for example, voices of people passing by, as sound in the house, ...) that are not relevant to a task I am doing"). 
 Where necessary, items were recoded in such a way that they reflected *distractibility* by internal and external stimuli, respectively, with higher scores reflecting a higher degree of distractibility.
 We computed unweighted averages separately for internally oriented attention and externally oriented attention.
+<br>
 
 # Section 2. Exploratory analyses
+<br>
 
 ## 2.1. Consistency in unpredictability measures
+<br>
 
 ### 2.1.1. Pilot
 
@@ -158,10 +167,13 @@ Based on their contents, we labelled these factors (1) Daily unpredictability; (
 pilot_efa_table 
 ```
 
+<br>
+
+
 ### 2.1.2 Study 1
 
 Similar to the Pilot, the EFA yielded five factors based on parallel analysis.
-We plotted the factor loadings of each factor in the Pilot against those in Study 1 to investigate their correspondence (See Figure SX).
+We plotted the factor loadings of each factor in the Pilot against those in Study 1 to investigate their correspondence (See Figure S1).
 In general, individual items largely loaded on the same factors, and the sizes of their loadings were also comparable.
 The items from the CHAOS were found to be most unstable, with many showing a loading < .32 in one of the two studies.
 
@@ -171,9 +183,11 @@ The items from the CHAOS were found to be most unstable, with many showing a loa
 #| fig.width: 7
 #| fig.height: 7
 #| fig-cap: | 
-#|   **Figure S1.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S1.** Comparison of factor loadings of unpredictability items in the Pilot and Study 1. 
 study1_efa_fig 
 ```
+<br>
+
 ## 2.2. Bivariate correlations between future orientation and impulsivity with attention tasks
 
 Table S2 shows bivariate correlations between self-reported depression, impulsivity, future orientation, and SES with each of the Flanker SSP parameters and the Global-Local drift rate difference.
@@ -182,15 +196,18 @@ Participants who reported more impulsivity had a lower strength of perceptual in
 Participants who were more future oriented had a higher strength of perceptual input and a more detail-oriented processing style, without an association with interference.
 
 ```{r}
-#| tab.id: tableS3
+#| tab.id: tableS2
 #| results: markup
-supp_cor_table |> 
-  autofit()
+supp_cor_table 
 ```
 
+<br>
+
 # Section 3. Model fit
+<br>
 
 ## 3.1. Pilot 
+<br>
 
 ## 3.1.1 Cueing and Change Detection Task
 
@@ -204,14 +221,14 @@ For the Cued Attention Task, three models provided comparable model fit.
 However, all three models showed estimation problems, especially with regard to the boundary separation.
 Specifically, boundary separation estimates for several participants ended up at an upper boundary of 10, indicating that they were not recovered well.
 Based on subsequent external input, we fit an additional model using Kolmogorov-Smirnov (KS) estimation instead of ML estimation, additionally estimating the inter-trial variability parameter of the non-decision time.
-This improved parameter estimation (see Figure SX).
+This improved parameter estimation (see Figure S3-5).
 
 ```{r}
 #| label: figureS2
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S2.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S2.** Distributions of Drift Diffusion Model parameters for the Cued Attention Task using Kolmogorov-Smirnov estimation.
 cueing_DDM_results_mod9 |> 
   select(starts_with("cueing"), -cueing_ks_fit) |> 
   rename(
@@ -237,8 +254,8 @@ All models were fit using three Markov Chain Monte Carlo (MCMC) chains.
 Each of these chains started with 2,000 burn-in samples, followed by 10,000 additional samples.
 To decrease the total size of the model, every 10th sample was retained, resulting in a posterior sample of 3,000 samples.
 
-Model convergence was assessed (1) by visually inspecting the traces, which should not contain any drifts or large jumps (see Figure SX and SX); (2) through simulation. Specifically, we used each participant's DDM estimates to simulate 100 RT and accuracy estimates (per condition). The distributions of the participant's true RTs and their simulated RTs were assessed through bivariate correlations at the 25th, 50th and 75th percentile (See Figure SX and SX).
-We made the same comparison for mean accuracy levels (See Figure SX and SX).
+Model convergence was assessed (1) by visually inspecting the traces, which should not contain any drifts or large jumps (see Figure S3 and Figure S6); (2) through simulation. Specifically, we used each participant's DDM estimates to simulate 100 RT and accuracy estimates (per condition). The distributions of the participant's true RTs and their simulated RTs were assessed through bivariate correlations at the 25th, 50th and 75th percentile (See Figure S4 and Figure S7).
+We made the same comparison for mean accuracy levels (See Figure S5 and Figure S8).
 
 <br>
 
@@ -247,7 +264,7 @@ We made the same comparison for mean accuracy levels (See Figure SX and SX).
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S3. ** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S3. ** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Cued Attention Task. Plots should resemble a 'fat, hairy catterpillar'.
 pilot_traces_cueing
 ```
 
@@ -258,7 +275,7 @@ pilot_traces_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S4.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S4.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
 pilot_recov_rt_cueing
 ```
 
@@ -269,7 +286,7 @@ pilot_recov_rt_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S5.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S5.** Drift Diffusion parameter recovery for the Cued Attention Task comparing simulated and recovered accuracy rates.
 pilot_recov_acc_cueing
 ```
 
@@ -280,7 +297,7 @@ pilot_recov_acc_cueing
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S6.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S6.** Chain convergence for the Hierarchical Bayesion Drift Diffusion Model for the Change Detection Task. Plots should resemble a 'fat, hairy catterpillar'.
 pilot_traces_change
 ```
 
@@ -291,7 +308,7 @@ pilot_traces_change
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S7.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S7.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
 pilot_recov_rt_change
 ```
 
@@ -302,8 +319,8 @@ pilot_recov_rt_change
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S8.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
-pilot_recov_rt_cueing
+#|   **Figure S8.** Drift Diffusion parameter recovery for the Change Detection Task comparing simulated and recovered accuracy rates.
+pilot_recov_acc_change
 ```
 
 <br>
@@ -317,7 +334,7 @@ After finding the optimal starting values, we fit the final model based on 50,00
 Model fit was assessed through simulation.
 For each participant, we simulated 50,000 trials.
 We then calculated correlations between observed and simulated RTs at the 25th, 50th, and 75th percentile, as well as between observed and simulated mean accuracy.
-As can be seen in Figure SX and Figure SX, we observed high agreement between observed and simulated RTs and accuracy rates.
+As can be seen in Figure S9 and Figure S10, we observed high agreement between observed and simulated RTs and accuracy rates.
 
 <br>
 
@@ -326,7 +343,7 @@ As can be seen in Figure SX and Figure SX, we observed high agreement between ob
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S9.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S9.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
 qq_data_flanker <- left_join(predicted_quantiles_flanker, observed_quantiles_flanker)
 
 qq_flanker_rt <- ggplot(qq_data_flanker) +
@@ -350,7 +367,7 @@ qq_flanker_rt
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S10.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S10.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
 qq_flanker_acc <- ggplot(qq_data_flanker) +
   geom_point(aes(prop_acc_obs, prop_acc_pred)) +
   geom_abline(slope = 1, intercept = 0) +
@@ -363,10 +380,12 @@ qq_flanker_acc <- ggplot(qq_data_flanker) +
   theme_classic()
 ```
 
+<br>
+
 ## 3.2. Study 1 
 
 Model fit of the Flanker was done the same as in the Pilot.
-Figure SX and Figure SX show the model fit based on simulated data.
+Figure S11 and Figure S12 show the model fit based on simulated data.
 We found good model fit across all three conditions, both for RTs as well as accuracy rates.
 
 <br>
@@ -377,7 +396,7 @@ We found good model fit across all three conditions, both for RTs as well as acc
 #| fig.width: 7
 #| fig.height: 7
 #| fig-cap: | 
-#|   **Figure S11.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S11.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times across the standard, enhanced, and degraded condition.
 study1_ssp_fit_rt
 ```
 
@@ -388,7 +407,7 @@ study1_ssp_fit_rt
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S12.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S12.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates across the standard, enhanced, and degraded condition.
 study1_ssp_fit_acc
 ```
 
@@ -396,10 +415,12 @@ study1_ssp_fit_acc
 
 ## 3.3. Study 2 
 
+<br>
+
 ### 3.3.1 Flanker 
 
 Model fit of the Flanker was done the same as in the Pilot and Study 1.
-Figure SX and Figure SX show the model fit based on simulated data.
+Figure S13 and Figure S14 show the model fit based on simulated data.
 We found good model fit, both for RTs as well as accuracy rates.
 
 ```{r}
@@ -407,7 +428,7 @@ We found good model fit, both for RTs as well as accuracy rates.
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S13.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S13.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered response times at the 25th, 50th and 75th percentile of response times.
 study2_ssp_fit_rt
 ```
 
@@ -418,16 +439,20 @@ study2_ssp_fit_rt
 #| dpi: 600
 #| fig.width: 7
 #| fig-cap: | 
-#|   **Figure S14.** Multiverse p-value distributions belonging to the analyses reported in Table 3 in the main text. The dashed vertical line depicts the cut-off of .05. The percentages in the upper-right corners are the percentage of statistically significant analyses in multiverse.
+#|   **Figure S14.** Drift Diffusion parameter recovery for the Flanker comparing simulated and recovered accuracy rates.
 study2_ssp_fit_acc
 ```
 
+<br>
+
 ### 3.3.2 Global-Local Task
 
+<br>
 
 # Section 4. Deviations from preregistrations
 
 In this section, we provide a numbered overview of the deviations from the preregistration in each study.
+<br>
 
 ## 4.1. Pilot 
 
@@ -437,7 +462,7 @@ In this section, we provide a numbered overview of the deviations from the prere
 We had initially planned to analyze both parameters separately.
 However, after analyzing the data from Study 1, we realized that the estimates of these two parameters separately were very unstable.
 We noticed this when plotting the within-person estimates between conditions (standard, enhanced, and degraded) against each other.
-Figure SX provides an overview of these correlations for attentional width, shrinking rate, interference, and, for illustrative purposes, the RT difference score.
+Figure S15 provides an overview of these correlations for attentional width, shrinking rate, interference, and, for illustrative purposes, the RT difference score.
 We consider the comparison between the standard and enhanced condition the most informative, as the stimuli in these conditions were most similar.
 The within-person correlations between conditions of attentional width and shrinking were very low.
 However, the correlations were substantially higher for interference (which even outperformed the standard RT difference scores, as typically used in traditional assessments).
@@ -453,11 +478,13 @@ Thus, we decided to use the Interference estimate in our analyses across all stu
 study1_ssp_cor_plot
 ```
 
-3. 
+<br>
 
 ## 4.2. Study 1 
 
-1. In our preregistration of Study 1, we preregistered four exploratory (hypothesis-generating) aims, which were unrelated to the primary (hypothesis-driven) aims described in the main manuscript. These were: (1) Investigating the factor structure of unpredictability measures and comparing it to the structure found in the Pilot; (2) Exploring the role of state anxiety, hunger, and sleep deprivation as potential moderators of the relationship between adversity and attention performance; (3) Exploring bivariate correlations between measures of adversity, attention, and measures of temporal orientation; (4) Explore the correlation between current depressive symptoms and retrospective measures of adversity. The results of aim 1 are described in Section 2.1.2. The 
+1. In our preregistration of Study 1, we preregistered four exploratory (hypothesis-generating) aims, which were unrelated to the primary (hypothesis-driven) aims described in the main manuscript. These were: (1) Investigating the factor structure of unpredictability measures and comparing it to the structure found in the Pilot; (2) Exploring the role of state anxiety, hunger, and sleep deprivation as potential moderators of the relationship between adversity and attention performance; (3) Exploring bivariate correlations between measures of adversity, attention, and measures of temporal orientation; (4) Explore the correlation between current depressive symptoms and retrospective measures of adversity. The results of aim 1 are described in Section 2.1.2. Results of aim 2-4 are described in Section 2.2. 
+
+<br>
 
 ## 4.3. Study 2 
 
@@ -478,15 +505,18 @@ That is, it is more likely that each of these factors added random noise to our 
 Therefore, we decided instead to include these factors as arbitrary decisions in the multiverse analyses, similarly as the previous two studies.
 This allowed for a coherent assessment of influential factors across all three experiments.
 
+<br>
 
 # Section 5. Multiverse analysis.
 
 In this section, we provide additional results of the multiverse analyses.
 Specifically, we report (1) the distributions of *p*-values across the multiverses and (2) influential data cleaning decisions.
 
+<br>
+
 ## 5.1. Pilot
 
-Figure XX and Figure XX present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 3 in the main text.
+Figure S16 and Figure S17 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 3 in the main text.
 
 ```{r}
 #| label: figureS16
@@ -555,10 +585,11 @@ final_plot_S17 <-
 final_plot_S17
 
 ```
+<br>
 
 ## 5.2 Study 1
 
-Figure XX and Figure XX present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 4 in the main text.
+Figure S18 and Figure S19 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 4 in the main text.
 
 ```{r}
 #| label: figureS18
@@ -618,7 +649,9 @@ final_plot_S19
 
 ```
 
+<br>
 
+Figure S20-S23 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Table 5 in the main text.
 
 ```{r}
 #| label: figureS20
@@ -643,6 +676,7 @@ final_plot_S19
   )
 ```
 
+<br>
 
 ```{r}
 #| include: false
@@ -702,6 +736,7 @@ final_plot_S21
     (study1_expl_ssp_deg_pvalues_plot$t0_flanker + labs(title = "Non-decision time", x = "p", y = "") + theme_classic())
   )
 ```
+<br>
 
 ```{r}
 #| include: false
@@ -738,8 +773,11 @@ final_plot_S23
 
 ```
 
+<br>
 
 ## 5.3 Study 2
+
+Figure S24 and Figure S25 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 2 in the main text.
 
 ```{r}
 #| label: figureS24
@@ -791,7 +829,9 @@ final_plot_S23
     (study2_prim_aim1_variance_plot$interference_flanker.vio_comp + labs(title = "Interference", y = "") + guides(fill = "none")) 
   ) + plot_layout(guides = "collect") & theme(legend.position='bottom')
 ```
+<br>
 
+Figure S26 and Figure S27 present *p*-distributions and the explained variance of each data cleaning decision in the variation in effect sizes for the results presented in Figure 3 in the main text.
 
 ```{r}
 #| label: figureS26
@@ -817,7 +857,7 @@ final_plot_S23
     (study2_prim_aim1_pvalues_plot$interference_flanker.unp_comp + labs(title = "Interference", y = "") + theme_classic()) 
   )
 ```
-
+<br>
 
 ```{r}
 #| label: figureS27
