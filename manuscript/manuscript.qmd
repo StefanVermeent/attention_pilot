@@ -99,7 +99,7 @@ Correspondence concerning this article should be addressed to Stefan Vermeent, D
 
 # Data Statement
 
-All scripts, materials, and data supporting the results presented here are available on the article's GitHub repository [(https://stefanvermeent.github.io/attention_project/)](https://stefanvermeent.github.io/attention_project/).
+All scripts, materials, and data supporting the results presented here are available on the article's GitHub repository [ANONYMIZED FOR REVIEW].
 
 # Funding Statement
 WEF’s contributions have been supported by the Dutch Research Council (V1.Vidi.195.130) and the James S. McDonnell Foundation (https://doi.org/10.37717/220020502).
@@ -115,12 +115,13 @@ WEF’s contributions have been supported by the Dutch Research Council (V1.Vidi
 
 # Abstract
 
-Previous research has shown that people who grew up in adverse conditions tend to perform worse on cognitive tasks like the Flanker, which suggests that they have more difficulty inhibiting distractions.
-Across an online Pilot and two online follow-up studies, we used Drift Diffusion Modeling to better understand performance differences on the Flanker in association with childhood adversity. 
+Previous research has shown that people who grew up in adverse conditions tend to be slower on the Flanker Task, suggesting difficulty inhibiting distractions.
+However, this pattern might result from slower general cognitive processes (e.g., reduced general processing speed), rather than the specific ability of inhibition.
+We used Drift Diffusion Modeling in three studies---one pilot and two confirmatory studies---to better understand associations of adversity exposures with Flanker performance. 
 Neither exposure to violence nor unpredictability were associated with inhibition.
-In contrast, although mixed, results suggested that exposure to violence and unpredictability were associated with lower strength of perceptual input; that is, how well someone can process the arrows in general.
-Finally, people exposed to adversity had a more holistic processing style, and this style was associated with lower strength of perceptual input.
-Taken together, our findings underscore that researchers should be cautious when drawing inferences about inhibition abilities in people exposed to adversity based on response times alone.
+In contrast, although mixed, exposure to violence and unpredictability were associated with lower strength of perceptual input; that is, how well someone can process the arrows in general.
+Finally, lower strength of perceptual input was linked to a tendency to process information more holistically, focusing less on individual details.
+Thus, researchers should be cautious when drawing inferences about inhibition abilities in people exposed to adversity based on response times alone.
 
 *Key-words:* childhood adversity, inhibition, Flanker, Drift Diffusion Modeling
 
@@ -216,7 +217,7 @@ Previous research shows that these two types of adversity are on the one hand as
 We conducted three online studies: one pilot and two follow-up studies.
 Using cognitive modeling, we unpack Flanker performance in comparison to other tasks that require externally focused attention (Pilot), across visual processing manipulations (Study 1), and in terms of tendencies for holistic versus local processing (Study 2).
 
-We used an incremental preregistration approach across studies (for all preregistrations, code and materials, see <https://github.com/stefanvermeent/attention_project/preregistrations>).
+We used an incremental preregistration approach across studies (for all preregistrations, code and materials, see [ANONYMIZED FOR REVIEW].
 For each study, we preregistered primary (i.e., hypothesis-driven) and exploratory analyses.
 The main text addresses the primary analyses involving violence exposure and the exploratory analyses involving environmental unpredictability.
 We describe the other exploratory analyses in the supplemental materials (section 2).
@@ -253,7 +254,7 @@ demographics_table
 
 <br>
 
-We conducted a power simulation using the *faux* package in R [@debruine_2021] to determine the minimally required number of participants for standardized regression coefficients of 0.10 and 0.15 (for details and simulation code, see ([https://github.com/stefanvermeent/attention_project/preregistrations](https://github.com/stefanvermeent/attention_project/preregistrations)).
+We conducted a power simulation using the *faux* package in R [@debruine_2021] to determine the minimally required number of participants for standardized regression coefficients of 0.10 and 0.15 (for details and simulation code, see [ANONYMIZED FOR REVIEW]).
 Power was \> .80 for adversity x task condition interactions with *N* = 450 or more.
 For a linear main effect, detecting an effect of $\beta$ = 0.15 with .90 power would require *N* = `r pwr.r.test(r = 0.15, sig.level = 0.05, power = .90, alternative = "two.sided")[['n']] %>% round(0)`.
 We sampled 550 participants, anticipating a final sample of \~500 after exclusions.
@@ -587,7 +588,7 @@ Participants were paid £4.50 when they reached the end of the experiment.
 ### Data analyses
 
 **Multiverse analysis.** We included the same decisions in the multiverse as in the previous studies.
-However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot and Study 1, instead of a subset, as we preregistered (for details, see <https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/preregistration_amendment.md>).
+However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot and Study 1, instead of a subset, as we preregistered (for details, [ANONYMIZED FOR REVIEW]).
 See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
 **DDM estimation.** For the Flanker, we used the SSP [@grange_2016; @white_2018a; @white_2018b; @white_2011] using the same procedure as in Study 1. For the Global-Local Task, we used a hierarchical Bayesian DDM to fit the data using the *runjags* package [@denwood_2016]. See the supplemental materials (Section 3) for more information about the procedure and model fit.
@@ -770,12 +771,12 @@ Thus, cognitive modeling can offer crucial insights for our understanding of cog
 
 # Glossary
 
-**Adversity:** prolonged exposures to intense stress; for instance, resulting from abuse, neglect, and poverty.
+**Adversity:** Prolonged exposures to intense stress; for instance, resulting from abuse, neglect, and poverty.
 
 <br>
 <br>
 
-**Boundary separation:** Parameter from the Drift Diffusion Model and Shrinking Spotlight Model. Provides a measure of a person's level of response caution on binary decision-making tasks.
+**Boundary separation:** Parameter of the Drift Diffusion Model and Shrinking Spotlight Model. Measures the amount of information a person requires before making a decision, determining the speed-accuracy trade-off (e.g., sacrificing speed in favor of higher accuracy).
 
 <br>
 <br>
@@ -786,32 +787,32 @@ Thus, cognitive modeling can offer crucial insights for our understanding of cog
 <br>
 
 **Drift Diffusion Model:** A formal cognitive model that estimates cognitive processes at different stages of the decision-making process for speeded binary decision-making tasks.
-It represents decision-making on binary decision-making tasks as a process in which people accumulate information until one response is sufficiently favored over the other.
+It represents decision-making as a process in which people accumulate information until one response is sufficiently favored over the other.
 
 <br>
 <br>
 
-**Drift rate:** Parameter from the Drift Diffusion Model. Provides a measure of a person's speed of information accumulation on binary
+**Drift rate:** Parameter of the Drift Diffusion Model. Measures a person's speed of information accumulation on binary decision-making tasks.
 
 <br>
 <br>
 
-**Inhibition:** A person's ability to ignore task-irrelevant distractors in favor of task-relevant information. Operationalized in the Shrinking Spotlight Model as the initial attention width over all stimuli (i.e., target and distractors) divided by the rate at which attention is narrowed down to the central target.
+**Inhibition:** A person's ability to ignore task-irrelevant distractors in favor of task-relevant information. Operationalized in the Shrinking Spotlight Model as the initial attention width over all stimuli (i.e., target and distractors), divided by the rate at which attention is narrowed down to the central target.
 
 <br>
 <br>
 
-**Multiverse analysis:** An analysis technique that systematically and transparently assesses the influence of arbitrary data cleaning decisions on analysis results.
+**Multiverse analysis:** An analysis technique that systematically and transparently evaluates the influence of arbitrary data-cleaning decisions on statistical outcomes.
 
 <br>
 <br>
 
-**Non-decision time:** Parameter from the Drift Diffusion Model and Shrinking Spotlight Model. Provides a measure of the time it takes a person to prepare for the task at the start of the trial (before information processing) and the time it takes to execute a response (after a response boundary has been reached) on binary decision-making tasks.
+**Non-decision time:** Parameter of the Drift Diffusion Model and Shrinking Spotlight Model. Measures the time it takes a person to prepare for the task at the start of the trial (before information processing) and the time it takes to execute a response (after a response boundary has been reached) on binary decision-making tasks.
 
 <br>
 <br>
 
-**Perceptual input:** Parameter from the Shrinking Spotlight Model of Flanker performance. Provides a measure of how well a person can process the Flanker stimuli in general.
+**Perceptual input:** Parameter from the Shrinking Spotlight Model of Flanker performance. Measures how well a person can process the Flanker stimuli in general.
 
 <br>
 <br>
