@@ -81,38 +81,6 @@ load("study2_staged_results.RData")
 load("pooled_staged_results.Rdata")
 ```
 
-#### **Childhood adversity is not associated with lowered inhibition, but slower perceptual processing: A Drift Diffusion Model analysis**
-
-#### Stefan Vermeent^a,b^, Ethan S. Young^a^, Jean-Louis van Gelder^b^, & Willem E. Frankenhuis^a,b,c^
-
-#### ^a^ Department of Psychology, Utrecht University, Utrecht, The Netherlands
-
-#### ^b^ Max Planck Institute for the Study of Crime, Security, and Law, Freiburg, Germany
-
-#### ^c^ Evolutionary and Population Biology, Institute for Biodiversity and Ecosystem Dynamics, University of Amsterdam, Amsterdam, the Netherlands
-
-<br>
-
-# Corresponding author
-
-Correspondence concerning this article should be addressed to Stefan Vermeent, Department of Psychology, Utrecht University, Heidelberglaan 1, 3584 CS Utrecht, The Netherlands. Email: p.c.s.vermeent@gmail.com / p.c.s.vermeent@uu.nl.
-
-# Data Statement
-
-All scripts, materials, and data supporting the results presented here are available on the article's GitHub repository (<https://anonymous.4open.science/r/CogDev_AnonLink>).
-
-# Funding Statement
-WEF’s contributions have been supported by the Dutch Research Council (V1.Vidi.195.130) and the James S. McDonnell Foundation (https://doi.org/10.37717/220020502).
-
-# Author contributions
-
-**Stefan Vermeent:** Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Project administration, Data curation, Visualization, Writing - original draft, Writing - review & editing.
-**Ethan S. Young:** Conceptualization, Methodology, Supervision, Writing - review & editing.
-**Jean-Louis van Gelder:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
-**Willem E. Frankenhuis:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
-
-\pagebreak
-
 # Abstract
 
 It is well-established that individuals who grew up in adverse conditions tend to be slower on the Flanker Task. 
