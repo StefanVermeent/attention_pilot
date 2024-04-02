@@ -81,22 +81,6 @@ load("study2_staged_results.RData")
 load("pooled_staged_results.Rdata")
 ```
 
-# Abstract
-
-It is well-established that individuals who grew up in adverse conditions tend to be slower on the Flanker Task. 
-This finding is typically interpreted to reflect difficulty inhibiting distractions. 
-However, it might result from slower general cognitive processes (e.g., reduced general processing speed), rather than the specific ability of inhibition. 
-We used Drift Diffusion Modeling in three online studies (total N = 1560) with young adults to understand associations of adversity with Flanker performance. 
-We find no associations between exposure to violence and unpredictability with inhibition. 
-Yet, although mixed, violence and unpredictability exposure were associated with lower strength of perceptual input--—how well someone can process target and distractor information alike. 
-Finally, people with lower strength of perceptual input processed information more holistically, focusing less on details. 
-Thus, lowered Flanker performance does not necessarily imply lowered inhibition ability. 
-Cognitive modeling might reveal a different picture of abilities in adverse conditions.
-
-*Key-words:* childhood adversity, inhibition, Flanker, Drift Diffusion Modeling
-
-\pagebreak
-
 # Childhood adversity is not associated with lowered inhibition, but lower perceptual processing: A Drift Diffusion Model analysis
 
 The predominant view in developmental psychology is that exposure to adversity impairs cognitive abilities.
