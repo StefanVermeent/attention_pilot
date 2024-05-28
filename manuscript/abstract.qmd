@@ -42,6 +42,6 @@ We find no associations between exposure to violence and unpredictability with i
 Yet, although mixed, violence and unpredictability exposure were associated with lower strength of perceptual input--—how well someone can process target and distractor information alike. 
 Finally, people with lower strength of perceptual input processed information more holistically, focusing less on details. 
 Thus, lowered Flanker performance does not necessarily imply lowered inhibition ability. 
-Cognitive modeling might reveal a different picture of abilities in adverse conditions.
+Cognitive modeling reveals a different picture of abilities in adverse conditions as opposed to analyses based on raw performance.
 
 *Key-words:* childhood adversity, inhibition, Flanker, Drift Diffusion Modeling

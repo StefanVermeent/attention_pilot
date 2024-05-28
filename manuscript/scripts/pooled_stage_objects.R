@@ -25,6 +25,19 @@ load('manuscript/study2_staged_results.RData')
 pilot_data = read_csv(here("data/1_pilot/2_cleaned_data.csv")) |> mutate(study = "pilot")
 study1_data = read_csv(here("data/2_study1/2_cleaned_data.csv")) |> mutate(study = "study1")
 study2_data = read_csv(here("data/3_study2/2_cleaned_data.csv")) |> mutate(study = "study2")
+
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
+
 # IV correlations ---------------------------------------------------------
 
 iv_cor_pooled_table <-  bind_rows(
@@ -72,7 +85,7 @@ select(nvs_mean, fighting_mean, vio_comp,
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph(as_b("Table 1. "), "Pooled bivariate correlations and descriptive statistics of measures of childhood violence exposure and environmental unpredictability across the three studies."),
+    as_paragraph(as_b("Table 2. "), "Pooled bivariate correlations and descriptive statistics of measures of childhood violence exposure and environmental unpredictability across the three studies."),
     part = "header"
   ) |>
   add_footer_row(
@@ -81,7 +94,7 @@ select(nvs_mean, fighting_mean, vio_comp,
   ) |> 
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph("Note: * = ", as_i("p"), " < .05, ** = ", as_i("p"), " < .01, *** = ", as_i("p"), "< .001. ",
+    as_paragraph("Note: * = ", as_i("p"), " < .05, ** = ", as_i("p"), " < .01, *** = ", as_i("p"), " < .001. ",
                  "CHAOS = Chaos, Hubbub, and Order Scale; ",
                  "Env. change = environmental change; ",
                  "Obj. unpredictability = objective unpredictability; ",
@@ -208,7 +221,7 @@ demographics_table <- list(
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph(as_b("Table 2. "), "Demographic information for all studies."),
+    as_paragraph(as_b("Table 1. "), "Demographic information for all studies."),
     part = "header"
   ) |>
   border_remove() |> 
@@ -294,7 +307,11 @@ study2_aim1_ssp_pooled_pvalues_plot <- unique(study2_aim1_ssp_pooled_pvalues$iv_
   }) |> 
   setNames(unique(study2_aim1_ssp_pooled_pvalues$iv_dv))
  
-
+right_hand_themes <- theme(
+  axis.text.y = element_blank(),
+  axis.line.y = element_blank(),
+  axis.ticks.y = element_blank()
+)
 
 study2_aim1_plot <- 
   # Row 1: Pilot 
@@ -346,4 +363,4 @@ study2_aim1_unp_plot <-
 
 ggsave(plot = study2_aim1_unp_plot, filename = "manuscript/figures/fig3.png", height=14, width = 9)
 
-save(pilot_data, study1_data, study2_data, iv_cor_pooled_table, demographics_table, mult_variance_vio_p_pooled, mult_variance_vio_interference_pooled, study2_aim1_ssp_pooled_pvalues_plot, study2_aim1_plot, file = "manuscript/pooled_staged_results.RData")
+save(pilot_data, study1_data, study2_data, iv_cor_pooled_table, demographics_table, study2_aim1_ssp_pooled_pvalues, study2_aim1_ssp_pooled_pvalues_plot, study2_aim1_ssp_pooled_pvalues, study2_aim1_plot, file = "manuscript/pooled_staged_results.RData")

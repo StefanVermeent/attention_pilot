@@ -18,7 +18,17 @@ get_alphas <- function(data, string) {
      psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
 }
 
-
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
 
 
 # Descriptives ------------------------------------------------------------
@@ -1435,7 +1445,7 @@ study1_results_list <- study1_results_df |>
 
 study1_results_table <- study1_results_df |> 
   select(dv, median_effect, CI, p_sum, boot_p) |> 
-  add_row(.before = 1, dv = "Violence exposure (primary)") |> 
+  add_row(.before = 1, dv = "Violence exposure (confirmatory)") |> 
   add_row(.after = 6, dv = "Unpredictability (exploratory)") |> 
   mutate(across(everything(), ~ifelse(is.na(.), "", .))) |> 
   mutate(
@@ -1593,7 +1603,7 @@ study1_pooled_results_list <- study1_pooled_results_df |>
 
 study1_pooled_results_table <- study1_pooled_results_df |> 
   select(dv, median_effect, CI, p_sum, boot_p) |> 
-  add_row(.before = 1, dv = "Violence exposure (primary)") |> 
+  add_row(.before = 1, dv = "Violence exposure (confirmatory)") |> 
   add_row(.after = 6, dv = "Unpredictability (exploratory)") |> 
   mutate(across(everything(), ~ifelse(is.na(.), "", .))) |> 
   mutate(
@@ -1960,7 +1970,7 @@ study1_condition_results_table <- study1_condition_vio_results_df |>
   ) |> # Add a new header row on top. We can use this new row to add the title
   flextable::compose(
     i = 1, j = 1,
-    as_paragraph(as_b("Table 5. "), "Standardized interaction effects of violence exposure (primary analysis) and unpredictability (secondary analysis) on Flanker performance across standard, enhanced, and degraded conditions."),
+    as_paragraph(as_b("Table 5. "), "Standardized interaction effects of violence exposure (confirmatory analysis) and unpredictability (secondary analysis) on Flanker performance across standard, enhanced, and degraded conditions."),
     part = "header"
   ) |>
   align(i = 2:3, align = "center", part = "header") |> 

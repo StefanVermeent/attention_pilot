@@ -1,0 +1,19 @@
+---
+title: ""
+output: 
+  html_document:
+    template: ../assets/template.html
+    css: ../assets/style.css
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+## Registered Report
+
+Below is the manuscript.
+It is currently under review at *Cognitive Development*.
+
+```{=html}
+<iframe width="780" height="500" src="manuscript.pdf" title="Manuscript"></iframe>
+```

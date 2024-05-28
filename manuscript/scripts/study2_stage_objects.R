@@ -17,7 +17,17 @@ get_alphas <- function(data, string) {
      psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
 }
 
-
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
 
 
 # Descriptives ------------------------------------------------------------
@@ -33,7 +43,7 @@ txt_ivs_dist_study2 <-
   })
 
 txt_ivs_alpha_study2 <- 
-  c("stai_s\\d\\d", "violence\\d\\d", "unp\\d\\d", 
+  c("violence\\d\\d", "unp\\d\\d", 
     "quic(01|02|03|04|05|06|07|08|09)", "quic(10|11|12|13|14|15|16|17|18|19|20|21)", "quic(22|23|24|25|26|27)", "quic(28|29|30|31|32|33|34)", "quic(35|36|37)",
     "quic.*\\d\\d", "chaos\\d\\d", "ses\\d\\d", "impuls\\d\\d", 
     "fos(01|06|07|12|13)", "fos(02|05|08|11|14)", "fos(03|04|09|10|15)", "fos.*\\d\\d", "depression\\d\\d") |> 
@@ -42,7 +52,7 @@ txt_ivs_alpha_study2 <-
        select(matches(x)) |> 
        psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
   }) |> 
-  setNames(c("stai_s", "violence", "unp", 
+  setNames(c("violence", "unp", 
              "quic_monitoring", "quic_par_predict", "quic_par_env", "quic_phys_env", "quic_safety",
              "quic_total", "chaos", "ses", "impuls", "fos_pa", "fos_tp", "fos_fc", "fos_fo", "depression"))
 

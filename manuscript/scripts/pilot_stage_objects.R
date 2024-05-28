@@ -19,7 +19,17 @@ get_alphas <- function(data, string) {
      psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
 }
 
-
+# set up flextable for tables
+set_flextable_defaults(
+  font.family = "Times", 
+  font.size = 10,
+  font.color = "black",
+  line_spacing = 1,
+  padding.bottom = 1, 
+  padding.top = 1,
+  padding.left = 1,
+  padding.right = 1
+)
 
 # Descriptives ------------------------------------------------------------
 
@@ -35,7 +45,7 @@ txt_ivs_dist_pilot <-
   })
 
 txt_ivs_alpha_pilot <- 
-  c("stai_s\\d\\d", "violence\\d\\d", "unp\\d\\d", 
+  c("violence\\d\\d", "unp\\d\\d", 
     "quic(01|02|03|04|05|06|07|08|09)", "quic(10|11|12|13|14|15|16|17|18|19|20|21)", "quic(22|23|24|25|26|27)", "quic(28|29|30|31|32|33|34)", "quic(35|36|37)",
     "quic.*\\d\\d", "chaos\\d\\d", "ses\\d\\d", "impuls\\d\\d", 
     "fos(01|06|07|12|13)", "fos(02|05|08|11|14)", "fos(03|04|09|10|15)", "fos.*\\d\\d", "depression\\d\\d") |> 
@@ -44,7 +54,7 @@ txt_ivs_alpha_pilot <-
        select(matches(x)) |> 
        psych::alpha(check.keys = TRUE))$total[[1]] |> round(2)
   }) |> 
-  setNames(c("stai_s", "violence", "unp", 
+  setNames(c("violence", "unp", 
              "quic_monitoring", "quic_par_predict", "quic_par_env", "quic_phys_env", "quic_safety",
              "quic_total", "chaos", "ses", "impuls", "fos_pa", "fos_tp", "fos_fc", "fos_fo", "depression"))
 
@@ -1014,6 +1024,72 @@ pilot_expl_lmer_variance_plot <- names(pilot_expl_lmer_variance_sum) |>
   setNames(names(pilot_expl_lmer_variance_sum))
 
 
+pilot_expl_eff_ddm_df <- pilot_expl_lmer_effects_sum |> 
+  filter(dv %in% c("cueing_rt", "cueing_hddm_v", "flanker_rt", "cueing_hddm_t")) |> 
+  filter(str_detect(parameter, "unp_comp|:")) |> 
+  group_by(dv, parameter) |> 
+  summarise(
+    median_effect = round(median(Std_Coefficient),2),
+    median_CI_low = formatC(round(median(Std_CI_low), 2), digits = 2, width = 3, flag = "0", format = 'f'),
+    median_CI_high = formatC(round(median(Std_CI_high), 2), digits = 2, width = 3, flag = "0", format = 'f'),
+    p_sum = sum(p < .05)/n()*100) |> 
+  mutate(parameter = ifelse(str_detect(parameter, ":"), "Interaction", "Main")) |> 
+  pivot_wider(names_from = "parameter", values_from = c(median_effect, median_CI_low, median_CI_high, p_sum)) |> 
+  mutate(
+    Interaction_CI = paste0("[", median_CI_low_Interaction, ", ", median_CI_high_Interaction, "]"),
+    Main_CI        = paste0("[", median_CI_low_Main, ", ", median_CI_high_Main, "]"),
+    dv             = case_when(
+      dv == "cueing_hddm_v" ~ "Cued Attention (v)",
+      dv == "cueing_hddm_t" ~ "Cued Attention (t0)",
+      dv == "cueing_rt"     ~ "Cued Attention (rt)",
+      dv == "flanker_rt"    ~ "Flanker (rt)")
+  ) |> 
+  select(dv, median_effect_Main, Main_CI, p_sum_Main, median_effect_Interaction, Interaction_CI, p_sum_Interaction) |> 
+  bind_rows(
+    pilot_expl_lm_effects_sum |> 
+      filter(dv %in% c("cueing_fixed_hddm_a", "flanker_ssp_p", "flanker_ssp_t0", "flanker_ssp_interference", "flanker_ssp_a", 
+                       "change_hddm_v", "change_hddm_t", "change_hddm_a", "rt_change")) |> 
+      filter(parameter == "unp_comp") |> 
+      group_by(dv) |> 
+      summarise(
+        median_effect_Main = round(median(Std_Coefficient),2),
+        median_CI_low = formatC(round(median(Std_CI_low), 2), digits = 2, width = 3, flag = "0", format = 'f'),
+        median_CI_high = formatC(round(median(Std_CI_high), 2), digits = 2, width = 3, flag = "0", format = 'f'),
+        p_sum_Main = sum(p < .05)/n()*100) |> 
+      mutate(
+        Main_CI = paste0("[", median_CI_low, ", ", median_CI_high, "]"),
+        dv = case_when(
+          dv == "cueing_fixed_hddm_a" ~ "Cued Attention (a)",
+          dv == "change_hddm_v" ~ "Change (v)",
+          dv == "change_hddm_t" ~ "Change (t0)",
+          dv == "change_hddm_a" ~ "Change (a)",
+          dv == "rt_change"     ~ "Change (rt)",
+          dv == "flanker_ssp_p" ~ "Flanker (p)",
+          dv == "flanker_ssp_t0" ~ "Flanker (t0)",
+          dv == "flanker_ssp_interference" ~ "Flanker (interference)",
+          dv == "flanker_ssp_a" ~ "Flanker (a)"
+        )
+      ) |> 
+      select(-median_CI_low, -median_CI_high)
+  ) |> 
+  ungroup() |> 
+  mutate(n = c(3,2,1,9,8,7,6,4,13,11,10,12,5)) |> 
+  arrange(n) |> 
+  select(-n) |> 
+  mutate(across(everything(), ~ifelse(is.na(.), "", .))) |> 
+  mutate(across(
+    -dv,
+    ~formatC(.,  digits = 2, width = 3, flag = "0", format = 'f')
+  )) 
+
+pilot_expl_ddm_keys <- pilot_expl_eff_ddm_df |> group_keys(dv)
+
+pilot_expl_eff_ddm_list <- pilot_expl_eff_ddm_df |> 
+  group_split(dv) |> 
+  set_names(pilot_expl_ddm_keys$dv|> str_replace_all(" \\(", "_") |> str_remove("\\)") |> str_replace_all("Cued Attention", "cueing"))
+
+
+
 
 
 save(txt_ivs_dist_pilot, txt_ivs_alpha_pilot, sample_pilot, pilot_prim_lm_effect_plot, pilot_prim_lm_eff_curve_plot, pilot_prim_lm_pvalues_plot, 
@@ -1022,5 +1098,6 @@ save(txt_ivs_dist_pilot, txt_ivs_alpha_pilot, sample_pilot, pilot_prim_lm_effect
      pilot_expl_lm_variance_plot, pilot_expl_lmer_effect_plot, pilot_expl_lmer_eff_curve_plot, pilot_expl_lmer_pvalues_plot, pilot_expl_lmer_variance_plot,
      pilot_mult_vio_ddm , pilot_mult_vio_ddm_flanker, pilot_mult_vio_ddm, pilot_mult_vio_rt, pilot_simslopes, pilot_main_eff_rt_df, pilot_main_eff_rt_table, 
      pilot_main_eff_ddm_df, pilot_main_eff_ddm_list, pilot_main_eff_ddm_table, 
+     pilot_expl_eff_ddm_df, pilot_expl_eff_ddm_list, 
      file = "manuscript/pilot_staged_results.RData")
 
