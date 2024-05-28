@@ -1,0 +1,28 @@
+---
+title: ""
+output: 
+  html_document:
+    template: ../assets/template.html
+    css: ../assets/style.css
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+# Links to analyses scripts
+
+1.  [Pilot study](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/1_pilot/scripts)
+2.  [Study 1](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/2_study1/scripts)
+3.  [Study 2](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/scripts)
+
+# Links to Cognitive task materials
+
+1.  [Pilot study](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/1_pilot/materials)
+2.  [Study 1](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/2_study1/materials)
+3.  [Study 2](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2/materials)
+
+# Links to preregistrations
+
+1.  [Pilot study](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/1_pilot)
+2.  [Study 1](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/2_study1)
+3.  [Study 2](https://github.com/StefanVermeent/attention_project/tree/main/preregistrations/3_study2)
