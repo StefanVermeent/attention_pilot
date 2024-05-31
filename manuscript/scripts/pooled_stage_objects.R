@@ -132,7 +132,7 @@ demographics_table <- list(
   }),
   age = map_dfr(list(pilot_data, study1_data, study2_data), function(x) { 
     x |> 
-      summarise(stat = paste0(paste0(round(mean(dems_age, na.rm = T),2), " (", round(sd(dems_age, na.rm = T), 2), ")"))) |> 
+      summarise(stat = paste0(paste0(round(mean(dems_age, na.rm = T),0), " (", round(sd(dems_age, na.rm = T), 0), ")"))) |> 
       mutate(categories = "Mean age (SD)") |> 
       mutate(study = x |> pull(study) |> unique())
   }),
@@ -281,7 +281,7 @@ study2_aim1_ssp_pooled_pvalues_plot <- unique(study2_aim1_ssp_pooled_pvalues$iv_
     
     
     pvalues |> 
-      ggplot(aes(p.value)) +
+      ggplot(aes(p)) +
       geom_histogram(color = "black", size = .2, bins = 100) +
       geom_vline(aes(xintercept = .05), linetype = "dashed") +
       annotate(

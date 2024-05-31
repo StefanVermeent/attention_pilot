@@ -1,9 +1,9 @@
 ---
-bibliography: references.bib
+bibliography: ../references.bib
 csl: apa.csl
 format:
   docx:
-    reference-doc: reference-doc.docx
+    reference-doc: ../reference-doc.docx
 output:
   officedown::rdocx_document:
     page_margins:
@@ -72,13 +72,13 @@ set_flextable_defaults(
 
 
 # Source necessary objects
-power_linear      <- read_csv("../data/1_pilot/simulation/power_linear_model.csv") %>% mutate(power = round(power, 0))
-power_mixed       <- read_csv("../data/1_pilot/simulation/power_mixed_model.csv") %>% mutate(power = round(power, 0))
+power_linear      <- read_csv("../../data/1_pilot/simulation/power_linear_model.csv") %>% mutate(power = round(power, 0))
+power_mixed       <- read_csv("../../data/1_pilot/simulation/power_mixed_model.csv") %>% mutate(power = round(power, 0))
 
-load("pilot_staged_results.RData")
-load("study1_staged_results.RData")
-load("study2_staged_results.RData")
-load("pooled_staged_results.Rdata")
+load("../pilot_staged_results.RData")
+load("../study1_staged_results.RData")
+load("../study2_staged_results.RData")
+load("../pooled_staged_results.Rdata")
 ```
 
 # Childhood adversity is not associated with lowered inhibition, but lower perceptual processing: A Drift Diffusion Model analysis
@@ -160,7 +160,7 @@ Here, we are interested in how childhood adversity is associated with both inter
 #| fig-cap: | 
 #|   **Figure 1.** A visual overview of the Drift Diffusion Model (DDM) and the Shrinking Spotlight Model (SSP). Panel A: The DDM assumes that people go through three distinct stages when they perform cognitive tasks with two forced response options. In a first preparation phase, they visually encode the relevant stimuli. In a second decision phase, people accumulate information in favor of one decision over the other (e.g., pressing left vs. right) until the decision boundary for either the correct or incorrect response is reached. Each jagged line represents this information accumulation process on a single trial. In a third execution phase, people execute the motor response.  The model estimates four parameters that reflect distinct cognitive processes (printed in italic): (1) The drift rate represents the average rate of evidence accumulation towards the correct decision boundary and measures processing speed; (2) The non-decision time represents both the time spent encoding the stimuli and executing the response; (3) The boundary separation represents how far apart has “set” their decision boundaries, and is a measure of the person’s level of response caution; (4) The starting point represents the starting point of the decision process and measures the level of response bias (not considered here). Panel B: The SSP is an extension of the standard DDM including additional parameters to capture attentional processes involved in Flanker performance. Each stimulus arrow provides a certain strength of perceptual input (*p*). On incongruent trials, the perceptual input of flanking arrows is coded negatively (-*p*). Attention is assumed to be normally distributed over the arrows with a certain attentional width. Over time, attention is narrowed down toward the central arrow at a rate determined by the shrinking rate, thereby gradually lowering the interference caused by the flanking arrows. The drift rate in the SSP model is the sum of the perceptual input of each arrow multiplied by the attention allotted to each arrow. As attention for the flanking arrows decreases over time, the drift rate is assumed to increase over time (contrary to the standard DDM, which assumes a linear drift rate).
 
-knitr::include_graphics("figures/fig1.png")
+knitr::include_graphics("../figures/fig1.png")
 ```
 
 # Overview of studies
@@ -574,7 +574,7 @@ Similarly, unpredictability was associated with a lower quality of perceptual in
 #| dpi: 600
 #| fig-cap: | 
 #|   **Figure 2.** Multiverse results for the association between violence exposure with the strength of perceptual input and interference on the Flanker across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
-knitr::include_graphics("figures/fig2.png")
+knitr::include_graphics("../figures/fig2.png")
 ```
 
 <br>
@@ -586,7 +586,7 @@ knitr::include_graphics("figures/fig2.png")
 #| dpi: 600
 #| fig-cap: | 
 #|   **Figure 3.** Multiverse results for the association between unpredictability with the strength of perceptual input and interference on the Flanker across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
-knitr::include_graphics("figures/fig3.png")
+knitr::include_graphics("../figures/fig3.png")
 ```
 
 <br> 
@@ -620,7 +620,7 @@ A simple slopes analysis revealed that people with higher levels of unpredictabi
 #| dpi: 600
 #| fig-cap: | 
 #|   **Figure 4.** Multiverse results for the within-subjects comparison of Flanker and Global-Local information processing. Panel A depicts the multiverse interaction effects, with the thick black lines denoting the median slope and the thin lines denoting effects for each combination of arbitrary decisions. Blue thin lines indicate significant effects (*p* > .05), and grey thin lines indicate non-significant effects (*p* > .05). Panel B depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). See the main text for more information about the multiverse analyses.
-knitr::include_graphics("figures/fig4.png")
+knitr::include_graphics("../figures/fig4.png")
 ```
 
 <br>

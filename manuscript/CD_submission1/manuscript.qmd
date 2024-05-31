@@ -1,9 +1,9 @@
 ---
-bibliography: references.bib
+bibliography: ../references.bib
 csl: apa.csl
 format:
   docx:
-    reference-doc: reference-doc.docx
+    reference-doc: ../reference-doc.docx
 output:
   officedown::rdocx_document:
     page_margins:
@@ -72,101 +72,131 @@ set_flextable_defaults(
 
 
 # Source necessary objects
-power_linear      <- read_csv("../data/1_pilot/simulation/power_linear_model.csv") %>% mutate(power = round(power, 0))
-power_mixed       <- read_csv("../data/1_pilot/simulation/power_mixed_model.csv") %>% mutate(power = round(power, 0))
+power_linear      <- read_csv("../../data/1_pilot/simulation/power_linear_model.csv") %>% mutate(power = round(power, 0))
+power_mixed       <- read_csv("../../data/1_pilot/simulation/power_mixed_model.csv") %>% mutate(power = round(power, 0))
 
-load("pilot_staged_results.RData")
-load("study1_staged_results.RData")
-load("study2_staged_results.RData")
-load("pooled_staged_results.Rdata")
+load("../pilot_staged_results.RData")
+load("../study1_staged_results.RData")
+load("../study2_staged_results.RData")
+load("../pooled_staged_results.Rdata")
 ```
+
+#### **Childhood adversity is not associated with lowered inhibition, but slower perceptual processing: A Drift Diffusion Model analysis**
+
+#### Stefan Vermeent^a,b^, Ethan S. Young^a^, Jean-Louis van Gelder^b^, & Willem E. Frankenhuis^a,b,c^
+
+#### ^a^ Department of Psychology, Utrecht University, Utrecht, The Netherlands
+
+#### ^b^ Max Planck Institute for the Study of Crime, Security, and Law, Freiburg, Germany
+
+#### ^c^ Evolutionary and Population Biology, Institute for Biodiversity and Ecosystem Dynamics, University of Amsterdam, Amsterdam, the Netherlands
+
+<br>
+
+# Corresponding author
+
+Correspondence concerning this article should be addressed to Stefan Vermeent, Department of Psychology, Utrecht University, Heidelberglaan 1, 3584 CS Utrecht, The Netherlands. Email: p.c.s.vermeent@gmail.com / p.c.s.vermeent@uu.nl.
+
+# Data Statement
+
+All scripts, materials, and data supporting the results presented here are available on the article's GitHub repository (<https://anonymous.4open.science/r/CogDev_AnonLink>).
+
+# Funding Statement
+WEF’s contributions have been supported by the Dutch Research Council (V1.Vidi.195.130) and the James S. McDonnell Foundation (https://doi.org/10.37717/220020502).
+
+# Author contributions
+
+**Stefan Vermeent:** Conceptualization, Data curation, Formal analysis, Investigation, Methodology, Project administration, Data curation, Visualization, Writing - original draft, Writing - review & editing.
+**Ethan S. Young:** Conceptualization, Methodology, Supervision, Writing - review & editing.
+**Jean-Louis van Gelder:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
+**Willem E. Frankenhuis:** Conceptualization, Funding acquisition, Methodology, Supervision, Writing - review & editing.
+
+\pagebreak
+
+# Abstract
+
+It is well-established that individuals who grew up in adverse conditions tend to be slower on the Flanker Task. 
+This finding is typically interpreted to reflect difficulty inhibiting distractions. 
+However, it might result from slower general cognitive processes (e.g., reduced general processing speed), rather than the specific ability of inhibition. 
+We used Drift Diffusion Modeling in three online studies (total N = 1560) with young adults to understand associations of adversity with Flanker performance. 
+We find no associations between exposure to violence and unpredictability with inhibition. 
+Yet, although mixed, violence and unpredictability exposure were associated with lower strength of perceptual input--—how well someone can process target and distractor information alike. 
+Finally, people with lower strength of perceptual input processed information more holistically, focusing less on details. 
+Thus, lowered Flanker performance does not necessarily imply lowered inhibition ability. 
+Cognitive modeling might reveal a different picture of abilities in adverse conditions.
+
+*Key-words:* childhood adversity, inhibition, Flanker, Drift Diffusion Modeling
+
+\pagebreak
 
 # Childhood adversity is not associated with lowered inhibition, but lower perceptual processing: A Drift Diffusion Model analysis
 
-The predominant view in developmental psychology is that exposure to adversity---defined as prolonged exposure to intense stress---impairs cognitive abilities.
+The predominant view in developmental psychology is that exposure to adversity impairs cognitive abilities.
 This view is supported by decades of research showing that people living in high-adversity contexts tend to score lower on a variety of cognitive tests [@hackman_2010; @ursache_2016].
 Recent adaptation-based perspectives, however, have argued that people from adversity may also develop intact, or enhanced, abilities for solving problems in high-adversity contexts [@ellis_2017; @frankenhuis_2013].
-Adaptation- and deficit-based perspectives are considered complementary.
+Adaptation- and deficit-based perspectives are considered complimentary.
 For instance, adversity may impair some cognitive processes, yet enhance others.
 Despite their compatibility, few studies have investigated how the interplay of impaired and enhanced abilities shapes performance.
-Across three preregistered online experiments, we used cognitive modeling to derive a process-level understanding of the association between childhood adversity and performance in the Flanker task, a popular measure of cognitive control [@ridderinkhof_2021].
+In this paper, across three preregistered online experiments, we used cognitive modeling to derive a process-level understanding of the association between childhood adversity and performance on the Flanker Task, a popular measure of cognitive control [@ridderinkhof_2021].
 
 ## Attention in adverse conditions
 
 It is well-established that early-life adversity is associated with deficits in the ability to inhibit distracting, goal-irrelevant information [@hackman_2010; @ursache_2016].
-One of the leading paradigms in this literature is the Flanker task [@eriksen_1974].
+One of the leading paradigms in this literature is the Flanker Task [@eriksen_1974].
 On this task, participants typically see five arrows in a horizontal orientation, and are asked to indicate the direction of the central arrow.
 The flanking arrows point in the opposite direction on half of the trials, leading to interference that participants must inhibit.
-Slower performance in the Flanker task has been documented for children and adults with more environmental unpredictability [@fields_2021; @mittal_2015].
+Slower performance on the Flanker has been documented for children and adults with lower childhood socioeconomic status [SES\; @farah_2006; @mezzacappa_2004; @noble_2005] and more environmental unpredictability [@fields_2021; @mittal_2015].
 These findings are typically interpreted as indicating a deficit in the ability to inhibit distractions.
 
-Similar associations have been documented for factors that increase the risk of adversity exposure, such as lower socioeconomic status [SES\; @farah_2006; @mezzacappa_2004; @noble_2005].
-Although people living in low-SES conditions experience more adversity, on average, we do not regard low SES itself as a form of adversity. 
-First, SES and adversity can affect cognitive abilities through different mechanisms (e.g., education versus physiological stress). 
-Second, people with low SES have diverse experiences, both positive and negative, even if adversity is more common in this group.
-
-Some recent studies suggest that growing up in adversity may also be associated with improved abilities such as attention shifting [@fields_2021; @mittal_2015; @young_2022; but see @mezzacappa_2004; @nweze_2021].
-Some studies found deficit patterns on inhibition tasks alongside enhancements on other aspects of attention within the same participants.
-For example, one study found that young adults with more childhood unpredictability committed more errors on an Antisaccade task (a measure of inhibition), but more efficiently switched their attention between tasks on an attention shifting task [@mittal_2015].
-Similarly, children with more caregiver switches (an indicator of unpredictability) experienced more interference in the Flanker task (based on RTs), but outperformed children with fewer caregiver switches on shifting their attention between different task goals [@fields_2021].
+Nonetheless, some recent studies suggest that growing up in adversity may also be associated with improved abilities such as attention shifting [@fields_2021; @mittal_2015; @young_2022; but see @nweze_2021].
+Some studies found deficit patterns on the Flanker alongside enhancements on other aspects of attention within the same participants.
+For example, in one study, children with lower SES performed less well on the Flanker, but outperformed children from higher SES on orienting their attention to salient cues and, peripheral cues [@mezzacappa_2004].
+Similarly, children with more caregiver switches (an indicator of unpredictability) were found to perform less well on the Flanker, but outperformed children with fewer caregiver switches on shifting their attention between different task goals [@fields_2021].
 
 Performance on attention tasks could reflect developmental adaptation to adverse environments [@blair_2012; @dangiulli_2012; @frankenhuis_2020; @mittal_2015].
 In unpredictable or threatening conditions, the ability to detect salient peripheral information (e.g., distant noises or approaching individuals) could help to more quickly detect and act on potential threats.
 Over time, cognitive adaptations to such conditions could result in a general tendency to use a more diffuse scope of attention, leading to an enhanced ability to keep track of the broader environment.
 In line with this hypothesis, people with lower SES respond more strongly to auditory distractors [@giuliano_2018; @stevens_2009; @hao_2022] and are faster to orient their attention to peripheral visual information [@mezzacappa_2004].
 While potentially adaptive, a more diffuse scope of attention could come at the cost of lowered ability to ignore irrelevant distractors.
-This could compromise longer-term goal-directed behavior, especially in chaotic environments (e.g., a noisy classroom or a busy street).
+This could compromise more long-term goal-directed behavior, especially in chaotic environments (e.g., a noisy classroom or a busy street).
 
-Thus, lowered performance on tasks like the Flanker task could reflect either a cognitive impairment or a difference in attentional strategies.
+Thus, lowered performance on tasks like the Flanker could reflect either a cognitive impairment or a difference in attentional strategies.
 Distinguishing between these two possibilities is challenging for two reasons.
-First, few studies in the adversity literature have measured performance differences on different attention tasks within the same individual [@mezzacappa_2004; @mittal_2015].
-Thus, it is unclear whether lowered inhibition is related to enhanced processing of peripheral information in people from from adverse backgrounds.
-Second, performance on inhibition tasks is---beyond the ability to inhibit distractors---also influenced by other factors, such as a person's general processing speed and response caution [@hedge_2022; @loffler_2024].
+First, few studies in the adversity literature have measured performance differences on different attention tasks within the same individual [@fields_2021; @mezzacappa_2004; @mittal_2015].
+Thus, it is unclear whether lowered inhibition is related to enhanced processing of peripheral information in people from adverse backgrounds.
+Second, performance on inhibition tasks is---beyond the ability to inhibit distractors---also influenced by other factors, such as a person's general processing speed and response caution [@hedge_2022; @loffler_2022].
 This means that lowered performance on inhibition tasks does not necessarily reflect inhibition difficulties.
 In other words, we should consider cognitive processes other than ability when drawing inferences based on inhibition tasks.
 
 ## Using Drift Diffusion Modeling to estimate attention and processing styles
 
-An important issue, therefore, is that several processes are involved in performance in the Flanker task, and standard assessments using raw performance measures (response times, accuracy rates) mostly fail to distinguish between them.
-For example, performance differences in the Flanker task could indicate that someone experiences more (or less) distractor interference, generally processes less (or more) efficiently, or responds with less (or more) caution.
+An important issue, therefore, is that several processes are involved in performance on the Flanker, and standard assessments using raw performance measures (response times, accuracy rates) mostly fail to distinguish between them.
+For example, performance differences on the Flanker could indicate that someone experiences more (or less) flanker interference, generally processes less (or more) efficiently, or responds with less (or more) caution.
 To understand how adversity affects performance, we need to be able to separate the difference processes that make up performance.
 
 Formal cognitive models such as the Drift Diffusion Model [DDM\; @forstmann_2016; @ratcliff_1998; @ratcliff_2008; @ratcliff_2015; @wagenmakers_2009] provide a potential solution.
-The DDM estimates explicitly models the cognitive processes underlying the decision-making (See Figure 1a).
+The DDM estimates cognitive processes at different stages of the decision-making process (See Figure 1a).
 It represents decision-making on binary decision-making tasks as a process in which people accumulate information until one response is sufficiently favored over the other.
 These two response options are represented as opposing boundaries.
-One boundary corresponds to the correct response and the other to the incorrect response (note that in some research designs, the boundaries may be coded as the two choice options instead, for example, when the question is whether people classify a certain class of stimuli (e.g., angry faces) more efficiently than another class of stimuli (e.g., happy faces)).
-When the accumulated information reaches one of the two boundaries, the corresponding response is executed.
+One boundary corresponds to the correct response and the other to the incorrect response.
+When information accumulation reaches one of the two boundaries, the corresponding response is executed.
 
 The DDM translates trial-level response times (RTs) and accuracy into three distinct cognitive processes.
 The speed of information accumulation is captured in a parameter called the *drift rate*.
 Higher drift rates are associated with faster responses and higher mean accuracy.
 Response caution is modeled through the *boundary separation*; that is, the width between the two boundaries.
 Larger boundary separation is associated with larger RTs and higher accuracy (i.e., sacrificing speed to increase accuracy).
-*Non-decision time* represents the time it takes to prepare for the task at the start of the trial (before information accumulation starts) and the time it takes to execute a response (after a response boundary has been reached).
+Finally, *non-decision time* represents the time it takes to prepare for the task at the start of the trial (before information processing) and the time it takes to execute a response (after a response boundary has been reached).
 Longer non-decision times are associated with larger RTs, without influencing accuracy.
-Finally, the *starting point* represents a potential bias towards one of two responses, with a biased decision-making process starting closer to one boundary relative to the other boundary.
 
-The Shrinking Spotlight (SSP) model is an extension of the standard DDM to account for attention processes in the Flanker task [@grange_2016; @white_2018a; @white_2018b; @white_2011].
-The SSP model assumes that attention resembles a spotlight that is normally distributed over the Flanker task arrows (with a particular starting *attentional width*).
-Over time, people narrow their attention down to the central arrow (at a rate defined by the *shrinking rate*), thereby gradually decreasing interference from irrelevant information [cf\. @eriksen_1986\; see Figure 1b).
+The Shrinking Spotlight (SSP) model is an extension of the standard DDM to account for attention processes on the Flanker [@grange_2016; @white_2018a; @white_2018b; @white_2011].
+The SSP model assumes that attention resembles a spotlight that is normally distributed over the Flanker arrows (with a particular starting *attentional width*).
+Over time, people narrow their attention down to the central arrow (at a rate defined by the *shrinking rate*), thereby gradually decreasing interference from irrelevant information (See Figure 1b).
 Prior work has defined the amount of distractor *interference* by dividing the attentional width by the shrinking rate [@white_2018a].
 People may experience less interference either by starting with a narrower attentional width, and/or by more rapidly shrinking their attention down to the target arrow.
 Finally, performance is also influenced by the *perceptual input* strength; that is, how well someone can process the arrows in general.
-Note that typical interpretations of lowered raw Flanker task performance are in terms of the amount of interference that someone experiences, and not in terms of the strength of perceptual input.
-
-The DDM and SSP model share many assumptions. 
-Both provide identical estimates of boundary separation and non-decision time. 
-The main difference is the decision-making phase. 
-The DDM assumes that the quality of the information is the same across the entire trial. 
-In contrast, the SSP model assumes that the quality of the information improves across the trial, as attention becomes gradually focused more on the central arrow. 
-The simpler assumption of the DDM makes the model broadly applicable, but less precise for conflict tasks. 
-The SSP model is more precise, but applicable only to the Flanker task. 
-Previous studies have successfully applied the DDM to Flanker task data [e.g., @loffler_2024; @vermeent_2024a].
-However, unlike the DDM, the SSP model affords testing hypotheses about the association between adversity and attentional interference in the Flanker task.
-Specifically, we are interested in how childhood adversity is associated with both interference and the strength of perceptual input.
-Finally, the SSP model is one of several completing diffusion models developed to explain performance on conflict tasks [@hubner_2010; @ulrich_2015].
-We focus exclusively on the SSP model because it performs well with relatively few trials per participant relative to other conflict diffusion models [@white_2018a].
+Note that typical interpretations of lowered raw Flanker performance are in terms of the amount of interference that someone experiences, and not in terms of the strength of perceptual input.
+Here, we are interested in how childhood adversity is associated with both interference and the strength of perceptual input.
 
 <br>
 
@@ -176,36 +206,34 @@ We focus exclusively on the SSP model because it performs well with relatively f
 #| fig.height: 9
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure 1.** A visual overview of the Drift Diffusion Model (DDM) and the Shrinking Spotlight Model (SSP). Panel A: The DDM assumes that people go through three distinct stages when they perform cognitive tasks with two forced response options. In a first preparation phase, they visually encode the relevant stimuli. In a second decision phase, people accumulate information in favor of one decision over the other (e.g., pressing left vs. right) until the decision boundary for either the correct or incorrect response is reached. Each jagged line represents this information accumulation process on a single trial. In a third execution phase, people execute the motor response.  The model estimates four parameters that reflect distinct cognitive processes (printed in italic): (1) The drift rate represents the average rate of evidence accumulation towards the correct decision boundary and measures processing speed; (2) The non-decision time represents both the time spent encoding the stimuli and executing the response; (3) The boundary separation represents how far apart a person has “set” their decision boundaries, and is a measure of the person’s level of response caution; (4) The starting point (not considered here) represents a potential bias towards one of two responses, with a biased decision-making process starting closer to one boundary relative to the other boundary. Panel B: The SSP is an extension of the standard DDM including additional parameters to capture attentional processes involved in Flanker task performance. Each stimulus arrow provides a certain strength of perceptual input (*p*). On incongruent trials, the perceptual input of flanking arrows is coded negatively (-*p*). Attention is assumed to be normally distributed over the arrows with a certain attentional width. Over time, attention is narrowed down toward the central arrow at a rate determined by the shrinking rate, thereby gradually lowering the interference caused by the flanking arrows. The drift rate in the SSP model is the sum of the perceptual input of each arrow multiplied by the attention allotted to each arrow. As attention for the flanking arrows decreases over time, the drift rate is assumed to increase over time (contrary to the standard DDM, which assumes a linear drift rate).
+#|   **Figure 1.** A visual overview of the Drift Diffusion Model (DDM) and the Shrinking Spotlight Model (SSP). Panel A: The DDM assumes that people go through three distinct stages when they perform cognitive tasks with two forced response options. In a first preparation phase, they visually encode the relevant stimuli. In a second decision phase, people accumulate information in favor of one decision over the other (e.g., pressing left vs. right) until the decision boundary for either the correct or incorrect response is reached. Each jagged line represents this information accumulation process on a single trial. In a third execution phase, people execute the motor response.  The model estimates four parameters that reflect distinct cognitive processes (printed in italic): (1) The drift rate represents the average rate of evidence accumulation towards the correct decision boundary and measures processing speed; (2) The non-decision time represents both the time spent encoding the stimuli and executing the response; (3) The boundary separation represents how far apart has “set” their decision boundaries, and is a measure of the person’s level of response caution; (4) The starting point represents the starting point of the decision process and measures the level of response bias (not considered here). Panel B: The SSP is an extension of the standard DDM including additional parameters to capture attentional processes involved in Flanker performance. Each stimulus arrow provides a certain strength of perceptual input (*p*). On incongruent trials, the perceptual input of flanking arrows is coded negatively (-*p*). Attention is assumed to be normally distributed over the arrows with a certain attentional width. Over time, attention is narrowed down toward the central arrow at a rate determined by the shrinking rate, thereby gradually lowering the interference caused by the flanking arrows. The drift rate in the SSP model is the sum of the perceptual input of each arrow multiplied by the attention allotted to each arrow. As attention for the flanking arrows decreases over time, the drift rate is assumed to increase over time (contrary to the standard DDM, which assumes a linear drift rate).
 
-knitr::include_graphics("figures/fig1.png")
+knitr::include_graphics("../figures/fig1.png")
 ```
-
-<br>
 
 # Overview of studies
 
 The overarching goal of our studies is to understand the attentional and processing styles that people develop in conditions of adversity.
 We focus on measures of exposure to violence and environmental unpredictability.
 Previous research shows that these two types of adversity are on the one hand associated with improved attention shifting and working memory updating [@fields_2021; @mittal_2015; @young_2018; @young_2022], and on the other hand with lowered inhibition and working memory capacity [@fields_2021; @mittal_2015; @young_2018].
-We conducted three online studies: one pilot study and two follow-up studies.
-Using cognitive modeling, we unpack Flanker task performance in comparison to other tasks that require externally focused attention (Pilot study), across visual processing manipulations (Study 1), and in terms of tendencies for holistic versus local processing (Study 2).
+We conducted three online studies: one pilot and two follow-up studies.
+Using cognitive modeling, we unpack Flanker performance in comparison to other tasks that require externally focused attention (Pilot), across visual processing manipulations (Study 1), and in terms of tendencies for holistic versus local processing (Study 2).
 
-We used an incremental preregistration approach across studies (for all preregistrations, data, code and materials, see <https://anonymous.4open.science/r/CogDev_AnonLink>).
-For each study, we preregistered confirmatory (i.e., hypothesis-driven) and exploratory analyses.
-The main text addresses the confirmatory analyses involving violence exposure and the exploratory analyses involving environmental unpredictability.
+We used an incremental preregistration approach across studies (for all preregistrations, code and materials, see <https://anonymous.4open.science/r/CogDev_AnonLink>).
+For each study, we preregistered primary (i.e., hypothesis-driven) and exploratory analyses.
+The main text addresses the primary analyses involving violence exposure and the exploratory analyses involving environmental unpredictability.
 We describe the other exploratory analyses in the supplemental materials (section 2).
 For an overview of all deviations from the preregistrations, see section 4 of the supplemental materials.
 
 
-# Pilot study
+# Pilot
 
-In the Pilot study, our goal was to understand how childhood adversity relates to performance on tasks with different attentional demands.
-Participants completed self-report measures of childhood adversity and three cognitive tasks (Flanker task, Cued Attention task, and Change Detection task).
+In the Pilot, our goal was to understand how childhood adversity relates to performance on tasks with different attentional demands.
+Participants completed self-report measures of childhood adversity and three cognitive tasks.
 These tasks measured inhibition, attention for peripheral cues, and attention for subtle changes.
-In line with the idea that exposure to adversity may lead to a more diffuse scope of attention, we expected people with more violence exposure to be better at detecting peripheral stimuli and subtle changes.
+We expected people with more violence exposure to be better at detecting peripheral stimuli and subtle changes, as a result of a more diffuse scope of attention.
 We expected this would result in a higher drift rate (faster speed of information accumulation) or shorter non-decision times (faster attention orientation, among other things), but not necessarily with differences in boundary separation (response caution).
-In contrast, we expected that participants with more violence exposure would be worse at ignoring distracting peripheral stimuli.
+Second, we expected that participants with more violence exposure would be worse at ignoring distracting peripheral stimuli.
 We expected this would result in more experienced interference (as derived from the SSP model).
 
 ## Methods
@@ -216,7 +244,6 @@ Participants were 565 people from the United States aged between 18 and 30 recru
 The sample was balanced on sex.
 We used the MacArthur's ladder, included in Prolific's prescreening battery, for assessing perceived SES to ensure about half of the sample came from lower-SES backgrounds (which we defined as a score of 4 or below).
 Participants were eligible if they spoke fluent English and did not report color-blindness.
-We obtained ethical approval from the first author's institute (anonymized for peer review).
 
 \pagebreak
 
@@ -236,7 +263,7 @@ We sampled 550 participants, anticipating a final sample of \~500 after exclusio
 Prior to analyzing the data, we applied our preregistered exclusion criteria.
 First, we excluded participants who did not complete the full study; second, those who had incomplete data on any of the attention tasks; third, those who missed both attention check items; fourth, those who had suspicious response patterns (e.g., consistently endorsing high response options even though some items were reverse coded).
 Fifth, on a trial-level, we excluded any trials with reaction times \< 250 ms or \> 3500 ms [@ratcliff_2015].
-Participants with more than 10 trials removed were completely excluded from the analyses.
+Participants with more than 10 trials removed were completely excluded from the analyses.\
 The final sample consisted of `r nrow(pilot_data)` participants.
 
 ### Procedure {#procedure}
@@ -263,19 +290,19 @@ Participants were paid £4.38 when they reached the end of the experiment.
 The attention tasks were programmed in JsPsych version 3.6.1 [@deleeuw_2015].
 For all materials and links to working versions of the tasks, see the Github repository.
 
-**Flanker task.** The Flanker task measures selective attention and response inhibition [@eriksen_1974].
-The Flanker task began with eight practice trials, followed by 64 test trials.
+**Flanker Task.** The Flanker measures selective attention and response inhibition [@eriksen_1974].
+The Flanker began with eight practice trials, followed by 64 test trials.
 On each trial, participants saw a set of five arrows pointing either left or right.
-Participants were instructed to indicate the direction of the central arrow by pressing the respective arrow keys, while ignoring the flanking arrows to the left and right.
+Participants were instructed to indicate the direction of the central arrow while ignoring the flanking arrows to the left and right.
 All trials included black arrows against a white background.
-in the *congruent* trials (50%), the flanking arrows pointed in the same direction as the central arrow.
-in the *incongruent* trials (50%), the arrows pointed in the opposite direction.
+On the *congruent* trials (50%), the flanking arrows pointed in the same direction as the central arrow.
+On the *incongruent* trials (50%), the arrows pointed in the opposite direction.
 The arrows were randomly presented in the top-half or bottom-half of the screen.
 Each trial started with a fixation cross (1000 ms), after which the arrows were visible until a response was given.
 Participants received performance feedback during the practice trials, but not during the test block.
 
-**Cued Attention task.** The Cued Attention task was an adapted version of the Posner task, which measures the speed of attention for peripheral cues [@posner_1980].
-The Cued Attention task began with eight practice trials, followed by 64 test trials.
+**Cued Attention Task.** The Cued Attention Task was an adapted version of the Posner task, which measures the speed of attention for peripheral cues [@posner_1980].
+The Cued Attention Task began with eight practice trials, followed by 64 test trials.
 On each trial, a left- or right-pointing arrow was presented in one of eight random locations at 300 pixels from the center of the screen.
 Participants were instructed to indicate the direction of the arrow by pressing either the left- or right arrow key on their keyboard.
 All trials included a black cue and arrow against a white background.
@@ -284,8 +311,8 @@ On *neutral* trials (50%), the cue preceded the arrow, but appeared at the cente
 Thus, the cue was perfectly predictive of the target location on cued trials, but provided no predictive information about the location of the arrow on neutral trials.
 Each trial started with a fixation cross at the center of the screen for 1000 ms. Then, the cue appeared for 250 ms, followed by the target arrow, until a response was given.
 
-**Change Detection task.** The Change Detection task measures the ability to detect subtle spatial changes.
-The Change Detection task started with five practice trials followed by 50 test trials.
+**Change Detection Task.** The Change Detection Task measures the ability to detect subtle spatial changes.
+The Change Detection Task started with five practice trials followed by 50 test trials.
 On each trial, participants saw five colored circles (red, light-blue, dark-blue, yellow, and purple) against a gray background, each with a radius of 15 pixels.
 Each circle was located in a semi-random location around the central fixation cross.
 The location of each circle was sampled within a pre-specified area of 50-by-50 pixels to prevent overlap.
@@ -293,24 +320,23 @@ Participants had 1000 ms to memorize the locations of the five circles.
 Then, the circles disappeared for 500 ms and then reappeared.
 On *change* trials (50%), one of the circles had moved to another location with a fixed displacement of 40 pixels in a 360 degree direction.
 On *no change* trials (50%), all circles were still in the same location.
-Participants were instructed to indicate whether all circles were still in the same location or one of the circles had changed location by pressing the left- or right-arrow key.
+Participants were instructed to indicate whether all circles were still in the same location or one of the circles had changed location.
 The displacement of *one* circle was the only potential difference on each trial;
 
-**DDM/SSP parameters.** We analyzed Flanker task performance with the SSP model [@grange_2016; @white_2018a; @white_2018b; @white_2011], using the *flankr* package [@grange_2016].
+**DDM/SSP parameters.** We analyzed the Flanker with the SSP model [@grange_2016; @white_2018a; @white_2018b; @white_2011], using the *flankr* package [@grange_2016].
 For each participant, the SSP provided us with estimates of: (1) strength of perceptual input (general quality of information that participants get from the arrows), (2) interference (initial attention width divided by the speed at which attention is narrowed down to the central arrow), (3) non-decision time (combination of speed of initial stimulus encoding and response execution), and (4) boundary separation (response caution).
-We always fixed the starting-point to the midpoint between the two boundaries, as modeling bias makes little sense when the boundaries correspond to correct and incorrect responses (as is the case here), rather than the distinct response options.
-Our focus on interference as a ratio between attention width and shrinking rate deviated from the preregistration, as we initially planned to investigate both aspects of attention separately.
+Our focus on interference as a ratio between attention width and shrinking rate was a deviation from the preregistration, as we initially planned to investigate both aspects of attention separately.
 However, we discovered that both parameters in isolation were unreliable because of an inherent trade-off, while the ratio did provide a stable measure.
 This was supported in a simulation study by @white_2018a showing that the ratio measure is reliable.
 See the supplemental materials (section 3) for a comparison between the preregistered and the updated analyses.
 
-For the Change Detection task and the Cued Attention task, we used a hierarchical Bayesian implementation of the standard DDM (HDDM).
-For each participant, the HDDM provided us with estimates of: (1) drift rate (speed of information accumulation; analogous to strength of perceptual input in the SSP model, except that drift rate is time-invariant), (2) non-decision time (same as in the SSP model), and (3) boundary separation (same as in the SSP model).
+For the Change Detection Task and the Cued Attention Task, we used a hierarchical Bayesian implementation of the standard DDM (HDDM).
+For each participant, the HDDM provided us with estimates of: (1) drift rate (speed of information accumulation; analogous to strength of perceptual input in the SSP model, except that drift rate is time-invariant), (2) non-decision time (same as SSP model), and (3) boundary separation (same as SSP model).
 The hierarchical Bayesian fitting procedure was a deviation from the preregistration, in which we planned to use Maximum Likelihood (ML) estimation.
 There were several issues with estimating DDM parameters for the Cued Attention task, which we later discovered were caused specifically by ML.
 An important difference between HDDM and ML is that HDDM uses the group information to inform individual parameter estimates, whereas ML models are fitted to each individual separately.
-The hierarchical approach generally improves generally improves the accuracy of the estimation.
-See the supplemental materials (section 3) for an overview of the fit procedure and model fit across all studies.
+This generally improves the accuracy of the estimation.
+See the supplemental materials (section 3) for an overview of the fit procedure and model fit across all models.
 
 ### Self-report measures
 
@@ -349,9 +375,6 @@ We included one additional scale to measure the stability of the family and soci
 On a scale of 1 (the same all the time) to 5 (constant and rapid changes), participants indicated how often the following aspects of their family and social environment changed before age 13: (1) economic status; (2) family environment; (3) childhood neighborhood environment; and (4) childhood school environment.
 
 Finally, we included four objective measures of unpredictability before age 13: 1) "How often did you move?"; 2) "How many adults lived in your home on average?"; 3) "How many romantic partners did your mother have (not counting your father)?"; 4) "How many romantic partners did your father have (not counting your mother)?".
-Previous studies have found associations between (subsets of) these measures and subjective measures of adversity as well as with developmental outcomes [@belsky_2012; @ellis_2009; @young_2022].
-
-\pagebreak
 
 ```{r}
 #| tab.id: table2
@@ -368,31 +391,28 @@ Multiverse analysis allows for systematically evaluating the robustness of analy
 Specifically, we looked at the influence of including or excluding 1) participants who scored below 0.5 on a build-in bot-detection measure on Prolific (potentially indicating a bot); 2) participants who did not rescale their screen at the start of the experiment; 3) participants who did not enter fullscreen mode prior to starting the tasks; 4) participants who exited fullscreen mode at any point during the tasks; 5) participants who indicated high levels of noise in their environment; 6) participants who indicated extreme interruptions during the experiment.
 See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
-**Confirmatory analyses.** For the Cued Attention and Flanker task RTs, we used linear mixed effects models to test violence exposure x task condition (sum-coded) interactions on mean RTs (calculated separately for each condition) and each DDM parameter.
+### Primary analyses
+
+For the Cued Attention Task and Flanker RTs, we used linear mixed effects models to test violence exposure x task condition (sum-coded) interactions on mean RTs and each DDM parameter.
 All mixed effects models included a random intercept for participants.
-For the Change Detection and Flanker task SSP parameters, we used linear regression models to test the main effect of adversity on mean RTs and each DDM/SSP parameter.
-We did not analyze accuracy rates as these were close to ceiling for the Flanker and Cued Attention task.
-To meet model assumptions of normally distributed residuals, mean reaction time were log-transformed, separately for the congruent and incongruent condition.
-Analyses involving interference (Flanker task) and boundary separation (all tasks) parameters violated the assumption of normally distributed residuals.
+For the Change Detection Task and Flanker SSP parameters, we used linear regression models to test the main effect of adversity on mean RTs and each DDM/SSP parameter.
+To meet model assumptions of normally distributed residuals, reaction times were log-transformed.
+Analyses involving interference (Flanker) and boundary separation (all tasks) parameters violated the assumption of normally distributed residuals.
 For boundary separation, we solved this using log-transformation.
 For interference, non-normality was caused by extreme outliers (\>3.2SD), which we excluded from the analyses.
 
 ## Results and discussion
 
 Table 3 summarizes the results.
-In the flanker task, More violence exposure was associated with lower strength of perceptual input under `r pilot_main_eff_ddm_list$Flanker_p$p_sum_Main`% of multiverse specifications (although the median 95% CI interval contained zero).
+More violence exposure was associated with lower strength of perceptual input under `r pilot_main_eff_ddm_list$Flanker_p$p_sum_Main`% of multiverse specifications (although the median 95% CI interval contained zero).
 We additionally found a significant main effect of violence exposure on interference under `r pilot_main_eff_ddm_list$Flanker_interference$p_sum_Main`% of multiverse specifications, such that more violence exposure was associated with less interference.
 This was contrary to our expectation that people exposed to adversity would have more difficulties dealing with interference from irrelevant distractors.
 
-Participants with more exposure to childhood violence were slower in the Cued Attention task, which was mainly related to a higher level of response caution (boundary separation).
-in the Change Detection task, more childhood violence exposure was associated with slower speed of information processing (drift rate) under `r pilot_main_eff_ddm_list$Change_v$p_sum_Main`% of multiverse specifications, but not with longer RTs.
+Participants with more exposure to childhood violence were slower on the Cued Attention Task, which was mainly related to a higher level of response caution (boundary separation).
+On the Change Detection Task, more childhood violence exposure was associated with slower speed of information processing (drift rate) under `r pilot_main_eff_ddm_list$Change_v$p_sum_Main`% of multiverse specifications, but not with longer RTs.
 These results were not in line with our expectation that people from adversity would perform better on cognitive tasks that require a broad, present-focused attention style.
 
-Exploratory analyses did not show any significant associations with Flanker task performance.
-Participants with more exposure to childhood unpredictability were slower in the Cued Attention task (main effect) (median $\beta$ = `r pilot_expl_eff_ddm_list$cueing_rt$median_effect_Main`, 95% CI = `r pilot_expl_eff_ddm_list$cueing_rt$Main_CI`, `r pilot_expl_eff_ddm_list$cueing_rt$p_sum_Main` % of *p*s \<.05), which was related to slower non-decision time (median $\beta$ = `r pilot_expl_eff_ddm_list$cueing_t0$median_effect_Main`, 95% CI = `r pilot_expl_eff_ddm_list$cueing_t0$Main_CI`, `r pilot_expl_eff_ddm_list$cueing_t0$p_sum_Main` % of *p*s \<.05).
-We did not find a significant association between exposure to childhood unpredictability and mean RTs on the Change Detection task, although more unpredictability was negatively associated with drift rates (median $\beta$ = `r pilot_expl_eff_ddm_list$Change_v$median_effect_Main`, 95% CI = `r pilot_expl_eff_ddm_list$Change_v$Main_CI`, `r pilot_expl_eff_ddm_list$Change_v$p_sum_Main` % of *p*s \<.05).
-
-\pagebreak
+<br>
 
 ```{r}
 #| tab.id: table3
@@ -403,8 +423,8 @@ pilot_main_eff_ddm_table |>
 
 <br>
 
-The pattern of findings in the Flanker task was interesting for two reasons.
-First, the Flanker task is a widely used task to assess the ability to inhibit irrelevant information, and people exposed to adversity typically show lowered performance.
+The pattern of findings on the Flanker was interesting for two reasons.
+First, the Flanker is a widely used task to assess the ability to inhibit irrelevant information, and people exposed to adversity typically show lowered performance.
 Our pilot results, though, suggest that lowered performance may not be caused by a reduced ability to inhibit distracting information.
 Instead, people exposed to adversity might have a lower strength of perceptual input, leading to slower and less efficient information processing.
 If true, these initial findings suggest that performance might be improved through interventions that increase the visual quality of stimuli.
@@ -412,16 +432,16 @@ In Study 1, we aimed to replicate and extend these findings.
 
 # Study 1
 
-The goal of Study 1 was to follow up on the Pilot study by manipulating the visual quality of information in the Flanker task.
-Participants completed three versions: a standard version (similar to the Pilot study), one with enhanced visual information, and one with degraded visual information.
+The goal of Study 1 was to follow up on the Pilot by manipulating the visual quality of information on the Flanker.
+Participants completed three versions: a standard version (similar to the Pilot), one with enhanced visual information, and one with degraded visual information.
 We again focused on childhood exposure to violence.
-Our first aim was to examine the robustness of our finding of improved interference control in the Flanker task in relation to more adversity exposure in the Pilot study.
-We did so by analyzing the data of the standard condition, as well as by pooling the data of the Pilot study and Study 1.
-Our second aim was to investigate whether manipulating visual information in the Flanker task would influence performance for people with more violence exposure.
+Our first aim was to examine the robustness of our finding of improved interference control on the Flanker in relation to more adversity exposure in the pilot.
+We did so by analyzing the data of the standard condition, as well as by pooling the data of the Pilot and Study 1.
+Our second aim was to investigate whether manipulating visual information on the Flanker would influence performance for people with more violence exposure.
 
 We preregistered two potential data patterns and associated interpretations, without favoring one over the other *a priori*.
 First, the strength of perceptual input might be lower for people with more exposure to violence compared to people with less exposure to violence across all conditions.
-Second, lower performance in the standard version might reflect an adaptive trade-off towards cognitive functioning that is less affected by noise or perturbations, at a cost of lower overall performance [@giudice_2018].
+Second, lower performance on the standard version might reflect an adaptive trade-off towards cognitive functioning that is less affected by noise or perturbations, at a cost of lower overall performance [@giudice_2018].
 In that case, we would expect the strength of perceptual input to be influenced to a lesser extent across conditions for people with more exposure to violence than for people with less exposure to violence.
 As a result, they might not benefit as much from enhanced visual information, yet might be able to better maintain performance with degraded information.
 
@@ -429,66 +449,57 @@ As a result, they might not benefit as much from enhanced visual information, ye
 
 ### Participants
 
-Participant recruitment was identical to the Pilot study.
+Participant recruitment was identical to the Pilot.
 In total, 567 people from the United States between the ages of 18 and 30 participated (See Table 1).
-We obtained ethical approval from the first author's institute (anonymized for peer review).
-We applied the same exclusion criteria as reported in the Pilot study.
+We applied the same exclusion criteria as reported in the Pilot.
 The final sample consisted of `r nrow(study1_data)` participants.
 
-### Flanker task
+### Flanker Task
 
-We programmed the Flanker task in JsPsych version 6.3.1 [@deleeuw_2015] with three conditions.
+We programmed the Flanker in JsPsych version 6.3.1 [@deleeuw_2015] with three conditions.
 Each condition consisted of eight practice trials, followed by 64 test trials.
 In the *standard* condition, the arrows were 40 pixels in size (0.4 inches) and had zero padding between them.
 In the *enhanced* condition, we increased the arrow size by 12.5% to 45 pixels (0.45 inches), and increased the space between the arrows to 5 pixels.
 This increased the width of the stimulus display by 50% with respect to the standard display.
-In the *degraded* condition, sizes and space between arrows were the same as in the standard version, but all arrows were rotated 45$^\circ$.
-The lines of the arrows always had the same 45$^\circ$ angle.
-For example, if the flanking arrows pointed to the upper-left on an incongruent trial, the central arrow pointed to the lower-right.
-On congruent trials, all arrows pointed in the same direction (e.g., upper-right).
+In the 'degraded' condition, sizes and space between arrows were the same as in the standard version, but all arrows were rotated 45$^\circ$ (in the same direction; that is, if the left flanker arrows pointed upwards, the right flanker arrows pointed downward).
 Participants completed each condition separately in different blocks, in randomized order.
 
 ### Self-report measures
 
-The self-report measures were identical to those used in the Pilot study.
+The self-report measures were identical to those used in the Pilot.
 
 ### Procedure
 
-The procedure was identical to the Pilot study.
+The procedure was identical to the pilot study.
 The full experiment took approximately 30 minutes.
 Participants were paid £3.75 after they completed the full study.
 
 ### Data analyses
 
-**Multiverse analysis.** We included the same arbitrary decisions in the multiverse analyses as in the Pilot study.
-For the pooled analyses---i.e., joint analysis of the Pilot study and the standard condition of Study 1---there was one minor change in how we included screen rescaling as a preprocessing decision in the multiverse.
+**Multiverse analysis.** We included the same arbitrary decisions in the multiverse analyses as in the Pilot.
+For the pooled analyses---i.e., joint analysis of the Pilot and the standard condition of Study 1---there was one minor change in how we included screen rescaling as a preprocessing decision in the multiverse.
 In Study 1, we changed the screen rescaling procedure by converting the initial size of the resize box to 300 pixels instead of 100 pixels.
 This way, the stimulus display would still be close to the intended size if participants did not engage in any resizing.
-However, this led to one important change for the pooled analysis: rescaling (yes or no) was included as an arbitrary exclusion decision in the multiverse analyses with four combinations: (1) exclude non-scalers in both studies; (2) include non-scalers in both studies; (3) exclude non-scalers in the Pilot study, include non-scalers in Study 1; (4) include non-scalers in the Pilot study, exclude non-scalers in Study 1.
+However, this led to one important change for the pooled analysis: rescaling (yes or no) was included as an arbitrary exclusion decision in the multiverse analyses with four combinations: (1) exclude non-scalers in both studies; (2) include non-scalers in both studies; (3) exclude non-scalers in the Pilot, include non-scalers in Study 1; (4) include non-scalers in the Pilot, exclude non-scalers in Study 1.
 
 For each analysis, we report the median $\beta$s, 95% confidence intervals, and the proportion of *p*-values \< .05 across all analytic decisions.
-For the confirmatory analyses, we used bootstrapping to compute the probability of obtaining an effect size at least as extreme as observed in the real data, conditioned on a true effect size of zero [for details, see @simonsohn_2020].
+For the primary analyses, we used bootstrapping to compute the probability of obtaining an effect size at least as extreme as observed in the real data, conditioned on a true effect size of zero [for details, see @simonsohn_2020].
 See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
-**Confirmatory analyses.** To address the first aim, we analyzed the data from the standard condition, as well as pooled the Flanker task data of the Pilot study and the current study.
-We ran separate linear models for each SSP parameter as well as RT difference scores (based on log-transformed mean RTs of each condition) with violence exposure as main predictor and study as covariate (effect-coded).
-To address the second aim, we analyzed the effect of violence exposure and Flanker task condition type on performance using linear mixed effects models with a random intercept per participant.
-The five main dependent variables were mean RT difference (based on log-transformed mean RTs of each condition) and the SSP parameters: Perceptual input, boundary separation, non-decision time, and interference.
+**Primary analyses.** To address the first aim, we analyzed the data from the standard condition, as well as pooled the Flanker data of the Pilot and the current study.
+We ran separate linear models for each SSP parameter as well as RT difference scores with violence exposure as main predictor and study as covariate (effect-coded).
+To address the second aim, we analyzed the effect of violence exposure and Flanker condition type on performance using linear mixed effects models with a random intercept per participant.
+The five main dependent variables were mean RT difference and the SSP parameters: Perceptual input, boundary separation, non-decision time, and interference.
 For each outcome measure, we ran two separate models: one comparing the standard condition with the enhanced condition, and one comparing the standard condition with the degraded condition.
 In both models, condition was dummy-coded using the standard condition as the reference group.
-
-The use of RT difference scores differed from the Pilot study, where we included task condition as a moderator.
-We opted for RT difference scores here (as well as in Study 2) to prevent the use of three-way interactions, for which we did not have enough power.
 
 ## Results and discussion
 
 ### Standard Flanker performance
 
-Table 4 summarizes the multiverse results for the effects of violence exposure (confirmatory analysis) and unpredictability (exploratory analysis).
-Unlike in the Pilot study, we did not find any significant associations with violence exposure.
+Table 4 summarizes the multiverse results for the effects of violence exposure (primary analysis) and unpredictability (exploratory analysis).
+Unlike in the Pilot, we did not find any significant associations with violence exposure.
 In the exploratory analysis, there was a significant negative association between unpredictability and perceptual input (median $\beta$ = `r study1_expl_results_list$p_flanker$median_effect_Main`, 95% CI = `r study1_expl_results_list$p_flanker$CI`, `r study1_expl_results_list$p_flanker$p_sum` % of *p*s \<.05).
-
-\pagebreak
 
 ```{r}
 #| tab.id: table4
@@ -497,18 +508,18 @@ study1_results_table |>
   border(i = 1, border.bottom = fp_border_default(), part = "header") 
 ```
 
-After pooling the data of the Pilot study and Study 1, there was a negative association between violence exposure and interference (median $\beta$ = `r study1_pooled_results_list$interference_vio$median_effect`, 95% CI = `r study1_pooled_results_list$interference_vio$CI`, `r study1_pooled_results_list$interference_vio$p_sum` % of *p*s \<.05, bootstrapped *p* = `r study1_pooled_results_list$interference_vio$boot_p`).
+After pooling the data of the pilot study and Study 1, there was a negative association between violence exposure and interference (median $\beta$ = `r study1_pooled_results_list$interference_vio$median_effect`, 95% CI = `r study1_pooled_results_list$interference_vio$CI`, `r study1_pooled_results_list$interference_vio$p_sum` % of *p*s \<.05, bootstrapped *p* = `r study1_pooled_results_list$interference_vio$boot_p`).
 Violence exposure was associated with lower strength of perceptual input under `r study1_pooled_results_list$interference_vio$p_sum`% of multiverse specifications, but the bootstrapped *p*-value was not significant (median $\beta$ = `r study1_pooled_results_list$p_vio$median_effect`, 95% CI = `r study1_pooled_results_list$p_vio$CI`, bootstrapped *p* = `r study1_pooled_results_list$p_vio$boot_p`).
 We did not find other significant associations for either violence exposure or unpredictability.
 
-### Flanker task conditions
+### Flanker conditions
 
 The main effects of task condition on the strength of perceptual input were in the expected direction: relative to the standard condition, the quality of perceptual input was higher in the enhanced condition (median $\beta$ = `r study1_condition_vio_results_list$p_enhanced$median_effect_Condition`, 95% CI = `r study1_condition_vio_results_list$p_enhanced$condition_CI`, `r study1_condition_vio_results_list$p_enhanced$p_sum_Condition` % of *p*s \<.05) and lower in the degraded condition (median $\beta$ = `r study1_condition_vio_results_list$p_degraded$median_effect_Condition`, 95% CI = `r  study1_condition_vio_results_list$p_degraded$condition_CI`, `r study1_condition_vio_results_list$p_degraded$p_sum_Condition` % of *p*s \<.05).
 Interference was lower in the enhanced condition (median $\beta$ = `r study1_condition_vio_results_list$interference_enhanced$median_effect_Condition`, 95% CI = `r study1_condition_vio_results_list$interference_enhanced$condition_CI`, `r study1_condition_vio_results_list$interference_enhanced$p_sum_Condition` % of *p*s \<.05).
 Unexpectedly, interference was also lower in the degraded condition (median $\beta$ = `r study1_condition_vio_results_list$interference_degraded$median_effect_Condition`, 95% CI = `r study1_condition_vio_results_list$interference_degraded$condition_CI`, `r study1_condition_vio_results_list$interference_degraded$p_sum_Condition` % of *p*s \<.05), suggesting that the angle in the flanking arrows reduced interference, relative to the standard condition.
 However, none of the interaction effects for either violence exposure or unpredictability were significant.
 
-<br>
+\pagebreak
 
 ```{r}
 #| tab.id: table5
@@ -517,28 +528,26 @@ study1_condition_results_table |>
   border(i = 1, border.bottom = fp_border_default(), part = "header") 
 ```
 
-<br>
-
-The results of the Pilot study and Study 1 were inconsistent with regard to the association between adversity and interference, but hinted at two general patterns.
+The results of the Pilot and Study 1 were inconsistent with regard to the association between adversity and interference, but hinted at two general patterns.
 First, violence exposure was not associated with *increased* interference; instead, we found either the opposite effect or no effect.
 Second, both violence exposure and unpredictability were associated with lowered strength of perceptual input, albeit inconsistently.
-These findings, if replicable, are intriguing as they would suggest that the common finding of lowered Flanker task performance among people with more adversity exposure do not actually result from worse interference control---as typically inferred.
+These findings, if replicable, are intriguing as they would suggest that the common finding of lowered Flanker performance among people with more adversity exposure do not actually result from worse interference control---as typically inferred.
 Rather, such lowered performance would result from processes other than inhibition ability, such as slower general processing.
 Though interesting, our findings so far leave open the question why adversity might be negatively associated with perceptual input.
 This question was the focus of Study 2.
 
 # Study 2
 
-Study 2 set out to compare two explanations for the finding that people exposed to adversity tended to show lower strength of perceptual input in the Flanker task.
+Study 2 set out to compare two explanations for the finding that people exposed to adversity tended to show lower strength of perceptual input on the Flanker.
 First, lowered strength of perceptual input in people exposed to adversity may indicate a difficulty in extracting relevant information (i.e., about their direction) from the arrows in general.
 Second, the difference in perceptual input may not be a cognitive deficit per se, but instead could be a signature of a difference in processing style---that is, a feature, and not a bug.
 People exposed to adversity may process information more holistically, focusing more on the configuration of pieces of information rather than individual pieces of information.
-in the Flanker task, this would lower the depth of perceptual processing of any individual stimulus, thus resulting in lowered strength of perceptual input, as we observed in the Pilot study and Study 1.
+On the Flanker, this would lower the depth of perceptual processing of any individual stimulus, thus resulting in lowered strength of perceptual input, as we observed in the Pilot and Study 1.
 
 We preregistered three aims focusing both on violence exposure and unpredictability.
 First, we expected to replicate our earlier findings that adversity was associated with lowered perceptual input and lower interference in people exposed to adversity.
-Second, we included a Global-Local task to investigate the hypothesis---based on the findings of the Pilot study and Study 1---that people with more adverse experiences would develop a more holistic style of information processing.
-Third, we planned to conduct a within-subjects analysis of Flanker and Global-Local task performance to assess whether people with lowered perceptual input in the Flanker task would also show a more global processing style (rather than a local processing style) in the Global-Local task.
+Second, we included a Global-Local Task to investigate the hypothesis---based on the findings of the Pilot and Study 1---that people with more adverse experiences would develop a more holistic style of information processing.
+Third, we planned to conduct a within-subjects analysis of Flanker and Global-Local performance to assess whether people with lowered perceptual input on the Flanker Task would also show a more global processing style (rather than a local processing style) on the Global-Local Task.
 
 ## Methods
 
@@ -546,32 +555,30 @@ Third, we planned to conduct a within-subjects analysis of Flanker and Global-Lo
 
 Participants were 600 people from the United States between the ages of 18 and 30.
 Recruitment was identical to Study 1.
-We obtained ethical approval from the first author's institute (anonymized for peer review).
-We conducted a simulation-based power analysis for the planned linear mixed models with the Global Local task (see GitHub).
+We conducted a simulation-based power analysis for the planned linear mixed models with the Global Local Task (see GitHub).
 We determined that power of \> .80 for a standardized interaction effect of 0.06, with sigma (noise) set to 0.7 (comparable to observed sigmas in the first two studies) would require 550 participants.
 We recruited 600 participants, with the expectation to have a final sample of 550 participants after exclusions.
-We applied the same exclusion criteria as reported in the Pilot study and Study 1.
+We applied the same exclusion criteria as reported in the Pilot and Study 1.
 The final sample consisted of `r nrow(study2_data)` participants.
 
 ### Measures
 
 The measures of childhood violence exposure and environmental unpredictability were identical to Study 1.
-The Flanker task was identical to the standard version used in Study 1.
+The Flanker was identical to the standard version used in Study 1.
 
-*Global-Local task*.
-The Global-Local task is a measure of global-local processing [@navon_1977].
+*Global-Local Task*.
+The Global-Local Task is a measure of global-local processing [@navon_1977].
 Many different versions of this task exist in the literature.
 One key dimension on which they differ is whether the task measures focused attention (by cueing attention towards the global or local level prior to stimulus presentation) or divided attention (by having participants search for a target on both levels) [@lee_2023].
 Here, we use a version measuring divided attention, which allows measuring whether someone tends to have a more global versus local processing style [@hakim_2017; @lee_2023; @mckone_2010].
 
-Participants saw images of big, black letters (the global level) comprising small letters (the local level)---so-called Navon images [@navon_1977]---against a white background.
+Participants saw images of big, black letters (the global level) comprised of small letters (the local level)---so-called Navon images [@navon_1977]---against a white background.
 Participants first completed eight practice trials, after which they completed an additional 64 test trials.
-On each trial, participants searched for one of two target letters---an 'E' or 'H'---and indicated whether it was present on the global or local level by pressing 'g' or 'l' on their keyboard, respectively.
-Each stimulus was 600 pixels high and 395 pixels wide and comprised seven local letters vertically and five local letters horizontally.
-The stimuli consisted of combinations of the letters 'T', 'F', 'P', 'L', 'H', and 'E'.
-All stimuli always contained one (and only one) of the target letters 'H' and 'E' on either the local or global level.
-The other letters were randomly varied, and the global and local level never contained the same letter.
-Thus, the global-local task did not contain a congruent and incongruent condition as did the Flanker task.
+On each trial, participants searched for one of two target letters---an 'E' or 'H'---and indicated whether it was present on the global or local letter by pressing 'g' or 'l' on their keyboard, respectively.
+Each stimulus was 600 pixels high and 395 pixels wide and comprised of seven local letters vertically and five local letters horizontally.
+All stimuli consisted of combinations of the letters 'T', 'F', 'P', 'L', 'H', and 'E'.
+The target letters 'H' and 'E' were both present in each stimulus, but the other letters varied.
+The global and local level never contained the same letter.
 
 ### Procedure
 
@@ -582,29 +589,29 @@ Participants were paid £4.50 when they reached the end of the experiment.
 ### Data analyses
 
 **Multiverse analysis.** We included the same decisions in the multiverse as in the previous studies.
-However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot study and Study 1, instead of a subset, as we preregistered (for details, <https://anonymous.4open.science/r/CogDev_AnonLink/preregistrations/3_study2>).
+However, there was one deviation from the preregistration: the multiverse analysis contained the same arbitrary decisions as the Pilot and Study 1, instead of a subset, as we preregistered (for details, <https://anonymous.4open.science/r/CogDev_AnonLink/preregistrations/3_study2>).
 See the supplemental materials (section 5) for figures summarizing *p*-distributions and the explained variance in the regression coefficients of each data cleaning decision. 
 
-**DDM estimation.** For the Flanker task, we used the SSP [@grange_2016; @white_2018a; @white_2018b; @white_2011] using the same procedure as in Study 1. For the Global-Local task, we used a hierarchical Bayesian DDM to fit the data using the *runjags* package [@denwood_2016]. See the supplemental materials (Section 3) for more information about the procedure and model fit.
+**DDM estimation.** For the Flanker, we used the SSP [@grange_2016; @white_2018a; @white_2018b; @white_2011] using the same procedure as in Study 1. For the Global-Local Task, we used a hierarchical Bayesian DDM to fit the data using the *runjags* package [@denwood_2016]. See the supplemental materials (Section 3) for more information about the procedure and model fit.
 
-We deviated from our preregistration regarding the preprocessing of Global-Local task data.
+We deviated from our preregistration regarding the preprocessing of Global-Local Task data.
 Specifically, we relaxed the low performance threshold as the task was more difficult than anticipated.
 These deviations are described in the supplemental materials (section 4).
 
-**Confirmatory analyses.** We ran simple regressions for analyses involving only main effects (aim 1), and linear mixed effects models for analyses involving within-subject interactions (aim 2 and 3).
-To address aim 3 (within-subject interaction between Global-Local task drift rate and Flanker task strength of perceptual input), we further preprocessed the data in two steps.
+**Primary analyses.** We ran simple regressions for analyses involving only main effects (aim 1), and linear mixed effects models for analyses involving within-subject interactions (aim 2 and 3).
+To address aim 3 (within-subject interaction between Global-Local drift rate and Flanker strength of perceptual input), we further preprocessed the data in two steps.
 First, we computed a difference score of Global-Local drift rates by subtracting the drift rate on local trials from the drift rate on global trials (with higher scores reflecting relatively faster information processing on global trials).
-Second, we separately standardized the Flanker task strength of perceptual input and Global-Local task drift rate difference.
-We fitted linear mixed effects models with the standardized performance measures as the dependent variable, and adversity type, task (Flanker task or Global-Local task, sum-coded) and their interaction as independent variables.
+Second, we separately standardized the Flanker strength of perceptual input and Global-Local drift rate difference.
+We fitted linear mixed effects models with the standardized performance measures as the dependent variable, and adversity type, task (Flanker or Global-Local, sum-coded) and their interaction as independent variables.
 
 ## Results and discussion
 
 Figure 2 and 3 summarize the multiverse results for the effects of violence exposure and unpredictability within Study 2 and pooled across all studies.
-In Study 2, violence exposure was negatively associated with strength of perceptual input ($\beta$~median~ = `r study2_aim1_results_study2_list$p_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$p_flanker.vio_comp$CI`, `r study2_aim1_results_study2_list$p_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* `r study2_aim1_results_study2_list$p_flanker.vio_comp$boot_p`), but not associated with interference ($\beta$~median~ = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$CI`, `r study2_aim1_results_study2_list$interference_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$boot_p`).
+In Study 2, violence exposure was negatively associated with strength of perceptual input ($\beta$~median~ = `r study2_aim1_results_study2_list$p_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$p_flanker.vio_comp$CI`, `r study2_aim1_results_study2_list$p_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_study2_list$p_flanker.vio_comp$boot_p`), but not associated with interference ($\beta$~median~ = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$CI`, `r study2_aim1_results_study2_list$interference_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_study2_list$interference_flanker.vio_comp$boot_p`).
 Unpredictability was not associated with either strength of perceptual input ($\beta$~median~ = `r study2_aim1_results_study2_list$p_flanker.unp_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$p_flanker.unp_comp$CI`, `r study2_aim1_results_study2_list$p_flanker.unp_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_study2_list$p_flanker.unp_comp$boot_p`), nor with interference ($\beta$~median~ = `r study2_aim1_results_study2_list$interference_flanker.unp_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_study2_list$interference_flanker.unp_comp$CI`, `r study2_aim1_results_study2_list$interference_flanker.unp_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_study2_list$interference_flanker.unp_comp$boot_p`).
 
 In the pooled analysis, the results were similar for both types of adversity.
-Violence exposure was associated with lower strength of perceptual input ($\beta$~median~ = `r study2_aim1_results_list$p_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$p_flanker.vio_comp$CI`, `r study2_aim1_results_list$p_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* `r study2_aim1_results_list$p_flanker.vio_comp$boot_p`), but not with interference ($\beta$~median~ = `r study2_aim1_results_list$interference_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$interference_flanker.vio_comp$CI`, `r study2_aim1_results_list$interference_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_list$interference_flanker.vio_comp$boot_p`).
+Violence exposure was associated with lower strength of perceptual input ($\beta$~median~ = `r study2_aim1_results_list$p_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$p_flanker.vio_comp$CI`, `r study2_aim1_results_list$p_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_list$p_flanker.vio_comp$boot_p`), but not with interference ($\beta$~median~ = `r study2_aim1_results_list$interference_flanker.vio_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$interference_flanker.vio_comp$CI`, `r study2_aim1_results_list$interference_flanker.vio_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_list$interference_flanker.vio_comp$boot_p`).
 Similarly, unpredictability was associated with a lower quality of perceptual input ($\beta$~median~ = `r study2_aim1_results_list$p_flanker.unp_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$p_flanker.unp_comp$CI`, `r study2_aim1_results_list$p_flanker.unp_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_list$p_flanker.unp_comp$boot_p`), but not with interference ($\beta$~median~ = `r study2_aim1_results_list$interference_flanker.unp_comp$median_effect_Main`, 95% CI = `r study2_aim1_results_list$interference_flanker.unp_comp$CI`, `r study2_aim1_results_list$interference_flanker.unp_comp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim1_results_list$interference_flanker.unp_comp$boot_p`).
 
 ```{r}
@@ -613,8 +620,8 @@ Similarly, unpredictability was associated with a lower quality of perceptual in
 #| fig.height: 9
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure 2.** Multiverse results for the association between violence exposure with the strength of perceptual input and interference in the Flanker across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot study. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
-knitr::include_graphics("figures/fig2.png")
+#|   **Figure 2.** Multiverse results for the association between violence exposure with the strength of perceptual input and interference on the Flanker across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
+knitr::include_graphics("../figures/fig2.png")
 ```
 
 <br>
@@ -625,13 +632,13 @@ knitr::include_graphics("figures/fig2.png")
 #| fig.height: 9
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure 3.** Multiverse results for the association between unpredictability with the strength of perceptual input and interference in the Flanker task across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot study. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
-knitr::include_graphics("figures/fig3.png")
+#|   **Figure 3.** Multiverse results for the association between unpredictability with the strength of perceptual input and interference on the Flanker across all studies. Each panel depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). The top row depicts effect curves in the Pilot. The second row depicts effect curves in Study 1. The third row depicts effect curves in Study 2. The Fourth row depicts effect curves of the pooled analyses across all studies.
+knitr::include_graphics("../figures/fig3.png")
 ```
 
 <br> 
 
-### Global-Local task performance
+### Global-Local Task performance
 
 There was a main effect of violence exposure on Global-Local drift rates, with more violence exposure being associated with slower speed of information processing ($\beta$~median~ = `r study2_aim2_results_list$Main_vio$median_effect`, `r study2_aim2_results_list$Main_vio$p_sum`% of *p*s \< .05, bootstrapped *p* `r study2_aim2_results_list$Main_vio$boot_p`).
 There also was a main effect of task condition on drift rates, with people processing information faster when the target was present at the global level compared to the local level, ($\beta$~median~ = `r study2_aim2_results_list$Condition_vio$median_effect`, `r study2_aim2_results_list$Condition_vio$p_sum`% of *p*s \< .05, bootstrapped *p* `r study2_aim2_results_list$Condition_vio$boot_p`).
@@ -640,18 +647,18 @@ Simple slopes analyses revealed that participants with lower levels of violence 
 In contrast, participants with higher levels of violence exposure processed global targets faster than local targets (b~median~ = `r study2_aim2_simslopes2_list$vio_comp.High$median_ss`, `r study2_aim2_simslopes2_list$vio_comp.High$p_sum`% of *p*s \< .05).
 
 There was a significant main effect of unpredictability on drift rates, with more unpredictability being associated with slower speed of information processing, ($\beta$~median~ = `r study2_aim2_results_list$Main_unp$median_effect`, 95% CI = `r study2_aim2_results_list$Main_unp$CI`, `r study2_aim2_results_list$Main_unp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim2_results_list$Main_unp$boot_p`).
-We also found a main effect of task condition on drift rates, with people processing information faster when the target was present at the global level compared to the local level, ($\beta$~median~ = `r study2_aim2_results_list$Condition_unp$median_effect`, 95% CI = `r study2_aim2_results_list$Condition_vio$CI`, `r study2_aim2_results_list$Condition_unp$p_sum` % of *p*s \< .05, bootstrapped *p* `r study2_aim2_results_list$Condition_unp$boot_p`).
+We also found a main effect of task condition on drift rates, with people processing information faster when the target was present at the global level compared to the local level, ($\beta$~median~ = `r study2_aim2_results_list$Condition_unp$median_effect`, 95% CI = `r study2_aim2_results_list$Condition_vio$CI`, `r study2_aim2_results_list$Condition_unp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim2_results_list$Condition_unp$boot_p`).
 We did not find a significant unpredictability x task condition interaction effect ($\beta$~median~ = `r study2_aim2_results_list$Interaction_unp$median_effect`, 95% CI = `r study2_aim2_results_list$Interaction_unp$CI`, `r study2_aim2_results_list$Interaction_unp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim2_results_list$Interaction_unp$boot_p`).
 
-### Within-subjects comparison of Flanker and Global-Local task information processing
+### Within-subjects comparison of Flanker and Global-Local information processing
 
-There were no significant main effects for violence exposure (bootstrapped *p* = `r study2_aim3_results_list$Task_vio$boot_p`) nor for cognitive task (bootstrapped *p* = `r study2_aim3_results_list$Task_vio$boot_p`).
+There was no significant main effects for violence exposure (bootstrapped *p* = `r study2_aim3_results_list$Task_vio$boot_p`) nor for cognitive task (bootstrapped *p* = `r study2_aim3_results_list$Task_vio$boot_p`).
 There was a significant interaction effect ($\beta$~median~ = `r study2_aim3_results_list$Interaction_vio$median_effect`, 95% CI = `r study2_aim3_results_list$Interaction_vio$CI`, `r study2_aim3_results_list$Interaction_vio$p_sum` % of *p*s \< .05, bootstrapped *p* `r study2_aim3_results_list$Interaction_vio$boot_p`) (See Figure 2).
-A simple slopes analysis revealed that people with higher levels of violence exposure showed lower strength of perceptual input in the Flanker task (b = `r study2_aim3_simslopes1_list$vio_comp.Flanker$median_ss`, `r study2_aim3_simslopes1_list$vio_comp.Flanker$p_sum`% of *p*s \< .05), and showed a more global versus local processing style in the Global-Local task (b = `r study2_aim3_simslopes1_list$vio_comp.GlobalLocal$median_ss`, `r study2_aim3_simslopes1_list$vio_comp.GlobalLocal$p_sum`% of *p*s \< .05).
+A simple slopes analysis revealed that people with higher levels of violence exposure showed lower strength of perceptual input on the Flanker (b = `r study2_aim3_simslopes1_list$vio_comp.Flanker$median_ss`, `r study2_aim3_simslopes1_list$vio_comp.Flanker$p_sum`% of *p*s \< .05), and showed a more global versus local processing style on the Global-Local Task (b = `r study2_aim3_simslopes1_list$vio_comp.GlobalLocal$median_ss`, `r study2_aim3_simslopes1_list$vio_comp.GlobalLocal$p_sum`% of *p*s \< .05).
 
 There was no significant main effect for unpredictability (bootstrapped *p* = `r study2_aim3_results_list$Task_unp$boot_p`).
 However, there was a significant interaction effect ($\beta$~median~ = `r study2_aim3_results_list$Interaction_unp$median_effect`, 95% CI = `r study2_aim3_results_list$Interaction_unp$CI`, `r study2_aim3_results_list$Interaction_unp$p_sum` % of *p*s \< .05, bootstrapped *p* = `r study2_aim3_results_list$Interaction_unp$boot_p`).
-A simple slopes analysis revealed that people with higher levels of unpredictability did not differ in their strength of perceptual input in the Flanker task (b = `r study2_aim3_simslopes1_list$unp_comp.Flanker$median_ss`, `r study2_aim3_simslopes1_list$unp_comp.Flanker$p_sum` % of *p*s \< .05), but showed a more global versus local processing style in the Global-Local task (b = `r study2_aim3_simslopes1_list$unp_comp.GlobalLocal$median_ss`, `r study2_aim3_simslopes1_list$unp_comp.GlobalLocal$p_sum`% of *p*s \< .05).
+A simple slopes analysis revealed that people with higher levels of unpredictability did not differ in their strength of perceptual input on the Flanker (b = `r study2_aim3_simslopes1_list$unp_comp.Flanker$median_ss`, `r study2_aim3_simslopes1_list$unp_comp.Flanker$p_sum` % of *p*s \< .05), but showed a more global versus local processing style on the Global-Local Task (b = `r study2_aim3_simslopes1_list$unp_comp.GlobalLocal$median_ss`, `r study2_aim3_simslopes1_list$unp_comp.GlobalLocal$p_sum`% of *p*s \< .05).
 
 ```{r}
 #| label: figure4
@@ -659,14 +666,14 @@ A simple slopes analysis revealed that people with higher levels of unpredictabi
 #| fig.height: 9
 #| dpi: 600
 #| fig-cap: | 
-#|   **Figure 4.** Multiverse results for the within-subjects comparison of Flanker and Global-Local task information processing. Panel A depicts the multiverse interaction effects, with the thick black lines denoting the median slope and the thin lines denoting effects for each combination of arbitrary decisions. Blue thin lines indicate significant effects (*p* > .05), and grey thin lines indicate non-significant effects (*p* > .05). Panel B depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). See the main text for more information about the multiverse analyses.
-knitr::include_graphics("figures/fig4.png")
+#|   **Figure 4.** Multiverse results for the within-subjects comparison of Flanker and Global-Local information processing. Panel A depicts the multiverse interaction effects, with the thick black lines denoting the median slope and the thin lines denoting effects for each combination of arbitrary decisions. Blue thin lines indicate significant effects (*p* > .05), and grey thin lines indicate non-significant effects (*p* > .05). Panel B depicts sorted beta coefficients across all combinations of arbitrary decisions (i.e., the effect curve across the whole multiverse). See the main text for more information about the multiverse analyses.
+knitr::include_graphics("../figures/fig4.png")
 ```
 
 <br>
 
 To sum up, Study 2 provided additional support for the basic finding that violence exposure and unpredictability were associated with lower strength of perceptual input but not with differences in interference; with the caveat that the associations for unpredictability only showed up in pooled analyses.
-People with more exposure to violence and unpredictability also processed information more slowly in the Global-Local task.
+People with more exposure to violence and unpredictability also processed information more slowly on the Global-Local Task.
 In line with our expectations, childhood exposure to violence was associated with both lowered strength of perceptual input and a more holistic processing style.
 The same processing style was observed for participants with more exposure to unpredictability, although they did not show lowered strength of perceptual input.
 
@@ -676,69 +683,58 @@ We hypothesized that the potential adaptive benefits of a more diffuse scope of 
 People with a present-oriented attention style (versus a more future-oriented attention style) are more geared towards processing information that is relevant for solving challenges and obtaining rewards in the here-and-now.
 A general tendency to be more attuned to the present (while disregarding the future) is sometimes referred to as a short-term mindset [@kubel_2023; @vangelder_2023], which also includes tendencies to be more impulsive, to more steeply discount future rewards, and to be more sensation-seeking.
 Although short-term mindsets are associated with exposure to adversity [@ganschow_2023], it is unclear how they are associated with performance on attention tasks.
-We explored bivariate correlations pooled across all studies between two indicators of short-term mindsets (impulsivity and future orientation) and SSP parameters of the Flanker task (for more information on the measures, see section 1 of the supplemental materials).
+We explored bivariate correlations pooled across all studies between two indicators of short-term mindsets (impulsivity and future orientation) and SSP parameters of the Flanker (for more information on the measures, see section 1 of the supplemental materials).
 
 See Table S2 for an overview of the correlations.
 Impulsivity was negatively associated with the strength of perceptual input (*r* = -.07, *p* = .004) and positively associated with interference (*r* = .09, *p* = .005). 
 In addition, impulsivity was also associated with a more holistic information processing style (*r* = .11, *p* = .020). 
 Thus, more impulsive participants processed information less deeply and were more easily drawn to distractions, but this might partly be explained by a holistic information processing style.
-Similarly, future-orientation was positively associated with perceptual input (*r* = .09 *p* < .001)—--but not with interference (*p* = .112) —--in the Flanker task, and was also associated with a more detail-oriented processing style (*r* = -.12, *p* = .011). 
+Similarly, future-orientation was positively associated with perceptual input (*r* = .09 *p* < .001)—--but not with interference (*p* = .112) —--on the Flanker Task, and was also associated with a more detail-oriented processing style (*r* = -.12, *p* = .011). 
 Thus, more future-oriented participants processed information more deeply, which might partly be explained by a detail-oriented processing style.
 
 # General discussion
 
 We investigated how two dimensions of childhood adversity---violence exposure and environmental unpredictability---are related to differences in how people attend to and process information.
 Specifically, we hypothesized that exposure to adversity might lead to a present-oriented attention style that would facilitate rapidly detecting novel or changing information, yet which would interfere with ignoring distractors.
-Across one Pilot study and two main studies, we tested how adversity was associated with performance on different attention tasks.
-The Pilot study compared performance on a Cued Attention task, Change Detection task, and a Flanker task.
-Two follow-up studies focused in the Flanker task, with Study 2 also including a Global-Local task.
+Across one pilot and two main studies, we tested how adversity was associated with performance on different attention tasks.
+The Pilot compared performance on a Cued Attention Task, Change Detection Task, and a Flanker.
+Two follow-up studies focused on the Flanker, with Study 2 also including a Global-Local Task.
 We leveraged DDM to estimate the processes underlying lowered and improved performance.
-This allowed us to investigate whether performance differences were associated with abilities that are typically the main focus when using these tasks (i.e., attention orientation, interference control, information accumulation), or with other processes (e.g., stimulus encoding, response execution, response caution).
-Across all confirmatory and exploratory analyses, we leveraged multiverse analysis to systematically assess the robustness of our findings against several uncontrollable aspects of the online assessment (e.g., distractions, fullscreen exits).
+This allowed us to investigate whether performance differences were associated with abilities (i.e., attention orientation, interference control, stimulus processing), or ability-irrelevant processes (e.g., stimulus encoding, response execution, response caution).
+Across all primary and exploratory analyses, we leveraged multiverse analysis to systematically assess the robustness of our findings against several uncontrollable aspects of the online assessment (e.g., distractions, fullscreen exits).
 
 ### Main insights
 
 We found little to no support for the presence of a present-oriented attention style in people exposed to adversity.
-More childhood exposure to violence was associated with slower processing of subtle changes in the Change Detection task and lower quality of perceptual input in the Flanker task.
-It was not associated with speed of processing of peripheral information in the Cued Attention task.
-Zooming in in the Flanker task, our two main studies found mixed evidence for the hypotheses that violence exposure and unpredictability were associated with lower strength of perceptual input.
-This mixed evidence suggests that people with more exposure to these adversities process information less deeply, leading to slower responses on congruent and incongruent trials in equal measure.
-
-which would affect both the processing of distractor and target information. making it more difficult to make judgments about target and distractor information in equal measure.
+More childhood exposure to violence was associated with slower processing of subtle changes on the Change Detection Task and lower quality of perceptual input on the Flanker Task.
+It was not associated with speed of processing of peripheral information on the Cued Attention Task.
+Zooming in on the Flanker, our two main studies found mixed evidence for the hypotheses that violence exposure and unpredictability were associated with lower strength of perceptual input.
+This mixed evidence suggests that people with more exposure to these adversities process information less deeply, making it more difficult to make judgments about target and distractor information in equal measure.
 This was corroborated by the pooled analyses across studies, which found that both exposure to violence and unpredictability were associated with lower strength of perceptual input, but not with differences in the ability to inhibit distractors.
 This finding contradicts the standard deficit interpretation of lowered performance on inhibition tasks by people with more adversity exposure (discussed below).
 In addition, lowered strength of perceptual input was associated with a holistic processing style.
 Thus, we did not find evidence that people with more violence exposure have more difficulties with inhibiting task-irrelevant information.
 
-Our findings of the DDM decomposition of Flanker task performance challenge previous interpretations based on raw performance.
+Our findings of the DDM decomposition of Flanker performance challenge previous interpretations based on raw performance.
 Previous studies have found that people exposed to adversity and/or low SES backgrounds have longer RTs on incongruent trials relative to congruent trials [@farah_2006; @fields_2021; @mezzacappa_2004; @mittal_2015; @noble_2005], which is commonly interpreted as an impaired ability to inhibit irrelevant information.
 This fits with adaptive hypotheses, as inhibition is assumed to be useful mostly in stable and predictable environment that afford long-term goal pursuit, but can be costly in unpredictable and potentially dangerous environments [@fields_2021; @mittal_2015; @daly_2005].
 Contrary to previous studies, we found little to no evidence for performance differences on the basis of raw RTs.
-In addition, our DDM analyses showed that performance differences in the Flanker task are not driven by differences in interference control, but by more basic processes that are not typically considered when interpreting Flanker task performance.
-Although we are not aware of similar findings in the literature on adversity, comparable conclusions have recently been drawn in research on cognitive functioning related to depression and autism [@grange_2022; @merkt_2013; @poole_2024].
+In addition, our DDM analyses showed that performance differences on the Flanker are not driven by differences in interference control, but by more basic processes that are not typically considered when interpreting Flanker performance.
 
-Our findings align with a broader literature that is critical of the validity of the Flanker task in particular, and that of cognitive control tasks more generally.
-As noted, several studies have failed to find coherent correlations between raw performance on different cognitive control tasks [e.g., @loffler_2024; @rey_mermet_2019; @rouder_2019; @stahl_2014].
+Our findings align with a broader literature that is critical of the validity of the Flanker in particular, and that of cognitive control tasks more generally.
+As noted, several studies have failed to find coherent correlations between raw performance on different cognitive control tasks [e.g., @loffler_2022; @rey_mermet_2019; @rouder_2019; @stahl_2014].
 For example, previous research comparing several cognitive control tasks across different data sets using cognitive modeling found that shared variance between these tasks was mostly associated with processing speed and strategies (e.g., speed-accuracy trade-offs) [@hedge_2022].
 Moreover, the modeling parameters reflecting conflict processing (similar to interference in our study) were barely correlated.
-Similarly, previous work has shown that individual differences on common EF tasks---among which the Flanker task---can be fully accounted for by general processing speed [@loffler_2024].
+Similarly, previous work has shown that individual differences on common EF tasks---among which the Flanker Task---can be fully accounted for by general processing speed [@loffler_2022].
 This literature, together with the findings reported here, underscore that researchers should be cautious when drawing inferences about cognitive control abilities in people exposed to adversity based on raw RTs and performance on individual tasks.
 
-Finally, we showed that people exposed to adversity had a more holistic processing style, and that this style was associated with lower strength of perceptual input in the Flanker task.
-This could mean that people with more adversity exposure processed the Flanker task display more holistically; that is, focused less on individual arrows and more on the collection of arrows as a whole.
+Finally, we showed that people exposed to adversity had a more holistic processing style, and that this style was associated with lower strength of perceptual input on the Flanker.
+This could mean that people with more adversity exposure processed the Flanker display more holistically; that is, focused less on individual arrows and more on the collection of arrows as a whole.
 One (tentative) interpretation is that in the absence of threatening or otherwise salient information, people with more exposure to adversity attend to and process information in the environment globally and less deeply.
 They might only shift to local processing of a single source of information if it seems threatening or otherwise salient [@shields_2015; @schwabe_2013].
 This would be consistent with research showing that growing up in a disadvantaged environment decreases the efficiency of the brain's (resting-state) salience network, which is in turn associated with lower raw performance on certain cognitive tasks [@cermakova_2023; @gellci_2019; @hilger_2017; @yuan_2012].
 This research also shows that in situations of acute stress, mental resources are reallocated to this salience network, increasing vigilance and facilitating adequate responding.
 Indeed, a few studies show that cognitive abilities that may be particularly relevant in adverse contexts---such as attention shifting and working memory updating---may be enhanced in people from adversity when they experience acute stress [@mittal_2015; @young_2018].
-
-We did not control for (potentially) confounding variables in our models, even though variables like education, intelligence, and current adversity exposure generally correlate with both childhood adversity exposure and performance on the Flanker task. 
-Our reason for not including them as covariates was that all these factors can be reasonably seen as mediators of the association between childhood adversity and cognitive performance. 
-However, they are unlikely (or even impossible) causes of childhood adversity. 
-Therefore, adjusting for these variables could have introduced bias to our estimation of the total effect of childhood adversity on performance (which was our estimand) [@rohrer_2018]. 
-That said, one way in which our analyses may have been confounded is by using retrospective measures of adversity.
-For example, some work suggests that current psychopathology may bias retrospective reports of childhood adversity, although the causal pathways are still mostly unclear [@francis_2023; @goltermann_2023; @nivison_2021; @patten_2015].
-Systematic investigations into potential confounders will ultimately improve our understanding of the effects of early adversity [@ning_2023].
 
 ### Strengths, limitations, and future directions
 
@@ -759,12 +755,12 @@ Second, our results suggest that lower strength of perceptual input is likely th
 Future research could try to tease apart these sources using a within-subjects design simultaneously measuring inhibition, processing styles, and basic processing speed.
 Third, some research suggests that inhibition is not a unitary construct, instead distinguishing between response inhibition (which involves suppressing a prepotent response) and cognitive inhibition (which involves selective attention in the presence of distractors).
 Exposure to adversity might shape these two types of inhibition in different ways.
-For example, acute stress might impair performance on tasks of cognitive inhibition (of which the Flanker task is an example) and enhances performance on tasks of response inhibition [for a meta-analysis, see @shields_2016; but see @dang_2017].
+For example, acute stress might impair performance on tasks of cognitive inhibition (of which the Flanker is an example) and enhances performance on tasks of response inhibition [for a meta-analysis, see @shields_2016; but see @dang_2017].
 Future work could assess inhibition more broadly, e.g., by including tasks that are hypothesized to require cognitive or response inhibition.
 
 ### General conclusion
 
-We found that people with more childhood adversity exposure perform worse in the Flanker task not because of an impairment in their ability to inhibit distracting information, but because of lower strength of perceptual input.
+We found that people with more childhood adversity exposure perform worse on the Flanker not because of an impairment in their ability to inhibit distracting information, but because of lower strength of perceptual input.
 Our results suggest that people with more adversity exposure are not worse at inhibiting distractions; rather, they do not seem to process information in the environment deeply unless it proves to be a reliable and important source of information.
 These findings challenge dominant interpretations, which infer an inhibition deficit from lowered performance.
 This is an important difference not just for theory development, but also for future interventions aimed at closing performance gaps.
@@ -791,7 +787,7 @@ Thus, cognitive modeling can offer crucial insights for our understanding of cog
 <br>
 <br>
 
-**Drift Diffusion Model:** A formal cognitive model that explicitly models the cognitive processes underlying decision-making on speeded binary decision-making tasks.
+**Drift Diffusion Model:** A formal cognitive model that estimates cognitive processes at different stages of the decision-making process for speeded binary decision-making tasks.
 It represents decision-making as a process in which people accumulate information until one response is sufficiently favored over the other.
 
 <br>
@@ -817,12 +813,12 @@ It represents decision-making as a process in which people accumulate informatio
 <br>
 <br>
 
-**Perceptual input:** Parameter of the Shrinking Spotlight Model of Flanker task performance. Measures how well a person can process the Flanker task stimuli in general.
+**Perceptual input:** Parameter from the Shrinking Spotlight Model of Flanker performance. Measures how well a person can process the Flanker stimuli in general.
 
 <br>
 <br>
 
-**Shrinking Spotlight Model:** An extension of the standard Drift Diffusion Model to account for attention processes in the Flanker task.
+**Shrinking Spotlight Model:** An extension of the standard Drift Diffusion Model to account for attention processes on the Flanker.
 
 
 
