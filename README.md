@@ -30,32 +30,25 @@ Click on each of the folders to get more details.
 
 ## Overview of project milestones
 
-Below is an overview of all the project milestones, such as first-time data access, submissions, and revisions.
+Below is an overview of all the project milestones (e.g., timestamped versions of the preregistrations).
 Data access events were automatically captured using custom code, which over the course of this project was collected in the R package `projectlog` [https://stefanvermeent.github.io/projectlog/](https://stefanvermeent.github.io/projectlog/).
-For more information about how tracking worked, Go to the [Open science workflow tab](https://stefanvermeent.github.io/abcd_ddm/opensci_workflow/README.html).
+Clicking the link of a specific milestone will take you to the historic version of the repository (i.e., as it was when the milestone was timestamped).
+
 
 - **[2023-05-10 15:48:49](https://github.com/stefanvermeent/attention_project/tree/b773bfde511683fe530855fa63bdcdcbb2fa1f81): final timestamped version of preregistration for study 2**
     - **Milestone:** Study2 Preregistration
-    - **Data MD5 hash**: 
-    - [Link to code snippet](https://github.com/StefanVermeent/liss_wm_profiles_2023/blob/main/.projectlog/b773bfde511683fe530855fa63bdcdcbb2fa1f81.R)
     
 
 - **[2022-03-23 09:17:06](https://github.com/stefanvermeent/attention_project/tree/219a2d05feefb0696a070c20f454e7e9d0635dd0): Amendment to Preregistration of Study 1**
     - **Milestone:** Study1 Preregistration_amendment
-    - **Data MD5 hash**: 
-    - [Link to code snippet](https://github.com/StefanVermeent/liss_wm_profiles_2023/blob/main/.projectlog/219a2d05feefb0696a070c20f454e7e9d0635dd0.R)
     
 
 - **[2022-03-18 13:44:18](https://github.com/stefanvermeent/attention_project/tree/85115b0afefe571f5d6ae22c2b03125e95b28d03): final rendered versions of preregistration**
     - **Milestone:** Study1 Preregistration
-    - **Data MD5 hash**: 
-    - [Link to code snippet](https://github.com/StefanVermeent/liss_wm_profiles_2023/blob/main/.projectlog/85115b0afefe571f5d6ae22c2b03125e95b28d03.R)
     
 
 - **[2021-11-08 10:12:19](https://github.com/stefanvermeent/attention_project/tree/b4d01a5837c1dbb04f939960ba291fa6ffad1cdc): Preregistration of Pilot Study**
     - **Milestone:** Preregistration
-    - **Data MD5 hash**: 
-    - [Link to code snippet](https://github.com/StefanVermeent/liss_wm_profiles_2023/blob/main/.projectlog/b4d01a5837c1dbb04f939960ba291fa6ffad1cdc.R)
     
 
 ## How to reproduce this repository {#reproduce}
@@ -87,10 +80,9 @@ Thus, in most cases, it might be better to use the DDM result objects in each st
 
 Direct links to:
 
-1.  [Pilot preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/1_pilot/scripts/0_data_prep).
-2.  [Study 1 preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/2_study1/scripts/0_data_prep).
-3.  [Study 2 preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/3_study2/scripts/0_data_prep).
-
+1.  [Pilot preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/1_pilot/scripts/0_data_prep).
+2.  [Study 1 preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/2_study1/scripts/0_data_prep).
+3.  [Study 2 preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/scripts/0_data_prep).
 
 
 ### 3. Primary Analyses

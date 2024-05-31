@@ -38,9 +38,10 @@ Click on each of the folders to get more details.
 
 ## Overview of project milestones
 
-Below is an overview of all the project milestones, such as first-time data access, submissions, and revisions.
+Below is an overview of all the project milestones (e.g., timestamped versions of the preregistrations).
 Data access events were automatically captured using custom code, which over the course of this project was collected in the R package `projectlog` [https://stefanvermeent.github.io/projectlog/](https://stefanvermeent.github.io/projectlog/).
-For more information about how tracking worked, Go to the [Open science workflow tab](https://stefanvermeent.github.io/abcd_ddm/opensci_workflow/README.html).
+Clicking the link of a specific milestone will take you to the historic version of the repository (i.e., as it was when the milestone was timestamped).
+
 
 ```{r results ='asis', echo = FALSE}
 milestones <- gert::git_tag_list() |> 
@@ -104,8 +105,6 @@ branch <- gert::git_branch_list() |> filter(local == TRUE) |> pull(name)
 # Print milestones
 glue_data(milestones, "  - **[{time}]({link_to_git}): {description}**
         - **Milestone:** {name}
-        - **Data MD5 hash**: {hash}
-        - [Link to code snippet](https://github.com/StefanVermeent/liss_wm_profiles_2023/blob/{branch}/.projectlog/{commit}.R)
         \n
     ")
 
@@ -140,10 +139,9 @@ Thus, in most cases, it might be better to use the DDM result objects in each st
 
 Direct links to:
 
-1.  [Pilot preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/1_pilot/scripts/0_data_prep).
-2.  [Study 1 preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/2_study1/scripts/0_data_prep).
-3.  [Study 2 preprocessing scripts](https://github.com/stefanvermeent/attention_project/blob/main/3_study2/scripts/0_data_prep).
-
+1.  [Pilot preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/1_pilot/scripts/0_data_prep).
+2.  [Study 1 preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/2_study1/scripts/0_data_prep).
+3.  [Study 2 preprocessing scripts](https://github.com/stefanvermeent/attention_project/tree/main/preregistrations/3_study2/scripts/0_data_prep).
 
 
 ### 3. Primary Analyses
